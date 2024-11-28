@@ -4,7 +4,7 @@ import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/User.dart';
 
 class UserBll extends IUserBLL {
-  IUserService _userService = UserService();
+  final IUserService _userService = UserService();
 
 
   @override

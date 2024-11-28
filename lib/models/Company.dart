@@ -1,5 +1,5 @@
 class Company {
-  final String? id;
+  final int? id;
   final String? name;
   final String? addressNumber;
   final String? addressStreet;

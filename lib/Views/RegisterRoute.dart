@@ -5,6 +5,8 @@ import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
 
 class RegisterRoute extends StatefulWidget {
+  const RegisterRoute({super.key});
+
   @override
   _RegisterRouteState createState() => _RegisterRouteState();
 }

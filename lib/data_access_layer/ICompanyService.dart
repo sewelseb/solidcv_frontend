@@ -6,4 +6,6 @@ abstract class ICompanyService {
   Future<Company> createCompany(Company company);
   Future<Company> updateCompany(Company company);
   Future<Company> deleteCompany(int id);
+
+  Future<List<Company>> getMyCompanies();
 }

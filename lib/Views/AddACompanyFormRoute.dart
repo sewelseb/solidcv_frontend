@@ -5,6 +5,8 @@ import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/models/Company.dart';
 
 class AddACompanyFormRoute extends StatefulWidget {
+  const AddACompanyFormRoute({super.key});
+
   @override
   _AddACompanyFormRouteState createState() => _AddACompanyFormRouteState();
 }
@@ -100,6 +102,11 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                   onPressed: () async {
                     // Validate the form
                     
+                    
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Creating company...')),
+                    );
+
                     var company = Company(
                       id: null,
                       name: _companyNameController.text,
@@ -111,10 +118,10 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                       phoneNumber: _phoneNumberController.text,
                       email: _emailController.text,
                     );
+                    
+
                     await _companyBll.createCompany(company);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
+                    Navigator.pop(context);
                     
                   },
                   child: const Text('Submit'),

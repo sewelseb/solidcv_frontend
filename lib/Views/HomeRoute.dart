@@ -13,7 +13,7 @@ class HomeRoute extends StatefulWidget {
 }
 
 class _HomeRouteState extends State<HomeRoute> {
-  IUserBLL _userBll = UserBll();
+  final IUserBLL _userBll = UserBll();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 

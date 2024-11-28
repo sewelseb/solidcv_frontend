@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomeRoute(),
+        '/': (context) => const HomeRoute(),
         '/register': (context) => RegisterRoute(),
         '/loggedin/home': (context) => LoggedInHome(),
         '/my-cv': (context) => MyCvRoute(),

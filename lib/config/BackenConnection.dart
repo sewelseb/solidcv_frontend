@@ -5,4 +5,6 @@ class BackenConnection {
   String get loginApi => '/api/login';
 
   String get createCompanyApi => '/api/protected/create-company';
+
+  String get getMyCompaniesApi => '/api/protected/get-my-companies';
 }

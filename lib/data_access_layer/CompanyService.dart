@@ -59,4 +59,22 @@ class CompanyService extends ICompanyService {
     // TODO: implement updateCompany
     throw UnimplementedError();
   }
+  
+  @override
+  Future<List<Company>> getMyCompanies() async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getMyCompaniesApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if(response.statusCode == 200) {
+      List<dynamic> companies = jsonDecode(response.body);
+      return companies.map((company) => Company.fromJson(company)).toList();
+    } else {
+      throw Exception('Getting companies failure');
+    }
+  }
 }

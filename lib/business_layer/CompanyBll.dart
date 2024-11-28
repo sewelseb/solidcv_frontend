@@ -34,5 +34,11 @@ class CompanyBll extends ICompanyBll {
     // TODO: implement updateCompany
     throw UnimplementedError();
   }
+  
+  @override
+  Future<List<Company>> getMyCompanies() {
+    return _companyService.getMyCompanies();
+  }
 
+  
 }
