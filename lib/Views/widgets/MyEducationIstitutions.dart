@@ -1,32 +1,29 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
-import 'package:solid_cv/business_layer/CompanyBll.dart';
-import 'package:solid_cv/business_layer/ICompanyBll.dart';
-import 'package:solid_cv/models/Company.dart';
+import 'package:solid_cv/Views/Parameters/EducationInstitutionParameter.dart';
+import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
+import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
+import 'package:solid_cv/models/EducationInstitution.dart';
 
-class MyCompanies extends StatefulWidget {
-  const MyCompanies({super.key});
-
+class MyEducationInstitutions extends StatefulWidget {
   @override
-  _MyCompaniesState createState() => _MyCompaniesState();
+  _MyEducationInstitutionsState createState() => _MyEducationInstitutionsState();
 }
 
-class _MyCompaniesState extends State<MyCompanies> {
-  late Future<List<Company>> companies;
-  final ICompanyBll _companyBll = CompanyBll();
+class _MyEducationInstitutionsState extends State<MyEducationInstitutions> {
+  late Future<List<EducationInstitution>> educationinstitutions;
+  final IEducationInstitutionBll _educationInstitutionBll = EducationInstitutionBll();
 
   @override
   void initState() {
     super.initState();
-    companies = _companyBll.getMyCompanies();
+    educationinstitutions = _educationInstitutionBll.getMyEducationInstitutions();
   }
+
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Company>>(
-      future: companies,
+    return FutureBuilder<List<EducationInstitution>>(
+      future: educationinstitutions,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -52,8 +49,8 @@ class _MyCompaniesState extends State<MyCompanies> {
                 // Handle onTap event if needed
                   Navigator.pushNamed(
                     context,
-                    "/my-company-administration",
-                    arguments: CompanyParameter(id: company.id!),
+                    "/my-educationInstitution-administration",
+                    arguments: EducationInstitutionParameter(id: company.id!),
                   );
                 },
               ),

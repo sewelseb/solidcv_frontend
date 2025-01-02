@@ -1,4 +1,4 @@
-class Company {
+class EducationInstitution {
   final int? id;
   final String? name;
   final String? addressNumber;
@@ -9,7 +9,7 @@ class Company {
   final String? phoneNumber;
   final String? email;
 
-  Company({
+  EducationInstitution({
     this.id,
     required this.name,
     required this.addressNumber,
@@ -21,8 +21,8 @@ class Company {
     required this.email,
   });
 
-  factory Company.fromJson(Map<String, dynamic> json) {
-    return Company(
+  factory EducationInstitution.fromJson(Map<String, dynamic> json) {
+    return EducationInstitution(
       id: json['id'],
       name: json['name'],
       addressNumber: json['addressNumber'],
@@ -82,5 +82,4 @@ class Company {
   getSafePhoneNumber() {
     return phoneNumber ?? '';
   }
-
 }

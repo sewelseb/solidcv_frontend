@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
-import 'package:solid_cv/business_layer/CompanyBll.dart';
-import 'package:solid_cv/business_layer/ICompanyBll.dart';
-import 'package:solid_cv/models/Company.dart';
+import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
+import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
+import 'package:solid_cv/models/EducationInstitution.dart';
 
-class AddACompanyFormRoute extends StatefulWidget {
-  const AddACompanyFormRoute({super.key});
+class AddanEducationInstitutionFormRoute  extends StatefulWidget {
+  const AddanEducationInstitutionFormRoute({super.key});
 
   @override
-  _AddACompanyFormRouteState createState() => _AddACompanyFormRouteState();
+  _AddanEducationInstitutionFormRouteState createState() => _AddanEducationInstitutionFormRouteState();
 }
 
-class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
-  final ICompanyBll _companyBll = CompanyBll();
-  final _companyNameController = TextEditingController();
+class _AddanEducationInstitutionFormRouteState extends State<AddanEducationInstitutionFormRoute> {
+  final IEducationInstitutionBll _educationInstitutionBll = EducationInstitutionBll();
+  final _educationInstitutionNameController = TextEditingController();
   final _addressNumberController = TextEditingController();
   final _addressStreetController = TextEditingController();
   final _cityController = TextEditingController();
@@ -24,7 +23,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
 
   @override
   void dispose() {
-    _companyNameController.dispose();
+    _educationInstitutionNameController.dispose();
     _addressNumberController.dispose();
     _addressStreetController.dispose();
     _cityController.dispose();
@@ -39,9 +38,8 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a Company'),
+        title: const Text('Add an Education Institution'),
       ),
-      bottomNavigationBar: const MainBottomNavigationBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -50,9 +48,9 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
             children: <Widget>[
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Company Name',
+                  labelText: 'Education Institution Name',
                 ),
-                controller: _companyNameController,
+                controller: _educationInstitutionNameController,
               ),
               TextFormField(
                 decoration: const InputDecoration(
@@ -86,7 +84,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
               ),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Phone Number',
+                  labelText: 'Phone number',
                 ),
                 controller: _phoneNumberController,
               ),
@@ -99,17 +97,10 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    // Validate the form
-                    
-                    
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Creating company...')),
-                    );
-
-                    var company = Company(
-                      id: null,
-                      name: _companyNameController.text,
+                  onPressed: () {
+                    // Add your education institution addition logic here
+                    var educationInstitution = EducationInstitution(
+                      name: _educationInstitutionNameController.text,
                       addressNumber: _addressNumberController.text,
                       addressStreet: _addressStreetController.text,
                       addressCity: _cityController.text,
@@ -118,13 +109,10 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                       phoneNumber: _phoneNumberController.text,
                       email: _emailController.text,
                     );
-                    
-
-                    await _companyBll.createCompany(company);
+                    _educationInstitutionBll.addEducationInstitution(educationInstitution);
                     Navigator.pop(context);
-                    
                   },
-                  child: const Text('Submit'),
+                  child: const Text('Add Education Institution'),
                 ),
               ),
             ],
@@ -134,3 +122,4 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
     );
   }
 }
+

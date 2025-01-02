@@ -25,8 +25,7 @@ class CompanyBll extends ICompanyBll {
 
   @override
   Future<Company> getCompany(int id) {
-    // TODO: implement getCompany
-    throw UnimplementedError();
+    return _companyService.getCompany(id);
   }
 
   @override

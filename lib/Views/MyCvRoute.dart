@@ -15,7 +15,7 @@ class _MyCvRouteState extends State<MyCvRoute> {
       appBar: AppBar(
         title: const Text('My CV'),
       ),
-      bottomNavigationBar: MainBottomNavigationBar(),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: const Center(
         child: Text('Welcome to My CV Page!'),
       ),

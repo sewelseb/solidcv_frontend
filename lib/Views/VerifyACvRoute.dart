@@ -15,7 +15,7 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
       appBar: AppBar(
         title: const Text('Verify a CV'),
       ),
-      bottomNavigationBar: MainBottomNavigationBar(),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: const Center(
         child: Text('Verify a CV Content'),
       ),

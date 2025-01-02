@@ -10,7 +10,7 @@ class LoggedInHome extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      bottomNavigationBar: MainBottomNavigationBar(),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: const Center(
         child: Text('Welcome to the Logged In Home Page!'),
       ),

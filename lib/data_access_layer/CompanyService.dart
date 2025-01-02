@@ -49,9 +49,21 @@ class CompanyService extends ICompanyService {
   }
   
   @override
-  Future<Company> getCompany(int id) {
-    // TODO: implement getCompany
-    throw UnimplementedError();
+  Future<Company> getCompany(int id) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getCompanyApi+id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if(response.statusCode == 200) {
+      Company company = Company.fromJson(jsonDecode(response.body));
+      return company;
+    } else {
+      throw Exception('Getting company failure');
+    }
   }
   
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/MyCompanies.dart';
+import 'package:solid_cv/Views/widgets/MyEducationIstitutions.dart';
 
 class MyOrganisationsRoute extends StatefulWidget {
   const MyOrganisationsRoute({super.key});
@@ -16,7 +17,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
       appBar: AppBar(
         title: const Text('My Organisations'),
       ),
-      bottomNavigationBar: MainBottomNavigationBar(),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: DefaultTabController(
         length: 2,
         child: Column(
@@ -51,11 +52,16 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
                   ),
                   Column(
                     children: [
+                      SizedBox(
+                        //screen size minus the app bar and the bottom navigation bar
+                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 100,
+                        child: MyEducationInstitutions(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            // Add your education institution addition logic here
+                            Navigator.pushNamed(context, '/add-a-education-institution-form');
                           },
                           child: const Text('+ Add Education Institution'),
                         ),

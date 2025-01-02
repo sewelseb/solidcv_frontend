@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
+import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/HomeRoute.dart';
 import 'package:solid_cv/Views/LoggedInHome.dart';
+import 'package:solid_cv/Views/MyCompanyAdministration.dart';
 import 'package:solid_cv/Views/MyCvRoute.dart';
 import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
+import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,12 +36,15 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeRoute(),
-        '/register': (context) => RegisterRoute(),
-        '/loggedin/home': (context) => LoggedInHome(),
-        '/my-cv': (context) => MyCvRoute(),
-        '/my-organisation': (context) => MyOrganisationsRoute(),
-        '/add-a-company-form': (context) => AddACompanyFormRoute(),
-        '/verify-a-cv': (context) => VerifyACvRoute(),
+        '/register': (context) => const RegisterRoute(),
+        '/loggedin/home': (context) => const LoggedInHome(),
+        '/my-cv': (context) => const MyCvRoute(),
+        '/my-organisation': (context) => const MyOrganisationsRoute(),
+        '/add-a-company-form': (context) => const AddACompanyFormRoute(),
+        '/add-a-education-institution-form': (context) => AddanEducationInstitutionFormRoute(),
+        '/verify-a-cv': (context) => const VerifyACvRoute(),
+        '/my-company-administration': (context) => MyCompanyAdministration(),
+        '/company/add-an-employee': (context) => AddAnEmployee(),
       },
     );
   }

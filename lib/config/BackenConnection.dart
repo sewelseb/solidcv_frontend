@@ -7,4 +7,10 @@ class BackenConnection {
   String get createCompanyApi => '/api/protected/create-company';
 
   String get getMyCompaniesApi => '/api/protected/get-my-companies';
+
+  String get getCompanyApi => '/api/protected/get-company/';
+
+  String get getMyEducationInstitutionsApi => "/api/protected/get-my-education-institutions";
+
+  String get addEducationInstitutionApi => "/api/protected/create-education-institution";
 }
