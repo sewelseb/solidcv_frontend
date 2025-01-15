@@ -4,7 +4,7 @@ import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 
 class EducationInstitutionBll extends IEducationInstitutionBll {
-  IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
+  final IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
 
   @override
   Future<List<EducationInstitution>> getMyEducationInstitutions() {

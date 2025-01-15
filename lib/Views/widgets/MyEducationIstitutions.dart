@@ -5,6 +5,8 @@ import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 
 class MyEducationInstitutions extends StatefulWidget {
+  const MyEducationInstitutions({super.key});
+
   @override
   _MyEducationInstitutionsState createState() => _MyEducationInstitutionsState();
 }
@@ -61,4 +63,6 @@ class _MyEducationInstitutionsState extends State<MyEducationInstitutions> {
       },
     );
   }
+
+  
 }

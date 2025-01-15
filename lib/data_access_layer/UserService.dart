@@ -4,6 +4,8 @@ import 'dart:async';
 
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
+import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
+import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:http/http.dart' as http;
 
@@ -72,6 +74,30 @@ class UserService extends IUserService {
   Future<User> updateUser(User user) {
     // TODO: implement updateUser
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<User>> searchUsers(SearchTherms searchTherms) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url+BackenConnection().searchUsersApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+          'searchTherms': searchTherms.term
+        }
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<User> users = (jsonDecode(response.body) as List).map((i) => User.fromJson(i)).toList();
+      return users;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Search failure');
+    }
   }
 
 }

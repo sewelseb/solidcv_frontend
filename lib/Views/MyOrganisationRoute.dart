@@ -36,7 +36,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
                       SizedBox(
                         //screen size minus the app bar and the bottom navigation bar
                         height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 100,
-                        child: MyCompanies()
+                        child: const MyCompanies()
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

@@ -2,6 +2,8 @@ import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/models/Company.dart';
+import 'package:solid_cv/models/ExperienceRecord.dart';
+import 'package:solid_cv/models/User.dart';
 
 class CompanyBll extends ICompanyBll {
   final ICompanyService _companyService = CompanyService();
@@ -37,6 +39,11 @@ class CompanyBll extends ICompanyBll {
   @override
   Future<List<Company>> getMyCompanies() {
     return _companyService.getMyCompanies();
+  }
+
+  @override
+  addEmployee(User user, ExperienceRecord experienceRecord, int id) {
+    _companyService.addEmployee(user, experienceRecord, id);
   }
 
   

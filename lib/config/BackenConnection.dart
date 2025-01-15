@@ -13,4 +13,8 @@ class BackenConnection {
   String get getMyEducationInstitutionsApi => "/api/protected/get-my-education-institutions";
 
   String get addEducationInstitutionApi => "/api/protected/create-education-institution";
+
+  String get searchUsersApi => "/api/protected/search-user";
+
+  String get addEmployeeApi => "/api/protected/add-an-employee";
 }

@@ -41,10 +41,10 @@ class MyApp extends StatelessWidget {
         '/my-cv': (context) => const MyCvRoute(),
         '/my-organisation': (context) => const MyOrganisationsRoute(),
         '/add-a-company-form': (context) => const AddACompanyFormRoute(),
-        '/add-a-education-institution-form': (context) => AddanEducationInstitutionFormRoute(),
+        '/add-a-education-institution-form': (context) => const AddanEducationInstitutionFormRoute(),
         '/verify-a-cv': (context) => const VerifyACvRoute(),
-        '/my-company-administration': (context) => MyCompanyAdministration(),
-        '/company/add-an-employee': (context) => AddAnEmployee(),
+        '/my-company-administration': (context) => const MyCompanyAdministration(),
+        '/company/add-an-employee': (context) => const AddAnEmployee(),
       },
     );
   }
