@@ -5,7 +5,6 @@ import 'package:crypto/crypto.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:near_api_dart/near_api_dart.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
-import 'package:http/http.dart' as http;
 
 class NearWalletService extends IWalletService {
   @override
@@ -98,4 +97,12 @@ class NearWalletService extends IWalletService {
 
     return signature;
   }
+  
+  @override
+  Future<double> getBalanceInWei(String address) {
+    // TODO: implement getBalanceInWei
+    throw UnimplementedError();
+  }
+  
+
 }

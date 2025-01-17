@@ -9,4 +9,8 @@ abstract class IUserService {
   Future<User> login(User user);
 
   Future<List<User>> searchUsers(SearchTherms searchTherms);
+
+  void saveWalletAddressForCurrentUser(String address);
+
+  Future<User> getCurrentUser();
 }

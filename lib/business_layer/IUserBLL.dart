@@ -9,4 +9,6 @@ abstract class IUserBLL {
   Future<User>  login(User user);
 
   Future<List<User>> searchUsers(SearchTherms searchTherms);
+
+  Future<User> getCurrentUser();
 }

@@ -99,5 +99,44 @@ class UserService extends IUserService {
       throw Exception('Search failure');
     }
   }
+  
+  @override
+  void saveWalletAddressForCurrentUser(String address) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url+BackenConnection().saveWalletAddressApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+          'address': address
+        }
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Saving wallet address failure');
+    }
+  }
+  
+  @override
+  Future<User> getCurrentUser() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getCurrentUserApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      User user = User.fromJson(jsonDecode(response.body));
+      return user;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting current user failure');
+    }
+  }
 
 }

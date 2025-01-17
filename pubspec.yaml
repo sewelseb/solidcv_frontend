@@ -41,6 +41,7 @@ dependencies:
   crypto: ^3.0.1
   cryptography: ^2.7.0
   cryptography_flutter: ^2.3.2
+  web3dart: ^2.7.3
 
 dev_dependencies:
   flutter_test:

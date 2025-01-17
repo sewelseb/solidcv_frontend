@@ -17,4 +17,8 @@ class BackenConnection {
   String get searchUsersApi => "/api/protected/search-user";
 
   String get addEmployeeApi => "/api/protected/add-an-employee";
+
+  String get saveWalletAddressApi => "/api/protected/set-ethereum-wallet";
+
+  String get getCurrentUserApi => "/api/protected/get-current-user";
 }

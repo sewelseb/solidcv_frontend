@@ -8,8 +8,9 @@ class User {
   String? password;
   String? role;
   String? token;
+  String? ethereumAddress;
 
-  User({this.id, this.firstName, this.lastName, this.email, this.password, this.role, this.token});
+  User({this.id, this.firstName, this.lastName, this.email, this.password, this.role, this.token, this.ethereumAddress});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -20,6 +21,7 @@ class User {
       password: json['password'],
       role: json['role'],
       token: json['token'],
+      ethereumAddress: json['ethereumAddress'],
     );
   }
   Map<String, dynamic> toJson() {

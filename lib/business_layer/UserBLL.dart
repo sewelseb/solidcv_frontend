@@ -34,5 +34,10 @@ class UserBll extends IUserBLL {
   Future<List<User>> searchUsers(SearchTherms searchTherms) {
     return _userService.searchUsers(searchTherms);
   }
+  
+  @override
+  Future<User> getCurrentUser() {
+    return _userService.getCurrentUser();
+  }
 
 }

@@ -7,6 +7,7 @@
 
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/NearWalletService.dart';
 
 
@@ -28,10 +29,11 @@ void main() {
   //   expect(find.text('1'), findsOneWidget);
   // });
 
-  test('create a wallet is working', () async {
-    final walletService = NearWalletService();
+
+  test('get balance is working', () async {
+    final walletService = EtheriumWalletService();
     
-    final result = await walletService.createWallet();
+    final result = await walletService.getBalanceInWei('0xF746A29543d46a85e44E8ba59ECc5Ef8295247DA');
     //console log the result
     print(result);
 
