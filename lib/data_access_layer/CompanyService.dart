@@ -112,4 +112,24 @@ class CompanyService extends ICompanyService {
       throw Exception('Adding employee failure');
     }
   }
+  
+  @override
+  void saveWalletAddressForCurrentUser(Company company,String ethereumAddress) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url+BackenConnection().saveCompanyWalletAddressApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+          'address': ethereumAddress,
+          'companyId': company.id.toString(),
+        }
+      ),
+    );
+
+    if(response.statusCode != 200) {
+      throw Exception('Saving wallet address failure');
+    }
+  }
 }

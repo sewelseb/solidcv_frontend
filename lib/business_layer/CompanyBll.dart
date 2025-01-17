@@ -1,4 +1,6 @@
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/models/Company.dart';
@@ -7,6 +9,7 @@ import 'package:solid_cv/models/User.dart';
 
 class CompanyBll extends ICompanyBll {
   final ICompanyService _companyService = CompanyService();
+  final IWalletService _walletService = EtheriumWalletService();
 
   @override
   Future<Company> createCompany(Company company) {
@@ -44,6 +47,27 @@ class CompanyBll extends ICompanyBll {
   @override
   addEmployee(User user, ExperienceRecord experienceRecord, int id) {
     _companyService.addEmployee(user, experienceRecord, id);
+  }
+  
+  @override
+  setEthereumAddress(Company company, String ethereumAddress) async {
+    if (! await isWalletAddressValid(ethereumAddress)) return false;
+    
+    // Save the address to the user's profile
+    _companyService.saveWalletAddressForCurrentUser(company, ethereumAddress);
+
+    return true;
+  }
+
+  Future<bool> isWalletAddressValid(String address) async {
+    try {
+      var ballance = await _walletService.getBalanceInWei(address);
+      return true;
+    }
+    catch (e) {
+      return false;
+    }
+
   }
 
   

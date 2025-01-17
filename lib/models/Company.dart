@@ -8,6 +8,7 @@ class Company {
   final String? addressCountry;
   final String? phoneNumber;
   final String? email;
+  final String? ethereumAddress;
 
   Company({
     this.id,
@@ -19,6 +20,7 @@ class Company {
     required this.addressCountry,
     required this.phoneNumber,
     required this.email,
+    this.ethereumAddress,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Company {
       addressCountry: json['addressCountry'],
       phoneNumber: json['phoneNumber'],
       email: json['email'],
+      ethereumAddress: json['ethereumAddress'],
     );
   }
 
@@ -46,6 +49,7 @@ class Company {
       'addressCountry': addressCountry,
       'phoneNumber': phoneNumber,
       'email': email,
+      'ethereumAddress': ethereumAddress,
     };
   }
 

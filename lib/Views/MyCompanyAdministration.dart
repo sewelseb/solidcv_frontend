@@ -15,12 +15,16 @@ class MyCompanyAdministration extends StatefulWidget {
 class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   final ICompanyBll _companyBll = CompanyBll();
   late Future<Company> _company;
+  final TextEditingController _ethereumAddressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final CompanyParameter args =
         ModalRoute.of(context)!.settings.arguments as CompanyParameter;
-    _company = _companyBll.getCompany(args.id);
+    _company = _companyBll.getCompany(args.id).then((value) {
+      _ethereumAddressController.text = value.ethereumAddress ?? '';
+      return value;
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -60,6 +64,41 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                       ),
                     ),
                   ),
+                  //add a panel with a form to set the company ethereum address
+                    Card(
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                        'Ethereum Address',
+                        style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Ethereum Address',
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: _ethereumAddressController,
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                        onPressed: () async{
+                          await _companyBll.setEthereumAddress(company, _ethereumAddressController.text);
+                          setState(() {
+                            
+                          });
+                        },
+                        child: const Text('Save'),
+                        ),
+                      ],
+                      ),
+                    ),
+                    ),
                   const SizedBox(height: 20),
                   Card(
                     elevation: 4,

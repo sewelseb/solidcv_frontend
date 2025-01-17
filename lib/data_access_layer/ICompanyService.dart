@@ -12,4 +12,6 @@ abstract class ICompanyService {
   Future<List<Company>> getMyCompanies();
 
   void addEmployee(User user, ExperienceRecord experienceRecord, int id);
+
+  void saveWalletAddressForCurrentUser(Company company, String ethereumAddress);
 }
