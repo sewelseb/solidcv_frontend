@@ -14,30 +14,7 @@ class NearWalletService extends IWalletService {
     Near near = Near();
     JsonRpcProvider rpc = near.providers.jsonRpcProvider(rpcURL);
     Codec<String, String> stringToBase64 = utf8.fuse(base64);
-    // var result = await rpc.callFunction(
-    //   "testnet",
-    //   "create_account",
-    //   stringToBase64.encode('{"new_account_id": "test_account_id_22-05-1991", "new_public_key": "ed25519:3QJvDQsKZ2V4z8vP1t6YqXzj1zQ3rk9v1z1zQ3rk9v12"}')
-    // );
-    // var signedTransaction = stringToBase64.encode('''
-    //   {
-    //     "signer_id":"test-22-05-1990.testnet",
-    //     "nonce":1,
-    //     "receiver_id":"testnet",
-    //     "actions":
-    //       [
-    //         {"FunctionCall":
-    //           {
-    //             "method_name":"create_account",
-    //             "args":"{
-    //               "new_account_id": "test_account_id_22-05-1991.near",
-    //               "new_public_key": "ed25519:J6RUNJXBKEGMgpZkwrNCpvvs7nLxTaSa5nKVZz7NvBRp"
-    //             }"
-    //           }
-    //         }
-    //       ]
-    //   }
-    //   ''');
+
     var transaction = stringToBase64.encode('''
       {
         "signer_id":"test-22-05-1990.testnet",
@@ -101,6 +78,17 @@ class NearWalletService extends IWalletService {
   @override
   Future<double> getBalanceInWei(String address) {
     // TODO: implement getBalanceInWei
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<String> mintWorkExperienceToken(String privateKey, String sender, String reciever, String tokenUri) {
+    // TODO: implement mintWorkExperienceToken
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> storeKeys(String ethereumAddress, String privateKey, String password) {
     throw UnimplementedError();
   }
   

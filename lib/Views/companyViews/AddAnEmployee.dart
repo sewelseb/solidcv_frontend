@@ -78,7 +78,8 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                         return const Center(child: Text('No user found.'));
                       } else {
                         return SizedBox(
-                          height: MediaQuery.of(context).size.height - 200, //height of the screen - height of the other widgets
+                          height: MediaQuery.of(context).size.height -
+                              200, //height of the screen - height of the other widgets
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
@@ -120,7 +121,8 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
     final TextEditingController endDateController = TextEditingController();
     final TextEditingController roleController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
-    
+    final TextEditingController passwordController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -135,44 +137,53 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                TextField(
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Start Date (dd/mm/yyyy)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.datetime,
                 controller: startDateController,
-                ),
-                SizedBox(
-                  height: 10, 
-                    width: MediaQuery.of(context).size.width, //screen width
-                ),
-                TextField(
+              ),
+              SizedBox(
+                height: 10,
+                width: MediaQuery.of(context).size.width, //screen width
+              ),
+              TextField(
                 decoration: const InputDecoration(
-                  labelText: 'End Date (dd/mm/yyyy) (leave blank if still working)',
+                  labelText:
+                      'End Date (dd/mm/yyyy) (leave blank if still working)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.datetime,
                 controller: endDateController,
-                ),
-                const SizedBox(height: 10),
-                TextField(
+              ),
+              const SizedBox(height: 10),
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Role',
                   border: OutlineInputBorder(),
                 ),
                 controller: roleController,
-                ),
-                const SizedBox(height: 10),
-                TextField(
+              ),
+              const SizedBox(height: 10),
+              TextField(
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(),
                 ),
                 controller: descriptionController,
                 maxLines: 3,
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Password (to unlock your blockchain wallet)',
+                  border: OutlineInputBorder(),
                 ),
-
+                obscureText: true,
+                controller: passwordController,
+              ),
             ],
           ),
           actions: <Widget>[
@@ -192,7 +203,8 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                   endDate: endDateController.text,
                   description: descriptionController.text,
                 );
-                await _companyBll.addEmployee(user, experienceRecord, _companyId);
+                await _companyBll.addEmployee(
+                    user, experienceRecord, _companyId, passwordController.text);
               },
               child: const Text('+ Add'),
             ),

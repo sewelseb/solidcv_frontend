@@ -39,4 +39,29 @@ void main() {
 
     expect(result, isNotNull);
   });
+
+  test('create work experience', () async {
+    final walletService = EtheriumWalletService();
+
+    final result = await walletService.mintWorkExperienceToken(
+      "", //private key
+      "0xd8b897360A5483477d1544EC48590bA25eb26cFb",
+      "0xd8b897360A5483477d1544EC48590bA25eb26cFb",
+      "https://ipfs.io/ipfs/test"
+    );
+
+    print(result);
+    expect(result, isNotNull);
+  });
+
+  test('counter', () async {
+    final walletService = EtheriumWalletService();
+
+    final result = await walletService.count(
+      "" //private key
+    );
+
+    print(result);
+    expect(result, isNotNull);
+  });
 }

@@ -1,3 +1,5 @@
+import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
@@ -10,6 +12,7 @@ import 'package:solid_cv/models/User.dart';
 class CompanyBll extends ICompanyBll {
   final ICompanyService _companyService = CompanyService();
   final IWalletService _walletService = EtheriumWalletService();
+  final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
 
   @override
   Future<Company> createCompany(Company company) {
@@ -45,13 +48,18 @@ class CompanyBll extends ICompanyBll {
   }
 
   @override
-  addEmployee(User user, ExperienceRecord experienceRecord, int id) {
+  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password) {
+    _blockchainWalletBll.createWorkExperienceToken(experienceRecord, id, user.id!, password);
+
     _companyService.addEmployee(user, experienceRecord, id);
   }
   
   @override
-  setEthereumAddress(Company company, String ethereumAddress) async {
+  setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password) async {
     if (! await isWalletAddressValid(ethereumAddress)) return false;
+
+    //save the keys on the local device
+    _walletService.storeKeys(ethereumAddress, privateKey, password);
     
     // Save the address to the user's profile
     _companyService.saveWalletAddressForCurrentUser(company, ethereumAddress);

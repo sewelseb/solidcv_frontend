@@ -10,7 +10,7 @@ abstract class ICompanyBll {
 
   Future<List<Company>> getMyCompanies();
 
-  addEmployee(User user, ExperienceRecord experienceRecord, int id);
+  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password);
 
-  setEthereumAddress(Company company, String ethereumAddress);
+  setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password);
 }
