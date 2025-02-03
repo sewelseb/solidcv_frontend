@@ -1,11 +1,12 @@
 class ExperienceRecord {
-  final String? id;
-  final String? title;
-  final String? company;
-  final String? location;
-  final String? startDate;
-  final String? endDate;
-  final String? description;
+  String? id;
+  String? title;
+  String? company;
+  String? location;
+  String? startDate;
+  String? endDate;
+  String? description;
+  String? ethereumToken;
 
   ExperienceRecord({
     this.id,
@@ -15,6 +16,7 @@ class ExperienceRecord {
     this.startDate,
     this.endDate,
     this.description,
+    this.ethereumToken,
   });
 
   factory ExperienceRecord.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class ExperienceRecord {
       startDate: json['startDate'],
       endDate: json['endDate'],
       description: json['description'],
+      ethereumToken: json['ethereumToken'],
     );
   }
 
@@ -38,6 +41,7 @@ class ExperienceRecord {
       'startDate': startDate,
       'endDate': endDate,
       'description': description,
+      'ethereumToken': ethereumToken,
     };
   }
 }

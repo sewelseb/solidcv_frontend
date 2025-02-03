@@ -10,6 +10,7 @@ class EtheriumWalletService implements IWalletService {
   @override
   void createWallet() {}
 
+  @override
   Future<double> getBalanceInWei(String walletAddress) async {
     var httpClient = Client();
     var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
@@ -28,7 +29,7 @@ class EtheriumWalletService implements IWalletService {
 
     final credentials = EthPrivateKey.fromHex(privateKey);
 
-    const YOUR_CONTRACT_ABI = '''
+    const mintWorkExperienceTokenAbi = '''
 [
   {
       "inputs": [
@@ -52,7 +53,7 @@ class EtheriumWalletService implements IWalletService {
 ''';
 
     final contract = DeployedContract(
-      ContractAbi.fromJson(YOUR_CONTRACT_ABI, 'workExperienceSouldboundToken'),
+      ContractAbi.fromJson(mintWorkExperienceTokenAbi, 'workExperienceSouldboundToken'),
       EthereumAddress.fromHex(
           EtheriumConnection().workExperienceSouldboundTokenContractAddress),
     );
@@ -60,8 +61,6 @@ class EtheriumWalletService implements IWalletService {
     final mintFunction = contract.function('mint');
 
     var ethAddressOfReciever = EthereumAddress.fromHex(recieverAddress);
-
-    print(await ethClient.getNetworkId());
 
     var result = await ethClient.sendTransaction(
       credentials,
@@ -85,7 +84,7 @@ class EtheriumWalletService implements IWalletService {
 
     final credentials = EthPrivateKey.fromHex(privateKey);
 
-    const YOUR_CONTRACT_ABI = '''
+    const yourContractAbi = '''
 [
   {
       "inputs": [],
@@ -98,7 +97,7 @@ class EtheriumWalletService implements IWalletService {
 ''';
 
     final contract = DeployedContract(
-      ContractAbi.fromJson(YOUR_CONTRACT_ABI, 'workExperienceSouldboundToken'),
+      ContractAbi.fromJson(yourContractAbi, 'workExperienceSouldboundToken'),
       EthereumAddress.fromHex(
           EtheriumConnection().workExperienceSouldboundTokenContractAddress),
     );

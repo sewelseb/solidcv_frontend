@@ -65,9 +65,23 @@ class UserService extends IUserService {
   }
 
   @override
-  Future<User> getUser(String id) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<User> getUser(String id) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getUserApi+id),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      User user = User.fromJson(jsonDecode(response.body));
+      return user;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting user failure');
+    }
   }
 
   @override

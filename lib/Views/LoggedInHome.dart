@@ -16,9 +16,9 @@ class LoggedInHome extends StatefulWidget {
 }
 
 class _LoggedInHomeState extends State<LoggedInHome> {
-  IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
+  final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
   TextEditingController walletAddressController = TextEditingController();
-  IUserBLL _userBll = UserBll();
+  final IUserBLL _userBll = UserBll();
   late Future<User> _currentUser;
 
   @override

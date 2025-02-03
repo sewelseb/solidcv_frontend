@@ -48,9 +48,9 @@ class CompanyBll extends ICompanyBll {
   }
 
   @override
-  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password) {
-    _blockchainWalletBll.createWorkExperienceToken(experienceRecord, id, user.id!, password);
-
+  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password) async {
+    var token = await _blockchainWalletBll.createWorkExperienceToken(experienceRecord, id, user.id!, password);
+    experienceRecord.ethereumToken = token;
     _companyService.addEmployee(user, experienceRecord, id);
   }
   

@@ -8,7 +8,9 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/NearWalletService.dart';
+import 'package:solid_cv/models/ExperienceRecord.dart';
 
 
 void main() {
@@ -44,9 +46,9 @@ void main() {
     final walletService = EtheriumWalletService();
 
     final result = await walletService.mintWorkExperienceToken(
-      "", //private key
-      "0xd8b897360A5483477d1544EC48590bA25eb26cFb",
-      "0xd8b897360A5483477d1544EC48590bA25eb26cFb",
+      "0xa910f8b8391780abee534751c639711efb39cac3343abcd8ce4c79c4f27bbef0", //private key
+      "0xEFe0D522aacbCd0149A34f00542Bf53dFf185d19",
+      "0xEFe0D522aacbCd0149A34f00542Bf53dFf185d19",
       "https://ipfs.io/ipfs/test"
     );
 
@@ -62,6 +64,22 @@ void main() {
     );
 
     print(result);
+    expect(result, isNotNull);
+  });
+
+  test('send IPFS file', () async {
+    final IPFSService ipfsService = IPFSService();
+    var workExperience = ExperienceRecord();
+    workExperience.company = "Test Company";
+    workExperience.title = "Test Title";
+    workExperience.location = "Test Location";
+    workExperience.startDate = "11-11-2021";
+    workExperience.endDate = "11-12-2021";
+
+    final result = await ipfsService.saveWorkExperience(workExperience, 1); 
+
+    print(result);
+
     expect(result, isNotNull);
   });
 }

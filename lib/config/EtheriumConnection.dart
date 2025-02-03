@@ -7,4 +7,27 @@ class EtheriumConnection {
   String workExperienceSouldboundTokenContractAddress = "0x452100546A3255bc647E4E705E25397412b6f7E9";
 
   get chainId => 1337;
+
+  String mintWorkExperienceTokenAbi = '''
+[
+  {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "uri",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+]
+''';
 }
