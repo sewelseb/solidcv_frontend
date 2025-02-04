@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
@@ -44,7 +45,7 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var company = await _companyService.getCompany(companyId);
 
     //TODO: create the IPFS uri
-    var url = await _ipfsService.saveWorkExperience(experienceRecord, company);
+    var url = IPFSConnection().gatewayUrl + await _ipfsService.saveWorkExperience(experienceRecord, company);
 
     //TODO: mint the token
     var reciever = await _userService.getUser(userId.toString());
