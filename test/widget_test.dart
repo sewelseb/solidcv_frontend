@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/NearWalletService.dart';
+import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 
 
@@ -76,7 +77,7 @@ void main() {
     workExperience.startDate = "11-11-2021";
     workExperience.endDate = "11-12-2021";
 
-    final result = await ipfsService.saveWorkExperience(workExperience, 1); 
+    final result = await ipfsService.saveWorkExperience(workExperience, new Company(name: "name", addressNumber: "addressNumber", addressStreet: "addressStreet", addressCity: "addressCity", addressZipCode: "addressZipCode", addressCountry: "addressCountry", phoneNumber: "phoneNumber", email: "email")); 
 
     print(result);
 

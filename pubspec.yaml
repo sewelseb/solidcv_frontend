@@ -44,6 +44,7 @@ dependencies:
   web3dart: ^2.7.3
   minio: ^3.5.7
   ipfs_client_flutter: ^1.0.7
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

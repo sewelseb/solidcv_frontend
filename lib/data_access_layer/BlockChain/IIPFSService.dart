@@ -1,5 +1,6 @@
+import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 
 abstract class IIPFSService {
-  saveWorkExperience(ExperienceRecord experienceRecord, int companyId);
+  Future<String> saveWorkExperience(ExperienceRecord experienceRecord, Company company);
 }
