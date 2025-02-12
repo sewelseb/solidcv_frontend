@@ -10,6 +10,9 @@ class ExperienceRecord {
   String? description;
   String? ethereumToken;
 
+  int? startDateAsTimestamp;
+  int? endDateAsTimestamp;
+
   ExperienceRecord({
     this.id,
     this.title,
@@ -48,13 +51,25 @@ class ExperienceRecord {
   }
 
   static ExperienceRecord fromIPFSExperience(IPFSWorkExperience experience) {
-    return ExperienceRecord(
+    var experienceRecord = ExperienceRecord(
       title: experience.jobTitle,
       company: experience.companyName,
       location: experience.location,
-      startDate: experience.startDate.toString(),
-      endDate: experience.endDate.toString(),
+      startDate: _formatTimestamp(experience.startDate),
+      endDate: _formatTimestamp(experience.endDate),
       description: experience.description,
     );
+
+    experienceRecord.startDateAsTimestamp = experience.startDate;
+    experienceRecord.endDateAsTimestamp = experience.endDate;
+
+    return experienceRecord;
+  }
+
+  static String _formatTimestamp(int? timestamp) {
+    if (timestamp == null) return 'Ongoing';
+
+    DateTime date = DateTime.fromMillisecondsSinceEpoch((timestamp/1000).toInt());
+    return '${date.day}/${date.month}/${date.year}';
   }
 }
