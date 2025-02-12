@@ -5,6 +5,7 @@ import 'package:solid_cv/Views/HomeRoute.dart';
 import 'package:solid_cv/Views/LoggedInHome.dart';
 import 'package:solid_cv/Views/MyCompanyAdministration.dart';
 import 'package:solid_cv/Views/MyCvRoute.dart';
+import 'package:solid_cv/Views/MyEducationInstitutionAdministration.dart';
 import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/loggedin/home': (context) => const LoggedInHome(),
         '/my-cv': (context) => const MyCvRoute(),
         '/my-organisation': (context) => const MyOrganisationsRoute(),
+        '/my-educationInstitution-administration': (context) => MyEducationInstitutionAdministration(),
         '/add-a-company-form': (context) => const AddACompanyFormRoute(),
         '/add-a-education-institution-form': (context) => const AddanEducationInstitutionFormRoute(),
         '/verify-a-cv': (context) => const VerifyACvRoute(),

@@ -7,4 +7,5 @@ abstract class IEducationInstitutionBll {
 
   void addEducationInstitution(EducationInstitution educationInstitution);
 
+  Future<EducationInstitution> getEducationInstitution(int id);
 }

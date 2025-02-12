@@ -55,4 +55,23 @@ class EducationInstitutionService extends IEducationInstitutionService {
       throw Exception('Adding company failure');
     }
   }
+  
+  @override
+  Future<EducationInstitution> getEducationInstitution(int id) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getEducationInstitutionApi +
+          id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return EducationInstitution.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Getting company failure');
+    }
+  }
 }

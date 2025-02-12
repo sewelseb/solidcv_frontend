@@ -5,4 +5,6 @@ abstract class IEducationInstitutionService {
 
   void addEducationInstitution(EducationInstitution educationInstitution);
 
+  Future<EducationInstitution> getEducationInstitution(int id);
+
 }

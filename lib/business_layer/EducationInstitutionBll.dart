@@ -15,6 +15,11 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
   void addEducationInstitution(EducationInstitution educationInstitution) {
     _educationInstitutionService.addEducationInstitution(educationInstitution);
   }
+  
+  @override
+  Future<EducationInstitution> getEducationInstitution(int id) {
+    return _educationInstitutionService.getEducationInstitution(id);
+  }
 
   
 

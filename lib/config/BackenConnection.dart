@@ -25,4 +25,6 @@ class BackenConnection {
   String get saveCompanyWalletAddressApi => "/api/protected/company/add-ethereum-wallet";
 
   String get getUserApi => "/api/protected/get-user/";
+
+  String get getEducationInstitutionApi => "/api/protected/get-education-institution/";
 }
