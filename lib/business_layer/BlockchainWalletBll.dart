@@ -44,10 +44,10 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var privateKey = await getCompanyPrivateKey(companyId, password);
     var company = await _companyService.getCompany(companyId);
 
-    //TODO: create the IPFS uri
+    //create the IPFS uri
     var url = IPFSConnection().gatewayUrl + await _ipfsService.saveWorkExperience(experienceRecord, company);
 
-    //TODO: mint the token
+    //mint the token
     var reciever = await _userService.getUser(userId.toString());
     if (reciever.ethereumAddress == null) {
       throw Exception("User does not have an ethereum address");
@@ -68,5 +68,25 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
         await storage.read(key: 'etheriumWallet-${company.ethereumAddress!}');
     var wallet = Wallet.fromJson(encryptedWallet!, password);
     return "0x${bytesToHex(wallet.privateKey.privateKey)}";
+  }
+  
+  @override
+  Future<List<ExperienceRecord>> getWorkExperiencesForCurrentUser() async {
+    var user = await _userService.getCurrentUser();
+    var workExperienceNft = await _walletService.getWorkExperienceNFTs(user.ethereumAddress!);
+
+    List<ExperienceRecord> experiences = [];
+
+    for (var nft in workExperienceNft) {
+      await getExperiencesFromIpfs(nft, experiences);
+    }
+
+    return experiences;
+  }
+
+  Future<void> getExperiencesFromIpfs(nft, List<ExperienceRecord> experiences) async {
+    var ipfsHash = nft[0].toString();
+    var experience = await _ipfsService.getWorkExperience(ipfsHash);
+    experiences.add(ExperienceRecord.fromIPFSExperience(experience));
   }
 }

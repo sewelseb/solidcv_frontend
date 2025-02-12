@@ -1,3 +1,5 @@
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSWorkExperience.dart';
+
 class ExperienceRecord {
   String? id;
   String? title;
@@ -43,5 +45,16 @@ class ExperienceRecord {
       'description': description,
       'ethereumToken': ethereumToken,
     };
+  }
+
+  static ExperienceRecord fromIPFSExperience(IPFSWorkExperience experience) {
+    return ExperienceRecord(
+      title: experience.jobTitle,
+      company: experience.companyName,
+      location: experience.location,
+      startDate: experience.startDate.toString(),
+      endDate: experience.endDate.toString(),
+      description: experience.description,
+    );
   }
 }

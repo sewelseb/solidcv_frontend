@@ -42,4 +42,17 @@ class IPFSService extends IIPFSService {
       throw Exception('Failed to pin file to Filebase: ${response.statusCode}');
     }
   }
+  
+  @override
+  Future<IPFSWorkExperience> getWorkExperience(String ipfsHash) async {
+    final response = await http.get(Uri.parse(ipfsHash));
+
+    if(response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final responseAsJson = IPFSWorkExperience.fromJson(responseData);
+      return responseAsJson;
+    } else {
+      throw Exception('Failed to get file from IPFS: ${response.statusCode}');
+    }
+  }
 }

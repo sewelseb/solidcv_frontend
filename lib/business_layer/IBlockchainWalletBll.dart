@@ -5,4 +5,6 @@ abstract class IBlockchainWalletBll {
 
   Future<String> createWorkExperienceToken(ExperienceRecord experienceRecord, int companyId, int userId, String password);
 
+  Future<List<ExperienceRecord>> getWorkExperiencesForCurrentUser();
+
 }

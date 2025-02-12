@@ -53,7 +53,8 @@ class EtheriumWalletService implements IWalletService {
 ''';
 
     final contract = DeployedContract(
-      ContractAbi.fromJson(mintWorkExperienceTokenAbi, 'workExperienceSouldboundToken'),
+      ContractAbi.fromJson(
+          mintWorkExperienceTokenAbi, 'workExperienceSouldboundToken'),
       EthereumAddress.fromHex(
           EtheriumConnection().workExperienceSouldboundTokenContractAddress),
     );
@@ -104,7 +105,6 @@ class EtheriumWalletService implements IWalletService {
 
     final countFunction = contract.function('count');
 
-
     print(await ethClient.getNetworkId());
 
     var result = await ethClient.sendTransaction(
@@ -122,15 +122,78 @@ class EtheriumWalletService implements IWalletService {
 
     return result;
   }
-  
+
   @override
-  Future<void> storeKeys(String ethereumAddress, String privateKey, String password) async {
+  Future<void> storeKeys(
+      String ethereumAddress, String privateKey, String password) async {
     var random = Random.secure();
-    //TODO: get password from user  
-    Wallet wallet = Wallet.createNew(EthPrivateKey.fromHex(privateKey), password, random);
+    //TODO: get password from user
+    Wallet wallet =
+        Wallet.createNew(EthPrivateKey.fromHex(privateKey), password, random);
 
     //Store the wallet in the local storage
     const storage = FlutterSecureStorage();
-    await storage.write(key: 'etheriumWallet-$ethereumAddress', value: wallet.toJson());
+    await storage.write(
+        key: 'etheriumWallet-$ethereumAddress', value: wallet.toJson());
+  }
+
+  @override
+  Future getWorkExperienceNFTs(String address) async {
+    var httpClient = Client();
+    var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
+
+    const getNFTsAbi = '''
+  [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "tokensOfOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct WorkExperienceSouldboundToken.TokenData[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+  ''';
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(getNFTsAbi, 'tokensOfOwner'),
+      EthereumAddress.fromHex(
+          EtheriumConnection().workExperienceSouldboundTokenContractAddress),
+    );
+
+    final tokensOfOwnerFunction = contract.function('tokensOfOwner');
+
+    final result = await ethClient.call(
+      contract: contract,
+      function: tokensOfOwnerFunction,
+      params: [EthereumAddress.fromHex(address)],
+    );
+
+    ethClient.dispose();
+
+    return result.first as List<dynamic>;
   }
 }

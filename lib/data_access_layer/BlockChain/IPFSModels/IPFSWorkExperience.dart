@@ -54,4 +54,18 @@ class IPFSWorkExperience {
       "objectVersion": objectVersion,
     };
   }
+
+  static IPFSWorkExperience fromJson(responseData) {
+    return IPFSWorkExperience(
+      id: responseData['id'],
+      jobTitle: responseData['jobTitle'],
+      companyName: responseData['companyName'],
+      companyId: responseData['companyId'],
+      companyBlockCahinWalletAddress: responseData['companyBlockCahinWalletAddress'],
+      location: responseData['location'],
+      startDate: responseData['startDate'],
+      endDate: responseData['endDate'],
+      description: responseData['description'],
+    );
+  }
 }

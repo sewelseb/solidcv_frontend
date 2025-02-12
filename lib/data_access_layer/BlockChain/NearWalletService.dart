@@ -92,5 +92,11 @@ class NearWalletService extends IWalletService {
     throw UnimplementedError();
   }
   
+  @override
+  Future getWorkExperienceNFTs(String address) {
+    // TODO: implement getWorkExperienceNFTs
+    throw UnimplementedError();
+  }
+  
 
 }
