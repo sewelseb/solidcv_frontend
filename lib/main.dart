@@ -10,6 +10,7 @@ import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
+import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/verify-a-cv': (context) => const VerifyACvRoute(),
         '/my-company-administration': (context) => const MyCompanyAdministration(),
         '/company/add-an-employee': (context) => const AddAnEmployee(),
+        '/educationInstitution/add-a-certificate-to-user': (context) => CreateACertificate(),
       },
     );
   }

@@ -74,4 +74,24 @@ class EducationInstitutionService extends IEducationInstitutionService {
       throw Exception('Getting company failure');
     }
   }
+  
+  @override
+  void setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().setEthereumAddressForTeachingInstitutionApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+        'id': educationInstitution.id.toString(),
+        'ethereumAddress': ethereumAddress,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Setting ethereum address failure');
+    }
+  }
 }

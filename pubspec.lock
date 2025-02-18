@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      sha256: "1bbf65dd997458a08b531042ec3794112a6c39c07c37ff22113d2e7e4f81d4e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
   fixnum:
     dependency: transitive
     description:
@@ -182,6 +190,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_downloader:
+    dependency: "direct main"
+    description:
+      name: flutter_downloader
+      sha256: b6da5495b6258aa7c243d0f0a5281e3430b385bccac11cc508f981e653b25aa6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.11.8"
+  flutter_file_downloader:
+    dependency: "direct main"
+    description:
+      name: flutter_file_downloader
+      sha256: e36f1a23937c83b96003ecc48f3227acbd468a1ff26be87959cecd057222632a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -190,6 +214,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: "9ee02950848f61c4129af3d6ec84a1cfc0e47931abc746b03e7a3bc3e8ff6eda"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.22"
   flutter_secure_storage:
     dependency: "direct main"
     description:

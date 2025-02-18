@@ -27,4 +27,6 @@ class BackenConnection {
   String get getUserApi => "/api/protected/get-user/";
 
   String get getEducationInstitutionApi => "/api/protected/get-education-institution/";
+
+  String get setEthereumAddressForTeachingInstitutionApi => '/api/protected/education-institution/set-ethereum-address';
 }

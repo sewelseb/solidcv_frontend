@@ -8,4 +8,6 @@ abstract class IEducationInstitutionBll {
   void addEducationInstitution(EducationInstitution educationInstitution);
 
   Future<EducationInstitution> getEducationInstitution(int id);
+
+  setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress, String privateKey, String password);
 }
