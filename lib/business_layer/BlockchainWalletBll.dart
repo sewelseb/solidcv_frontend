@@ -1,15 +1,21 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
+import 'package:solid_cv/data_access_layer/EducationInstitutionService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
+import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
+import 'package:solid_cv/models/Certificate.dart';
+import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
+import 'package:solid_cv/models/User.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -17,6 +23,7 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
   final IWalletService _walletService = EtheriumWalletService();
   final IUserService _userService = UserService();
   final ICompanyService _companyService = CompanyService();
+  final IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
   final IIPFSService _ipfsService = IPFSService();
 
   @override
@@ -36,6 +43,19 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     } catch (e) {
       return false;
     }
+  }
+
+  @override
+  createCertificateToken(Certificate certificate, User user, EducationInstitution educationInstitution, String password) async {
+    var privateKey = await getTeachingInstitutionPrivateKey(educationInstitution.id!, password);
+
+    //create the IPFS uri for the document
+    var documentUrl = IPFSConnection().gatewayUrl + await _ipfsService.saveDocumentCertificate(certificate);
+
+    //create the IPFS uri for the data
+    var url = IPFSConnection().gatewayUrl + await _ipfsService.saveCertificate(certificate, educationInstitution);
+
+    //mint the token
   }
 
   @override
@@ -59,6 +79,15 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
         privateKey, company.ethereumAddress!, reciever.ethereumAddress!, url);
 
     return tokenAddress;
+  }
+
+  Future<String> getTeachingInstitutionPrivateKey(int educationInstitutionId, String password) async {
+    var educationInstitution = await _educationInstitutionService.getEducationInstitution(educationInstitutionId);
+    const storage = FlutterSecureStorage();
+    var encryptedWallet =
+        await storage.read(key: 'etheriumWallet-${educationInstitution.ethereumAddress!}');
+    var wallet = Wallet.fromJson(encryptedWallet!, password);
+    return "0x${bytesToHex(wallet.privateKey.privateKey)}";
   }
 
   Future<String> getCompanyPrivateKey(int companyId, String password) async {

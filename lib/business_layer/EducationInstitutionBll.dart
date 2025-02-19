@@ -5,12 +5,15 @@ import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/EducationInstitutionService.dart';
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
+import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
+import 'package:solid_cv/models/User.dart';
 
 class EducationInstitutionBll extends IEducationInstitutionBll {
   final IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
   final IWalletService _walletService = EtheriumWalletService();
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
+  
 
   @override
   Future<List<EducationInstitution>> getMyEducationInstitutions() {
@@ -46,6 +49,13 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
       return false;
     }
 
+  }
+
+  @override
+  void createCertificate(EducationInstitution educationInstitution, User user, Certificate certificate, String password) async {
+    var token = await _blockchainWalletBll.createCertificateToken(certificate, user, educationInstitution, password);
+
+    //Save all in the database
   }
 
 }

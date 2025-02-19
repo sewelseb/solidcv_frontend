@@ -2,8 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:solid_cv/Views/Parameters/EducationInstitutionParameter.dart';
+import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
+import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
+import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
@@ -18,7 +23,9 @@ class _CreateACertificateState extends State<CreateACertificate> {
   DateTime _issueDate = DateTime.now();
 
   final IUserBLL _userBLL = UserBll();
-  int _companyId = 0;
+  final IEducationInstitutionBll _educationInstitutionBll =
+      EducationInstitutionBll();
+  int _educationInstitutionId = 0;
   late Future<EducationInstitution> _educationInstitution;
   late Future<List<User>> _usersFromSearch;
   late Future<List<User>> _employees;
@@ -30,7 +37,9 @@ class _CreateACertificateState extends State<CreateACertificate> {
   final TextEditingController gradeController = TextEditingController();
   final TextEditingController curiculumController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController publicationDateController = TextEditingController();
+  final TextEditingController publicationDateController =
+      TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -46,11 +55,17 @@ class _CreateACertificateState extends State<CreateACertificate> {
     var searchTherms = SearchTherms();
     searchTherms.term = searchController.text;
     _usersFromSearch = _userBLL.searchUsers(searchTherms);
+    final EducationInstitutionParameter args = ModalRoute.of(context)!
+        .settings
+        .arguments as EducationInstitutionParameter;
+    _educationInstitutionId = args.id;
+    _educationInstitution = _educationInstitutionBll.getEducationInstitution(_educationInstitutionId);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create a Certificate'),
       ),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView(
@@ -108,10 +123,10 @@ class _CreateACertificateState extends State<CreateACertificate> {
                                     ),
                                     trailing: Icon(Icons.add,
                                         color: Theme.of(context).primaryColor),
-                                    onTap: () {
+                                    onTap: () async {
                                       // Handle onTap event if needed
                                       _addACertificateToUserDialog(
-                                          context, user);
+                                          context, user, await _educationInstitution);
                                     },
                                   ),
                                 );
@@ -129,7 +144,7 @@ class _CreateACertificateState extends State<CreateACertificate> {
     );
   }
 
-  _addACertificateToUserDialog(BuildContext context, User user) {
+  _addACertificateToUserDialog(BuildContext context, User user, EducationInstitution educationInstitution) {
     showDialog(
       context: context,
       builder: (context) {
@@ -155,8 +170,7 @@ class _CreateACertificateState extends State<CreateACertificate> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                    },
+                    onSaved: (value) {},
                   ),
                   SizedBox(
                     height: 10,
@@ -177,8 +191,7 @@ class _CreateACertificateState extends State<CreateACertificate> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                    },
+                    onSaved: (value) {},
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -262,19 +275,53 @@ class _CreateACertificateState extends State<CreateACertificate> {
                       // Save the publication date value
                     },
                   ),
-                  ElevatedButton(
-                            onPressed: () => _selectQuoteFile(),
-                            child: const Text("Select a file")),
                   const SizedBox(height: 10),
-                  const SizedBox(height: 20),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Password to open your Blockchain Wallet',
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    ),
+                    controller: passwordController,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      onPressed: () => _selectQuoteFile(),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor),
+                      child: const Text(
+                        "Select a file",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                  const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        var certificate = Certificate();
+                        certificate.title = titleController.text;
+                        certificate.type = typeController.text;
+                        certificate.grade = gradeController.text;
+                        certificate.curriculum = curiculumController.text;
+                        certificate.description = descriptionController.text;
+                        certificate.publicationDate =
+                            publicationDateController.text;
+                        certificate.file = file;
+
+                        _educationInstitutionBll.createCertificate(
+                            educationInstitution, user, certificate, passwordController.text);
+
                         _formKey.currentState!.save();
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text('+ Add Certificate'),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor),
+                    child: const Text(
+                      '+ Add Certificate',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -288,7 +335,23 @@ class _CreateACertificateState extends State<CreateACertificate> {
   _selectQuoteFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'txt', 'rtf', 'odt', 'ods', 'odp', 'ppt', 'pptx', 'xls', 'xlsx'],
+      allowedExtensions: [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+        'doc',
+        'docx',
+        'txt',
+        'rtf',
+        'odt',
+        'ods',
+        'odp',
+        'ppt',
+        'pptx',
+        'xls',
+        'xlsx'
+      ],
     );
 
     if (result != null) {

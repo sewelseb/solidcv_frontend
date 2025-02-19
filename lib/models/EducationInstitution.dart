@@ -8,6 +8,7 @@ class EducationInstitution {
   final String? addressCountry;
   final String? phoneNumber;
   final String? email;
+  String? ethereumAddress;
 
   EducationInstitution({
     this.id,
@@ -19,6 +20,7 @@ class EducationInstitution {
     required this.addressCountry,
     required this.phoneNumber,
     required this.email,
+    this.ethereumAddress,
   });
 
   factory EducationInstitution.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class EducationInstitution {
       addressCountry: json['addressCountry'],
       phoneNumber: json['phoneNumber'],
       email: json['email'],
+      ethereumAddress: json['ethereumAddress'],
     );
   }
 
@@ -46,6 +49,7 @@ class EducationInstitution {
       'addressCountry': addressCountry,
       'phoneNumber': phoneNumber,
       'email': email,
+      'ethereumAddress': ethereumAddress,
     };
   }
 
