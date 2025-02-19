@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSCertificate.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSWorkExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/Company.dart';
@@ -28,7 +29,7 @@ class IPFSService extends IIPFSService {
     var url = Uri.parse(IPFSConnection().pinJsonUrl);
     var body = jsonEncode({
       "pinataMetadata": {
-        "name": "ExperienceRecord",
+        "name": "ExperienceRecord-"+ ipfsWorkExperience.id.toString(),
       },
       // assuming client sends `nftMeta` json
       "pinataContent": ipfsWorkExperience.toJson(),
@@ -59,8 +60,32 @@ class IPFSService extends IIPFSService {
   }
 
   @override
-  saveCertificate(Certificate certificate, EducationInstitution educationInstitution, String documentUrl) async {
-    
+  saveCertificate(Certificate certificate, EducationInstitution educationInstitution) async {
+    var ipfsCertificate = IPFSCertificate.fromCertificate(certificate, educationInstitution);
+
+    var headers = {
+      "pinata_api_key": _apiKey,
+      "pinata_secret_api_key": _apiSecret,
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.parse(IPFSConnection().pinJsonUrl);
+    var body = jsonEncode({
+      "pinataMetadata": {
+        "name": "Certificate-"+ipfsCertificate.id.toString(),
+      },
+      // assuming client sends `nftMeta` json
+      "pinataContent": ipfsCertificate.toJson(),
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final cid = responseData['IpfsHash'];
+      return cid; // Return the CID of the pinned file
+    } else {
+      throw Exception('Failed to pin file to Filebase: ${response.statusCode}');
+    }
   }
 
   @override

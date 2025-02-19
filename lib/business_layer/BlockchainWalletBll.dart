@@ -50,7 +50,7 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var privateKey = await getTeachingInstitutionPrivateKey(educationInstitution.id!, password);
 
     //create the IPFS uri for the document
-    var documentUrl = IPFSConnection().gatewayUrl + await _ipfsService.saveDocumentCertificate(certificate);
+    certificate.documentIPFSUrl = IPFSConnection().gatewayUrl + await _ipfsService.saveDocumentCertificate(certificate);
 
     //create the IPFS uri for the data
     var url = IPFSConnection().gatewayUrl + await _ipfsService.saveCertificate(certificate, educationInstitution);
