@@ -21,18 +21,29 @@ class _MyEducationState extends State<MyEducation> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(16.0),
-          child: Text(
-            'Education',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
+          child: Row(
+            children: [
+              const Text(
+                'Education',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/addACertification');
+                },
+                child: const Text('+ Add manually a new certification'),
+              ),
+            ],
           ),
         ),
         FutureBuilder(
-          future: _certificates, 
+          future: _certificates,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -45,58 +56,58 @@ class _MyEducationState extends State<MyEducation> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ...snapshot.data!.map((certificate) {
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 16),
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text(
-                        certificate.title!,
-                        style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: Colors.blueAccent,
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              certificate.title!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              certificate.description!,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Text(
+                                //   'Issued by: ${certificate.}',
+                                //   style: const TextStyle(
+                                //   fontSize: 14,
+                                //   fontStyle: FontStyle.italic,
+                                //   ),
+                                // ),
+                                Text(
+                                  'Date: ${certificate.publicationDate}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        certificate.description!,
-                        style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        // Text(
-                        //   'Issued by: ${certificate.}',
-                        //   style: const TextStyle(
-                        //   fontSize: 14,
-                        //   fontStyle: FontStyle.italic,
-                        //   ),
-                        // ),
-                        Text(
-                          'Date: ${certificate.publicationDate}',
-                          style: const TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        ],
-                      ),
-                      ],
-                    ),
-                    ),
-                  );
+                    );
                   }).toList(),
                 ],
               );

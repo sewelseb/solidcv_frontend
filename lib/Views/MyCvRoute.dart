@@ -40,14 +40,25 @@ class _MyCvRouteState extends State<MyCvRoute> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(16.0),
-                      child: Text(
-                      'Work Experiences',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                      child: Row(
+                        children: [
+                          const Text(
+                          'Work Experiences',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                          ),
+                          const Spacer(),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/addWorkExperience');
+                            },
+                            child: const Text('+ Add manually a new work experience'),
+                          ),
+                        ],
                       ),
                     ),
                     ...snapshot.data!.map((experience) {
