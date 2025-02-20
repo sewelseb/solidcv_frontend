@@ -147,4 +147,15 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var certificate = await _ipfsService.getCertificate(ipfsHash);
     certificates.add(Certificate.fromIPFSCertificate(certificate));
   }
+  
+  @override
+  Future<Wallet> createANewWalletAddressForCurrentUser(String password) async {
+    try {
+      var wallet = await _walletService.createNewWalletAddress(password);
+      _userService.saveWalletAddressForCurrentUser(wallet.privateKey.address.hex);
+      return wallet;
+    } catch (e) {
+      throw Exception("Could not create wallet");
+    }
+  }
 }

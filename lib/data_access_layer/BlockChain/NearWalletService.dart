@@ -110,5 +110,11 @@ class NearWalletService extends IWalletService {
     throw UnimplementedError();
   }
   
+  @override
+  createNewWalletAddress(String password) {
+    // TODO: implement createNewWalletAddress
+    throw UnimplementedError();
+  }
+  
 
 }

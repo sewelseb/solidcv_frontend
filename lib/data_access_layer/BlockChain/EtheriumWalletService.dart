@@ -313,4 +313,21 @@ class EtheriumWalletService implements IWalletService {
 
     return result.first as List<dynamic>;
   }
+  
+  @override
+  Future<Wallet> createNewWalletAddress(String password) async {
+    var httpClient = Client();
+    var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
+
+    var random = Random.secure();
+
+    var credentials = EthPrivateKey.createRandom(random);
+    var address = await credentials.address;
+
+    Wallet wallet = Wallet.createNew(credentials, password, random);
+
+    ethClient.dispose();
+
+    return wallet;
+  }
 }

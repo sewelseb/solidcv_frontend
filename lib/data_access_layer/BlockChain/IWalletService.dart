@@ -1,3 +1,5 @@
+import 'package:web3dart/web3dart.dart';
+
 abstract class IWalletService {
   void createWallet();
 
@@ -12,4 +14,6 @@ abstract class IWalletService {
   mintCertificateToken(String privateKey, String educationInstitutionEthereumAddress, String recieverEthereumAddress, String url);
 
   getCertificateNFTs(String address);
+
+  Future<Wallet> createNewWalletAddress(String password);
 }
