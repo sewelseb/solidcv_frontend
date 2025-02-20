@@ -196,4 +196,121 @@ class EtheriumWalletService implements IWalletService {
 
     return result.first as List<dynamic>;
   }
+  
+  @override
+  mintCertificateToken(String privateKey, String educationInstitutionEthereumAddress, String recieverEthereumAddress, String url) async {
+    var httpClient = Client();
+    var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
+
+    final credentials = EthPrivateKey.fromHex(privateKey);
+
+    const mintWorkExperienceTokenAbi = '''
+[
+  {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "uri",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "receiver",
+          "type": "address"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+]
+''';
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(
+          mintWorkExperienceTokenAbi, 'TrainingSouldboundToken'),
+      EthereumAddress.fromHex(
+          EtheriumConnection().trainingSouldboundTokenContractAddress),
+    );
+
+    final mintFunction = contract.function('mint');
+
+    var ethAddressOfReciever = EthereumAddress.fromHex(recieverEthereumAddress);
+
+    var result = await ethClient.sendTransaction(
+      credentials,
+      Transaction.callContract(
+        contract: contract,
+        function: mintFunction,
+        parameters: [url, ethAddressOfReciever],
+        maxGas: 1000000,
+      ),
+      chainId: EtheriumConnection().chainId,
+    );
+
+    ethClient.dispose();
+
+    return result;
+  }
+  
+  @override
+  Future getCertificateNFTs(String address) async {
+    var httpClient = Client();
+    var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
+
+    const getNFTsAbi = '''
+  [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "tokensOfOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct TrainingSouldboundToken.TokenData[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+  ''';
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(getNFTsAbi, 'tokensOfOwner'),
+      EthereumAddress.fromHex(
+          EtheriumConnection().trainingSouldboundTokenContractAddress),
+    );
+
+    final tokensOfOwnerFunction = contract.function('tokensOfOwner');
+
+    final result = await ethClient.call(
+      contract: contract,
+      function: tokensOfOwnerFunction,
+      params: [EthereumAddress.fromHex(address)],
+    );
+
+    ethClient.dispose();
+
+    return result.first as List<dynamic>;
+  }
 }

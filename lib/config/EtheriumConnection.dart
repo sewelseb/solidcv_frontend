@@ -5,7 +5,7 @@ class EtheriumConnection {
   
   String apiUrl = "http://localhost:7545";
   String workExperienceSouldboundTokenContractAddress = "0x84207f31cC2eF8F8BB75a95548c2bFCdf2A850B5"; 
-  String trainingSouldboundTokenContractAddress = "0x6dDA50bBbc875aF0EDEda9A0c9d86e9aC610324C";
+  String trainingSouldboundTokenContractAddress = "0x57DC6998953FaB661B3EB3f3e2b091b71F9304CF";
 
   get chainId => 1337;
 
@@ -31,4 +31,5 @@ class EtheriumConnection {
     }
 ]
 ''';
+
 }

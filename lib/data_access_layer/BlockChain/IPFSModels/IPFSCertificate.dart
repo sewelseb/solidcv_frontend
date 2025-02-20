@@ -63,4 +63,21 @@ class IPFSCertificate {
       "objectVersion": objectVersion,
     };
   }
+
+  static fromJson(responseData) {
+    return IPFSCertificate(
+      id: responseData['id'],
+      title: responseData['title'],
+      type: responseData['type'],
+      grade: responseData['grade'],
+      curriculum: responseData['curriculum'],
+      description: responseData['description'],
+      publicationDate: responseData['publicationDate'],
+      imagelink: responseData['imagelink'],
+      ipfsHash: responseData['ipfsHash'],
+      documentIPFSUrl: responseData['documentIPFSUrl'],
+      issuer: responseData['issuer'],
+      issuerBlockCahinWalletAddress: responseData['issuerBlockCahinWalletAddress'],
+    );
+  }
 }

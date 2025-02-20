@@ -12,4 +12,6 @@ abstract class IBlockchainWalletBll {
 
   createCertificateToken(Certificate certificate, User user, EducationInstitution educationInstitution, String password);
 
+  Future<List<Certificate>> getCertificatesForCurrentUser();
+
 }

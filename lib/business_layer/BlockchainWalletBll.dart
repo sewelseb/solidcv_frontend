@@ -56,6 +56,16 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var url = IPFSConnection().gatewayUrl + await _ipfsService.saveCertificate(certificate, educationInstitution);
 
     //mint the token
+    var reciever = await _userService.getUser(user.id.toString());
+     if (reciever.ethereumAddress == null) {
+      throw Exception("User does not have an ethereum address");
+    }
+    if (educationInstitution.ethereumAddress == null) {
+      throw Exception("Company does not have an ethereum address");
+    }
+    var tokenAddress = await _walletService.mintCertificateToken(
+        privateKey, educationInstitution.ethereumAddress!, reciever.ethereumAddress!, url);
+    return tokenAddress;
   }
 
   @override
@@ -117,5 +127,24 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var ipfsHash = nft[0].toString();
     var experience = await _ipfsService.getWorkExperience(ipfsHash);
     experiences.add(ExperienceRecord.fromIPFSExperience(experience));
+  }
+  
+  @override
+  Future<List<Certificate>> getCertificatesForCurrentUser() async {
+    var user = await _userService.getCurrentUser();
+    var certificateNfts = await _walletService.getCertificateNFTs(user.ethereumAddress!);
+    List<Certificate> certificates = [];
+
+    for (var nft in certificateNfts) {
+      await getCertificatesFromIpfs(nft, certificates);
+    }
+
+    return certificates;
+  }
+  
+  getCertificatesFromIpfs(nft, List<Certificate> certificates) async {
+    var ipfsHash = nft[0].toString();
+    var certificate = await _ipfsService.getCertificate(ipfsHash);
+    certificates.add(Certificate.fromIPFSCertificate(certificate));
   }
 }

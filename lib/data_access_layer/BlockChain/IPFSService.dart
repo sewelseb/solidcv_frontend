@@ -100,7 +100,7 @@ class IPFSService extends IIPFSService {
 
     var request = http.MultipartRequest('POST', url)
       ..headers.addAll(headers)
-      ..files.add(http.MultipartFile.fromBytes('file', certificate.file!.readAsBytesSync(), filename: certificate.title));
+      ..files.add(http.MultipartFile.fromBytes('file', certificate.file!.readAsBytesSync(), filename: "certificateDocument-"+certificate.title!));
 
     final response = await request.send();
 
@@ -111,6 +111,19 @@ class IPFSService extends IIPFSService {
       return cid; // Return the CID of the pinned file
     } else {
       throw Exception('Failed to pin file to Filebase: ${response.statusCode}');
+    }
+  }
+  
+  @override
+  Future<IPFSCertificate> getCertificate (String ipfsHash) async {
+    final response = await http.get(Uri.parse(ipfsHash));
+
+    if(response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final responseAsJson = IPFSCertificate.fromJson(responseData);
+      return responseAsJson;
+    } else {
+      throw Exception('Failed to get file from IPFS: ${response.statusCode}');
     }
   }
 }

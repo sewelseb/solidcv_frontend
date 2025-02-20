@@ -98,5 +98,17 @@ class NearWalletService extends IWalletService {
     throw UnimplementedError();
   }
   
+  @override
+  mintCertificateToken(String privateKey, String educationInstitutionEthereumAddress, String recieverEthereumAddress, String url) {
+    // TODO: implement mintCertificateToken
+    throw UnimplementedError();
+  }
+  
+  @override
+  getCertificateNFTs(String address) {
+    // TODO: implement getCertificateNFTs
+    throw UnimplementedError();
+  }
+  
 
 }

@@ -8,4 +8,8 @@ abstract class IWalletService {
   Future<void> storeKeys(String ethereumAddress, String privateKey, String password);
 
   Future getWorkExperienceNFTs(String address);
+
+  mintCertificateToken(String privateKey, String educationInstitutionEthereumAddress, String recieverEthereumAddress, String url);
+
+  getCertificateNFTs(String address);
 }

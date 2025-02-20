@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSCertificate.dart';
+
 class Certificate {
   String? id;
   String? title;
@@ -43,5 +45,20 @@ class Certificate {
       'ipfsHash': ipfsHash,
       'documentIPFSUrl': documentIPFSUrl,
     };
+  }
+
+  static Certificate fromIPFSCertificate(IPFSCertificate certificate) {
+    return Certificate(
+      id: certificate.id,
+      title: certificate.title,
+      type: certificate.type,
+      grade: certificate.grade,
+      curriculum: certificate.curriculum,
+      description: certificate.description,
+      publicationDate: certificate.publicationDate,
+      imagelink: certificate.imagelink,
+      ipfsHash: certificate.ipfsHash,
+      documentIPFSUrl: certificate.documentIPFSUrl,
+    );
   }
 }
