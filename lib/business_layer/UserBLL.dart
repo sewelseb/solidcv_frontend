@@ -15,8 +15,7 @@ class UserBll extends IUserBLL {
 
   @override
   Future<User> getUser(String id) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+    return _userService.getUser(id);
   }
 
   @override

@@ -17,4 +17,8 @@ abstract class IBlockchainWalletBll {
 
   Future<Wallet> createANewWalletAddressForCurrentUser(String password);
 
+  Future<List<ExperienceRecord>> getWorkExperience(String ethereumAddress);
+
+  Future<List<Certificate>> getCertificates(String ethereumAddress);
+
 }

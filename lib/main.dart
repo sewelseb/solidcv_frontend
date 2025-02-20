@@ -8,6 +8,7 @@ import 'package:solid_cv/Views/MyCvRoute.dart';
 import 'package:solid_cv/Views/MyEducationInstitutionAdministration.dart';
 import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
+import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
@@ -49,6 +50,24 @@ class MyApp extends StatelessWidget {
         '/my-company-administration': (context) => const MyCompanyAdministration(),
         '/company/add-an-employee': (context) => const AddAnEmployee(),
         '/educationInstitution/add-a-certificate-to-user': (context) => CreateACertificate(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name != null && settings.name!.startsWith('/user/')) {
+          final id = settings.name!.substring('/user/'.length);
+          return MaterialPageRoute(
+            builder: (context) => UserPage(id: id),
+          );
+        }
+        return null; // Let `onUnknownRoute` handle this case.
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => const Scaffold(
+            body: Center(
+              child: Text('Page not found'),
+            ),
+          ),
+        );
       },
     );
   }

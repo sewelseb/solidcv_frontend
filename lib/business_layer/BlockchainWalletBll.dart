@@ -158,4 +158,29 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
       throw Exception("Could not create wallet");
     }
   }
+  
+  @override
+  Future<List<ExperienceRecord>> getWorkExperience(String ethereumAddress) async {
+    var workExperienceNft = await _walletService.getWorkExperienceNFTs(ethereumAddress);
+
+    List<ExperienceRecord> experiences = [];
+
+    for (var nft in workExperienceNft) {
+      await getExperiencesFromIpfs(nft, experiences);
+    }
+
+    return experiences;
+  }
+  
+  @override
+  Future<List<Certificate>> getCertificates(String ethereumAddress) async {
+    var certificateNfts = await _walletService.getCertificateNFTs(ethereumAddress);
+    List<Certificate> certificates = [];
+
+    for (var nft in certificateNfts) {
+      await getCertificatesFromIpfs(nft, certificates);
+    }
+
+    return certificates;
+  }
 }
