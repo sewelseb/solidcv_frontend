@@ -1,3 +1,4 @@
+import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
 
@@ -11,4 +12,8 @@ abstract class IUserBLL {
   Future<List<User>> searchUsers(SearchTherms searchTherms);
 
   Future<User> getCurrentUser();
+
+  void addManuallyAddedWorkExperience(ExperienceRecord newExperience);
+
+  Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences();
 }

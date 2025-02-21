@@ -35,7 +35,7 @@ class _MyEducationState extends State<MyEducation> {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/addACertification');
+                  //Navigator.pushNamed(context, '/addACertification');
                 },
                 child: const Text('+ Add manually a new certification'),
               ),

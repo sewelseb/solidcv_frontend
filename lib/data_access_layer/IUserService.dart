@@ -1,3 +1,4 @@
+import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
 
@@ -13,4 +14,8 @@ abstract class IUserService {
   void saveWalletAddressForCurrentUser(String address);
 
   Future<User> getCurrentUser();
+
+  void addManuallyAddedWorkExperience(ExperienceRecord newExperience);
+
+  Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences();
 }

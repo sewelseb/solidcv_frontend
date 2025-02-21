@@ -29,4 +29,8 @@ class BackenConnection {
   String get getEducationInstitutionApi => "/api/protected/get-education-institution/";
 
   String get setEthereumAddressForTeachingInstitutionApi => '/api/protected/education-institution/set-ethereum-address';
+
+  String get addManuallyAddedWorkExperienceApi => "/api/protected/add-manually-a-work-experience";
+
+  String get getMyManuallyAddedWorkExperiencesApi => "/api/protected/get-my-manually-added-work-experience";
 }

@@ -25,16 +25,30 @@ class ExperienceRecord {
   });
 
   factory ExperienceRecord.fromJson(Map<String, dynamic> json) {
-    return ExperienceRecord(
-      id: json['id'],
+    var experienceRecord = ExperienceRecord(
+      id: json['id'].toString(),
       title: json['title'],
       company: json['company'],
       location: json['location'],
-      startDate: json['startDate'],
-      endDate: json['endDate'],
       description: json['description'],
       ethereumToken: json['ethereumToken'],
     );
+    if (json['startDate'] is int) {
+      experienceRecord.startDateAsTimestamp = json['startDate'];
+      experienceRecord.startDate = _formatTimestamp(json['startDate']);
+    } else {
+      experienceRecord.startDate = json['startDate'];
+      experienceRecord.startDateAsTimestamp = _parseTimestamp(json['startDate']);
+    }
+
+    if (json['endDate'] is int) {
+      experienceRecord.endDateAsTimestamp = json['endDate'];
+      experienceRecord.endDate = _formatTimestamp(json['endDate']);
+    } else {
+      experienceRecord.endDate = json['endDate'];
+      experienceRecord.endDateAsTimestamp = _parseTimestamp(json['endDate']);
+    }
+    return experienceRecord;
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +61,8 @@ class ExperienceRecord {
       'endDate': endDate,
       'description': description,
       'ethereumToken': ethereumToken,
+      'startDateAsTimestamp': startDateAsTimestamp,
+      'endDateAsTimestamp': endDateAsTimestamp,
     };
   }
 
@@ -71,5 +87,24 @@ class ExperienceRecord {
 
     DateTime date = DateTime.fromMillisecondsSinceEpoch((timestamp/1000).toInt());
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  static int? _parseTimestamp(String? date) {
+    if (date == 'Ongoing') return null;
+
+    List<String> dateParts = date!.split('/');
+    return DateTime(int.parse(dateParts[2]), int.parse(dateParts[1]), int.parse(dateParts[0])).millisecondsSinceEpoch;
+  }
+
+  static int? _parseTimestampFromSelector(String? date) {
+    if (date == null) return null;
+
+    DateTime parsedDate = DateTime.parse(date);
+    return parsedDate.microsecondsSinceEpoch~/1000;
+  }
+
+  void setTimeStampsFromSelector() {
+    startDateAsTimestamp = _parseTimestampFromSelector(startDate);
+    endDateAsTimestamp = _parseTimestampFromSelector(endDate);
   }
 }

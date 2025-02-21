@@ -28,7 +28,7 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Page'),
+        title: const Text('User Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +36,7 @@ class _UserPageState extends State<UserPage> {
           future: user,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
@@ -47,16 +47,16 @@ class _UserPageState extends State<UserPage> {
                   children: [
                     Text(
                       'Name: ${user.getEasyName()}',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       'Email: ${user.email}',
                       style: TextStyle(fontSize: 18, color: Colors.grey[700]),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     WorkExperienceWidget(userId: user.id.toString()),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     EducationWidget(userId: user.id.toString()),
                   ],
                 ),
