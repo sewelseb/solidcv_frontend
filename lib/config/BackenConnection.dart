@@ -33,4 +33,6 @@ class BackenConnection {
   String get addManuallyAddedWorkExperienceApi => "/api/protected/add-manually-a-work-experience";
 
   String get getMyManuallyAddedWorkExperiencesApi => "/api/protected/get-my-manually-added-work-experience";
+
+  String get addMyCertificateManuallyApi => "/api/protected/add-manually-a-certification";
 }

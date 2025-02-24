@@ -1,3 +1,4 @@
+import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
@@ -18,4 +19,6 @@ abstract class IUserService {
   void addManuallyAddedWorkExperience(ExperienceRecord newExperience);
 
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences();
+
+  void addMyCertificateManually(Certificate certificate);
 }

@@ -1,6 +1,7 @@
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
+import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
@@ -48,6 +49,11 @@ class UserBll extends IUserBLL {
   @override
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() {
     return _userService.getMyManuallyAddedWorkExperiences();
+  }
+
+  @override
+  addMyCertificateManually(Certificate certificate) {
+    _userService.addMyCertificateManually(certificate);
   }
 
 }

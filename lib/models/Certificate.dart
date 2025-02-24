@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSCertificate.dart';
@@ -14,8 +15,10 @@ class Certificate {
   File? file;
   String? ipfsHash;
   String? documentIPFSUrl;
+  String? teachingInstitutionName;
+  String? fileExtention;
 
-  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl});
+  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? teachingInstitutionName});
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -41,9 +44,12 @@ class Certificate {
       'description': description,
       'publicationDate': publicationDate,
       'imagelink': imagelink,
-      'file': file,
+      'file': file != null ? base64Encode(file!.readAsBytesSync()) : null,
       'ipfsHash': ipfsHash,
       'documentIPFSUrl': documentIPFSUrl,
+      'teachingInstitutionName': teachingInstitutionName,
+      'fileExtention': file != null ? file!.path.split('.').last : null,
+      'publicationDateAsTimestamp': publicationDate != null ? DateTime.parse(publicationDate!).millisecondsSinceEpoch*1000 : null,
     };
   }
 

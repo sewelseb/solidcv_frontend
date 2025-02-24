@@ -4,6 +4,9 @@ import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Certificate.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+
 
 class MyEducation extends StatefulWidget {
   @override
@@ -12,7 +15,9 @@ class MyEducation extends StatefulWidget {
 
 class _MyEducationState extends State<MyEducation> {
   IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
+  IUserBLL _userBll = UserBll();
   late Future<List<Certificate>> _certificates;
+  File? file;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +41,14 @@ class _MyEducationState extends State<MyEducation> {
               ElevatedButton(
                 onPressed: () {
                   //Navigator.pushNamed(context, '/addACertification');
+                  _showAddCertificateDialog();
                 },
                 child: const Text('+ Add manually a new certification'),
               ),
             ],
           ),
         ),
-        FutureBuilder(
+        FutureBuilder<List<Certificate>>(
           future: _certificates,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -116,5 +122,213 @@ class _MyEducationState extends State<MyEducation> {
         )
       ],
     );
+  }
+
+  void _showAddCertificateDialog() {
+    final _formKey = GlobalKey<FormState>();
+    String? _title;
+    String? _description;
+    DateTime? _publicationDate;
+    String? _certificateType;
+    String? _teachingInstitution;
+    String? _filePath;
+    String? _grade;
+    String? _curriculum;
+    
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add New Certificate'),
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Title'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a title';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _title = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(labelText: 'Certificate Type'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a certificate type';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _certificateType = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Grade'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a grade';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _grade = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(labelText: 'Teaching Institution'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a teaching institution';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _teachingInstitution = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                    ),
+                    maxLines: 3,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _description = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Curriculum'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a curriculum';
+                      }
+                      return null;
+                    },
+                    maxLines: 3,
+                    onSaved: (value) {
+                      _curriculum = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration:
+                        const InputDecoration(labelText: 'Publication Date'),
+                    onTap: () async {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                      );
+                      if (picked != null) {
+                        _publicationDate = picked;
+                      }
+                    },
+                    validator: (value) {
+                      if (_publicationDate == null) {
+                        return 'Please select a date';
+                      }
+                      return null;
+                    },
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: _publicationDate != null
+                          ? _publicationDate!.toLocal().toString().split(' ')[0]
+                          : '',
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () => _selectQuoteFile(),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor),
+                      child: const Text(
+                        "Select a file",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // Add the new certificate to the list
+                  setState(() {
+                    _userBll
+                        .addMyCertificateManually(
+                          Certificate(
+                            title: _title,
+                            description: _description,
+                            curriculum: _curriculum,
+                            publicationDate: _publicationDate?.toIso8601String(),
+                            type: _certificateType,
+                            teachingInstitutionName: _teachingInstitution,
+                            grade: _grade,
+                            file: file,
+                          ),
+                        );
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _selectQuoteFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf',
+        'jpg',
+        'jpeg',
+        'png',
+        'doc',
+        'docx',
+        'txt',
+        'rtf',
+        'odt',
+        'ods',
+        'odp',
+        'ppt',
+        'pptx',
+        'xls',
+        'xlsx'
+      ],
+    );
+
+    if (result != null) {
+      file = File(result.files.single.path!);
+    } else {
+      // User canceled the picker
+    }
   }
 }
