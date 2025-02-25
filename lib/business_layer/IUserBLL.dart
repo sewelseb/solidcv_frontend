@@ -19,4 +19,6 @@ abstract class IUserBLL {
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences();
 
   addMyCertificateManually(Certificate certificate);
+
+  Future<List<Certificate>> getMyManuallyAddedCertificates();
 }

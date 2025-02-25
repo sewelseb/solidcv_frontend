@@ -21,4 +21,6 @@ abstract class IUserService {
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences();
 
   void addMyCertificateManually(Certificate certificate);
+
+  Future<List<Certificate>> getMyManuallyAddedCertificates();
 }

@@ -13,6 +13,7 @@ class Certificate {
   String? publicationDate;
   String? imagelink;
   File? file;
+  String?fielPath;
   String? ipfsHash;
   String? documentIPFSUrl;
   String? teachingInstitutionName;
@@ -21,7 +22,7 @@ class Certificate {
   Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? teachingInstitutionName});
 
   Certificate.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     title = json['title'];
     type = json['type'];
     grade = json['grade'];
@@ -29,7 +30,7 @@ class Certificate {
     description = json['description'];
     publicationDate = json['publicationDate'];
     imagelink = json['imagelink'];
-    file = json['file'];
+    fielPath = json['file'];
     ipfsHash = json['ipfsHash'];
     documentIPFSUrl = json['documentIPFSUrl'];
   }

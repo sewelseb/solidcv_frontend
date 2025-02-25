@@ -204,5 +204,25 @@ class UserService extends IUserService {
       throw Exception('Adding manually added certificate failure');
     }
   }
+  
+  @override
+  Future<List<Certificate>> getMyManuallyAddedCertificates() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getMyManuallyAddedCertificatesApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<Certificate> certificates = (jsonDecode(response.body) as List).map((i) => Certificate.fromJson(i)).toList();
+      return certificates;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting manually added certificates failure');
+    }
+  }
 
 }

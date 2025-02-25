@@ -55,5 +55,10 @@ class UserBll extends IUserBLL {
   addMyCertificateManually(Certificate certificate) {
     _userService.addMyCertificateManually(certificate);
   }
+  
+  @override
+  Future<List<Certificate>> getMyManuallyAddedCertificates() {
+    return _userService.getMyManuallyAddedCertificates();
+  }
 
 }

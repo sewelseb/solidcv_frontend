@@ -17,11 +17,13 @@ class _MyEducationState extends State<MyEducation> {
   IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
   IUserBLL _userBll = UserBll();
   late Future<List<Certificate>> _certificates;
+  late Future<List<Certificate>> _manuallyAddedCertificates;
   File? file;
 
   @override
   Widget build(BuildContext context) {
     _certificates = _blockchainWalletBll.getCertificatesForCurrentUser();
+    _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,6 +48,13 @@ class _MyEducationState extends State<MyEducation> {
                 child: const Text('+ Add manually a new certification'),
               ),
             ],
+          ),
+        ),
+        const Text(
+          "Validated by the blockchain",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
         FutureBuilder<List<Certificate>>(
@@ -115,15 +124,87 @@ class _MyEducationState extends State<MyEducation> {
                       ),
                     );
                   }).toList(),
+                  const Text(
+                    "Manually added",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                    FutureBuilder<List<Certificate>>(
+                    future: _manuallyAddedCertificates,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No manually added certificates found.'));
+                      } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: snapshot.data!.map((certificate) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(
+                              certificate.title!,
+                              style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: Colors.blueAccent,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            // Text(
+                            //   certificate.description!,
+                            //   style: const TextStyle(
+                            //   fontSize: 18,
+                            //   color: Colors.black54,
+                            //   ),
+                            // ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                              Text(
+                                'Date: ${certificate.publicationDate}',
+                                style: const TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+
+                          ),
+                            ]
+                          ),
+                          ),
+
+                          );
+                          }).toList(),
+                        );
+                      }
+                    },
+                  ),
                 ],
               );
             }
           },
-        )
+        ),
       ],
     );
   }
 
+      
   void _showAddCertificateDialog() {
     final _formKey = GlobalKey<FormState>();
     String? _title;
