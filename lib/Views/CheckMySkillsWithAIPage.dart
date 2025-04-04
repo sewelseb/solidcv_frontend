@@ -4,6 +4,7 @@ import 'package:solid_cv/business_layer/ISkillBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/SkillBll.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/models/Question.dart';
 import 'package:solid_cv/models/Skill.dart';
 
 class CheckMySkillsWithAIPage extends StatefulWidget {
@@ -23,6 +24,8 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
   List<_Message> messages = [];
   bool hasTestStarted = false;
   bool isQuestionLoading = false;
+  Question? _currentQuestion;
+  final TextEditingController userMessageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +71,24 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                     color: Colors.blueAccent,
                   ),
                 ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async{
+                  // Add logic to get feedbacks on skills
+                  var feedbacks = await _skillBll.getFeedbacksOnSkills(skill.id!);
+                  _showFeedbacksDialog(feedbacks);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ), 
+                child: const Text('Get Feedbacks On My Skills'),
               ),
               const SizedBox(height: 20),
               Container(
@@ -128,23 +149,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             // Add start test logic here
-                            setState(() {
-                              isQuestionLoading = true;
-                            });
-                            _skillBll
-                                .getAQuestionsForSkill(skill.id!)
-                                .then((question) {
-                              var message = _Message(
-                                text: question.question,
-                                sender: 'AI',
-                              );
-
-                              setState(() {
-                                messages.add(message);
-                                hasTestStarted = true;
-                                isQuestionLoading = false;
-                              });
-                            });
+                            _getNewAiQuestion(skill);
                           },
                           icon:
                               const Icon(Icons.play_arrow, color: Colors.white),
@@ -185,12 +190,30 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  controller: userMessageController,
                 ),
               ),
               const SizedBox(width: 8),
               ElevatedButton(
-                onPressed: () {
-                  // Add send message logic here
+                onPressed: () async {
+                  if (_currentQuestion == null ||
+                      userMessageController.text.isEmpty) {
+                    return;
+                  }
+
+                  messages.add(_Message(
+                    text: userMessageController.text,
+                    sender: 'User',
+                  ));
+
+                  _currentQuestion!.answer = userMessageController.text;
+
+                  await _skillBll.sendAnswerToAI(_currentQuestion!);
+                  
+                  setState(() {
+                    userMessageController.clear();
+                    _getNewAiQuestion(skill);
+                  });
                 },
                 child: const Text('Send'),
               ),
@@ -198,6 +221,53 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _getNewAiQuestion(Skill skill) {
+    setState(() {
+      isQuestionLoading = true;
+    });
+    _skillBll
+        .getAQuestionsForSkill(skill.id!)
+        .then((question) {
+      _currentQuestion = question;
+      var message = _Message(
+        text: question.question,
+        sender: 'AI',
+      );
+    
+      setState(() {
+        messages.add(message);
+        hasTestStarted = true;
+        isQuestionLoading = false;
+      });
+    });
+  }
+  
+  void _showFeedbacksDialog(feedbacks) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Feedbacks'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                Text(feedbacks),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

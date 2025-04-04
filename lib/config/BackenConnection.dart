@@ -45,4 +45,8 @@ class BackenConnection {
   String get getSkillApi => "/api/protected/get-skill/";
 
   String get getAQuestionsForSkillApi => "/skill/get-a-question/";
+
+  String get sendAnswerToAI => "/skill/send-answer";
+
+  String get getFeedbacksOnSkillsApi => "/skill/get-ai-feed-back/";
 }

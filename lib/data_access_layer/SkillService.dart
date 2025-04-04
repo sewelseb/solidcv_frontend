@@ -25,5 +25,42 @@ class SkillService extends ISkillService {
       throw Exception('Failed to load question');
     }
   }
+  
+  @override
+  void sendAnswerToAI(Question question) async {
+    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().sendAnswerToAI),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(question.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      // Successfully sent answer to AI
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to send answer to AI');
+    }
+  }
+  
+  @override
+  Future<String> getFeedbacksOnSkills(int skillId) async {
+    var response = await http.get(Uri.parse(BackenConnection().url+BackenConnection().getFeedbacksOnSkillsApi+skillId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load feedbacks');
+    }
+  }
 
 }

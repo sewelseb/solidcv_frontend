@@ -10,4 +10,14 @@ class SkillBll extends ISkillBll {
   Future<Question> getAQuestionsForSkill(int SkillId) {
     return _skillService.getAQuestionsForSkill(SkillId);
   }
+  
+  @override
+  sendAnswerToAI(Question question) {
+    _skillService.sendAnswerToAI(question);
+  }
+  
+  @override
+  Future<String> getFeedbacksOnSkills(int skillId) {
+    return _skillService.getFeedbacksOnSkills(skillId);
+  }
 }
