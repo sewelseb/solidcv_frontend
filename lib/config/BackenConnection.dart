@@ -49,4 +49,8 @@ class BackenConnection {
   String get sendAnswerToAI => "/skill/send-answer";
 
   String get getFeedbacksOnSkillsApi => "/skill/get-ai-feed-back/";
+
+  String get getSkillsFromUserApi => "/api/protected/get-skills-from-user/";
+
+  String get getFeedbacksOnProfileApi => "/api/protected/get-ai-feedback-on-user-for-a-job-description";
 }

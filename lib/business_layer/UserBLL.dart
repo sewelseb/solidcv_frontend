@@ -76,5 +76,15 @@ class UserBll extends IUserBLL {
   Future<Skill> getSkill(String skillId) {
     return _userService.getSkill(skillId);
   }
+  
+  @override
+  Future<List<Skill>> getSkillsFromUser(String userId) {
+    return _userService.getSkillsFromUser(userId);
+  }
+  
+  @override
+  Future<String> getFeedbacksOnProfile(String text, String userId) {
+    return _userService.getFeedbacksOnProfile(text, userId);
+  }
 
 }

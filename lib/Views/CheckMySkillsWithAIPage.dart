@@ -75,7 +75,6 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async{
-                  // Add logic to get feedbacks on skills
                   var feedbacks = await _skillBll.getFeedbacksOnSkills(skill.id!);
                   _showFeedbacksDialog(feedbacks);
                 },

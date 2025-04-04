@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/EducationWidget.dart';
+import 'package:solid_cv/Views/widgets/userWidgets/SkillsWidget.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/WorkExperienceWidget.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -58,6 +59,8 @@ class _UserPageState extends State<UserPage> {
                     WorkExperienceWidget(userId: user.id.toString()),
                     const SizedBox(height: 16),
                     EducationWidget(userId: user.id.toString()),
+                    const SizedBox(height: 16),
+                    SkillsWidget(userId: user.id.toString()),
                   ],
                 ),
               );

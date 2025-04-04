@@ -284,4 +284,48 @@ class UserService extends IUserService {
     }
     
   }
+  
+  @override
+  Future<List<Skill>> getSkillsFromUser(String userId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getSkillsFromUserApi+userId),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<Skill> skills = (jsonDecode(response.body) as List).map((i) => Skill.fromJson(i)).toList();
+      return skills;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting skills from user failure');
+    }
+  }
+  
+  @override
+  Future<String> getFeedbacksOnProfile(String text, String userId) async {
+    var response = await http.post(
+      Uri.parse(BackenConnection().url+BackenConnection().getFeedbacksOnProfileApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+          'jobDescription': text,
+          'userId': userId
+        }
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting feedbacks on profile failure');
+    }
+  }
 }

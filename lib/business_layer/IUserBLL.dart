@@ -28,4 +28,8 @@ abstract class IUserBLL {
   Future<List<Skill>> getMySkills();
 
   Future<Skill> getSkill(String skillId);
+
+  Future<List<Skill>> getSkillsFromUser(String userId);
+
+  Future<String> getFeedbacksOnProfile(String text, String userId);
 }
