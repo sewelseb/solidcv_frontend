@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
+import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
 import 'package:solid_cv/Views/HomeRoute.dart';
 import 'package:solid_cv/Views/LoggedInHome.dart';
 import 'package:solid_cv/Views/MyCompanyAdministration.dart';
@@ -56,6 +57,12 @@ class MyApp extends StatelessWidget {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
             builder: (context) => UserPage(id: id),
+          );
+        }
+        if (settings.name != null && settings.name!.startsWith('/check-my-skill-with-ai/')) {
+          final id = settings.name!.substring('/check-my-skill-with-ai/'.length);
+          return MaterialPageRoute(
+            builder: (context) => CheckMySkillsWithAIPage(id: id),
           );
         }
         return null; // Let `onUnknownRoute` handle this case.

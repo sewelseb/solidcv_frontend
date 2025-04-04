@@ -37,4 +37,12 @@ class BackenConnection {
   String get addMyCertificateManuallyApi => "/api/protected/add-manually-a-certification";
 
   String get getMyManuallyAddedCertificatesApi => "/api/protected/get-my-manually-added-certificates";
+
+  String get addSkillApi => '/api/protected/add-skill';
+
+  String get getMySkillsApi => '/api/protected/get-my-skills';
+
+  String get getSkillApi => "/api/protected/get-skill/";
+
+  String get getAQuestionsForSkillApi => "/skill/get-a-question/";
 }

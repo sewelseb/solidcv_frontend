@@ -8,6 +8,7 @@ import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
+import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:http/http.dart' as http;
 
@@ -224,5 +225,63 @@ class UserService extends IUserService {
       throw Exception('Getting manually added certificates failure');
     }
   }
+  
+  @override
+  void addSkill(String skillName) async {
+    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addSkillApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(<String, String?>{
+          'name': skillName
+        }
+      ),
+    );
 
+    if (response.statusCode != 200) {
+      throw Exception('Adding skill failure');
+    }
+  }
+
+  @override
+  Future<List<Skill>> getMySkills() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getMySkillsApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+  if (response.statusCode == 200) {
+      List<Skill> skills = (jsonDecode(response.body) as List).map((i) => Skill.fromJson(i)).toList();
+      return skills;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting skills failure');
+    }
+  }
+  
+  @override
+  Future<Skill> getSkill(String skillId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getSkillApi+skillId),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Skill skill = Skill.fromJson(jsonDecode(response.body));
+      return skill;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting skill failure');
+    }
+    
+  }
 }

@@ -4,6 +4,7 @@ import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
+import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
 
 class UserBll extends IUserBLL {
@@ -59,6 +60,21 @@ class UserBll extends IUserBLL {
   @override
   Future<List<Certificate>> getMyManuallyAddedCertificates() {
     return _userService.getMyManuallyAddedCertificates();
+  }
+  
+  @override
+  addSkill(String skillName) {
+    _userService.addSkill(skillName);
+  }
+
+  @override
+  Future<List<Skill>> getMySkills() {
+    return _userService.getMySkills();
+  }
+  
+  @override
+  Future<Skill> getSkill(String skillId) {
+    return _userService.getSkill(skillId);
   }
 
 }

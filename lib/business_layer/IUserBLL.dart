@@ -1,6 +1,7 @@
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
+import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
 
 abstract class IUserBLL {
@@ -21,4 +22,10 @@ abstract class IUserBLL {
   addMyCertificateManually(Certificate certificate);
 
   Future<List<Certificate>> getMyManuallyAddedCertificates();
+
+  addSkill(String skillName);
+
+  Future<List<Skill>> getMySkills();
+
+  Future<Skill> getSkill(String skillId);
 }
