@@ -25,17 +25,33 @@ class _RegisterRouteState extends State<RegisterRoute> {
     super.dispose();
   }
 
-  void _register() {
-    if (!_formKey.currentState!.validate())  return;
+  void _register() async {
+    if (!_formKey.currentState!.validate()) return;
 
-    // Perform registration logic
     var user = User();
     user.email = _emailController.text;
     user.password = _passwordController.text;
-    _userBll.createUser(user);
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Registering...')),
     );
+
+    try {
+      User createdUser = await _userBll.createUser(user);
+
+      if (createdUser.token != null && createdUser.token!.isNotEmpty) {
+        login(createdUser);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Registration succeeded but login failed')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error during registration: $e')),
+      );
+    }
   }
 
   @override
@@ -76,7 +92,8 @@ class _RegisterRouteState extends State<RegisterRoute> {
                   ),
                   TextFormField(
                     controller: _passwordConfirmationController,
-                    decoration: const InputDecoration(labelText: 'Password confirmation'),
+                    decoration: const InputDecoration(
+                        labelText: 'Password confirmation'),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -102,9 +119,9 @@ class _RegisterRouteState extends State<RegisterRoute> {
     );
   }
 
-   void login(User user) async {
+  void login(User user) async {
     const storage = FlutterSecureStorage();
     await storage.write(key: 'jwt', value: user.token);
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/loggedin/home');
   }
 }
