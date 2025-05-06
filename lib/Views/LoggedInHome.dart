@@ -37,13 +37,14 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         body:
             //add a form to connect your etherium wallet
             ListView(
-              shrinkWrap: true,
-              children: [
-                FutureBuilder(
-                          future: _currentUser,
-                          builder: (context, snapshot) {
+          shrinkWrap: true,
+          children: [
+            FutureBuilder(
+              future: _currentUser,
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  if (snapshot.data!.ethereumAddress != null && wallet == null) {
+                  if (snapshot.data!.ethereumAddress != null &&
+                      wallet == null) {
                     return Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -58,7 +59,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                             const Text(
                               "Your wallet is connected and ready to use. You can start using the app's features.",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, color: Colors.grey),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
                             ),
                             const SizedBox(height: 20),
                             Text(
@@ -96,13 +98,14 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                 const Text(
                                   'Connect your Ethereum Wallet',
                                   style: TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const Text(
                                   "Connect your wallet to start using the app's features. The wallet will be used to store your credentials (work experiences and diplomas) and other important information as NFTs.",
                                   textAlign: TextAlign.center,
-                                  style:
-                                      TextStyle(fontSize: 16, color: Colors.grey),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey),
                                 ),
                                 const SizedBox(height: 20),
                                 TextField(
@@ -119,7 +122,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                         .saveWalletAddressForCurrentUser(
                                             walletAddressController.text);
                                     if (success) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                               'Wallet address saved successfully'),
@@ -130,7 +134,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                         walletAddressController.clear();
                                       });
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                               'Failed to save wallet address, probably the address is invalid'),
@@ -144,7 +149,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                 const Text(
                                   "Or create a new wallet",
                                   style: TextStyle(
-                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 20),
                                 TextField(
@@ -166,9 +172,11 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                         passwordController.clear();
                                       });
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         const SnackBar(
-                                          content: Text('Failed to create wallet'),
+                                          content:
+                                              Text('Failed to create wallet'),
                                         ),
                                       );
                                     }
@@ -188,7 +196,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                   SelectableText(
                                       'Public Key: ${wallet!.privateKey.address.hex}'),
                                   const SizedBox(height: 10),
-                                    SelectableText(
+                                  SelectableText(
                                       'Private Key: 0x${bytesToHex(wallet!.privateKey.privateKey)}'),
                                   const SizedBox(height: 10),
                                   const Text(
@@ -211,9 +219,9 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     child: CircularProgressIndicator(),
                   );
                 }
-                          },
-                        ),
-              ],
-            ));
+              },
+            ),
+          ],
+        ));
   }
 }
