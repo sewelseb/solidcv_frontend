@@ -56,170 +56,160 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
   }
 
   Widget _buildSkillCheckUI(Skill skill) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(16.0),
-            children: [
-              Center(
-                child: Text(
-                  'Answer the questions to check your skills in ' + skill.name!,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                Center(
+                  child: Text(
+                    'Answer the questions to check your skills in ${skill.name!}',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async{
-                  var feedbacks = await _skillBll.getFeedbacksOnSkills(skill.id!);
-                  _showFeedbacksDialog(feedbacks);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    var feedbacks =
+                        await _skillBll.getFeedbacksOnSkills(skill.id!);
+                    _showFeedbacksDialog(feedbacks);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('Get Feedbacks On My Skills'),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    border: Border.all(color: Colors.blueAccent, width: 2),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                ), 
-                child: const Text('Get Feedbacks On My Skills'),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                height: 400,
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  border: Border.all(color: Colors.blueAccent, width: 2),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: ListView(
-                  padding: const EdgeInsets.all(8.0),
-                  children: [
-                    const ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blueAccent,
-                        child: Icon(Icons.android, color: Colors.white),
-                      ),
-                      title: Text(
-                        'AI: I will ask you some questions to test your skill',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const Divider(),
-                    ...messages.map((message) {
-                      return ListTile(
+                  child: Column(
+                    children: [
+                      const ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: message.sender == 'AI'
-                              ? Colors.blueAccent
-                              : Colors.green,
-                          child: Icon(
-                            message.sender == 'AI'
-                                ? Icons.android
-                                : Icons.person,
-                            color: Colors.white,
-                          ),
+                          backgroundColor: Colors.blueAccent,
+                          child: Icon(Icons.android, color: Colors.white),
                         ),
                         title: Text(
-                          message.text!,
-                          style: const TextStyle(fontSize: 16),
+                          'AI: I will ask you some questions to test your skill',
+                          style: TextStyle(fontSize: 16),
                         ),
-                      );
-                    }).toList(),
-                    if (isQuestionLoading)
-                      const Center(
-                        child: CircularProgressIndicator(),
                       ),
-                    const SizedBox(height: 20),
-                    if (!hasTestStarted)
-                      Center(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            // Add start test logic here
-                            _getNewAiQuestion(skill);
-                          },
-                          icon:
-                              const Icon(Icons.play_arrow, color: Colors.white),
-                          label: const Text(
-                            'Start Test',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      const Divider(),
+                      ...messages.map((message) {
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: message.sender == 'AI'
+                                ? Colors.blueAccent
+                                : Colors.green,
+                            child: Icon(
+                              message.sender == 'AI'
+                                  ? Icons.android
+                                  : Icons.person,
                               color: Colors.white,
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          title: Text(
+                            message.text ?? '',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        );
+                      }).toList(),
+                      if (isQuestionLoading)
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      const SizedBox(height: 10),
+                      if (!hasTestStarted)
+                        Center(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              _getNewAiQuestion(skill);
+                            },
+                            icon: const Icon(Icons.play_arrow,
+                                color: Colors.white),
+                            label: const Text(
+                              'Start Test',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
                             ),
-                            elevation: 5,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
                           ),
                         ),
-                      )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Type your message...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: userMessageController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your message...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  controller: userMessageController,
                 ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_currentQuestion == null ||
-                      userMessageController.text.isEmpty) {
-                    return;
-                  }
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_currentQuestion == null ||
+                        userMessageController.text.isEmpty) return;
 
-                  messages.add(_Message(
-                    text: userMessageController.text,
-                    sender: 'User',
-                  ));
+                    messages.add(_Message(
+                      text: userMessageController.text,
+                      sender: 'User',
+                    ));
 
-                  _currentQuestion!.answer = userMessageController.text;
+                    _currentQuestion!.answer = userMessageController.text;
 
-                  await _skillBll.sendAnswerToAI(_currentQuestion!);
-                  
-                  setState(() {
-                    userMessageController.clear();
-                    _getNewAiQuestion(skill);
-                  });
-                },
-                child: const Text('Send'),
-              ),
-            ],
+                    await _skillBll.sendAnswerToAI(_currentQuestion!);
+
+                    setState(() {
+                      userMessageController.clear();
+                      _getNewAiQuestion(skill);
+                    });
+                  },
+                  child: const Text('Send'),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -227,15 +217,13 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
     setState(() {
       isQuestionLoading = true;
     });
-    _skillBll
-        .getAQuestionsForSkill(skill.id!)
-        .then((question) {
+    _skillBll.getAQuestionsForSkill(skill.id!).then((question) {
       _currentQuestion = question;
       var message = _Message(
         text: question.question,
         sender: 'AI',
       );
-    
+
       setState(() {
         messages.add(message);
         hasTestStarted = true;
@@ -243,7 +231,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
       });
     });
   }
-  
+
   void _showFeedbacksDialog(feedbacks) {
     showDialog(
       context: context,
