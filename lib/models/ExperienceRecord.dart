@@ -83,11 +83,11 @@ class ExperienceRecord {
   }
 
   static String _formatTimestamp(int? timestamp) {
-    if (timestamp == null) return 'Ongoing';
+  if (timestamp == null) return 'Ongoing';
 
-    DateTime date = DateTime.fromMillisecondsSinceEpoch((timestamp/1000).toInt());
-    return '${date.day}/${date.month}/${date.year}';
-  }
+  DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000); // ✅ FIX
+  return '${date.day}/${date.month}/${date.year}';
+}
 
   static int? _parseTimestamp(String? date) {
     if (date == 'Ongoing') return null;
@@ -97,11 +97,12 @@ class ExperienceRecord {
   }
 
   static int? _parseTimestampFromSelector(String? date) {
-    if (date == null) return null;
+  if (date == null) return null;
 
-    DateTime parsedDate = DateTime.parse(date);
-    return parsedDate.microsecondsSinceEpoch~/1000;
-  }
+  DateTime parsedDate = DateTime.parse(date);
+  return parsedDate.millisecondsSinceEpoch ~/ 1000; 
+}
+
 
   void setTimeStampsFromSelector() {
     startDateAsTimestamp = _parseTimestampFromSelector(startDate);
