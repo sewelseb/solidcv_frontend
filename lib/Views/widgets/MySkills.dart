@@ -25,99 +25,186 @@ class _MySkillsState extends State<MySkills> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-          children: [
-            const Text(
-              'My Skills',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                color: Colors.blueAccent,
+              // Title + Add Skill button (responsive)
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final isSmallScreen = constraints.maxWidth < 300;
+
+                  if (isSmallScreen) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'My Skills',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 28,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ElevatedButton.icon(
+                          onPressed: _showAddSkillDialog,
+                          icon: const Icon(Icons.add),
+                          label: const Text('Add Skill'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'My Skills',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 28,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: _showAddSkillDialog,
+                          icon: const Icon(Icons.add),
+                          label: const Text('Add Skill'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
-            ),
-            const Spacer(),
-            ElevatedButton.icon(
-              onPressed: _showAddSkillDialog,
-              icon: const Icon(Icons.add),
-              label: const Text('Add Skill'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-          ],
-              ),
+
               const SizedBox(height: 16.0),
+
+              // List of Skills
               FutureBuilder<List<Skill>>(
-          future: _skills,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(
-            'Error: ${snapshot.error}',
-            style: const TextStyle(color: Colors.red),
-                ),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text(
-            'No skills found. Add your first skill!',
-            style: TextStyle(
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-              color: Colors.grey,
-            ),
-                ),
-              );
-            } else {
-              return ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: snapshot.data!.length,
-                separatorBuilder: (context, index) => const Divider(),
-                itemBuilder: (context, index) {
-            final skill = snapshot.data![index];
-            return ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 16.0,
-              ),
-              title: Text(
-                skill.name!,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              trailing: ElevatedButton(
-                onPressed: () {
-                  //navigate to the CheckMySkillsWithAIPage with the skill ID
-                  Navigator.pushNamed(
-                    context,
-                    '/check-my-skill-with-ai/${skill.id}',
-                  );
+                future: _skills,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Error: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No skills found. Add your first skill!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemBuilder: (context, index) {
+                        final skill = snapshot.data![index];
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final isSmallScreen = constraints.maxWidth < 268;
+
+                              if (isSmallScreen) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      skill.name ?? '',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/check-my-skill-with-ai/${skill.id}',
+                                          );
+                                        },
+                                        child: const Text('Check with AI'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        skill.name ?? '',
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/check-my-skill-with-ai/${skill.id}',
+                                        );
+                                      },
+                                      child: const Text('Check with AI'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  }
                 },
-                child: const Text('Check with AI'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-            );
-                },
-              );
-            }
-          },
               ),
             ],
           ),
@@ -143,24 +230,21 @@ class _MySkillsState extends State<MySkills> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
             ),
             TextButton(
-                onPressed: () {
-                  if (skillName.isNotEmpty) {
-                    // Add logic to save the skill
-                    _userBLL.addSkill(skillName);
-                    // Optionally, you can refresh the list of skills here
-                    setState(() {
-                      _skills = _userBLL.getMySkills();
-                    });
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const Text('+  Add')),
+              onPressed: () {
+                if (skillName.isNotEmpty) {
+                  _userBLL.addSkill(skillName);
+                  setState(() {
+                    _skills = _userBLL.getMySkills();
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('+  Add'),
+            ),
           ],
         );
       },

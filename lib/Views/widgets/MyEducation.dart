@@ -7,7 +7,6 @@ import 'package:solid_cv/models/Certificate.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
-
 class MyEducation extends StatefulWidget {
   @override
   _MyEducationState createState() => _MyEducationState();
@@ -19,6 +18,18 @@ class _MyEducationState extends State<MyEducation> {
   late Future<List<Certificate>> _certificates;
   late Future<List<Certificate>> _manuallyAddedCertificates;
   File? file;
+  late TextEditingController _publicationDateController;
+  @override
+  void initState() {
+    super.initState();
+    _publicationDateController = TextEditingController(); // 👈 Initialisé ici
+  }
+
+  @override
+  void dispose() {
+    _publicationDateController.dispose(); // 👈 N'oublie pas de le libérer
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +40,51 @@ class _MyEducationState extends State<MyEducation> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              const Text(
-                'Education',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  //Navigator.pushNamed(context, '/addACertification');
-                  _showAddCertificateDialog();
-                },
-                child: const Text('+ Add manually a new certification'),
-              ),
-            ],
+          padding: const EdgeInsets.all(16.0),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              bool isSmallScreen = constraints.maxWidth < 500;
+              if (isSmallScreen) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Education',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        _showAddCertificateDialog();
+                      },
+                      child: const Text('+ Add manually a new certification'),
+                    ),
+                  ],
+                );
+              } else {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Education',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _showAddCertificateDialog();
+                      },
+                      child: const Text('+ Add manually a new certification'),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
         ),
         const Text(
@@ -131,65 +168,67 @@ class _MyEducationState extends State<MyEducation> {
                       fontSize: 18,
                     ),
                   ),
-                    FutureBuilder<List<Certificate>>(
+                  FutureBuilder<List<Certificate>>(
                     future: _manuallyAddedCertificates,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
+                        return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No manually added certificates found.'));
+                        return const Center(
+                            child:
+                                Text('No manually added certificates found.'));
                       } else {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: snapshot.data!.map((certificate) {
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            Text(
-                              certificate.title!,
-                              style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                              color: Colors.blueAccent,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: snapshot.data!.map((certificate) {
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            // Text(
-                            //   certificate.description!,
-                            //   style: const TextStyle(
-                            //   fontSize: 18,
-                            //   color: Colors.black54,
-                            //   ),
-                            // ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                              Text(
-                                'Date: ${certificate.publicationDate}',
-                                style: const TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
-                                ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        certificate.title!,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22,
+                                          color: Colors.blueAccent,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      // Text(
+                                      //   certificate.description!,
+                                      //   style: const TextStyle(
+                                      //   fontSize: 18,
+                                      //   color: Colors.black54,
+                                      //   ),
+                                      // ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Date: ${certificate.publicationDate}',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ]),
                               ),
-                            ],
-
-                          ),
-                            ]
-                          ),
-                          ),
-
-                          );
+                            );
                           }).toList(),
                         );
                       }
@@ -204,7 +243,6 @@ class _MyEducationState extends State<MyEducation> {
     );
   }
 
-      
   void _showAddCertificateDialog() {
     final _formKey = GlobalKey<FormState>();
     String? _title;
@@ -215,7 +253,6 @@ class _MyEducationState extends State<MyEducation> {
     String? _filePath;
     String? _grade;
     String? _curriculum;
-    
 
     showDialog(
       context: context,
@@ -266,8 +303,8 @@ class _MyEducationState extends State<MyEducation> {
                     },
                   ),
                   TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Teaching Institution'),
+                    decoration: const InputDecoration(
+                        labelText: 'Teaching Institution'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a teaching institution';
@@ -309,6 +346,8 @@ class _MyEducationState extends State<MyEducation> {
                   TextFormField(
                     decoration:
                         const InputDecoration(labelText: 'Publication Date'),
+                    controller: _publicationDateController,
+                    readOnly: true,
                     onTap: () async {
                       FocusScope.of(context).requestFocus(FocusNode());
                       DateTime? picked = await showDatePicker(
@@ -318,7 +357,11 @@ class _MyEducationState extends State<MyEducation> {
                         lastDate: DateTime(2101),
                       );
                       if (picked != null) {
-                        _publicationDate = picked;
+                        setState(() {
+                          _publicationDate = picked;
+                          _publicationDateController.text =
+                              picked.toLocal().toString().split(' ')[0];
+                        });
                       }
                     },
                     validator: (value) {
@@ -327,12 +370,6 @@ class _MyEducationState extends State<MyEducation> {
                       }
                       return null;
                     },
-                    readOnly: true,
-                    controller: TextEditingController(
-                      text: _publicationDate != null
-                          ? _publicationDate!.toLocal().toString().split(' ')[0]
-                          : '',
-                    ),
                   ),
                   ElevatedButton(
                       onPressed: () => _selectQuoteFile(),
@@ -359,19 +396,18 @@ class _MyEducationState extends State<MyEducation> {
                   _formKey.currentState!.save();
                   // Add the new certificate to the list
                   setState(() {
-                    _userBll
-                        .addMyCertificateManually(
-                          Certificate(
-                            title: _title,
-                            description: _description,
-                            curriculum: _curriculum,
-                            publicationDate: _publicationDate?.toIso8601String(),
-                            type: _certificateType,
-                            teachingInstitutionName: _teachingInstitution,
-                            grade: _grade,
-                            file: file,
-                          ),
-                        );
+                    _userBll.addMyCertificateManually(
+                      Certificate(
+                        title: _title,
+                        description: _description,
+                        curriculum: _curriculum,
+                        publicationDate: _publicationDate?.toIso8601String(),
+                        type: _certificateType,
+                        teachingInstitutionName: _teachingInstitution,
+                        grade: _grade,
+                        file: file,
+                      ),
+                    );
                   });
                   Navigator.of(context).pop();
                 }
