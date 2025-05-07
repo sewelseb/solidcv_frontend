@@ -9,6 +9,7 @@ import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:intl/intl.dart';
 
 class AddAnEmployee extends StatefulWidget {
   const AddAnEmployee({super.key});
@@ -122,7 +123,8 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
     final TextEditingController roleController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-
+    DateTime? _startDate;
+    DateTime? _endDate;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -137,26 +139,53 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Start Date (dd/mm/yyyy)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.datetime,
-                controller: startDateController,
-              ),
               SizedBox(
                 height: 10,
                 width: MediaQuery.of(context).size.width, //screen width
               ),
               TextField(
                 decoration: const InputDecoration(
+                  labelText: 'Start Date (dd/mm/yyyy)',
+                  border: OutlineInputBorder(),
+                ),
+                controller: startDateController,
+                readOnly: true,
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  _startDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+                  if (_startDate != null) {
+                    startDateController.text =
+                        DateFormat('dd/MM/yyyy').format(_startDate!);
+                  }
+                },
+              ),
+              SizedBox(height: 10),
+              TextField(
+                decoration: const InputDecoration(
                   labelText:
                       'End Date (dd/mm/yyyy) (leave blank if still working)',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.datetime,
                 controller: endDateController,
+                readOnly: true,
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  _endDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+                  if (_endDate != null) {
+                    endDateController.text =
+                        DateFormat('dd/MM/yyyy').format(_endDate!);
+                  }
+                },
               ),
               const SizedBox(height: 10),
               TextField(
@@ -203,8 +232,9 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                   endDate: endDateController.text,
                   description: descriptionController.text,
                 );
-                await _companyBll.addEmployee(
-                    user, experienceRecord, _companyId, passwordController.text);
+                experienceRecord.setTimeStampsFromSelectorAddEmployee();
+                await _companyBll.addEmployee(user, experienceRecord,
+                    _companyId, passwordController.text);
               },
               child: const Text('+ Add'),
             ),
