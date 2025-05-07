@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/MyEducation.dart';
 import 'package:solid_cv/Views/widgets/MySkills.dart';
+import 'package:solid_cv/Views/widgets/WorkExperienceCard.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -23,7 +24,6 @@ class _MyCvRouteState extends State<MyCvRoute> {
   final _startDateController = TextEditingController();
   final _endDateController = TextEditingController();
 
-  
   @override
   Widget build(BuildContext context) {
     _workExperiences = _blockchainWalletBll.getWorkExperiencesForCurrentUser();
@@ -156,53 +156,9 @@ class _MyCvRouteState extends State<MyCvRoute> {
                           final exp = entry['record'] as ExperienceRecord;
                           final isVerified = entry['source'] == 'blockchain';
 
-                          return Card(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 16),
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(16),
-                              title: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      exp.title ?? '',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                  if (isVerified)
-                                    const Icon(Icons.verified,
-                                        color: Colors.blue, size: 20),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    exp.company ?? '',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '${exp.startDate} - ${exp.endDate}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          return WorkExperienceCard(
+                            workExperience: exp,
+                            isVerified: isVerified,
                           );
                         }).toList(),
                       );
@@ -357,8 +313,6 @@ class _MyCvRouteState extends State<MyCvRoute> {
                   });
                   _startDateController.clear();
                   _endDateController.clear();
-                  _startDate = null;
-                  _endDate = null;
                   Navigator.of(context).pop();
                 }
               },
