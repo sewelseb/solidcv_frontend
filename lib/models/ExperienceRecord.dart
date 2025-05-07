@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSWorkExperience.dart';
 
 class ExperienceRecord {
@@ -82,12 +83,26 @@ class ExperienceRecord {
     return experienceRecord;
   }
 
-  static String _formatTimestamp(int? timestamp) {
+static String _formatTimestamp(int? timestamp) {
   if (timestamp == null) return 'Ongoing';
 
-  DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000); // ✅ FIX
+  late int msEpoch;
+  if (timestamp > 1000000000000000) {
+    msEpoch = timestamp ~/ 1000;
+  }
+
+  else if (timestamp < 10000000000) {
+    msEpoch = timestamp * 1000;
+  }
+  else {
+    msEpoch = timestamp;
+  }
+
+  final date = DateTime.fromMillisecondsSinceEpoch(msEpoch);
   return '${date.day}/${date.month}/${date.year}';
 }
+
+
 
   static int? _parseTimestamp(String? date) {
     if (date == 'Ongoing') return null;
@@ -107,5 +122,16 @@ class ExperienceRecord {
   void setTimeStampsFromSelector() {
     startDateAsTimestamp = _parseTimestampFromSelector(startDate);
     endDateAsTimestamp = _parseTimestampFromSelector(endDate);
+  }
+
+  static int? _parseTimestampToSelectorAddEmployee(String? date) {
+  if (date == null) return null;
+  DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(date);
+  return parsedDate.millisecondsSinceEpoch ~/ 1000;
+}
+
+void setTimeStampsFromSelectorAddEmployee() {
+    startDateAsTimestamp = _parseTimestampToSelectorAddEmployee(startDate);
+    endDateAsTimestamp = _parseTimestampToSelectorAddEmployee(endDate);
   }
 }
