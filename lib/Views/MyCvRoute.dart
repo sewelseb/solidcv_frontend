@@ -94,8 +94,10 @@ class _MyCvRouteState extends State<MyCvRoute> {
                       ),
                     ),
                     ...allExperiences.map((exp) => WorkExperienceCard(
-                          experience: exp,
-                        )),
+                        experience: exp,
+                        onPromotionAdded: () {
+                          setState(() {});
+                        })),
                   ],
                 ),
               ),
@@ -233,8 +235,7 @@ class _MyCvRouteState extends State<MyCvRoute> {
                     const SizedBox(height: 16),
 
                     // Promotions section
-                   
-                  
+
                     TextButton.icon(
                       onPressed: () {
                         setModalState(() {

@@ -6,10 +6,12 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 
 class WorkExperienceCard extends StatelessWidget {
   final UnifiedExperienceViewModel experience;
+  final VoidCallback? onPromotionAdded;
 
   const WorkExperienceCard({
     super.key,
     required this.experience,
+    this.onPromotionAdded,
   });
 
   String _formatDate(int? millis) {
@@ -25,8 +27,6 @@ class WorkExperienceCard extends StatelessWidget {
     final description = experience.description ?? '';
     final start = _formatDate(experience.startDate);
     final end = _formatDate(experience.endDate);
-
-    final isOngoing = experience.endDate == null;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -82,8 +82,8 @@ class WorkExperienceCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 2.0),
                       child: Text(
                         '🔹 ${p.newTitle} – $formattedDate',
-                        style: const TextStyle(
-                            fontSize: 14, color: Colors.black87),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black87),
                       ),
                     );
                   }).toList(),
@@ -99,60 +99,63 @@ class WorkExperienceCard extends StatelessWidget {
               ],
             ),
           ),
-
-          // Label (Verified / Manual)
+          // Label & Add promotion button
           Positioned(
-  top: 10,
-  right: 10,
-  child: Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      if (!experience.isVerified)
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: TextButton(
-            onPressed: () {
-              _showAddPromotionDialog(context, experience.manualId!);
-            },
-            child: const Text(
-              '+ Ajouter une promotion',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Colors.deepPurple,
-              ),
+            top: 10,
+            right: 10,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!experience.isVerified)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: TextButton(
+                      onPressed: () {
+                        _showAddPromotionDialog(context, experience.manualId!);
+                      },
+                      child: const Text(
+                        '+ Ajouter une promotion',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.deepPurple,
+                        ),
+                      ),
+                    ),
+                  ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: experience.isVerified
+                        ? Colors.green
+                        : Colors.deepPurple,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        experience.isVerified ? Icons.verified : Icons.edit,
+                        size: 18,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        experience.isVerified
+                            ? 'Verified by the blockchain'
+                            : 'Manual',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: experience.isVerified ? Colors.green : Colors.deepPurple,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              experience.isVerified ? Icons.verified : Icons.edit,
-              size: 18,
-              color: Colors.white,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              experience.isVerified ? 'Verified' : 'Manual',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-          
         ],
       ),
     );
@@ -167,18 +170,19 @@ class WorkExperienceCard extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add Promotion'),
+          title: const Text('Ajouter une promotion'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(labelText: 'Promotion Title'),
+                decoration:
+                    const InputDecoration(labelText: 'Titre de promotion'),
               ),
               TextField(
                 controller: dateController,
                 readOnly: true,
-                decoration: const InputDecoration(labelText: 'Promotion Date'),
+                decoration: const InputDecoration(labelText: 'Date'),
                 onTap: () async {
                   final picked = await showDatePicker(
                     context: context,
@@ -198,7 +202,7 @@ class WorkExperienceCard extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('Annuler'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -209,11 +213,15 @@ class WorkExperienceCard extends StatelessWidget {
                     date: selectedDate!.millisecondsSinceEpoch ~/ 1000,
                   );
                   var _userBLL = UserBll();
-                  _userBLL.addManuallyPromotion(promotion, manualExperienceId);
+                   _userBLL.addManuallyPromotion(
+                      promotion, manualExperienceId);
                   Navigator.of(context).pop();
+                  if (onPromotionAdded != null) {
+                    onPromotionAdded!();
+                  }
                 }
               },
-              child: const Text('Save'),
+              child: const Text('Ajouter'),
             ),
           ],
         );
