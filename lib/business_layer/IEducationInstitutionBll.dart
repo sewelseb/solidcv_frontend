@@ -14,4 +14,6 @@ abstract class IEducationInstitutionBll {
   setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress, String privateKey, String password);
 
   void createCertificate(EducationInstitution educationInstitution, User user, Certificate certificate, String password);
+
+  Future<List<EducationInstitution>> getAllInstitutions();
 }

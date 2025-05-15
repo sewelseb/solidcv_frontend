@@ -29,9 +29,10 @@ class EducationInstitutionService extends IEducationInstitutionService {
       throw Exception('Getting companies failure');
     }
   }
-  
+
   @override
-  void addEducationInstitution(EducationInstitution educationInstitution) async {
+  void addEducationInstitution(
+      EducationInstitution educationInstitution) async {
     final response = await http.post(
       Uri.parse(BackenConnection().url +
           BackenConnection().addEducationInstitutionApi),
@@ -55,7 +56,7 @@ class EducationInstitutionService extends IEducationInstitutionService {
       throw Exception('Adding company failure');
     }
   }
-  
+
   @override
   Future<EducationInstitution> getEducationInstitution(int id) async {
     final response = await http.get(
@@ -74,9 +75,10 @@ class EducationInstitutionService extends IEducationInstitutionService {
       throw Exception('Getting company failure');
     }
   }
-  
+
   @override
-  void setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress) async {
+  void setEthereumAddress(
+      EducationInstitution educationInstitution, String ethereumAddress) async {
     final response = await http.post(
       Uri.parse(BackenConnection().url +
           BackenConnection().setEthereumAddressForTeachingInstitutionApi),
@@ -92,6 +94,27 @@ class EducationInstitutionService extends IEducationInstitutionService {
 
     if (response.statusCode != 200) {
       throw Exception('Setting ethereum address failure');
+    }
+  }
+
+  @override
+  Future<List<EducationInstitution>> getAllInstitutions() async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getAllEducationInstitutionsForAdmin),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> decoded = jsonDecode(response.body);
+      return decoded
+          .map((json) => EducationInstitution.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to fetch institutions');
     }
   }
 }
