@@ -34,4 +34,6 @@ abstract class IUserService {
   Future<List<Skill>> getSkillsFromUser(String userId);
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
+
+  Future<List<User>> getAllUsers();
 }

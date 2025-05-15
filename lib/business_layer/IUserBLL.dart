@@ -32,4 +32,8 @@ abstract class IUserBLL {
   Future<List<Skill>> getSkillsFromUser(String userId);
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
+
+  Future<List<User>> getAllUsers();
+
+  Future<bool> isAdmin();
 }
