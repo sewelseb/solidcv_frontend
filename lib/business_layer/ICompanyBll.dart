@@ -13,4 +13,6 @@ abstract class ICompanyBll {
   addEmployee(User user, ExperienceRecord experienceRecord, int id, String password);
 
   setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password);
+
+  Future<List<Company>> getAllCompanies();
 }
