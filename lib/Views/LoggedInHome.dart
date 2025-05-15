@@ -26,12 +26,40 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   Wallet? wallet;
 
   @override
+  void initState() {
+    super.initState();
+    _currentUser = _userBll.getCurrentUser(); 
+  }
+  @override
   Widget build(BuildContext context) {
-    _currentUser = _userBll.getCurrentUser();
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('Home'),
+          actions: [
+            FutureBuilder<bool>(
+              future: _userBll.isAdmin(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                }
+
+                if (snapshot.hasData && snapshot.data == true) {
+                  return TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/admin/dashboard');
+                    },
+                    child: const Text(
+                      'Admin Area',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
         bottomNavigationBar: const MainBottomNavigationBar(),
         body:
