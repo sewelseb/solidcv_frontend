@@ -270,12 +270,17 @@ class _LoginForm extends StatelessWidget {
             const Text("Pas encore de compte ?",
                 style: TextStyle(fontSize: 14, color: Colors.black54)),
             TextButton(
-              onPressed: () {},
-              child: const Text("S'inscrire",
-                  style: TextStyle(
-                      color: Color(0xFF7B3FE4),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: const Text(
+                "S'inscrire",
+                style: TextStyle(
+                  color: Color(0xFF7B3FE4),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
             ),
           ],
         ),
