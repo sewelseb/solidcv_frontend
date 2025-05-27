@@ -1,3 +1,4 @@
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
@@ -13,4 +14,8 @@ abstract class ICompanyBll {
   addEmployee(User user, ExperienceRecord experienceRecord, int id, String password);
 
   setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password);
+
+  Future<List<Company>> getAllCompanies();
+
+  addEmployeeEvents(User user,WorkEvent event,int companyId,String password);
 }

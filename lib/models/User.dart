@@ -6,11 +6,11 @@ class User {
   String? lastName;
   String? email;
   String? password;
-  String? role;
+   List<String>? roles;
   String? token;
   String? ethereumAddress;
 
-  User({this.id, this.firstName, this.lastName, this.email, this.password, this.role, this.token, this.ethereumAddress});
+  User({this.id, this.firstName, this.lastName, this.email, this.password, this.roles, this.token, this.ethereumAddress});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -19,7 +19,9 @@ class User {
       lastName: json['lastName'],
       email: json['email'],
       password: json['password'],
-      role: json['role'],
+      roles: json['roles'] != null
+          ? List<String>.from(json['roles']) // ✅ conversion
+          : null,
       token: json['token'],
       ethereumAddress: json['ethereumAddress'],
     );
@@ -31,7 +33,7 @@ class User {
       'lastName': lastName,
       'email': email,
       'password': password,
-      'role': role,
+      'roles': roles,
     };
   }
 

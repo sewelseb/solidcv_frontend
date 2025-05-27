@@ -1,4 +1,6 @@
 import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -9,7 +11,6 @@ import 'package:solid_cv/models/User.dart';
 
 class UserBll extends IUserBLL {
   final IUserService _userService = UserService();
-
 
   @override
   Future<User> createUser(User user) {
@@ -26,7 +27,7 @@ class UserBll extends IUserBLL {
     // TODO: implement updateUser
     throw UnimplementedError();
   }
-  
+
   @override
   Future<User> login(User user) {
     return _userService.login(user);
@@ -36,7 +37,7 @@ class UserBll extends IUserBLL {
   Future<List<User>> searchUsers(SearchTherms searchTherms) {
     return _userService.searchUsers(searchTherms);
   }
-  
+
   @override
   Future<User> getCurrentUser() {
     return _userService.getCurrentUser();
@@ -46,7 +47,7 @@ class UserBll extends IUserBLL {
   void addManuallyAddedWorkExperience(ExperienceRecord newExperience) {
     _userService.addManuallyAddedWorkExperience(newExperience);
   }
-  
+
   @override
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() {
     return _userService.getMyManuallyAddedWorkExperiences();
@@ -56,12 +57,12 @@ class UserBll extends IUserBLL {
   addMyCertificateManually(Certificate certificate) {
     _userService.addMyCertificateManually(certificate);
   }
-  
+
   @override
   Future<List<Certificate>> getMyManuallyAddedCertificates() {
     return _userService.getMyManuallyAddedCertificates();
   }
-  
+
   @override
   addSkill(String skillName) {
     _userService.addSkill(skillName);
@@ -71,20 +72,46 @@ class UserBll extends IUserBLL {
   Future<List<Skill>> getMySkills() {
     return _userService.getMySkills();
   }
-  
+
   @override
   Future<Skill> getSkill(String skillId) {
     return _userService.getSkill(skillId);
   }
-  
+
   @override
   Future<List<Skill>> getSkillsFromUser(String userId) {
     return _userService.getSkillsFromUser(userId);
   }
-  
+
   @override
   Future<String> getFeedbacksOnProfile(String text, String userId) {
     return _userService.getFeedbacksOnProfile(text, userId);
   }
 
+  @override
+  Future<List<User>> getAllUsers() {
+    return _userService.getAllUsers();
+  }
+
+  @override
+  Future<bool> isAdmin() async {
+    final user = await getCurrentUser();
+    return user.roles?.contains('ROLE_ADMIN') ?? false;
+  }
+}
+
+  void addManualExperience(ManualExperience newExperience) {
+    _userService.addManualExperience(newExperience);
+  }
+
+  @override
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences() {
+    return _userService.getMyManuallyAddedExperiences();
+  } 
+
+  @override
+  void addManuallyPromotion(Promotion promotion, int experienceId) {
+    _userService.addManuallyPromotion(promotion, experienceId);
+  }
+  
 }

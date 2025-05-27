@@ -2,6 +2,7 @@ import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
@@ -53,6 +54,12 @@ class CompanyBll extends ICompanyBll {
     experienceRecord.ethereumToken = token;
     _companyService.addEmployee(user, experienceRecord, id);
   }
+
+  @override
+  addEmployeeEvents(User user,WorkEvent event,int companyId,String password) async {
+    final token = await _blockchainWalletBll.createWorkEventToken(event,companyId,user.id!,password,
+  );
+  }
   
   @override
   setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password) async {
@@ -78,5 +85,8 @@ class CompanyBll extends ICompanyBll {
 
   }
 
-  
+  @override
+  Future<List<Company>> getAllCompanies() {
+    return _companyService.getAllCompanies();
+  }
 }

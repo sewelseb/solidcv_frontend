@@ -9,4 +9,6 @@ abstract class IEducationInstitutionService {
 
   void setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress);
 
+  Future<List<EducationInstitution>> getAllInstitutions();
+
 }

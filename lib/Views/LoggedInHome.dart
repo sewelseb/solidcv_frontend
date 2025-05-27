@@ -19,8 +19,7 @@ class LoggedInHome extends StatefulWidget {
 
 class _LoggedInHomeState extends State<LoggedInHome> {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
-  final TextEditingController _walletAddressController =
-      TextEditingController();
+  final TextEditingController _walletAddressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final IUserBLL _userBll = UserBll();
   late Future<User> _currentUserFuture;
@@ -53,8 +52,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       const SnackBar(content: Text('Connecting wallet...')),
     );
 
-    var success =
-        await _blockchainWalletBll.saveWalletAddressForCurrentUser(address);
+    var success = await _blockchainWalletBll.saveWalletAddressForCurrentUser(address);
     if (mounted) {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -68,8 +66,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text(
-                  'Failed to save wallet address. The address might be invalid or already in use.')),
+            content: Text('Failed to save wallet address. The address might be invalid or already in use.'),
+          ),
         );
       }
     }
@@ -81,8 +79,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content:
-                Text('Please enter a password to encrypt your private key.')),
+          content: Text('Please enter a password to encrypt your private key.'),
+        ),
       );
       return;
     }
@@ -91,13 +89,11 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       const SnackBar(content: Text('Creating wallet...')),
     );
 
-    final wallet = await _blockchainWalletBll
-        .createANewWalletAddressForCurrentUser(password);
+    final wallet = await _blockchainWalletBll.createANewWalletAddressForCurrentUser(password);
     if (mounted) {
       if (wallet != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('New wallet created and address saved!')),
+          const SnackBar(content: Text('New wallet created and address saved!')),
         );
         setState(() {
           _createdWallet = wallet;
@@ -112,15 +108,11 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     }
   }
 
-  InputDecoration _textFieldDecoration(String label,
-      {IconData? prefixIcon, Widget? suffixIcon}) {
+  InputDecoration _textFieldDecoration(String label, {IconData? prefixIcon, Widget? suffixIcon}) {
     return InputDecoration(
       labelText: label,
-      hintText: label.contains("Address") || label.contains("Adresse")
-          ? "0x..."
-          : null,
-      prefixIcon:
-          prefixIcon != null ? Icon(prefixIcon, color: _primaryColor) : null,
+      hintText: label.contains("Address") || label.contains("Adresse") ? "0x..." : null,
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: _primaryColor) : null,
       suffixIcon: suffixIcon,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
       focusedBorder: OutlineInputBorder(
@@ -141,8 +133,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 50),
         padding: const EdgeInsets.symmetric(vertical: 16),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700),
         elevation: 1.5,
       ),
@@ -162,12 +153,38 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           title: Text(
             'Home',
             style: GoogleFonts.inter(
-                color: Colors.white, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           backgroundColor: _primaryColor,
           elevation: 1,
           iconTheme: const IconThemeData(color: Colors.white),
           systemOverlayStyle: SystemUiOverlayStyle.dark,
+          actions: [
+            FutureBuilder<bool>(
+              future: _userBll.isAdmin(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox.shrink();
+                }
+
+                if (snapshot.hasData && snapshot.data == true) {
+                  return TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/admin/dashboard');
+                    },
+                    child: const Text(
+                      'Admin Area',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
         bottomNavigationBar: const MainBottomNavigationBar(),
         body: FutureBuilder<User>(
@@ -184,8 +201,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             }
 
             final user = snapshot.data!;
-            final bool hasWalletConnected = user.ethereumAddress != null &&
-                user.ethereumAddress!.isNotEmpty;
+            final bool hasWalletConnected = user.ethereumAddress != null && user.ethereumAddress!.isNotEmpty;
 
             if (hasWalletConnected && _createdWallet == null) {
               return _buildWalletConnectedView(user, isMobile);
@@ -203,92 +219,89 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(Icons.check_circle_outline,
-            color: _primaryColor, size: isMobile ? 60 : 80),
+        Icon(Icons.check_circle_outline, color: _primaryColor, size: isMobile ? 60 : 80),
         const SizedBox(height: 24),
         Text(
           'Your Ethereum Wallet',
           style: GoogleFonts.inter(
-              fontSize: isMobile ? 22 : 26,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87),
+            fontSize: isMobile ? 22 : 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
         Container(
-          constraints:
-              BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
+          constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
           child: Text(
             "Your wallet is connected and ready to use. You can start using the app's features.",
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-                fontSize: 16, color: Colors.black54, height: 1.5),
+            style: GoogleFonts.inter(fontSize: 16, color: Colors.black54, height: 1.5),
           ),
         ),
         const SizedBox(height: 32),
-        LayoutBuilder(builder: (context, constraints) {
-          double boxTargetWidth;
-          double maxBoxWidthOnDesktop = 550.0;
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double boxTargetWidth;
+            double maxBoxWidthOnDesktop = 550.0;
 
-          if (isMobile) {
-            boxTargetWidth = constraints.maxWidth;
-          } else {
-            boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
-                ? constraints.maxWidth
-                : maxBoxWidthOnDesktop;
-          }
-          return Container(
-            width: boxTargetWidth,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: _glassBackground,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                  color: _gradientStart.withOpacity(0.18), width: 1.1),
-              boxShadow: [
-                BoxShadow(
-                  color: _shadowColor,
-                  blurRadius: 14,
-                  spreadRadius: 0.5,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Wallet Address:',
-                  style: GoogleFonts.inter(fontSize: 16, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 4),
-                SelectableText(
-                  user.ethereumAddress!,
-                  style: GoogleFonts.robotoMono(
+            if (isMobile) {
+              boxTargetWidth = constraints.maxWidth;
+            } else {
+              boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
+                  ? constraints.maxWidth
+                  : maxBoxWidthOnDesktop;
+            }
+            return Container(
+              width: boxTargetWidth,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: _glassBackground,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: _gradientStart.withOpacity(0.18), width: 1.1),
+                boxShadow: [
+                  BoxShadow(
+                    color: _shadowColor,
+                    blurRadius: 14,
+                    spreadRadius: 0.5,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Wallet Address:',
+                    style: GoogleFonts.inter(fontSize: 16, color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 4),
+                  SelectableText(
+                    user.ethereumAddress!,
+                    style: GoogleFonts.robotoMono(
                       fontSize: isMobile ? 15 : 16,
                       fontWeight: FontWeight.w600,
-                      color: _primaryColor),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                TextButton.icon(
-                  icon: Icon(Icons.copy, size: 18, color: _primaryColor),
-                  label: Text("Copy Address",
-                      style: TextStyle(color: _primaryColor)),
-                  onPressed: () {
-                    Clipboard.setData(
-                        ClipboardData(text: user.ethereumAddress!));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Address copied to clipboard!')),
-                    );
-                  },
-                )
-              ],
-            ),
-          );
-        }),
+                      color: _primaryColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton.icon(
+                    icon: Icon(Icons.copy, size: 18, color: _primaryColor),
+                    label: Text("Copy Address", style: TextStyle(color: _primaryColor)),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: user.ethereumAddress!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Address copied to clipboard!')),
+                      );
+                    },
+                  )
+                ],
+              ),
+            );
+          },
+        ),
         const SizedBox(height: 30),
       ],
     );
@@ -312,28 +325,24 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   Widget _buildWalletSetupView(bool isMobile) {
     if (_createdWallet != null) {
       return SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
+        padding: EdgeInsets.symmetric(horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
         child: _buildWalletCreationResult(_createdWallet!, isMobile),
       );
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(
-          horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildSectionCard(
             title: 'Connect an Existing Wallet',
-            description:
-                "If you already have an Ethereum wallet, enter its public address to link it to your SolidCV account.",
+            description: "If you already have an Ethereum wallet, enter its public address to link it to your SolidCV account.",
             icon: Icons.link,
             formFields: [
               TextField(
                 controller: _walletAddressController,
-                decoration: _textFieldDecoration("Ethereum Address",
-                    prefixIcon: Icons.account_balance_wallet_outlined),
+                decoration: _textFieldDecoration("Ethereum Address", prefixIcon: Icons.account_balance_wallet_outlined),
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 20),
@@ -347,8 +356,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           const SizedBox(height: 32),
           _buildSectionCard(
             title: 'Create a New Wallet',
-            description:
-                "SolidCV can generate a new secure Ethereum wallet for you. Choose a strong password to protect your private key.",
+            description: "SolidCV can generate a new secure Ethereum wallet for you. Choose a strong password to protect your private key.",
             icon: Icons.add_circle_outline,
             formFields: [
               TextField(
@@ -413,8 +421,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                   ),
                 ),
                 padding: const EdgeInsets.all(8),
-                child:
-                    Icon(icon, color: Colors.white, size: isMobile ? 22 : 28),
+                child: Icon(icon, color: Colors.white, size: isMobile ? 22 : 28),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -432,8 +439,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           const SizedBox(height: 13),
           Text(
             description,
-            style: GoogleFonts.inter(
-                fontSize: 14, color: Colors.black54, height: 1.5),
+            style: GoogleFonts.inter(fontSize: 14, color: Colors.black54, height: 1.5),
           ),
           const SizedBox(height: 22),
           ...formFields,
@@ -459,9 +465,10 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           Text(
             'Wallet created successfully!',
             style: GoogleFonts.inter(
-                fontSize: isMobile ? 18 : 20,
-                fontWeight: FontWeight.bold,
-                color: _primaryColor),
+              fontSize: isMobile ? 18 : 20,
+              fontWeight: FontWeight.bold,
+              color: _primaryColor,
+            ),
           ),
           const SizedBox(height: 16),
           _buildKeyInfo("Public Key:", publicKeyHex, isMobile, isAddress: true),
@@ -470,10 +477,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           const SizedBox(height: 16),
           const Text(
             'Make sure to save the private key in a safe place, it will not be shown again and you can\'t recover it.',
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.redAccent,
-                fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 14, color: Colors.redAccent, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 20),
           Center(
@@ -491,17 +495,17 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildKeyInfo(String label, String value, bool isMobile,
-      {bool isAddress = false}) {
+  Widget _buildKeyInfo(String label, String value, bool isMobile, {bool isAddress = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: GoogleFonts.inter(
-              fontWeight: FontWeight.bold,
-              color: _primaryColor,
-              fontSize: isMobile ? 13 : 15),
+            fontWeight: FontWeight.bold,
+            color: _primaryColor,
+            fontSize: isMobile ? 13 : 15,
+          ),
         ),
         const SizedBox(height: 3),
         Row(
@@ -509,8 +513,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             Expanded(
               child: SelectableText(
                 value,
-                style: GoogleFonts.robotoMono(
-                    fontSize: isMobile ? 13 : 14, color: Colors.black87),
+                style: GoogleFonts.robotoMono(fontSize: isMobile ? 13 : 14, color: Colors.black87),
               ),
             ),
             IconButton(
@@ -518,9 +521,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: value));
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content:
-                          Text('${label.replaceAll(":", "")} value copied!')),
+                  SnackBar(content: Text('${label.replaceAll(":", "")} value copied!')),
                 );
               },
               tooltip: "Copy value",

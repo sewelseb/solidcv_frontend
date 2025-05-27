@@ -53,4 +53,16 @@ class BackenConnection {
   String get getSkillsFromUserApi => "/api/protected/get-skills-from-user/";
 
   String get getFeedbacksOnProfileApi => "/api/protected/get-ai-feedback-on-user-for-a-job-description";
+
+
+  String get getAllUsersForAdmin => "/api/admin/get-all-users";
+
+  String get getAllCompaniesForAdmin => "/api/admin/get-all-companies";
+
+  String get getAllEducationInstitutionsForAdmin => "/api/admin/get-all-education-institutions";
+  
+  String get getAllStatisticsForAdmin => "/api/admin/get-all-statistics";
+  
+  String get addManuallyPromotion => "/api/protected/add-manually-promotion/";
+
 }

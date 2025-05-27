@@ -3,6 +3,8 @@ import 'dart:async';
 
 
 import 'package:solid_cv/config/BackenConnection.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -170,6 +172,39 @@ class UserService extends IUserService {
       throw Exception('Adding manually added work experience failure');
     }
   }
+
+   @override
+  void addManualExperience(ManualExperience newExperience) async {
+    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addManuallyAddedWorkExperienceApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(newExperience.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Adding manually added work experience failure');
+    }
+  }
+
+    @override
+  void addManuallyPromotion(Promotion promotion, int experienceId) async {
+    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addManuallyPromotion+ experienceId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+        body: jsonEncode({
+        'newTitle': promotion.newTitle,
+        'date': promotion.date,
+  }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Adding manually added work experience failure');
+    }
+  }
   
   @override
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() async {
@@ -183,6 +218,26 @@ class UserService extends IUserService {
 
     if (response.statusCode == 200) {
       List<ExperienceRecord> experiences = (jsonDecode(response.body) as List).map((i) => ExperienceRecord.fromJson(i)).toList();
+      return experiences;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting manually added work experiences failure');
+    }
+  }
+
+    @override
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getMyManuallyAddedWorkExperiencesApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<ManualExperience> experiences = (jsonDecode(response.body) as List).map((i) => ManualExperience.fromJson(i)).toList();
       return experiences;
     } else {
       // If the server did not return a 200 OK response,
@@ -328,4 +383,23 @@ class UserService extends IUserService {
       throw Exception('Getting feedbacks on profile failure');
     }
   }
+
+  @override
+  Future<List<User>> getAllUsers() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getAllUsersForAdmin),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> decoded = jsonDecode(response.body);
+      return decoded.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch users');
+    }
+  }
+  
 }

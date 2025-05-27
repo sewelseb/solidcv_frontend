@@ -1,3 +1,5 @@
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
@@ -32,4 +34,15 @@ abstract class IUserBLL {
   Future<List<Skill>> getSkillsFromUser(String userId);
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
+
+  Future<List<User>> getAllUsers();
+
+  Future<bool> isAdmin();
+
+  void addManualExperience(ManualExperience newExperience);
+
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences();
+
+  void addManuallyPromotion(Promotion promotion, int experienceId);
+
 }
