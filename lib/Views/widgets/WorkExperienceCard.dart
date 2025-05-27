@@ -49,7 +49,7 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      color: const Color(0xFFF0F8FF),
+      color: const Color.fromARGB(231, 255, 255, 255),
       elevation: 3,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
