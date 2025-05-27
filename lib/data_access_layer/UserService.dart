@@ -383,4 +383,23 @@ class UserService extends IUserService {
       throw Exception('Getting feedbacks on profile failure');
     }
   }
+
+  @override
+  Future<List<User>> getAllUsers() async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getAllUsersForAdmin),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> decoded = jsonDecode(response.body);
+      return decoded.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch users');
+    }
+  }
+  
 }

@@ -35,10 +35,14 @@ abstract class IUserBLL {
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
 
+  Future<List<User>> getAllUsers();
+
+  Future<bool> isAdmin();
+
   void addManualExperience(ManualExperience newExperience);
 
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
 
-  
   void addManuallyPromotion(Promotion promotion, int experienceId);
+
 }

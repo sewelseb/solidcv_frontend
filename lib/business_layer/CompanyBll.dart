@@ -85,5 +85,8 @@ class CompanyBll extends ICompanyBll {
 
   }
 
-  
+  @override
+  Future<List<Company>> getAllCompanies() {
+    return _companyService.getAllCompanies();
+  }
 }

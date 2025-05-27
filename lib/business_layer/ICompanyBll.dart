@@ -15,5 +15,7 @@ abstract class ICompanyBll {
 
   setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password);
 
+  Future<List<Company>> getAllCompanies();
+
   addEmployeeEvents(User user,WorkEvent event,int companyId,String password);
 }

@@ -11,6 +11,11 @@ import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
+import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
+import 'package:solid_cv/Views/admin-views/AdminCompaniesListPage.dart';
+import 'package:solid_cv/Views/admin-views/AdminDashboardPage.dart';
+import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dart';
+import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
 import 'package:solid_cv/Views/widgets/SessionValidatorToken.dart';
@@ -56,6 +61,11 @@ class MyApp extends StatelessWidget {
         '/company/add-an-employee': (context) => const AddAnEmployee(),
         '/educationInstitution/add-a-certificate-to-user': (context) =>
             CreateACertificate(),
+            '/admin/dashboard': (context) => const AdminDashboardPage(),
+            '/admin/users': (context) => AdminUsersPage(),
+            '/admin/companies': (context) => const AdminCompaniesPage(),
+            '/admin/institutions': (context) => const AdminInstitutionsPage(),
+
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {

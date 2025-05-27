@@ -58,4 +58,9 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
     //Save all in the database
   }
 
+  @override
+  Future<List<EducationInstitution>> getAllInstitutions() {
+    return _educationInstitutionService.getAllInstitutions();
+  }
+
 }

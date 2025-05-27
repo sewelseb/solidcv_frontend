@@ -37,9 +37,12 @@ abstract class IUserService {
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
 
+  Future<List<User>> getAllUsers();
+
   void addManuallyPromotion(Promotion promotion, int experienceId);
 
   void addManualExperience(ManualExperience newExperience);
 
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
+
 }
