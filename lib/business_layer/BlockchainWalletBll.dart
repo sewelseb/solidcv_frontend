@@ -4,6 +4,9 @@ import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSExperienceStream.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
@@ -23,7 +26,8 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
   final IWalletService _walletService = EtheriumWalletService();
   final IUserService _userService = UserService();
   final ICompanyService _companyService = CompanyService();
-  final IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
+  final IEducationInstitutionService _educationInstitutionService =
+      EducationInstitutionService();
   final IIPFSService _ipfsService = IPFSService();
 
   @override
@@ -46,25 +50,29 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
   }
 
   @override
-  createCertificateToken(Certificate certificate, User user, EducationInstitution educationInstitution, String password) async {
-    var privateKey = await getTeachingInstitutionPrivateKey(educationInstitution.id!, password);
+  createCertificateToken(Certificate certificate, User user,
+      EducationInstitution educationInstitution, String password) async {
+    var privateKey = await getTeachingInstitutionPrivateKey(
+        educationInstitution.id!, password);
 
     //create the IPFS uri for the document
-    certificate.documentIPFSUrl = IPFSConnection().gatewayUrl + await _ipfsService.saveDocumentCertificate(certificate);
+    certificate.documentIPFSUrl = IPFSConnection().gatewayUrl +
+        await _ipfsService.saveDocumentCertificate(certificate);
 
     //create the IPFS uri for the data
-    var url = IPFSConnection().gatewayUrl + await _ipfsService.saveCertificate(certificate, educationInstitution);
+    var url = IPFSConnection().gatewayUrl +
+        await _ipfsService.saveCertificate(certificate, educationInstitution);
 
     //mint the token
     var reciever = await _userService.getUser(user.id.toString());
-     if (reciever.ethereumAddress == null) {
+    if (reciever.ethereumAddress == null) {
       throw Exception("User does not have an ethereum address");
     }
     if (educationInstitution.ethereumAddress == null) {
       throw Exception("Company does not have an ethereum address");
     }
-    var tokenAddress = await _walletService.mintCertificateToken(
-        privateKey, educationInstitution.ethereumAddress!, reciever.ethereumAddress!, url);
+    var tokenAddress = await _walletService.mintCertificateToken(privateKey,
+        educationInstitution.ethereumAddress!, reciever.ethereumAddress!, url);
     return tokenAddress;
   }
 
@@ -75,7 +83,8 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var company = await _companyService.getCompany(companyId);
 
     //create the IPFS uri
-    var url = IPFSConnection().gatewayUrl + await _ipfsService.saveWorkExperience(experienceRecord, company);
+    var url = IPFSConnection().gatewayUrl +
+        await _ipfsService.saveWorkExperience(experienceRecord, company);
 
     //mint the token
     var reciever = await _userService.getUser(userId.toString());
@@ -91,11 +100,44 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     return tokenAddress;
   }
 
-  Future<String> getTeachingInstitutionPrivateKey(int educationInstitutionId, String password) async {
-    var educationInstitution = await _educationInstitutionService.getEducationInstitution(educationInstitutionId);
+  @override
+  Future<String> createWorkEventToken(
+      WorkEvent event, int companyId, int userId, String password) async {
+    final privateKey = await getCompanyPrivateKey(companyId, password);
+
+    final company = await _companyService.getCompany(companyId);
+    final receiver = await _userService.getUser(userId.toString());
+
+    if (receiver.ethereumAddress == null) {
+      throw Exception("User does not have an Ethereum address");
+    }
+
+    if (company.ethereumAddress == null) {
+      throw Exception("Company does not have an Ethereum address");
+    }
+
+    final cid = await _ipfsService.saveWorkEvent(event);
+
+    final url = IPFSConnection().gatewayUrl + cid;
+    print('✅ IPFS hash: $cid');
+
+    final tokenAddress = await _walletService.mintWorkExperienceToken(
+      privateKey,
+      company.ethereumAddress!,
+      receiver.ethereumAddress!,
+      url,
+    );
+
+    return tokenAddress;
+  }
+
+  Future<String> getTeachingInstitutionPrivateKey(
+      int educationInstitutionId, String password) async {
+    var educationInstitution = await _educationInstitutionService
+        .getEducationInstitution(educationInstitutionId);
     const storage = FlutterSecureStorage();
-    var encryptedWallet =
-        await storage.read(key: 'etheriumWallet-${educationInstitution.ethereumAddress!}');
+    var encryptedWallet = await storage.read(
+        key: 'etheriumWallet-${educationInstitution.ethereumAddress!}');
     var wallet = Wallet.fromJson(encryptedWallet!, password);
     return "0x${bytesToHex(wallet.privateKey.privateKey)}";
   }
@@ -108,11 +150,12 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     var wallet = Wallet.fromJson(encryptedWallet!, password);
     return "0x${bytesToHex(wallet.privateKey.privateKey)}";
   }
-  
+
   @override
   Future<List<ExperienceRecord>> getWorkExperiencesForCurrentUser() async {
     var user = await _userService.getCurrentUser();
-    var workExperienceNft = await _walletService.getWorkExperienceNFTs(user.ethereumAddress!);
+    var workExperienceNft =
+        await _walletService.getWorkExperienceNFTs(user.ethereumAddress!);
 
     List<ExperienceRecord> experiences = [];
 
@@ -123,16 +166,46 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     return experiences;
   }
 
-  Future<void> getExperiencesFromIpfs(nft, List<ExperienceRecord> experiences) async {
+  @override
+  Future<List<CleanExperience>> getEventsForCurrentUser() async {
+    var user = await _userService.getCurrentUser();
+    var nftList =
+        await _walletService.getWorkExperienceNFTs(user.ethereumAddress!);
+
+    List<WorkEvent> allEvents = [];
+
+    for (var nft in nftList) {
+      final event = await getExperienceEventsFromIpfs(nft);
+      allEvents.add(event);
+    }
+
+    final groupedStreams = _groupEventsByStream(allEvents);
+
+    final experiences =
+        groupedStreams.values.map((stream) => stream.build()).toList();
+
+    return experiences;
+  }
+
+  @override
+  Future<WorkEvent> getExperienceEventsFromIpfs(dynamic nft) async {
+    var ipfsHash = nft[0].toString();
+    final event = await _ipfsService.getWorkEvent(ipfsHash);
+    return event;
+  }
+
+  Future<void> getExperiencesFromIpfs(
+      nft, List<ExperienceRecord> experiences) async {
     var ipfsHash = nft[0].toString();
     var experience = await _ipfsService.getWorkExperience(ipfsHash);
     experiences.add(ExperienceRecord.fromIPFSExperience(experience));
   }
-  
+
   @override
   Future<List<Certificate>> getCertificatesForCurrentUser() async {
     var user = await _userService.getCurrentUser();
-    var certificateNfts = await _walletService.getCertificateNFTs(user.ethereumAddress!);
+    var certificateNfts =
+        await _walletService.getCertificateNFTs(user.ethereumAddress!);
     List<Certificate> certificates = [];
 
     for (var nft in certificateNfts) {
@@ -141,27 +214,30 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
 
     return certificates;
   }
-  
+
   getCertificatesFromIpfs(nft, List<Certificate> certificates) async {
     var ipfsHash = nft[0].toString();
     var certificate = await _ipfsService.getCertificate(ipfsHash);
     certificates.add(Certificate.fromIPFSCertificate(certificate));
   }
-  
+
   @override
   Future<Wallet> createANewWalletAddressForCurrentUser(String password) async {
     try {
       var wallet = await _walletService.createNewWalletAddress(password);
-      _userService.saveWalletAddressForCurrentUser(wallet.privateKey.address.hex);
+      _userService
+          .saveWalletAddressForCurrentUser(wallet.privateKey.address.hex);
       return wallet;
     } catch (e) {
       throw Exception("Could not create wallet");
     }
   }
-  
+
   @override
-  Future<List<ExperienceRecord>> getWorkExperience(String ethereumAddress) async {
-    var workExperienceNft = await _walletService.getWorkExperienceNFTs(ethereumAddress);
+  Future<List<ExperienceRecord>> getWorkExperience(
+      String ethereumAddress) async {
+    var workExperienceNft =
+        await _walletService.getWorkExperienceNFTs(ethereumAddress);
 
     List<ExperienceRecord> experiences = [];
 
@@ -171,10 +247,31 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
 
     return experiences;
   }
-  
+
+    @override
+  Future<List<CleanExperience>> getEventsForUser(String ethereumAddress) async {
+    var nftList =
+        await _walletService.getWorkExperienceNFTs(ethereumAddress);
+
+    List<WorkEvent> allEvents = [];
+
+    for (var nft in nftList) {
+      final event = await getExperienceEventsFromIpfs(nft);
+      allEvents.add(event);
+    }
+
+    final groupedStreams = _groupEventsByStream(allEvents);
+
+    final experiences =
+        groupedStreams.values.map((stream) => stream.build()).toList();
+
+    return experiences;
+  }
+
   @override
   Future<List<Certificate>> getCertificates(String ethereumAddress) async {
-    var certificateNfts = await _walletService.getCertificateNFTs(ethereumAddress);
+    var certificateNfts =
+        await _walletService.getCertificateNFTs(ethereumAddress);
     List<Certificate> certificates = [];
 
     for (var nft in certificateNfts) {
@@ -182,5 +279,18 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     }
 
     return certificates;
+  }
+
+  Map<String, ExperienceStream> _groupEventsByStream(List<WorkEvent> events) {
+    final Map<String, List<WorkEvent>> grouped = {};
+
+    for (var event in events) {
+      final dynamicEvent = event as dynamic;
+      final streamId = dynamicEvent.experienceStreamId as String;
+      grouped.putIfAbsent(streamId, () => []).add(event);
+    }
+
+    return grouped.map((streamId, events) => MapEntry(
+        streamId, ExperienceStream(streamId: streamId, events: events)));
   }
 }

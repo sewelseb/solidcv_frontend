@@ -4,6 +4,8 @@ import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSCertificate.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSWorkExperience.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEventFactory.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
@@ -45,6 +47,49 @@ class IPFSService extends IIPFSService {
       throw Exception('Failed to pin file to Filebase: ${response.statusCode}');
     }
   }
+
+  @override
+  Future<String> saveWorkEvent(WorkEvent event) async {
+  var headers = {
+    "pinata_api_key": _apiKey,
+    "pinata_secret_api_key": _apiSecret,
+    'Content-Type': 'application/json',
+  };
+
+  var url = Uri.parse(IPFSConnection().pinJsonUrl);
+
+  var body = jsonEncode({
+    "pinataMetadata": {
+      "name": "${event.type}-${event.id}"
+    },
+    "pinataContent": event.toJson(),
+  });
+
+  final response = await http.post(url, headers: headers, body: body);
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    final cid = responseData['IpfsHash'];
+    return cid;
+  } else {
+    throw Exception('Failed to pin event to IPFS: ${response.statusCode}');
+  }
+}
+
+@override
+Future<WorkEvent> getWorkEvent(String ipfsHash) async {
+  final response = await http.get(Uri.parse(ipfsHash));
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    final event = WorkEventFactory.fromJson(responseData);
+    return event;
+  } else {
+    throw Exception('Failed to get WorkEvent from IPFS: ${response.statusCode}');
+  }
+}
+
+
   
   @override
   Future<IPFSWorkExperience> getWorkExperience(String ipfsHash) async {
