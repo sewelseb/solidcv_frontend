@@ -136,219 +136,433 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
   }
 
   void _openAddEmployeeDialog(BuildContext context, User user) {
-  final TextEditingController roleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController newTitleController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController endDateController = TextEditingController();
-  final TextEditingController promotionDateController = TextEditingController();
-  final TextEditingController createPasswordController = TextEditingController();
-  final TextEditingController endPasswordController = TextEditingController();
-  final TextEditingController promotePasswordController = TextEditingController();
+    final TextEditingController roleController = TextEditingController();
+    final TextEditingController descriptionController = TextEditingController();
+    final TextEditingController newTitleController = TextEditingController();
+    final TextEditingController startDateController = TextEditingController();
+    final TextEditingController endDateController = TextEditingController();
+    final TextEditingController promotionDateController =
+        TextEditingController();
+    final TextEditingController createPasswordController =
+        TextEditingController();
+    final TextEditingController endPasswordController = TextEditingController();
+    final TextEditingController promotePasswordController =
+        TextEditingController();
 
-  DateTime? _startDate;
-  DateTime? _endDate;
-  DateTime? _promotionDate;
+    DateTime? _startDate;
+    DateTime? _endDate;
+    DateTime? _promotionDate;
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setModalState) {
-          return FutureBuilder<List<CleanExperience>>(
-            future: _workExperiences,
-            builder: (context, snapshot) {
-              final dropdownItems = snapshot.hasData
-                  ? _buildDropdownItems(snapshot.data!)
-                  : [];
-
-              return AlertDialog(
-                title: const Text('Add or Update Experience'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const Text("\n▶️ Create Work Experience"),
-                      TextField(
-                          decoration: const InputDecoration(labelText: 'Role'),
-                          controller: roleController),
-                      TextField(
-                          decoration:
-                              const InputDecoration(labelText: 'Description'),
-                          controller: descriptionController),
-                      TextField(
-                        controller: startDateController,
-                        decoration:
-                            const InputDecoration(labelText: 'Start Date'),
-                        readOnly: true,
-                        onTap: () async {
-                          _startDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          );
-                          if (_startDate != null) {
-                            startDateController.text =
-                                DateFormat('dd/MM/yyyy').format(_startDate!);
-                          }
-                        },
-                      ),
-                      TextField(
-                        controller: createPasswordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Wallet Password'),
-                        obscureText: true,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final company =
-                              await _companyBll.getCompany(_companyId);
-                          final event = WorkCreatedEvent(
-                            id: randomBytesAsHexString(16),
-                            timestamp: DateTime.now().millisecondsSinceEpoch,
-                            title: roleController.text,
-                            startDate: _startDate?.millisecondsSinceEpoch ??
-                                DateTime.now().millisecondsSinceEpoch,
-                            description: descriptionController.text,
-                            companyName: company.name ?? 'Unknown',
-                            companyWallet: company.ethereumAddress ?? '',
-                            location: 'Unknown',
-                            experienceStreamId: randomBytesAsHexString(16),
-                          );
-                          await _companyBll.addEmployeeEvents(
-                              user, event, _companyId, createPasswordController.text);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('+ Create'),
-                      ),
-                      const Divider(height: 30),
-
-                      const Text("\n🛑 End Experience"),
-                      DropdownButton<String>(
-                        value: _selectedStreamEndEventId,
-                        isExpanded: true,
-                        hint: const Text("Select Experience to End"),
-                        items: dropdownItems.cast<DropdownMenuItem<String>>(),
-                        onChanged: (value) {
-                          setModalState(() {
-                            _selectedStreamEndEventId = value;
-                          });
-                        },
-                      ),
-                      TextField(
-                        controller: endDateController,
-                        decoration: const InputDecoration(labelText: 'End Date'),
-                        readOnly: true,
-                        onTap: () async {
-                          _endDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          );
-                          if (_endDate != null) {
-                            endDateController.text =
-                                DateFormat('dd/MM/yyyy').format(_endDate!);
-                          }
-                        },
-                      ),
-                      TextField(
-                        controller: endPasswordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Wallet Password'),
-                        obscureText: true,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final company =
-                              await _companyBll.getCompany(_companyId);
-                          final event = WorkEndedEvent(
-                            id: randomBytesAsHexString(16),
-                            timestamp: DateTime.now().millisecondsSinceEpoch,
-                            endDate: _endDate?.millisecondsSinceEpoch ??
-                                DateTime.now().millisecondsSinceEpoch,
-                            experienceStreamId: _selectedStreamEndEventId ?? '',
-                            companyName: company.name ?? 'Unknown',
-                            companyWallet: company.ethereumAddress ?? '',
-                          );
-                          await _companyBll.addEmployeeEvents(
-                              user, event, _companyId, endPasswordController.text);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('🛑 End'),
-                      ),
-                      const Divider(height: 30),
-
-                      const Text("\n📈 Promote"),
-                      DropdownButton<String>(
-                        value: _selectedStreamPromoteEventId,
-                        isExpanded: true,
-                        hint: const Text("Select Experience to Promote"),
-                        items: dropdownItems.cast<DropdownMenuItem<String>>(),
-                        onChanged: (value) {
-                          setModalState(() {
-                            _selectedStreamPromoteEventId = value;
-                          });
-                        },
-                      ),
-                      TextField(
-                          decoration:
-                              const InputDecoration(labelText: 'New Title'),
-                          controller: newTitleController),
-                      TextField(
-                        controller: promotionDateController,
-                        decoration:
-                            const InputDecoration(labelText: 'Promotion Date'),
-                        readOnly: true,
-                        onTap: () async {
-                          _promotionDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          );
-                          if (_promotionDate != null) {
-                            promotionDateController.text =
-                                DateFormat('dd/MM/yyyy').format(_promotionDate!);
-                          }
-                        },
-                      ),
-                      TextField(
-                        controller: promotePasswordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Wallet Password'),
-                        obscureText: true,
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final company =
-                              await _companyBll.getCompany(_companyId);
-                          final event = WorkPromotedEvent(
-                            id: randomBytesAsHexString(16),
-                            timestamp: DateTime.now().millisecondsSinceEpoch,
-                            newTitle: newTitleController.text,
-                            promotionDate: _promotionDate?.millisecondsSinceEpoch ??
-                                DateTime.now().millisecondsSinceEpoch,
-                            experienceStreamId: _selectedStreamPromoteEventId ?? '',
-                            companyName: company.name ?? 'Unknown',
-                            companyWallet: company.ethereumAddress ?? '',
-                          );
-                          await _companyBll.addEmployeeEvents(
-                              user, event, _companyId, promotePasswordController.text);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('📈 Promote'),
-                      ),
-                    ],
-                  ),
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            double maxWidth = 540;
+            if (constraints.maxWidth < 600)
+              maxWidth = constraints.maxWidth * 0.96;
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: maxWidth,
+                  minWidth: 320,
                 ),
-              );
-            },
-          );
-        },
-      );
-    },
-  );
-}
+                child: FutureBuilder<List<CleanExperience>>(
+                  future: _workExperiences,
+                  builder: (context, snapshot) {
+                    final dropdownItems = snapshot.hasData
+                        ? _buildDropdownItems(snapshot.data!)
+                        : [];
 
+                    // Partie UI
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Add or Update Experience',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Card(
+                            elevation: 0,
+                            color: Colors.grey[50],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            margin: EdgeInsets.zero,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 22),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("▶️ Create Work Experience",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 14),
+                                  TextField(
+                                      decoration: const InputDecoration(
+                                          labelText: 'Role',
+                                          border: OutlineInputBorder()),
+                                      controller: roleController),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                      decoration: const InputDecoration(
+                                          labelText: 'Description',
+                                          border: OutlineInputBorder()),
+                                      controller: descriptionController),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: startDateController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Start Date',
+                                        border: OutlineInputBorder()),
+                                    readOnly: true,
+                                    onTap: () async {
+                                      _startDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (_startDate != null) {
+                                        startDateController.text =
+                                            DateFormat('dd/MM/yyyy')
+                                                .format(_startDate!);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: createPasswordController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Wallet Password',
+                                        border: OutlineInputBorder()),
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 18),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.deepPurple[300],
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      onPressed: () async {
+                                        final company = await _companyBll
+                                            .getCompany(_companyId);
+                                        final event = WorkCreatedEvent(
+                                          id: randomBytesAsHexString(16),
+                                          timestamp: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                          title: roleController.text,
+                                          startDate: _startDate
+                                                  ?.millisecondsSinceEpoch ??
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch,
+                                          description:
+                                              descriptionController.text,
+                                          companyName:
+                                              company.name ?? 'Unknown',
+                                          companyWallet:
+                                              company.ethereumAddress ?? '',
+                                          location: 'Unknown',
+                                          experienceStreamId:
+                                              randomBytesAsHexString(16),
+                                        );
+                                        await _companyBll.addEmployeeEvents(
+                                            user,
+                                            event,
+                                            _companyId,
+                                            createPasswordController.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('+ Create',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 26),
+
+                          // End Experience
+                          Card(
+                            elevation: 0,
+                            color: Colors.grey[50],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            margin: EdgeInsets.zero,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 22),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Row(
+                                    children: const [
+                                      Icon(Icons.stop_circle,
+                                          color: Colors.red, size: 22),
+                                      SizedBox(width: 6),
+                                      Text("End Experience",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 14),
+                                  DropdownButtonFormField<String>(
+                                    value: _selectedStreamEndEventId,
+                                    isExpanded: true,
+                                    decoration: const InputDecoration(
+                                      labelText: "Select Experience to End",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    items: dropdownItems
+                                        .cast<DropdownMenuItem<String>>(),
+                                    onChanged: (value) {
+                                      // On set dans le scope de showDialog, donc StateSetter
+                                      (context as Element).markNeedsBuild();
+                                      _selectedStreamEndEventId = value;
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: endDateController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'End Date',
+                                        border: OutlineInputBorder()),
+                                    readOnly: true,
+                                    onTap: () async {
+                                      _endDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (_endDate != null) {
+                                        endDateController.text =
+                                            DateFormat('dd/MM/yyyy')
+                                                .format(_endDate!);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: endPasswordController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Wallet Password',
+                                        border: OutlineInputBorder()),
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 18),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red[400],
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      icon: const Icon(Icons.stop,
+                                          color: Colors.white),
+                                      onPressed: () async {
+                                        final company = await _companyBll
+                                            .getCompany(_companyId);
+                                        final event = WorkEndedEvent(
+                                          id: randomBytesAsHexString(16),
+                                          timestamp: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                          endDate: _endDate
+                                                  ?.millisecondsSinceEpoch ??
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch,
+                                          experienceStreamId:
+                                              _selectedStreamEndEventId ?? '',
+                                          companyName:
+                                              company.name ?? 'Unknown',
+                                          companyWallet:
+                                              company.ethereumAddress ?? '',
+                                        );
+                                        await _companyBll.addEmployeeEvents(
+                                            user,
+                                            event,
+                                            _companyId,
+                                            endPasswordController.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                      label: const Text('End',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 26),
+
+                          // Promote Experience
+                          Card(
+                            elevation: 0,
+                            color: Colors.grey[50],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            margin: EdgeInsets.zero,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 22),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Row(
+                                    children: const [
+                                      Icon(Icons.trending_up,
+                                          color: Colors.blue, size: 22),
+                                      SizedBox(width: 6),
+                                      Text("Promote",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 14),
+                                  DropdownButtonFormField<String>(
+                                    value: _selectedStreamPromoteEventId,
+                                    isExpanded: true,
+                                    decoration: const InputDecoration(
+                                      labelText: "Select Experience to Promote",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    items: dropdownItems
+                                        .cast<DropdownMenuItem<String>>(),
+                                    onChanged: (value) {
+                                      (context as Element).markNeedsBuild();
+                                      _selectedStreamPromoteEventId = value;
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                      decoration: const InputDecoration(
+                                          labelText: 'New Title',
+                                          border: OutlineInputBorder()),
+                                      controller: newTitleController),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: promotionDateController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Promotion Date',
+                                        border: OutlineInputBorder()),
+                                    readOnly: true,
+                                    onTap: () async {
+                                      _promotionDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (_promotionDate != null) {
+                                        promotionDateController.text =
+                                            DateFormat('dd/MM/yyyy')
+                                                .format(_promotionDate!);
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: promotePasswordController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Wallet Password',
+                                        border: OutlineInputBorder()),
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 18),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue[400],
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      icon: const Icon(Icons.trending_up,
+                                          color: Colors.white),
+                                      onPressed: () async {
+                                        final company = await _companyBll
+                                            .getCompany(_companyId);
+                                        final event = WorkPromotedEvent(
+                                          id: randomBytesAsHexString(16),
+                                          timestamp: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                          newTitle: newTitleController.text,
+                                          promotionDate: _promotionDate
+                                                  ?.millisecondsSinceEpoch ??
+                                              DateTime.now()
+                                                  .millisecondsSinceEpoch,
+                                          experienceStreamId:
+                                              _selectedStreamPromoteEventId ??
+                                                  '',
+                                          companyName:
+                                              company.name ?? 'Unknown',
+                                          companyWallet:
+                                              company.ethereumAddress ?? '',
+                                        );
+                                        await _companyBll.addEmployeeEvents(
+                                            user,
+                                            event,
+                                            _companyId,
+                                            promotePasswordController.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                      label: const Text('Promote',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
