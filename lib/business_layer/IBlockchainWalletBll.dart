@@ -1,3 +1,6 @@
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkCreatEvent.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
@@ -21,4 +24,11 @@ abstract class IBlockchainWalletBll {
 
   Future<List<Certificate>> getCertificates(String ethereumAddress);
 
+  Future<String> createWorkEventToken(WorkEvent event, int companyId, int userId, String password);
+
+  Future<List<CleanExperience>> getEventsForCurrentUser();
+
+  Future<WorkEvent> getExperienceEventsFromIpfs(dynamic nft);
+  
+Future<List<CleanExperience>> getEventsForUser(String ethereumAddress);
 }

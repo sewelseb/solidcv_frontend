@@ -1,4 +1,6 @@
 import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -96,4 +98,20 @@ class UserBll extends IUserBLL {
     final user = await getCurrentUser();
     return user.roles?.contains('ROLE_ADMIN') ?? false;
   }
+}
+
+  void addManualExperience(ManualExperience newExperience) {
+    _userService.addManualExperience(newExperience);
+  }
+
+  @override
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences() {
+    return _userService.getMyManuallyAddedExperiences();
+  } 
+
+  @override
+  void addManuallyPromotion(Promotion promotion, int experienceId) {
+    _userService.addManuallyPromotion(promotion, experienceId);
+  }
+  
 }
