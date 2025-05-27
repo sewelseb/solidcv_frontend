@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
-import 'package:solid_cv/data_access_layer/IUserService.dart';
-import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:flutter/services.dart';
 
 class LoggedInHome extends StatefulWidget {
   const LoggedInHome({super.key});
@@ -19,209 +19,515 @@ class LoggedInHome extends StatefulWidget {
 
 class _LoggedInHomeState extends State<LoggedInHome> {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
-  TextEditingController walletAddressController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController _walletAddressController =
+      TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final IUserBLL _userBll = UserBll();
-  late Future<User> _currentUser;
-  Wallet? wallet;
+  late Future<User> _currentUserFuture;
+  Wallet? _createdWallet;
+
+  final Color _primaryColor = const Color(0xFF7B3FE4);
+  final Color _gradientStart = const Color(0xFF7B3FE4);
+  final Color _gradientEnd = const Color(0xFFB57AED);
+  final Color _glassBackground = Colors.white.withOpacity(0.85);
+  final Color _borderColor = Colors.deepPurple.shade100;
+  final Color _shadowColor = Colors.deepPurple.shade50;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUserFuture = _userBll.getCurrentUser();
+  }
+
+  Future<void> _handleConnectWallet() async {
+    final address = _walletAddressController.text.trim();
+    if (address.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a wallet address.')),
+      );
+      return;
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Connecting wallet...')),
+    );
+
+    var success =
+        await _blockchainWalletBll.saveWalletAddressForCurrentUser(address);
+    if (mounted) {
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Wallet address saved successfully!')),
+        );
+        setState(() {
+          _currentUserFuture = _userBll.getCurrentUser();
+          _walletAddressController.clear();
+          _createdWallet = null;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+                  'Failed to save wallet address. The address might be invalid or already in use.')),
+        );
+      }
+    }
+  }
+
+  Future<void> _handleCreateWallet() async {
+    final password = _passwordController.text;
+    if (password.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+                Text('Please enter a password to encrypt your private key.')),
+      );
+      return;
+    }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Creating wallet...')),
+    );
+
+    final wallet = await _blockchainWalletBll
+        .createANewWalletAddressForCurrentUser(password);
+    if (mounted) {
+      if (wallet != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('New wallet created and address saved!')),
+        );
+        setState(() {
+          _createdWallet = wallet;
+          _currentUserFuture = _userBll.getCurrentUser();
+          _passwordController.clear();
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to create wallet.')),
+        );
+      }
+    }
+  }
+
+  InputDecoration _textFieldDecoration(String label,
+      {IconData? prefixIcon, Widget? suffixIcon}) {
+    return InputDecoration(
+      labelText: label,
+      hintText: label.contains("Address") || label.contains("Adresse")
+          ? "0x..."
+          : null,
+      prefixIcon:
+          prefixIcon != null ? Icon(prefixIcon, color: _primaryColor) : null,
+      suffixIcon: suffixIcon,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: _primaryColor, width: 2.0),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      filled: true,
+      fillColor: Colors.grey.shade50,
+      labelStyle: GoogleFonts.inter(color: Colors.black87),
+      hintStyle: GoogleFonts.inter(color: Colors.black26),
+    );
+  }
+
+  ElevatedButtonThemeData _buttonTheme() {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 50),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        textStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w700),
+        elevation: 1.5,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    _currentUser = _userBll.getCurrentUser();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
 
-    return Scaffold(
+    return Theme(
+      data: Theme.of(context).copyWith(elevatedButtonTheme: _buttonTheme()),
+      child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Home'),
+          title: Text(
+            'Home',
+            style: GoogleFonts.inter(
+                color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: _primaryColor,
+          elevation: 1,
+          iconTheme: const IconThemeData(color: Colors.white),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         bottomNavigationBar: const MainBottomNavigationBar(),
-        body:
-            //add a form to connect your etherium wallet
-            ListView(
-          shrinkWrap: true,
-          children: [
-            FutureBuilder(
-              future: _currentUser,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.ethereumAddress != null &&
-                      wallet == null) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Your Ethereum Wallet',
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                            const Text(
-                              "Your wallet is connected and ready to use. You can start using the app's features.",
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.grey),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              'Wallet Address: ${snapshot.data!.ethereumAddress}',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Connect your Ethereum Wallet',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Text(
-                                  "Connect your wallet to start using the app's features. The wallet will be used to store your credentials (work experiences and diplomas) and other important information as NFTs.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
-                                ),
-                                const SizedBox(height: 20),
-                                TextField(
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'Wallet Address',
-                                  ),
-                                  controller: walletAddressController,
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    var success = await _blockchainWalletBll
-                                        .saveWalletAddressForCurrentUser(
-                                            walletAddressController.text);
-                                    if (success) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Wallet address saved successfully'),
-                                        ),
-                                      );
-                                      //reload the page
-                                      setState(() {
-                                        walletAddressController.clear();
-                                      });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Failed to save wallet address, probably the address is invalid'),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  child: const Text('Connect'),
-                                ),
-                                const SizedBox(height: 20),
-                                const Text(
-                                  "Or create a new wallet",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 20),
-                                TextField(
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText:
-                                        'Password (to encrypt the private key, make sure to remember it, there is no way to recover it)',
-                                  ),
-                                  controller: passwordController,
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    wallet = await _blockchainWalletBll
-                                        .createANewWalletAddressForCurrentUser(
-                                            passwordController.text);
-                                    if (wallet != null) {
-                                      setState(() {
-                                        passwordController.clear();
-                                      });
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content:
-                                              Text('Failed to create wallet'),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  child: const Text('Create a new wallet'),
-                                ),
-                                const SizedBox(height: 20),
-                                if (wallet != null) ...[
-                                  const Text(
-                                    'Wallet created successfully',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  SelectableText(
-                                      'Public Key: ${wallet!.privateKey.address.hex}'),
-                                  const SizedBox(height: 10),
-                                  SelectableText(
-                                      'Private Key: 0x${bytesToHex(wallet!.privateKey.privateKey)}'),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    'Make sure to save the private key in a safe place, it will not be shown again and you can\'t recover it.',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                ],
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+        body: FutureBuilder<User>(
+          future: _currentUserFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: Text("User not found."));
+            }
+
+            final user = snapshot.data!;
+            final bool hasWalletConnected = user.ethereumAddress != null &&
+                user.ethereumAddress!.isNotEmpty;
+
+            if (hasWalletConnected && _createdWallet == null) {
+              return _buildWalletConnectedView(user, isMobile);
+            } else {
+              return _buildWalletSetupView(isMobile);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWalletConnectedView(User user, bool isMobile) {
+    Widget contentColumn = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(Icons.check_circle_outline,
+            color: _primaryColor, size: isMobile ? 60 : 80),
+        const SizedBox(height: 24),
+        Text(
+          'Your Ethereum Wallet',
+          style: GoogleFonts.inter(
+              fontSize: isMobile ? 22 : 26,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        Container(
+          constraints:
+              BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
+          child: Text(
+            "Your wallet is connected and ready to use. You can start using the app's features.",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+                fontSize: 16, color: Colors.black54, height: 1.5),
+          ),
+        ),
+        const SizedBox(height: 32),
+        LayoutBuilder(builder: (context, constraints) {
+          double boxTargetWidth;
+          double maxBoxWidthOnDesktop = 550.0;
+
+          if (isMobile) {
+            boxTargetWidth = constraints.maxWidth;
+          } else {
+            boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
+                ? constraints.maxWidth
+                : maxBoxWidthOnDesktop;
+          }
+          return Container(
+            width: boxTargetWidth,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: _glassBackground,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: _gradientStart.withOpacity(0.18), width: 1.1),
+              boxShadow: [
+                BoxShadow(
+                  color: _shadowColor,
+                  blurRadius: 14,
+                  spreadRadius: 0.5,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Wallet Address:',
+                  style: GoogleFonts.inter(fontSize: 16, color: Colors.black54),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 4),
+                SelectableText(
+                  user.ethereumAddress!,
+                  style: GoogleFonts.robotoMono(
+                      fontSize: isMobile ? 15 : 16,
+                      fontWeight: FontWeight.w600,
+                      color: _primaryColor),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                TextButton.icon(
+                  icon: Icon(Icons.copy, size: 18, color: _primaryColor),
+                  label: Text("Copy Address",
+                      style: TextStyle(color: _primaryColor)),
+                  onPressed: () {
+                    Clipboard.setData(
+                        ClipboardData(text: user.ethereumAddress!));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Address copied to clipboard!')),
+                    );
+                  },
+                )
+              ],
+            ),
+          );
+        }),
+        const SizedBox(height: 30),
+      ],
+    );
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        return SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: viewportConstraints.maxHeight,
+            ),
+            padding: const EdgeInsets.all(24.0),
+            alignment: Alignment.center,
+            child: contentColumn,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildWalletSetupView(bool isMobile) {
+    if (_createdWallet != null) {
+      return SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
+        child: _buildWalletCreationResult(_createdWallet!, isMobile),
+      );
+    }
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(
+          horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildSectionCard(
+            title: 'Connect an Existing Wallet',
+            description:
+                "If you already have an Ethereum wallet, enter its public address to link it to your SolidCV account.",
+            icon: Icons.link,
+            formFields: [
+              TextField(
+                controller: _walletAddressController,
+                decoration: _textFieldDecoration("Ethereum Address",
+                    prefixIcon: Icons.account_balance_wallet_outlined),
+                keyboardType: TextInputType.text,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _handleConnectWallet,
+                child: const Text('Connect Wallet'),
+              ),
+            ],
+            isMobile: isMobile,
+          ),
+          const SizedBox(height: 32),
+          _buildSectionCard(
+            title: 'Create a New Wallet',
+            description:
+                "SolidCV can generate a new secure Ethereum wallet for you. Choose a strong password to protect your private key.",
+            icon: Icons.add_circle_outline,
+            formFields: [
+              TextField(
+                controller: _passwordController,
+                decoration: _textFieldDecoration(
+                  "Password (to encrypt the private key, make sure to remember it, there is no way to recover it)",
+                  prefixIcon: Icons.lock_outline,
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "This password will encrypt your private key. Keep it safe, it is unrecoverable.",
+                style: TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _handleCreateWallet,
+                child: const Text('Create a New Wallet'),
+              ),
+            ],
+            isMobile: isMobile,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionCard({
+    required String title,
+    required String description,
+    required IconData icon,
+    required List<Widget> formFields,
+    required bool isMobile,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(22.0),
+      decoration: BoxDecoration(
+        color: _glassBackground,
+        borderRadius: BorderRadius.circular(18.0),
+        border: Border.all(color: _gradientStart.withOpacity(0.18), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: _shadowColor,
+            blurRadius: 18,
+            spreadRadius: 1,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [_gradientStart, _gradientEnd],
+                  ),
+                ),
+                padding: const EdgeInsets.all(8),
+                child:
+                    Icon(icon, color: Colors.white, size: isMobile ? 22 : 28),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: isMobile ? 18 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 13),
+          Text(
+            description,
+            style: GoogleFonts.inter(
+                fontSize: 14, color: Colors.black54, height: 1.5),
+          ),
+          const SizedBox(height: 22),
+          ...formFields,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWalletCreationResult(Wallet wallet, bool isMobile) {
+    String privateKeyHex = bytesToHex(wallet.privateKey.privateKey);
+    String publicKeyHex = wallet.privateKey.address.hex;
+
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: _glassBackground,
+        borderRadius: BorderRadius.circular(12.0),
+        border: Border.all(color: _primaryColor.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Wallet created successfully!',
+            style: GoogleFonts.inter(
+                fontSize: isMobile ? 18 : 20,
+                fontWeight: FontWeight.bold,
+                color: _primaryColor),
+          ),
+          const SizedBox(height: 16),
+          _buildKeyInfo("Public Key:", publicKeyHex, isMobile, isAddress: true),
+          const SizedBox(height: 12),
+          _buildKeyInfo("Private Key:", "0x$privateKeyHex", isMobile),
+          const SizedBox(height: 16),
+          const Text(
+            'Make sure to save the private key in a safe place, it will not be shown again and you can\'t recover it.',
+            style: TextStyle(
+                fontSize: 14,
+                color: Colors.redAccent,
+                fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _createdWallet = null;
+                });
+              },
+              child: const Text("OK"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKeyInfo(String label, String value, bool isMobile,
+      {bool isAddress = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.inter(
+              fontWeight: FontWeight.bold,
+              color: _primaryColor,
+              fontSize: isMobile ? 13 : 15),
+        ),
+        const SizedBox(height: 3),
+        Row(
+          children: [
+            Expanded(
+              child: SelectableText(
+                value,
+                style: GoogleFonts.robotoMono(
+                    fontSize: isMobile ? 13 : 14, color: Colors.black87),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.copy, size: 18, color: _primaryColor),
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: value));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content:
+                          Text('${label.replaceAll(":", "")} value copied!')),
+                );
+              },
+              tooltip: "Copy value",
+            )
           ],
-        ));
+        ),
+      ],
+    );
   }
 }
