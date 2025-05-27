@@ -13,8 +13,8 @@ class CleanExperience {
   List<Promotion> promotions = [];
 
   String? get currentTitle {
-  if (promotions.isEmpty) return title;
-  promotions.sort((a, b) => b.date.compareTo(a.date)); // plus récent en premier
-  return promotions.first.newTitle;
-}
+    if (promotions.isEmpty) return title;
+    promotions.sort((a, b) => b.date.compareTo(a.date));
+    return promotions.first.newTitle;
+  }
 }

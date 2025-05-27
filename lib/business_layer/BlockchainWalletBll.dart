@@ -6,7 +6,6 @@ import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSExperienceStream.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSExperienceTimeLine.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';

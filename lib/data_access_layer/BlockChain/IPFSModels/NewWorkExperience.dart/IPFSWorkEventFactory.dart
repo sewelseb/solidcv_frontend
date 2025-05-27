@@ -2,7 +2,6 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEndedEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkPromotedEvent.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkUpdatedEvent.dart';
 
 class WorkEventFactory {
   static WorkEvent fromJson(Map<String, dynamic> json) {
@@ -20,22 +19,7 @@ class WorkEventFactory {
           location: json['location'],
           experienceStreamId: json['experienceStreamId'],
         );
-      case 'WorkUpdatedEvent':
-        return WorkUpdatedEvent(
-          id: json['id'],
-          timestamp: json['timestamp'],
-          correctedTitle: json['correctedTitle'],
-          correctedStartDate: json['correctedStartDate'],
-          correctedEndDate: json['correctedEndDate'],
-          correctedDescription: json['correctedDescription'],
-          correctedLocation: json['correctedLocation'],
-          correctedPromotionTitle: json['correctedPromotionTitle'],
-          correctedPromotionDate: json['correctedPromotionDate'],
-          experienceStreamId: json['experienceStreamId'],
-          companyName: json['companyName'],
-          companyWallet: json['companyWallet'],
-
-        );
+      
       case 'WorkPromotedEvent':
         return WorkPromotedEvent(
           id: json['id'],

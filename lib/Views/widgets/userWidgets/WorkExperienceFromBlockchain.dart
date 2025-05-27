@@ -9,12 +9,6 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
     required this.workExperience,
   }) : super(key: key);
 
-  String _formatDate(int? millis) {
-    if (millis == null) return 'Ongoing';
-    final date = DateTime.fromMillisecondsSinceEpoch(millis);
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
   @override
   Widget build(BuildContext context) {
     final title = workExperience.title ?? '';
@@ -22,7 +16,6 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
     final description = workExperience.description ?? '';
     final startDate = _formatDate(workExperience.startDate);
     final endDate = _formatDate(workExperience.endDate);
-    final isOngoing = workExperience.endDate == null;
     final hasPromotions = workExperience.promotions.isNotEmpty;
 
     return Card(
@@ -61,7 +54,6 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
                   style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 12),
-
                 if (hasPromotions) ...[
                   const Divider(color: Colors.grey),
                   const SizedBox(height: 8),
@@ -81,12 +73,12 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 2.0),
                       child: Text(
                         '🔹 ${p.newTitle} – $formattedDate',
-                        style: const TextStyle(fontSize: 14, color: Colors.black87),
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black87),
                       ),
                     );
                   }).toList(),
                 ],
-
                 if (description.isNotEmpty) ...[
                   const Divider(color: Colors.grey),
                   const SizedBox(height: 12),
@@ -103,20 +95,21 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
             right: 10,
             child: Row(
               children: [
-                Icon(
-                  isOngoing ? Icons.work_outline : Icons.verified,
-                  color: isOngoing ? Colors.orange : Colors.green,
+                const Icon(
+                  Icons.verified,
+                  color: Colors.green,
                   size: 24,
                 ),
                 const SizedBox(width: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: isOngoing ? Colors.orange : Colors.green,
+                    color: Colors.green,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    isOngoing ? 'Ongoing' : 'Verified',
+                  child: const Text(
+                    'Verified',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -129,5 +122,11 @@ class WorkExperienceFromBlockchain extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatDate(int? millis) {
+    if (millis == null) return 'Ongoing';
+    final date = DateTime.fromMillisecondsSinceEpoch(millis);
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

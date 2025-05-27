@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/WorkExperienceCard.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/WorkExperienceFromBlockchain.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
@@ -63,12 +62,21 @@ class _WorkExperienceWidgetState extends State<WorkExperienceWidget> {
               return const Center(child: Text('No work experience found.'));
             } else {
               final experiences = snapshot.data!;
-              experiences.sort((a, b) => (b.endDate ?? 0).compareTo(a.endDate ?? 0));
+              experiences.sort((a, b) {
+                final aOngoing = a.endDate == null;
+                final bOngoing = b.endDate == null;
 
+                if (aOngoing && !bOngoing) return -1; 
+                if (!aOngoing && bOngoing) return 1; 
+
+                return (b.endDate ?? 0)
+                    .compareTo(a.endDate ?? 0);
+              });
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: experiences.map((experience) {
-                  return WorkExperienceFromBlockchain(workExperience: experience);
+                  return WorkExperienceFromBlockchain(
+                      workExperience: experience);
                 }).toList(),
               );
             }

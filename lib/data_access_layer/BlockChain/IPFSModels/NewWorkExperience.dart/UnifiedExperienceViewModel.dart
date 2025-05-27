@@ -49,7 +49,6 @@ class UnifiedExperienceViewModel {
     );
   }
 
-  // ✅ Convertisseur ManualExperience
   factory UnifiedExperienceViewModel.fromManual(ManualExperience e) {
     return UnifiedExperienceViewModel(
       manualId :e.id,

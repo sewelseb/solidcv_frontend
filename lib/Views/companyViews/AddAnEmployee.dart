@@ -49,7 +49,6 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
 
   List<DropdownMenuItem<String>> _buildDropdownItems(
       List<CleanExperience> experiences) {
-    // On garde uniquement les expériences valides (issues de WorkCreatedEvent)
     _availableExperiences = experiences
         .where((e) =>
             e.title != null &&
