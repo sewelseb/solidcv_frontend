@@ -98,8 +98,9 @@ class UserBll extends IUserBLL {
     final user = await getCurrentUser();
     return user.roles?.contains('ROLE_ADMIN') ?? false;
   }
-}
 
+
+  @override
   void addManualExperience(ManualExperience newExperience) {
     _userService.addManualExperience(newExperience);
   }
