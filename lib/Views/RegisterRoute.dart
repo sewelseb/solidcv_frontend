@@ -28,20 +28,20 @@ class _RegisterRouteState extends State<RegisterRoute> {
 
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez remplir tous les champs')),
+        const SnackBar(content: Text('Please fill in all fields')),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Les mots de passe ne correspondent pas')),
+        const SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Inscription en cours...')),
+      const SnackBar(content: Text('Registering...')),
     );
 
     try {
@@ -57,7 +57,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
       Navigator.pushNamed(context, '/loggedin/home');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de l\'inscription : $e')),
+        SnackBar(content: Text('Registration failed: $e')),
       );
     }
   }
@@ -224,19 +224,19 @@ class _RegisterForm extends StatelessWidget {
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Créer un compte SolidCV",
+        Text("Create a SolidCV Account",
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 8),
-        Text("Inscrivez-vous pour gérer vos qualifications vérifiées.",
+        Text("Sign up to manage your verified credentials.",
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 32),
         TextField(
           controller: emailController,
           decoration: InputDecoration(
-            labelText: "Adresse e-mail",
-            hintText: "exemple@domaine.com",
+            labelText: "Email address",
+            hintText: "example@domain.com",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -251,7 +251,7 @@ class _RegisterForm extends StatelessWidget {
           controller: passwordController,
           obscureText: obscurePassword,
           decoration: InputDecoration(
-            labelText: "Mot de passe",
+            labelText: "Password",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -270,7 +270,7 @@ class _RegisterForm extends StatelessWidget {
           controller: passwordConfirmationController,
           obscureText: obscureConfirmPassword,
           decoration: InputDecoration(
-            labelText: "Confirmation du mot de passe",
+            labelText: "Confirm password",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -297,21 +297,21 @@ class _RegisterForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child: const Text("Créer mon compte",
+          child: const Text("Sign up",
               style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Déjà un compte ?",
+            const Text("Already have an account?",
                 style: TextStyle(fontSize: 14, color: Colors.black54)),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text(
-                "Se connecter",
+                "Sign in",
                 style: TextStyle(
                   color: Color(0xFF7B3FE4),
                   fontWeight: FontWeight.bold,

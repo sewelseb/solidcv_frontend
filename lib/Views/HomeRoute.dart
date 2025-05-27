@@ -24,13 +24,13 @@ class _HomeRouteState extends State<HomeRoute> {
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez remplir tous les champs')),
+        const SnackBar(content: Text('Please fill in all fields')),
       );
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Connexion en cours...')),
+      const SnackBar(content: Text('Signing in...')),
     );
 
     try {
@@ -46,7 +46,7 @@ class _HomeRouteState extends State<HomeRoute> {
       Navigator.pushNamed(context, '/loggedin/home');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Échec de connexion : $e')),
+        SnackBar(content: Text('Login failed: $e')),
       );
     }
   }
@@ -198,19 +198,19 @@ class _LoginForm extends StatelessWidget {
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Bienvenue sur SolidCV",
+        Text("Welcome to SolidCV",
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 8),
-        Text("Connectez-vous pour gérer vos qualifications vérifiées.",
+        Text("Sign in to manage your verified credentials.",
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 32),
         TextField(
           controller: emailController,
           decoration: InputDecoration(
-            labelText: "Adresse e-mail",
-            hintText: "exemple@domaine.com",
+            labelText: "Email address",
+            hintText: "example@domain.com",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -225,7 +225,7 @@ class _LoginForm extends StatelessWidget {
           controller: passwordController,
           obscureText: obscurePassword,
           decoration: InputDecoration(
-            labelText: "Mot de passe",
+            labelText: "Password",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -244,7 +244,7 @@ class _LoginForm extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {},
-            child: const Text("Mot de passe oublié ?",
+            child: const Text("Forgot password?",
                 style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 14)),
           ),
         ),
@@ -261,20 +261,20 @@ class _LoginForm extends StatelessWidget {
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           child:
-              const Text("Se connecter", style: TextStyle(color: Colors.white)),
+              const Text("Sign in", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Pas encore de compte ?",
+            const Text("Don't have an account?",
                 style: TextStyle(fontSize: 14, color: Colors.black54)),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/register');
               },
               child: const Text(
-                "S'inscrire",
+                "Register",
                 style: TextStyle(
                   color: Color(0xFF7B3FE4),
                   fontWeight: FontWeight.bold,
@@ -288,6 +288,8 @@ class _LoginForm extends StatelessWidget {
     );
   }
 }
+
+// --- SECTION TRANSLATIONS ---
 
 class AboutUsSection extends StatelessWidget {
   const AboutUsSection({super.key});
@@ -304,7 +306,7 @@ class AboutUsSection extends StatelessWidget {
       child: Column(
         children: [
           const Text(
-            "Découvrez SolidCV",
+            "Discover SolidCV",
             style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -314,9 +316,9 @@ class AboutUsSection extends StatelessWidget {
           const SizedBox(height: 48),
           _AboutUsBlock(
             imagePath: 'lib/assets/section1.png',
-            title: 'Réinventons la Confiance dans le Recrutement',
+            title: 'Reinventing Trust in Recruitment',
             description:
-                "Face à un marché où un CV sur cinq peut comporter des inexactitudes et où leur actualisation est une source de tracas, SolidCV se positionne en précurseur. Nous façonnons l'avenir du recrutement grâce à une plateforme où chaque qualification est scrupuleusement vérifiable et chaque parcours professionnel est mis en valeur avec une intégrité absolue. Laissez derrière vous l'incertitude, et accueillez une ère de transparence et de fiabilité.",
+                "In a market where one in five CVs may contain inaccuracies and keeping them updated is a hassle, SolidCV positions itself as a pioneer. We are shaping the future of recruitment with a platform where every qualification is strictly verifiable and every professional journey is highlighted with absolute integrity. Leave uncertainty behind and embrace a new era of transparency and reliability.",
             reverse: false,
             isMobile: isMobile,
           ),
@@ -325,9 +327,9 @@ class AboutUsSection extends StatelessWidget {
           const SizedBox(height: 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section2.png',
-            title: 'La Révolution Blockchain au Service de Vos Diplômes',
+            title: 'The Blockchain Revolution Serving Your Diplomas',
             description:
-                "SolidCV s'appuie sur la robustesse de la technologie blockchain. Chaque diplôme, certification et expérience devient un NFT unique, infalsifiable, sécurisé au sein de votre portefeuille numérique personnel. Les institutions émettrices valident vos accomplissements directement sur la blockchain, offrant aux recruteurs un accès instantané à des preuves de compétences irréfutables. Votre carrière, authentifiée et valorisée.",
+                "SolidCV is based on the robustness of blockchain technology. Every diploma, certificate, and experience becomes a unique, tamper-proof NFT, secured in your personal digital wallet. Issuing institutions validate your achievements directly on the blockchain, providing recruiters with instant access to undeniable proof of your skills. Your career, authenticated and valued.",
             reverse: true,
             isMobile: isMobile,
           ),
@@ -336,9 +338,9 @@ class AboutUsSection extends StatelessWidget {
           const SizedBox(height: 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section3.png',
-            title: 'Un Écosystème Vertueux pour Tous les Acteurs',
+            title: 'A Virtuous Ecosystem for All Stakeholders',
             description:
-                "SolidCV tisse un réseau d'avantages mutuels : les utilisateurs gardent la pleine maîtrise de leur identité professionnelle et sont incités pour leur participation active. Les entreprises et établissements d'enseignement fluidifient leurs processus de vérification et contribuent à un standard de confiance élevé. Notre mécanisme de validation novateur permet même d'intégrer et de crédibiliser vos expériences antérieures, assurant une transition naturelle vers le CV de demain.",
+                "SolidCV weaves a network of mutual benefits: users retain full control over their professional identity and are rewarded for their active participation. Companies and educational institutions streamline their verification processes and contribute to a high standard of trust. Our innovative validation mechanism even allows you to integrate and validate your past experiences, ensuring a smooth transition to the CV of tomorrow.",
             reverse: false,
             isMobile: isMobile,
           ),
@@ -488,7 +490,7 @@ class TargetAudienceSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Pour qui SolidCV est-il pensé ?",
+            "Who is SolidCV for?",
             style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -502,21 +504,21 @@ class TargetAudienceSection extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               _TargetCard(
-                title: "Pour Tous les Professionnels",
+                title: "For All Professionals",
                 description:
-                    "Que vous soyez étudiant, jeune diplômé ou professionnel expérimenté, SolidCV vous donne les outils pour valoriser vos compétences de manière vérifiable.",
+                    "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
                 imagePath: 'lib/assets/user.png',
               ),
               _TargetCard(
-                title: "Pour les Entreprises",
+                title: "For Companies",
                 description:
-                    "Recrutez plus efficacement avec des CV vérifiés, en réduisant le temps et les coûts de vérification.",
+                    "Recruit more efficiently with verified CVs, reducing time and verification costs.",
                 imagePath: 'lib/assets/company.png',
               ),
               _TargetCard(
-                title: "Pour les Établissements d'Enseignement",
+                title: "For Educational Institutions",
                 description:
-                    "Offrez à vos étudiants des certifications numériques infalsifiables et partageables.",
+                    "Offer your students tamper-proof, shareable digital certifications.",
                 imagePath: 'lib/assets/institution.png',
               ),
             ],
@@ -579,7 +581,7 @@ class PricingSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Nos Offres Flexibles",
+            "Our Flexible Offers",
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -591,27 +593,27 @@ class PricingSection extends StatelessWidget {
               runSpacing: 32,
               children: [
                 _UnifiedPricingCard(
-                  title: "Utilisateur",
-                  freeFeatures: ["Créer et partager votre CV"],
+                  title: "User",
+                  freeFeatures: ["Create and share your CV"],
                   paidFeatures: [
-                    "Statistiques sur les vues de votre CV et points d’attention",
-                    "Templates CV premium",
+                    "Statistics on your CV views and attention points",
+                    "Premium CV templates",
                   ],
                   price: "4,99€",
                 ),
                 _UnifiedPricingCard(
-                  title: "Établissement",
-                  freeFeatures: ["Donner des credentials aux utilisateurs"],
+                  title: "Institution",
+                  freeFeatures: ["Issue credentials to users"],
                   paidFeatures: [
-                    "Statistiques avancées sur l’usage des certifications",
+                    "Advanced statistics on certification usage",
                   ],
                   price: "4,99€",
                 ),
                 _UnifiedPricingCard(
-                  title: "Entreprise",
+                  title: "Company",
                   freeFeatures: [
-                    "Donner des credentials aux utilisateurs",
-                    "Vérifier les CV",
+                    "Issue credentials to users",
+                    "Verify CVs",
                   ],
                   paidFeatures: [],
                   price: "4,99€ / 49,99€",
@@ -643,7 +645,7 @@ class _UnifiedPricingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
-    final isEntreprise = title.toLowerCase() == "entreprise";
+    final isCompany = title.toLowerCase() == "company";
 
     return SizedBox(
       width: isMobile ? double.infinity : 340,
@@ -673,39 +675,40 @@ class _UnifiedPricingCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.black87)),
             const SizedBox(height: 12),
-            const Text("Inclus gratuitement",
+            const Text("Included for free",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             ...freeFeatures.map((f) => _featureRow(f, isFree: true)),
             const SizedBox(height: 16),
-            if (!isEntreprise)
+            if (!isCompany)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Fonctionnalités Premium – $price",
+                  Text("Premium features – $price",
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   ...paidFeatures.map((f) => _featureRow(f, isFree: false)),
                 ],
               ),
-            if (isEntreprise)
+            if (isCompany)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Fonctionnalités Premium – 4,99€",
+                  const Text("Premium features – 4,99€",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   _featureRow(
-                      "Statistiques avancées sur l’usage des credentials",
+                      "Advanced statistics on credential usage",
                       isFree: false),
                   const SizedBox(height: 16),
-                  const Text("Fonctionnalités Premium – 49,99€",
+                  const Text("Premium features – 49,99€",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
-                  _featureRow("Feedback IA généré sur les profils employés",
+                  _featureRow(
+                      "AI-generated feedback on employee profiles",
                       isFree: false),
                 ],
               ),
@@ -722,7 +725,7 @@ class _UnifiedPricingCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text("Choisir cette offre",
+                child: const Text("Choose this offer",
                     style: TextStyle(fontSize: 15)),
               ),
             ),
