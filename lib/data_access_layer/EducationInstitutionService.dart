@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 
@@ -32,7 +33,13 @@ class EducationInstitutionService extends IEducationInstitutionService {
 
   @override
   void addEducationInstitution(
-      EducationInstitution educationInstitution) async {
+      EducationInstitution educationInstitution, XFile? image) async {
+    String? imageBytesBaseimage;
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageBytesBaseimage = base64Encode(imageBytes);
+    }
+
     final response = await http.post(
       Uri.parse(BackenConnection().url +
           BackenConnection().addEducationInstitutionApi),
@@ -49,6 +56,8 @@ class EducationInstitutionService extends IEducationInstitutionService {
         'addressCountry': educationInstitution.addressCountry,
         'phoneNumber': educationInstitution.phoneNumber,
         'email': educationInstitution.email,
+        'profilePicture': imageBytesBaseimage,
+        'profilePictureExtention': _getFileExtention(image),
       }),
     );
 
@@ -116,5 +125,13 @@ class EducationInstitutionService extends IEducationInstitutionService {
     } else {
       throw Exception('Failed to fetch institutions');
     }
+  }
+
+  _getFileExtention(XFile? file) {
+    if (file == null) return "";
+
+    var stringArray = file.name.split(".");
+
+    return stringArray.last;
   }
 }

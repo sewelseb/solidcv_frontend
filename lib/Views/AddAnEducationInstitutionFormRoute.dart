@@ -1,17 +1,23 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 
-class AddanEducationInstitutionFormRoute  extends StatefulWidget {
+class AddanEducationInstitutionFormRoute extends StatefulWidget {
   const AddanEducationInstitutionFormRoute({super.key});
 
   @override
-  _AddanEducationInstitutionFormRouteState createState() => _AddanEducationInstitutionFormRouteState();
+  State<AddanEducationInstitutionFormRoute> createState() =>
+      _AddanEducationInstitutionFormRouteState();
 }
 
-class _AddanEducationInstitutionFormRouteState extends State<AddanEducationInstitutionFormRoute> {
-  final IEducationInstitutionBll _educationInstitutionBll = EducationInstitutionBll();
+class _AddanEducationInstitutionFormRouteState
+    extends State<AddanEducationInstitutionFormRoute> {
+  final IEducationInstitutionBll _educationInstitutionBll =
+      EducationInstitutionBll();
+  final _formKey = GlobalKey<FormState>();
   final _educationInstitutionNameController = TextEditingController();
   final _addressNumberController = TextEditingController();
   final _addressStreetController = TextEditingController();
@@ -20,6 +26,8 @@ class _AddanEducationInstitutionFormRouteState extends State<AddanEducationInsti
   final _countryController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
+  XFile? _pickedImage;
+  bool _isSubmitting = false;
 
   @override
   void dispose() {
@@ -34,92 +42,247 @@ class _AddanEducationInstitutionFormRouteState extends State<AddanEducationInsti
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+    if (image != null) {
+      setState(() => _pickedImage = image);
+    }
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isSubmitting = true);
+
+    try {
+      var educationInstitution = EducationInstitution(
+        name: _educationInstitutionNameController.text,
+        addressNumber: _addressNumberController.text,
+        addressStreet: _addressStreetController.text,
+        addressCity: _cityController.text,
+        addressZipCode: _zipCodeController.text,
+        addressCountry: _countryController.text,
+        phoneNumber: _phoneNumberController.text,
+        email: _emailController.text,
+      );
+       _educationInstitutionBll.addEducationInstitution(
+          educationInstitution, _pickedImage);
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Education Institution added!')),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() => _isSubmitting = false);
+    }
+  }
+
+  InputDecoration _inputDecoration(String label, {IconData? icon}) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: icon != null ? Icon(icon) : null,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      filled: true,
+      fillColor: Colors.grey.shade100,
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    bool required = false,
+    bool isEmail = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+      decoration: _inputDecoration(label, icon: icon),
+      validator: (value) {
+        if (required && (value == null || value.trim().isEmpty)) {
+          return 'Required';
+        }
+        if (isEmail && value != null && value.trim().isNotEmpty) {
+          final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w{2,}$");
+          if (!emailRegex.hasMatch(value.trim())) {
+            return 'Invalid email';
+          }
+        }
+        return null;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isWide = MediaQuery.of(context).size.width > 650;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add an Education Institution'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Education Institution Name',
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 700),
+            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 18),
+            child: Card(
+              elevation: 6,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18)),
+              child: Padding(
+                padding: const EdgeInsets.all(28.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Profile Picture Picker
+                      Center(
+                        child: InkWell(
+                          onTap: _pickImage,
+                          borderRadius: BorderRadius.circular(50),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Colors.deepPurple.shade50,
+                            backgroundImage: _pickedImage != null
+                                ? FileImage(File(_pickedImage!.path))
+                                : null,
+                            child: _pickedImage == null
+                                ? Icon(Icons.camera_alt_outlined, size: 38, color: Colors.deepPurple)
+                                : null,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        "Choose a logo or image",
+                        style: TextStyle(color: Colors.black54, fontSize: 15),
+                      ),
+                      const SizedBox(height: 30),
+                      isWide
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      _buildTextField(
+                                          _educationInstitutionNameController,
+                                          "Institution Name",
+                                          Icons.account_balance,
+                                          required: true),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_addressNumberController,
+                                          "Address number", Icons.location_on),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_addressStreetController,
+                                          "Address street", Icons.location_on),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_cityController, "City",
+                                          Icons.location_city),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 24),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      _buildTextField(_zipCodeController,
+                                          "Zip code", Icons.local_post_office),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_countryController,
+                                          "Country", Icons.flag),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_phoneNumberController,
+                                          "Phone Number", Icons.phone),
+                                      const SizedBox(height: 18),
+                                      _buildTextField(_emailController, "Email",
+                                          Icons.email,
+                                          isEmail: true), // not required!
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                _buildTextField(
+                                    _educationInstitutionNameController,
+                                    "Institution Name",
+                                    Icons.account_balance,
+                                    required: true),
+                                const SizedBox(height: 18),
+                                _buildTextField(_addressNumberController,
+                                    "Address number", Icons.location_on),
+                                const SizedBox(height: 18),
+                                _buildTextField(_addressStreetController,
+                                    "Address street", Icons.location_on),
+                                const SizedBox(height: 18),
+                                _buildTextField(_cityController, "City",
+                                    Icons.location_city),
+                                const SizedBox(height: 18),
+                                _buildTextField(_zipCodeController, "Zip code",
+                                    Icons.local_post_office),
+                                const SizedBox(height: 18),
+                                _buildTextField(_countryController, "Country",
+                                    Icons.flag),
+                                const SizedBox(height: 18),
+                                _buildTextField(_phoneNumberController,
+                                    "Phone Number", Icons.phone),
+                                const SizedBox(height: 18),
+                                _buildTextField(_emailController, "Email",
+                                    Icons.email,
+                                    isEmail: true), // not required!
+                              ],
+                            ),
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton.icon(
+                          onPressed: _isSubmitting ? null : _submit,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF7B3FE4),
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            elevation: 2,
+                          ),
+                          icon: _isSubmitting
+                              ? const SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 3, color: Colors.white),
+                                )
+                              : const Icon(Icons.save),
+                          label: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 6.0),
+                            child: Text(_isSubmitting
+                                ? "Submitting..."
+                                : "Add Education Institution"),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                controller: _educationInstitutionNameController,
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Address number',
-                ),
-                controller: _addressNumberController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Address street',
-                ),
-                controller: _addressStreetController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'City',
-                ),
-                controller: _cityController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Zip code',
-                ),
-                controller: _zipCodeController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Country',
-                ),
-                controller: _countryController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Phone number',
-                ),
-                controller: _phoneNumberController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-                controller: _emailController,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add your education institution addition logic here
-                    var educationInstitution = EducationInstitution(
-                      name: _educationInstitutionNameController.text,
-                      addressNumber: _addressNumberController.text,
-                      addressStreet: _addressStreetController.text,
-                      addressCity: _cityController.text,
-                      addressZipCode: _zipCodeController.text,
-                      addressCountry: _countryController.text,
-                      phoneNumber: _phoneNumberController.text,
-                      email: _emailController.text,
-                    );
-                    _educationInstitutionBll.addEducationInstitution(educationInstitution);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Add Education Institution'),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-

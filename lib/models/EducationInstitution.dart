@@ -1,3 +1,5 @@
+import 'package:solid_cv/config/BackenConnection.dart';
+
 class EducationInstitution {
   final int? id;
   final String? name;
@@ -9,6 +11,8 @@ class EducationInstitution {
   final String? phoneNumber;
   final String? email;
   String? ethereumAddress;
+  String? profilePicture;
+
 
   EducationInstitution({
     this.id,
@@ -20,6 +24,7 @@ class EducationInstitution {
     required this.addressCountry,
     required this.phoneNumber,
     required this.email,
+    this.profilePicture,
     this.ethereumAddress,
   });
 
@@ -35,6 +40,7 @@ class EducationInstitution {
       phoneNumber: json['phoneNumber'],
       email: json['email'],
       ethereumAddress: json['ethereumAddress'],
+      profilePicture: json['profilePicture'],
     );
   }
 
@@ -50,6 +56,7 @@ class EducationInstitution {
       'phoneNumber': phoneNumber,
       'email': email,
       'ethereumAddress': ethereumAddress,
+      'profilePicture': profilePicture,
     };
   }
 
@@ -85,5 +92,14 @@ class EducationInstitution {
 
   getSafePhoneNumber() {
     return phoneNumber ?? '';
+  }
+
+  String getProfilePicture() {
+    if (profilePicture != null && profilePicture!.isNotEmpty) {
+      return BackenConnection().url +
+          BackenConnection().educationInstitutionProfilePicFolder +
+          (profilePicture as String);
+    }
+    return "";
   }
 }

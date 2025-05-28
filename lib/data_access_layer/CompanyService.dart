@@ -7,84 +7,94 @@ import 'package:solid_cv/models/Company.dart';
 import 'package:http/http.dart' as http;
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CompanyService extends ICompanyService {
   @override
-  Future<Company> createCompany(Company company) async {
+  Future<Company> createCompany(Company company, XFile? image) async {
+    String? imageBytesBaseimage;
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageBytesBaseimage = base64Encode(imageBytes);
+    }
+
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().createCompanyApi),
+      Uri.parse(BackenConnection().url + BackenConnection().createCompanyApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(<String, String?>{
-          'name': company.name, 
-          'addressNumber': company.addressNumber,
-          'addressStreet': company.addressStreet,
-          'addressCity': company.addressCity,
-          'addressZipCode': company.addressZipCode,
-          'addressCountry': company.addressCountry,
-          'phoneNumber': company.phoneNumber,
-          'email': company.email,
-        }
-      ),
+        'name': company.name,
+        'addressNumber': company.addressNumber,
+        'addressStreet': company.addressStreet,
+        'addressCity': company.addressCity,
+        'addressZipCode': company.addressZipCode,
+        'addressCountry': company.addressCountry,
+        'phoneNumber': company.phoneNumber,
+        'email': company.email,
+        'profilePicture': imageBytesBaseimage,
+        'profilePictureExtention': _getFileExtention(image),
+      }),
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       Company company = Company.fromJson(jsonDecode(response.body));
       return company;
     } else {
       throw Exception('Creating company failure');
     }
   }
-  
+
   @override
   Future<Company> deleteCompany(int id) {
     // TODO: implement deleteCompany
     throw UnimplementedError();
   }
-  
+
   @override
   Future<List<Company>> getCompanies() {
     // TODO: implement getCompanies
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Company> getCompany(int id) async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getCompanyApi+id.toString()),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getCompanyApi +
+          id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       Company company = Company.fromJson(jsonDecode(response.body));
       return company;
     } else {
       throw Exception('Getting company failure');
     }
   }
-  
+
   @override
   Future<Company> updateCompany(Company company) {
     // TODO: implement updateCompany
     throw UnimplementedError();
   }
-  
+
   @override
   Future<List<Company>> getMyCompanies() async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyCompaniesApi),
+      Uri.parse(BackenConnection().url + BackenConnection().getMyCompaniesApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       List<dynamic> companies = jsonDecode(response.body);
       return companies.map((company) => Company.fromJson(company)).toList();
     } else {
@@ -95,40 +105,40 @@ class CompanyService extends ICompanyService {
   @override
   void addEmployee(User user, ExperienceRecord experienceRecord, int id) async {
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().addEmployeeApi),
+      Uri.parse(BackenConnection().url + BackenConnection().addEmployeeApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(<String, dynamic>{
-          'userId': user.id,
-          'experienceRecord': experienceRecord.toJson(),
-          'companyId': id,
-        }
-      ),
+        'userId': user.id,
+        'experienceRecord': experienceRecord.toJson(),
+        'companyId': id,
+      }),
     );
 
-    if(response.statusCode != 200) {
+    if (response.statusCode != 200) {
       throw Exception('Adding employee failure');
     }
   }
-  
+
   @override
-  void saveWalletAddressForCurrentUser(Company company,String ethereumAddress) async {
+  void saveWalletAddressForCurrentUser(
+      Company company, String ethereumAddress) async {
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().saveCompanyWalletAddressApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().saveCompanyWalletAddressApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(<String, String?>{
-          'address': ethereumAddress,
-          'companyId': company.id.toString(),
-        }
-      ),
+        'address': ethereumAddress,
+        'companyId': company.id.toString(),
+      }),
     );
 
-    if(response.statusCode != 200) {
+    if (response.statusCode != 200) {
       throw Exception('Saving wallet address failure');
     }
   }
@@ -136,7 +146,8 @@ class CompanyService extends ICompanyService {
   @override
   Future<List<Company>> getAllCompanies() async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getAllCompaniesForAdmin),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getAllCompaniesForAdmin),
       headers: {
         'Content-Type': 'application/json',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -149,5 +160,13 @@ class CompanyService extends ICompanyService {
     } else {
       throw Exception('Failed to fetch companies');
     }
+  }
+
+  _getFileExtention(XFile? file) {
+    if (file == null) return "";
+
+    var stringArray = file.name.split(".");
+
+    return stringArray.last;
   }
 }

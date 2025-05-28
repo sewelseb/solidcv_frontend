@@ -65,4 +65,8 @@ class BackenConnection {
   
   String get addManuallyPromotion => "/api/protected/add-manually-promotion/";
 
+  String get companyProfilePicFolder => '/assets/company/profile-pictures/';
+
+  String get educationInstitutionProfilePicFolder => '/assets/education-institution/profile-pictures/';
+
 }

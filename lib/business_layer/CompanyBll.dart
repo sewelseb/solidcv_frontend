@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
@@ -16,8 +17,8 @@ class CompanyBll extends ICompanyBll {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
 
   @override
-  Future<Company> createCompany(Company company) {
-    return _companyService.createCompany(company);
+  Future<Company> createCompany(Company company,XFile? image) {
+    return _companyService.createCompany(company, image);
   }
 
   @override
