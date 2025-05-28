@@ -260,8 +260,7 @@ class _LoginForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child:
-              const Text("Sign in", style: TextStyle(color: Colors.white)),
+          child: const Text("Sign in", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(
@@ -699,36 +698,34 @@ class _UnifiedPricingCard extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
-                  _featureRow(
-                      "Advanced statistics on credential usage",
+                  _featureRow("Advanced statistics on credential usage",
                       isFree: false),
                   const SizedBox(height: 16),
                   const Text("Premium features – 49,99€",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
-                  _featureRow(
-                      "AI-generated feedback on employee profiles",
+                  _featureRow("AI-generated feedback on employee profiles",
                       isFree: false),
                 ],
               ),
             const Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7B3FE4),
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text("Choose this offer",
-                    style: TextStyle(fontSize: 15)),
-              ),
-            ),
+            // Center(
+            //   child: ElevatedButton(
+            //     onPressed: () {},
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: const Color(0xFF7B3FE4),
+            //       foregroundColor: Colors.white,
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //     ),
+            //     child: const Text("Choose this offer",
+            //         style: TextStyle(fontSize: 15)),
+            //   ),
+            // ),
             const SizedBox(height: 16),
           ],
         ),
@@ -842,55 +839,70 @@ class _ContactForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Contact Us",
-            style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87)),
-        const SizedBox(height: 24),
-        _buildTextField(label: "Full Name"),
-        const SizedBox(height: 16),
-        _buildTextField(label: "Email Address"),
-        const SizedBox(height: 16),
-        _buildTextField(label: "Message", maxLines: 4),
-        const SizedBox(height: 24),
-        Align(
-          alignment: Alignment.centerRight,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B3FE4),
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("Send",
-                style: TextStyle(fontSize: 16, color: Colors.white)),
+        Text(
+          "Contact Us",
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
           ),
         ),
+        SizedBox(height: 16),
+        Text(
+          "sewelseb@hotmail.com",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black54,
+          ),
+        ),
+        SizedBox(height: 24),
+
+        // _buildTextField(label: "Full Name"),
+        // const SizedBox(height: 16),
+        // _buildTextField(label: "Email Address"),
+        // const SizedBox(height: 16),
+        // _buildTextField(label: "Message", maxLines: 4),
+        // const SizedBox(height: 24),
+
+        // Align(
+        //   alignment: Alignment.centerRight,
+        //    child: ElevatedButton(
+        //     onPressed: () {},
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: const Color(0xFF7B3FE4),
+        //        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(8),
+        //       ),
+        //     ),
+        //     child: const Text(
+        //        "Send",
+        //        style: TextStyle(fontSize: 16, color: Colors.white),
+        //     ),
+        //    ),
+        // ),
       ],
     );
   }
 
-  Widget _buildTextField({required String label, int maxLines = 1}) {
-    return TextField(
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        labelText: label,
-        filled: true,
-        fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
+  // Widget _buildTextField({required String label, int maxLines = 1}) {
+  //   return TextField(
+  //     maxLines: maxLines,
+  //     decoration: InputDecoration(
+  //       labelText: label,
+  //       filled: true,
+  //       fillColor: Colors.grey.shade100,
+  //       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+  //       focusedBorder: OutlineInputBorder(
+  //         borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+  //         borderRadius: BorderRadius.circular(8),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class _BottomAngleClipper extends CustomClipper<Path> {
