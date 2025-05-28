@@ -99,7 +99,7 @@ class Company {
           BackenConnection().companyProfilePicFolder +
           (profilePicture as String);
     }
-    return "";
+    return '${BackenConnection().url}${BackenConnection().imageAssetFolder}company.png';
   }
 
 }
