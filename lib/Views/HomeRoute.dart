@@ -852,7 +852,7 @@ class _ContactForm extends StatelessWidget {
         ),
         SizedBox(height: 16),
         Text(
-          "sewelseb@hotmail.com",
+          "sebastien.debeauffort@outlook.com",
           style: TextStyle(
             fontSize: 18,
             color: Colors.black54,
