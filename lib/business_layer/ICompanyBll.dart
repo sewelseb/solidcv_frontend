@@ -7,7 +7,7 @@ import 'package:solid_cv/models/User.dart';
 abstract class ICompanyBll {
   Future<Company> getCompany(int id);
   Future<Company> createCompany(Company company, XFile? image);
-  Future<Company> updateCompany(Company company);
+  Future<void> updateCompany(Company company, XFile? image, int id);
   Future<Company> deleteCompany(int id);
 
   Future<List<Company>> getMyCompanies();

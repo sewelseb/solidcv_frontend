@@ -39,9 +39,9 @@ class CompanyBll extends ICompanyBll {
   }
 
   @override
-  Future<Company> updateCompany(Company company) {
-    // TODO: implement updateCompany
-    throw UnimplementedError();
+   Future<void> updateCompany(Company company, XFile? image, int id) {
+    
+    return _companyService.updateCompany(company, image,id);
   }
   
   @override
