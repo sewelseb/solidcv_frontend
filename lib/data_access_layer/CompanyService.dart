@@ -79,9 +79,42 @@ class CompanyService extends ICompanyService {
   }
 
   @override
-  Future<Company> updateCompany(Company company) {
-    // TODO: implement updateCompany
-    throw UnimplementedError();
+  Future<void> updateCompany(Company company, XFile? image, int id) async {
+    {
+      String? imageBytesBaseimage;
+      if (image != null) {
+        List<int> imageBytes = await image.readAsBytes();
+        imageBytesBaseimage = base64Encode(imageBytes);
+      }
+
+      final response = await http.post(
+        Uri.parse(BackenConnection().url +
+            BackenConnection().updateCompany +
+            id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        },
+        body: jsonEncode({
+          'name': company.name,
+          'addressNumber': company.addressNumber,
+          'addressStreet': company.addressStreet,
+          'addressCity': company.addressCity,
+          'addressZipCode': company.addressZipCode,
+          'addressCountry': company.addressCountry,
+          'phoneNumber': company.phoneNumber,
+          'email': company.email,
+          'profilePicture': imageBytesBaseimage,
+          'profilePictureExtention': _getFileExtention(image),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception('Error updating company information');
+      }
+    }
   }
 
   @override
