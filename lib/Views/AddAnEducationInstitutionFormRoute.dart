@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:solid_cv/Views/utils/RegexValidator.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
@@ -44,7 +45,8 @@ class _AddanEducationInstitutionFormRouteState
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
     if (image != null) {
       setState(() => _pickedImage = image);
     }
@@ -65,7 +67,7 @@ class _AddanEducationInstitutionFormRouteState
         phoneNumber: _phoneNumberController.text,
         email: _emailController.text,
       );
-       _educationInstitutionBll.addEducationInstitution(
+      _educationInstitutionBll.addEducationInstitution(
           educationInstitution, _pickedImage);
 
       if (!mounted) return;
@@ -105,14 +107,15 @@ class _AddanEducationInstitutionFormRouteState
       keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
       decoration: _inputDecoration(label, icon: icon),
       validator: (value) {
-        if (required && (value == null || value.trim().isEmpty)) {
+        final trimmedValue = value?.trim() ?? '';
+
+        if (required && trimmedValue.isEmpty) {
           return 'Required';
         }
-        if (isEmail && value != null && value.trim().isNotEmpty) {
-          final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w{2,}$");
-          if (!emailRegex.hasMatch(value.trim())) {
-            return 'Invalid email';
-          }
+        if (isEmail &&
+            trimmedValue.isNotEmpty &&
+            !RegexValidator.isEmailValid(trimmedValue)) {
+          return 'Invalid email';
         }
         return null;
       },
@@ -157,13 +160,14 @@ class _AddanEducationInstitutionFormRouteState
                                 ? FileImage(File(_pickedImage!.path))
                                 : null,
                             child: _pickedImage == null
-                                ? Icon(Icons.camera_alt_outlined, size: 38, color: Colors.deepPurple)
+                                ? const Icon(Icons.camera_alt_outlined,
+                                    size: 38, color: Colors.deepPurple)
                                 : null,
                           ),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
+                      const Text(
                         "Choose a logo or image",
                         style: TextStyle(color: Colors.black54, fontSize: 15),
                       ),
@@ -232,14 +236,14 @@ class _AddanEducationInstitutionFormRouteState
                                 _buildTextField(_zipCodeController, "Zip code",
                                     Icons.local_post_office),
                                 const SizedBox(height: 18),
-                                _buildTextField(_countryController, "Country",
-                                    Icons.flag),
+                                _buildTextField(
+                                    _countryController, "Country", Icons.flag),
                                 const SizedBox(height: 18),
                                 _buildTextField(_phoneNumberController,
                                     "Phone Number", Icons.phone),
                                 const SizedBox(height: 18),
-                                _buildTextField(_emailController, "Email",
-                                    Icons.email,
+                                _buildTextField(
+                                    _emailController, "Email", Icons.email,
                                     isEmail: true), // not required!
                               ],
                             ),
