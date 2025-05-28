@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
@@ -21,8 +22,8 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
   }
   
   @override
-  void addEducationInstitution(EducationInstitution educationInstitution) {
-    _educationInstitutionService.addEducationInstitution(educationInstitution);
+  void addEducationInstitution(EducationInstitution educationInstitution, XFile? image) {
+    _educationInstitutionService.addEducationInstitution(educationInstitution, image);
   }
   
   @override
