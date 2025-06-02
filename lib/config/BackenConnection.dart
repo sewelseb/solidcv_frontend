@@ -77,5 +77,5 @@ class BackenConnection {
 
   String get updateUser => '/api/protected/update-user/';
 
-
+  String get getCompanyByEthereumAddress => '/api/protected/get-company-by-ethereum-address/';
 }
