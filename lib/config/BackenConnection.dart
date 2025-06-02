@@ -67,10 +67,15 @@ class BackenConnection {
 
   String get companyProfilePicFolder => '/assets/company/profile-pictures/';
 
+  String get userProfilePicFolder => '/assets/user/profile-pictures/';
+
   String get imageAssetFolder => '/assets/images/';
 
   String get educationInstitutionProfilePicFolder => '/assets/education-institution/profile-pictures/';
 
   String get updateCompany => '/api/protected/update-company/';
+
+  String get updateUser => '/api/protected/update-user/';
+
 
 }
