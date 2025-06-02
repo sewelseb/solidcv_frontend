@@ -5,12 +5,15 @@ import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileV
 import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/WorkExperienceMobileCard.dart';
 import 'package:solid_cv/Views/widgets/MySkills.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
+import 'package:solid_cv/models/User.dart';
 
 class MyCvMobile extends StatefulWidget {
   const MyCvMobile({super.key});
@@ -21,7 +24,10 @@ class MyCvMobile extends StatefulWidget {
 
 class _MyCvMobileState extends State<MyCvMobile> {
   late final IBlockchainWalletBll _blockchainWalletBll;
-  late final IUserBLL _userBLL= UserBll();
+  late final IUserBLL _userBLL = UserBll();
+  late Future<User> _userFuture;
+  final ValueNotifier<bool> _isBioExpanded = ValueNotifier(false);
+  late final ICompanyBll _company = CompanyBll();
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
   List<UnifiedExperienceViewModel>? _cachedExperiences;
@@ -32,7 +38,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
   void initState() {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
-  
+    _userFuture = _userBLL.getCurrentUser();
   }
 
   void _refreshExperiences() {
@@ -61,6 +67,12 @@ class _MyCvMobileState extends State<MyCvMobile> {
       ...manual.map(UnifiedExperienceViewModel.fromManual),
     ];
 
+    for (var exp in all) {
+      if (exp.companyWallet != null) {
+        final company = await _company.fetchCompanyByWallet(exp.companyWallet!);
+        exp.companyLogoUrl = company?.getProfilePicture();
+      }
+    }
     all.sort((a, b) {
       if (a.endDate == null) return -1;
       if (b.endDate == null) return 1;
@@ -89,42 +101,160 @@ class _MyCvMobileState extends State<MyCvMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FBFC),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            _buildProfileHeader(),
-            const SizedBox(height: 16),
-            _buildProgressIndicator(),
-            const SizedBox(height: 24),
-            _buildExperienceSection(),
-            const SizedBox(height: 24),
-            const MyEducationMobileView(),
-            const SizedBox(height: 24),
-            const MySkills(),
-          ],
+        child: FutureBuilder<User>(
+          future: _userFuture,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final user = snapshot.data!;
+            return ListView(
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF5A69F1), Color(0xFF8A5CF0)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 45,
+                        backgroundImage: NetworkImage(user.getProfilePicture()),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        user.getEasyName() ?? '',
+                        style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        user.email ?? '',
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.white70),
+                      ),
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final updated = await Navigator.pushNamed(
+                            context,
+                            '/user/edit-profile',
+                            arguments: user,
+                          );
+                          if (updated == true) {
+                            setState(() {
+                              _userFuture = _userBLL.getCurrentUser();
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        child: const Text('Edit profile'),
+                      ),
+                      const SizedBox(height: 12),
+                      _infoTile(
+                          icon: Icons.phone, text: user.phoneNumber ?? "-"),
+                      const SizedBox(height: 8),
+                      _infoTile(
+                          icon: Icons.link,
+                          text: user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                      const SizedBox(height: 8),
+                      _infoTile(
+                          icon: Icons.description,
+                          text: user.biography ?? "",
+                          expandable: true),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      _buildExperienceSection(),
+                      const SizedBox(height: 24),
+                      const MyEducationMobileView(),
+                      const SizedBox(height: 24),
+                      const MySkills(),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
-      bottomNavigationBar: const MainBottomNavigationBar(),
     );
   }
 
-  Widget _buildProfileHeader() {
-    return const Column(
-      children: [
-        CircleAvatar(radius: 40),
-        SizedBox(height: 12),
-        Text('Alex Thompson', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        SizedBox(height: 4),
-      ],
-    );
-  }
+  Widget _infoTile({
+    required IconData icon,
+    required String text,
+    bool expandable = false,
+  }) {
+    if (text.trim().isEmpty) return const SizedBox.shrink();
 
-  Widget _buildProgressIndicator() {
-    return const LinearProgressIndicator(
-      value: 1,
-      backgroundColor: Color(0xFFE0E0E0),
-      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF5A69F1)),
+    if (!expandable) {
+      return Row(
+        children: [
+          Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isBioExpanded,
+      builder: (context, expanded, _) {
+        return InkWell(
+          onTap: () => _isBioExpanded.value = !expanded,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  text,
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  maxLines: expanded ? null : 2,
+                  overflow:
+                      expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(
+                expanded ? Icons.expand_less : Icons.expand_more,
+                color: Colors.white54,
+                size: 18,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -137,7 +267,9 @@ class _MyCvMobileState extends State<MyCvMobile> {
           children: [
             Row(
               children: [
-                const Text('Work Experience', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text('Work Experience',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 IconButton(
                   onPressed: _showAddWorkExperienceModal,
@@ -158,7 +290,8 @@ class _MyCvMobileState extends State<MyCvMobile> {
                   return Column(
                     children: snapshot.data!
                         .map((e) => WorkExperienceCardMobile(
-                            experience: e, onPromotionAdded: _refreshExperiences))
+                            experience: e,
+                            onPromotionAdded: _refreshExperiences))
                         .toList(),
                   );
                 } else {

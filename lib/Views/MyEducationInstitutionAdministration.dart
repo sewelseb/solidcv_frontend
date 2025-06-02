@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/Parameters/EducationInstitutionParameter.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
-import 'package:solid_cv/Views/widgets/MyEducation.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';

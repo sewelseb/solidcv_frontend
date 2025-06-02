@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
 class EducationMobileCard extends StatelessWidget {
@@ -14,12 +15,12 @@ class EducationMobileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color badgeColor = isValidated ? Colors.green : Colors.deepPurple;
-    final String badgeLabel = isValidated ? 'Verified' : 'Manually added';
+    final String badgeLabel = isValidated ? 'Verified' : 'Manually';
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.all(16),
       decoration: glassCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,8 +58,15 @@ class EducationMobileCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(4),
+                  color: Colors.grey.shade200,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      certificate.logoUrl ??
+                          '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -68,29 +76,34 @@ class EducationMobileCard extends StatelessWidget {
                   children: [
                     Text(
                       certificate.title ?? 'Untitled',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       certificate.type ?? 'Certificate',
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
                     if (certificate.publicationDate != null)
                       Text(
                         'Date: ${formatDate(certificate.publicationDate!)}',
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 13, color: Colors.grey),
                       ),
                     const SizedBox(height: 4),
                     if (certificate.teachingInstitutionName != null)
                       Row(
                         children: [
-                          const Icon(Icons.school, size: 16, color: Colors.grey),
+                          const Icon(Icons.school,
+                              size: 16, color: Colors.grey),
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
                               certificate.teachingInstitutionName!,
-                              style: const TextStyle(fontSize: 13, color: Colors.grey),
+                              style: const TextStyle(
+                                  fontSize: 13, color: Colors.grey),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -101,14 +114,16 @@ class EducationMobileCard extends StatelessWidget {
               ),
             ],
           ),
-          if (certificate.description != null && certificate.description!.isNotEmpty) ...[
+          if (certificate.description != null &&
+              certificate.description!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
               certificate.description!,
               style: const TextStyle(fontSize: 14.5, color: Colors.black87),
             ),
           ],
-          if (certificate.curriculum != null && certificate.curriculum!.isNotEmpty) ...[
+          if (certificate.curriculum != null &&
+              certificate.curriculum!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
               'Curriculum: ${certificate.curriculum!}',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -19,7 +20,9 @@ class WorkExperienceCardMobile extends StatelessWidget {
     final start = _formatDate(experience.startDate);
     final end = _formatDate(experience.endDate);
     final hasPromotions = experience.promotions.isNotEmpty;
-
+    final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
+        ? experience.companyLogoUrl!
+        : '${BackenConnection().url}${BackenConnection().imageAssetFolder}company.png';
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 12),
@@ -47,7 +50,7 @@ class WorkExperienceCardMobile extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      isVerified ? 'Verified' : 'Manually added',
+                      isVerified ? 'Verified' : 'Manually',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -67,6 +70,10 @@ class WorkExperienceCardMobile extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.grey.shade400,
                       borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                        image: NetworkImage(logoUrl),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -76,27 +83,32 @@ class WorkExperienceCardMobile extends StatelessWidget {
                       children: [
                         Text(
                           experience.title,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           experience.company,
-                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           '$start - $end',
-                          style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 13, color: Colors.grey),
                         ),
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(Icons.location_pin, size: 16, color: Colors.grey),
+                            const Icon(Icons.location_pin,
+                                size: 16, color: Colors.grey),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 experience.location ?? '',
-                                style: const TextStyle(fontSize: 13, color: Colors.grey),
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.grey),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -130,7 +142,8 @@ class WorkExperienceCardMobile extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () => _showAddPromotionDialog(context, experience.manualId!),
+                onPressed: () =>
+                    _showAddPromotionDialog(context, experience.manualId!),
                 style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
                 child: const Text('Add a promotion'),
               ),
@@ -155,7 +168,8 @@ class WorkExperienceCardMobile extends StatelessWidget {
             children: [
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(labelText: 'Titre de promotion'),
+                decoration:
+                    const InputDecoration(labelText: 'Titre de promotion'),
               ),
               TextField(
                 controller: dateController,
@@ -170,7 +184,8 @@ class WorkExperienceCardMobile extends StatelessWidget {
                   );
                   if (picked != null) {
                     selectedDate = picked;
-                    dateController.text = picked.toIso8601String().split('T')[0];
+                    dateController.text =
+                        picked.toIso8601String().split('T')[0];
                   }
                 },
               ),
