@@ -91,7 +91,7 @@ class _AddanEducationInstitutionFormRouteState
       prefixIcon: icon != null ? Icon(icon) : null,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       filled: true,
-      fillColor: Colors.grey.shade100,
+      fillColor: Colors.white,
     );
   }
 
