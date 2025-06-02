@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
 
-
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -13,22 +12,23 @@ import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class UserService extends IUserService {
   @override
   Future<User> createUser(User user) async {
-    if(user.email == null || user.password == null) throw Exception('email and password can\'t be null');
+    if (user.email == null || user.password == null)
+      throw Exception('email and password can\'t be null');
 
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().registerApi),
+      Uri.parse(BackenConnection().url + BackenConnection().registerApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String?>{
-          'email': user.email, 
-          'password': user.password,
-        }
-      ),
+        'email': user.email,
+        'password': user.password,
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -41,20 +41,18 @@ class UserService extends IUserService {
     }
   }
 
-   @override
+  @override
   Future<User> login(User user) async {
-    if(user.email == null || user.password == null) throw Exception('email and password can\'t be null');
+    if (user.email == null || user.password == null)
+      throw Exception('email and password can\'t be null');
 
-     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().loginApi),
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().loginApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String?>{
-          'email': user.email, 
-          'password': user.password
-        }
-      ),
+      body: jsonEncode(
+          <String, String?>{'email': user.email, 'password': user.password}),
     );
 
     if (response.statusCode == 200) {
@@ -65,17 +63,16 @@ class UserService extends IUserService {
       // then throw an exception.
       print(response);
       throw Exception('Login failure');
-      
     }
   }
 
   @override
   Future<User> getUser(String id) async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getUserApi+id),
+      Uri.parse(BackenConnection().url + BackenConnection().getUserApi + id),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
@@ -90,27 +87,20 @@ class UserService extends IUserService {
   }
 
   @override
-  Future<User> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<User>> searchUsers(SearchTherms searchTherms) async {
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().searchUsersApi),
+      Uri.parse(BackenConnection().url + BackenConnection().searchUsersApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-      body: jsonEncode(<String, String?>{
-          'searchTherms': searchTherms.term
-        }
-      ),
+      body: jsonEncode(<String, String?>{'searchTherms': searchTherms.term}),
     );
 
     if (response.statusCode == 200) {
-      List<User> users = (jsonDecode(response.body) as List).map((i) => User.fromJson(i)).toList();
+      List<User> users = (jsonDecode(response.body) as List)
+          .map((i) => User.fromJson(i))
+          .toList();
       return users;
     } else {
       // If the server did not return a 200 OK response,
@@ -118,33 +108,31 @@ class UserService extends IUserService {
       throw Exception('Search failure');
     }
   }
-  
+
   @override
   void saveWalletAddressForCurrentUser(String address) async {
     final response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().saveWalletAddressApi),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().saveWalletAddressApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-      body: jsonEncode(<String, String?>{
-          'address': address
-        }
-      ),
+      body: jsonEncode(<String, String?>{'address': address}),
     );
 
     if (response.statusCode != 200) {
       throw Exception('Saving wallet address failure');
     }
   }
-  
+
   @override
   Future<User> getCurrentUser() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getCurrentUserApi),
+      Uri.parse(BackenConnection().url + BackenConnection().getCurrentUserApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
@@ -160,10 +148,12 @@ class UserService extends IUserService {
 
   @override
   void addManuallyAddedWorkExperience(ExperienceRecord newExperience) async {
-    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addManuallyAddedWorkExperienceApi),
+    var response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addManuallyAddedWorkExperienceApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(newExperience.toJson()),
     );
@@ -173,12 +163,14 @@ class UserService extends IUserService {
     }
   }
 
-   @override
+  @override
   void addManualExperience(ManualExperience newExperience) async {
-    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addManuallyAddedWorkExperienceApi),
+    var response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addManuallyAddedWorkExperienceApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(newExperience.toJson()),
     );
@@ -188,36 +180,42 @@ class UserService extends IUserService {
     }
   }
 
-    @override
+  @override
   void addManuallyPromotion(Promotion promotion, int experienceId) async {
-    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addManuallyPromotion+ experienceId.toString()),
+    var response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addManuallyPromotion +
+          experienceId.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-        body: jsonEncode({
+      body: jsonEncode({
         'newTitle': promotion.newTitle,
         'date': promotion.date,
-  }),
+      }),
     );
 
     if (response.statusCode != 200) {
       throw Exception('Adding manually added work experience failure');
     }
   }
-  
+
   @override
   Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyManuallyAddedWorkExperiencesApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getMyManuallyAddedWorkExperiencesApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
     if (response.statusCode == 200) {
-      List<ExperienceRecord> experiences = (jsonDecode(response.body) as List).map((i) => ExperienceRecord.fromJson(i)).toList();
+      List<ExperienceRecord> experiences = (jsonDecode(response.body) as List)
+          .map((i) => ExperienceRecord.fromJson(i))
+          .toList();
       return experiences;
     } else {
       // If the server did not return a 200 OK response,
@@ -226,18 +224,21 @@ class UserService extends IUserService {
     }
   }
 
-    @override
+  @override
   Future<List<ManualExperience>> getMyManuallyAddedExperiences() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyManuallyAddedWorkExperiencesApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getMyManuallyAddedWorkExperiencesApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
     if (response.statusCode == 200) {
-      List<ManualExperience> experiences = (jsonDecode(response.body) as List).map((i) => ManualExperience.fromJson(i)).toList();
+      List<ManualExperience> experiences = (jsonDecode(response.body) as List)
+          .map((i) => ManualExperience.fromJson(i))
+          .toList();
       return experiences;
     } else {
       // If the server did not return a 200 OK response,
@@ -248,10 +249,12 @@ class UserService extends IUserService {
 
   @override
   void addMyCertificateManually(Certificate certificate) async {
-    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addMyCertificateManuallyApi),
+    var response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addMyCertificateManuallyApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
       body: jsonEncode(certificate.toJson()),
     );
@@ -260,19 +263,22 @@ class UserService extends IUserService {
       throw Exception('Adding manually added certificate failure');
     }
   }
-  
+
   @override
   Future<List<Certificate>> getMyManuallyAddedCertificates() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyManuallyAddedCertificatesApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getMyManuallyAddedCertificatesApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
     if (response.statusCode == 200) {
-      List<Certificate> certificates = (jsonDecode(response.body) as List).map((i) => Certificate.fromJson(i)).toList();
+      List<Certificate> certificates = (jsonDecode(response.body) as List)
+          .map((i) => Certificate.fromJson(i))
+          .toList();
       return certificates;
     } else {
       // If the server did not return a 200 OK response,
@@ -280,18 +286,16 @@ class UserService extends IUserService {
       throw Exception('Getting manually added certificates failure');
     }
   }
-  
+
   @override
   void addSkill(String skillName) async {
-    var response = await http.post(Uri.parse(BackenConnection().url+BackenConnection().addSkillApi),
+    var response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().addSkillApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-      body: jsonEncode(<String, String?>{
-          'name': skillName
-        }
-      ),
+      body: jsonEncode(<String, String?>{'name': skillName}),
     );
 
     if (response.statusCode != 200) {
@@ -302,15 +306,17 @@ class UserService extends IUserService {
   @override
   Future<List<Skill>> getMySkills() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMySkillsApi),
+      Uri.parse(BackenConnection().url + BackenConnection().getMySkillsApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
-  if (response.statusCode == 200) {
-      List<Skill> skills = (jsonDecode(response.body) as List).map((i) => Skill.fromJson(i)).toList();
+    if (response.statusCode == 200) {
+      List<Skill> skills = (jsonDecode(response.body) as List)
+          .map((i) => Skill.fromJson(i))
+          .toList();
       return skills;
     } else {
       // If the server did not return a 200 OK response,
@@ -318,14 +324,15 @@ class UserService extends IUserService {
       throw Exception('Getting skills failure');
     }
   }
-  
+
   @override
   Future<Skill> getSkill(String skillId) async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getSkillApi+skillId),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getSkillApi + skillId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
@@ -337,21 +344,24 @@ class UserService extends IUserService {
       // then throw an exception.
       throw Exception('Getting skill failure');
     }
-    
   }
-  
+
   @override
   Future<List<Skill>> getSkillsFromUser(String userId) async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getSkillsFromUserApi+userId),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getSkillsFromUserApi +
+          userId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 
     if (response.statusCode == 200) {
-      List<Skill> skills = (jsonDecode(response.body) as List).map((i) => Skill.fromJson(i)).toList();
+      List<Skill> skills = (jsonDecode(response.body) as List)
+          .map((i) => Skill.fromJson(i))
+          .toList();
       return skills;
     } else {
       // If the server did not return a 200 OK response,
@@ -359,20 +369,18 @@ class UserService extends IUserService {
       throw Exception('Getting skills from user failure');
     }
   }
-  
+
   @override
   Future<String> getFeedbacksOnProfile(String text, String userId) async {
     var response = await http.post(
-      Uri.parse(BackenConnection().url+BackenConnection().getFeedbacksOnProfileApi),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getFeedbacksOnProfileApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-      body: jsonEncode(<String, String?>{
-          'jobDescription': text,
-          'userId': userId
-        }
-      ),
+      body: jsonEncode(
+          <String, String?>{'jobDescription': text, 'userId': userId}),
     );
 
     if (response.statusCode == 200) {
@@ -387,7 +395,8 @@ class UserService extends IUserService {
   @override
   Future<List<User>> getAllUsers() async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getAllUsersForAdmin),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getAllUsersForAdmin),
       headers: {
         'Content-Type': 'application/json',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -401,5 +410,60 @@ class UserService extends IUserService {
       throw Exception('Failed to fetch users');
     }
   }
-  
+
+  @override
+  Future<void> updateUser(
+      User user, XFile? image, XFile? imageCv, int id) async {
+    {
+      String? imageBytesBaseimage;
+      if (image != null) {
+        List<int> imageBytes = await image.readAsBytes();
+        imageBytesBaseimage = base64Encode(imageBytes);
+      }
+
+      String? imageBytesBaseimageCv;
+      if (imageCv != null) {
+        List<int> imageBytesCv = await imageCv.readAsBytes();
+        imageBytesBaseimageCv = base64Encode(imageBytesCv);
+      }
+
+      final response = await http.post(
+        Uri.parse(BackenConnection().url +
+            BackenConnection().updateUser +
+            id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        },
+        body: jsonEncode({
+          'firstName': user.firstName,
+          'lastName': user.lastName,
+          'phoneNumber': user.phoneNumber,
+          'biography': user.biography,
+          'linkedin': user.linkedin,
+          if (imageBytesBaseimageCv != null) 'cv': imageBytesBaseimageCv,
+          if (imageBytesBaseimageCv != null)
+            'cvExtention': _getFileExtention(imageCv),
+          if (imageBytesBaseimage != null)
+            'profilePicture': imageBytesBaseimage,
+          if (imageBytesBaseimage != null)
+            'profilePictureExtention': _getFileExtention(image),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception('Error updating user information');
+      }
+    }
+  }
+
+  _getFileExtention(XFile? file) {
+    if (file == null) return "";
+
+    var stringArray = file.name.split(".");
+
+    return stringArray.last;
+  }
 }
