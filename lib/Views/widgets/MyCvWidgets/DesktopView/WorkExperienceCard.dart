@@ -23,7 +23,6 @@ class WorkExperienceCard extends StatelessWidget {
     final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
         ? experience.companyLogoUrl!
         : '${BackenConnection().url}${BackenConnection().imageAssetFolder}company.png';
-    print(logoUrl);
 
     return Container(
       width: double.infinity,
