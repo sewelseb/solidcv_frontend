@@ -11,6 +11,7 @@ import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
+import 'package:solid_cv/models/User.dart';
 
 class MyCvDesktop extends StatefulWidget {
   const MyCvDesktop({super.key});
@@ -22,17 +23,20 @@ class MyCvDesktop extends StatefulWidget {
 class _MyCvDesktopState extends State<MyCvDesktop> {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
+  late Future<User> _userFuture;
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
 
   List<UnifiedExperienceViewModel>? _cachedExperiences;
   DateTime? _lastFetchTime;
   static const Duration _cacheTimeout = Duration(minutes: 5);
+  final ValueNotifier<bool> _isBioExpanded = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
+    _userFuture = _userBLL.getCurrentUser();
   }
 
   void _refreshExperiences() {
@@ -112,7 +116,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                             const SizedBox(height: 32),
                             _buildExperienceSection(),
                             const SizedBox(height: 32),
-                            MyEducation(),
+                            const MyEducation(),
                             const SizedBox(height: 32),
                             const MySkills(),
                           ],
@@ -176,74 +180,207 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
   }
 
   Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return FutureBuilder<User>(
+      future: _userFuture,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox(
+              height: 60, child: Center(child: CircularProgressIndicator()));
+        }
+        final user = snapshot.data!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Alex Thompson',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+            Row(
+              children: [
+                Text(
+                  user.getEasyName() ?? '',
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold),
                 ),
-              ),
-              child: const Text('Edit profile'),
-            )
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    final user = await _userBLL.getCurrentUser();
+                    if (!mounted) return;
+                    final updated = await Navigator.pushNamed(
+                      context,
+                      '/user/edit-profile',
+                      arguments: user,
+                    );
+                    if (updated == true) {
+                      setState(() {
+                        _userFuture =
+                            _userBLL.getCurrentUser(); // force le rebuild
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text('Edit profile'),
+                )
+              ],
+            ),
+            const SizedBox(height: 8),
+            const LinearProgressIndicator(
+              value: 1,
+              color: Color(0xFF5A69F1),
+              backgroundColor: Color(0xFFE0E0E0),
+            ),
           ],
-        ),
-        const SizedBox(height: 8),
-        const LinearProgressIndicator(
-          value: 1,
-          color: Color(0xFF5A69F1),
-          backgroundColor: Color(0xFFE0E0E0),
-        ),
-      ],
+        );
+      },
     );
   }
 
   Widget _buildSidebar() {
-    return Container(
-      width: 280,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF5A69F1), Color(0xFF8A5CF0)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder<User>(
+      future: _userFuture,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            width: 280,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF5A69F1), Color(0xFF8A5CF0)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        final user = snapshot.data!;
+        return Container(
+          width: 280,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5A69F1), Color(0xFF8A5CF0)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: CircleAvatar(
+                  radius: 55,
+                  backgroundColor: Colors.white.withOpacity(0.15),
+                  backgroundImage: NetworkImage(user.getProfilePicture()),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: Text(
+                  user.getEasyName() ?? '',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Center(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white24, width: 1),
+                  ),
+                  child: Text(
+                    user.email ?? '',
+                    style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              _infoTile(icon: Icons.phone, text: user.phoneNumber ?? "-"),
+              const SizedBox(height: 8),
+              _infoTile(
+                  icon: Icons.link,
+                  text: user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+              const SizedBox(height: 8),
+              _infoTile(
+                icon: Icons.description,
+                text: user.biography ?? "",
+                expandable: true,
+              ),
+              const SizedBox(height: 18),
+              const Divider(height: 32, color: Colors.white24),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _infoTile({
+    required IconData icon,
+    required String text,
+    bool expandable = false,
+  }) {
+    if (text.trim().isEmpty) return const SizedBox.shrink();
+
+    if (!expandable) {
+      return Row(
         children: [
-          Center(child: CircleAvatar(radius: 60)),
-          SizedBox(height: 16),
-          Center( child :Text("Informations",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold))),
-          SizedBox(height: 4),
-          Center( child :Text("alex.thompson@example.com",
-              style: TextStyle(color: Colors.white70, fontSize: 13))),
-          SizedBox(height: 4),
-         Center( child : Text("+1 234 567 890",
-              style: TextStyle(color: Colors.white70, fontSize: 13))),
-          SizedBox(height: 4),
-        Center( child :  Text("San Francisco, CA",
-              style: TextStyle(color: Colors.white70, fontSize: 13))),
-          SizedBox(height: 24),
-          Divider(height: 32, color: Colors.white24),
+          Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
-      ),
+      );
+    }
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isBioExpanded,
+      builder: (context, expanded, _) {
+        return InkWell(
+          onTap: () => _isBioExpanded.value = !expanded,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  text,
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  maxLines: expanded ? null : 2,
+                  overflow:
+                      expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(
+                expanded ? Icons.expand_less : Icons.expand_more,
+                color: Colors.white54,
+                size: 18,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
