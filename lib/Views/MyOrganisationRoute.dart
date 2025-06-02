@@ -35,7 +35,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
                     children: [
                       SizedBox(
                         //screen size minus the app bar and the bottom navigation bar
-                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 100,
+                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 124,
                         child: const MyCompanies()
                       ),
                       Padding(
@@ -54,7 +54,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
                     children: [
                       SizedBox(
                         //screen size minus the app bar and the bottom navigation bar
-                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 100,
+                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 124,
                         child: const MyEducationInstitutions(),
                       ),
                       Padding(
