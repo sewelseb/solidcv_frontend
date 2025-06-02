@@ -195,6 +195,24 @@ class CompanyService extends ICompanyService {
     }
   }
 
+  @override
+  Future<Company?> fetchCompanyByWallet(String ethereumAddress) async {
+    final response = await http.get(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getCompanyByEthereumAddress+ ethereumAddress),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+    
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return Company.fromJson(data);
+    }
+    return null;
+  }
+
   _getFileExtention(XFile? file) {
     if (file == null) return "";
 

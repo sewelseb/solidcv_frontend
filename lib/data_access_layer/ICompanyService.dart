@@ -17,4 +17,6 @@ abstract class ICompanyService {
   void saveWalletAddressForCurrentUser(Company company, String ethereumAddress);
 
   Future<List<Company>> getAllCompanies();
+
+  Future<Company?> fetchCompanyByWallet(String ethereumAddress);
 }
