@@ -5,7 +5,9 @@ import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/WorkExperienceCar
 import 'package:solid_cv/Views/widgets/MyEducation.dart';
 import 'package:solid_cv/Views/widgets/MySkills.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
@@ -23,6 +25,7 @@ class MyCvDesktop extends StatefulWidget {
 class _MyCvDesktopState extends State<MyCvDesktop> {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
+  late final ICompanyBll _company = CompanyBll();
   late Future<User> _userFuture;
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
@@ -65,6 +68,13 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       ...manual.map(UnifiedExperienceViewModel.fromManual),
     ];
 
+    for (var exp in all) {
+      if (exp.companyWallet != null) {
+        final company = await _company.fetchCompanyByWallet(exp.companyWallet!);
+        exp.companyLogoUrl = company?.getProfilePicture();
+      }
+    }
+
     all.sort((a, b) {
       if (a.endDate == null) return -1;
       if (b.endDate == null) return 1;
@@ -101,8 +111,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1100),
@@ -139,8 +148,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       children: [
         Row(
           children: [
-            const Text('Work Experience',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('Work Experience', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const Spacer(),
             IconButton(
               onPressed: _showAddWorkExperienceModal,
@@ -159,12 +167,14 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
+              return Text("Error: \${snapshot.error}");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return Column(
                 children: snapshot.data!
                     .map((e) => WorkExperienceCard(
-                        experience: e, onPromotionAdded: _refreshExperiences))
+                          experience: e,
+                          onPromotionAdded: _refreshExperiences,
+                        ))
                     .toList(),
               );
             } else {
