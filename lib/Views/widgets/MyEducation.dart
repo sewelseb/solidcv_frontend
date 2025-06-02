@@ -1,243 +1,128 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
-import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/MyEducationCard.dart';
+import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
-import 'package:solid_cv/models/Certificate.dart';
+import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
+import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
 class MyEducation extends StatefulWidget {
+  const MyEducation({Key? key}) : super(key: key);
+
   @override
   _MyEducationState createState() => _MyEducationState();
 }
 
 class _MyEducationState extends State<MyEducation> {
-  IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
-  IUserBLL _userBll = UserBll();
+  final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
+  final IUserBLL _userBll = UserBll();
+
   late Future<List<Certificate>> _certificates;
   late Future<List<Certificate>> _manuallyAddedCertificates;
-  File? file;
   late TextEditingController _publicationDateController;
+  File? file;
+
   @override
   void initState() {
     super.initState();
-    _publicationDateController = TextEditingController(); // 👈 Initialisé ici
+    _publicationDateController = TextEditingController();
+    _certificates = _blockchainWalletBll.getCertificatesForCurrentUser();
+    _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
   }
 
   @override
   void dispose() {
-    _publicationDateController.dispose(); // 👈 N'oublie pas de le libérer
+    _publicationDateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _certificates = _blockchainWalletBll.getCertificatesForCurrentUser();
-    _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              bool isSmallScreen = constraints.maxWidth < 500;
-              if (isSmallScreen) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Education',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: () {
-                        _showAddCertificateDialog();
-                      },
-                      child: const Text('+ Add manually a new certification'),
-                    ),
-                  ],
-                );
-              } else {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Education',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _showAddCertificateDialog();
-                      },
-                      child: const Text('+ Add manually a new certification'),
-                    ),
-                  ],
-                );
-              }
-            },
-          ),
-        ),
-        const Text(
-          "Validated by the blockchain",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
+        _buildHeader(context),
+        const SizedBox(height: 16),
         FutureBuilder<List<Certificate>>(
-  future: _certificates,
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-      return Center(child: Text('Error: ${snapshot.error}'));
-    }
+          future: _certificates,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(
+                padding: EdgeInsets.all(24),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            } else if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text('Error: ${snapshot.error}'),
+              );
+            }
 
-    final blockchainCerts = snapshot.data ?? [];
+            final blockchainCerts = snapshot.data ?? [];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (blockchainCerts.isEmpty)
-          const Center(child: Text('No certificates found.')),
-        ...blockchainCerts.map((certificate) {
-          return Card(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    certificate.title ?? '',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Colors.blueAccent,
+            return Column(
+              children: blockchainCerts
+                  .map(
+                    (c) => EducationCard(
+                      certificate: c,
+                      isValidated: true,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    certificate.description ?? '',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Date: ${certificate.publicationDate ?? ''}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        }).toList(),
-
-        const SizedBox(height: 24),
-        const Text(
-          "Manually added",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+                  )
+                  .toList(),
+            );
+          },
         ),
         FutureBuilder<List<Certificate>>(
           future: _manuallyAddedCertificates,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Padding(
+                padding: EdgeInsets.all(24),
+                child: Center(child: CircularProgressIndicator()),
+              );
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
-
-            final manualCerts = snapshot.data ?? [];
-            if (manualCerts.isEmpty) {
-              return const Center(
-                child: Text('No manually added certificates found.'),
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text('Error: ${snapshot.error}'),
               );
             }
 
+            final manualCerts = snapshot.data ?? [];
+
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: manualCerts.map((certificate) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 16),
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          certificate.title ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          certificate.description ?? '',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Date: ${certificate.publicationDate ?? ''}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+              children: manualCerts
+                  .map(
+                    (c) => EducationCard(
+                      certificate: c,
+                      isValidated: false,
                     ),
-                  ),
-                );
-              }).toList(),
+                  )
+                  .toList(),
             );
           },
         ),
       ],
     );
-  },
-),
+  }
 
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        const Text(
+          'Education',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: _showAddCertificateDialog,
+          icon: const Icon(Icons.add_circle_outline),
+          tooltip: 'Add education',
+        ),
       ],
     );
   }
@@ -249,7 +134,6 @@ class _MyEducationState extends State<MyEducation> {
     DateTime? _publicationDate;
     String? _certificateType;
     String? _teachingInstitution;
-    String? _filePath;
     String? _grade;
     String? _curriculum;
 
@@ -371,13 +255,15 @@ class _MyEducationState extends State<MyEducation> {
                     },
                   ),
                   ElevatedButton(
-                      onPressed: () => _selectQuoteFile(),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor),
-                      child: const Text(
-                        "Select a file",
-                        style: TextStyle(color: Colors.white),
-                      )),
+                    onPressed: _selectQuoteFile,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    child: const Text(
+                      "Select a file",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -407,6 +293,8 @@ class _MyEducationState extends State<MyEducation> {
                         file: file,
                       ),
                     );
+                    _manuallyAddedCertificates =
+                        _userBll.getMyManuallyAddedCertificates();
                   });
                   Navigator.of(context).pop();
                 }
@@ -419,7 +307,7 @@ class _MyEducationState extends State<MyEducation> {
     );
   }
 
-  _selectQuoteFile() async {
+  void _selectQuoteFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -447,4 +335,13 @@ class _MyEducationState extends State<MyEducation> {
       // User canceled the picker
     }
   }
+
+  BoxDecoration glassCardDecoration() => BoxDecoration(
+        color: Colors.white.withOpacity(0.85),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF7B3FE4).withOpacity(0.18),
+          width: 1.4,
+        ),
+      );
 }
