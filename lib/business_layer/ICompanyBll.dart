@@ -19,4 +19,6 @@ abstract class ICompanyBll {
   Future<List<Company>> getAllCompanies();
 
   addEmployeeEvents(User user,WorkEvent event,int companyId,String password);
+
+  Future<Company?> fetchCompanyByWallet(String ethereumAddress);
 }
