@@ -1,5 +1,4 @@
 
-import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -71,8 +70,6 @@ class UnifiedExperienceViewModel {
             ))
         .toList(),
       origin: ExperienceOrigin.manual,
-      companyLogoUrl: null,
-
     );
   }
 
