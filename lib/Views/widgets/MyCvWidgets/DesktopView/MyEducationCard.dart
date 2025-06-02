@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
 class EducationCard extends StatelessWidget {
@@ -33,8 +34,15 @@ class EducationCard extends StatelessWidget {
                 height: 48,
                 margin: const EdgeInsets.only(right: 15),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(4),
+                  color: Colors.grey.shade200,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                      certificate.logoUrl ??
+                          '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
+                    ),
+                  ),
                 ),
               ),
               Expanded(
