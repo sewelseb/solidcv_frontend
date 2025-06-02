@@ -127,6 +127,24 @@ class EducationInstitutionService extends IEducationInstitutionService {
     }
   }
 
+  @override
+  Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress) async {
+    final response = await http.get(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().getEducationInstitutionByEthereumAddress+ ethereumAddress),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+    
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return EducationInstitution.fromJson(data);
+    }
+    return null;
+  }
+
   _getFileExtention(XFile? file) {
     if (file == null) return "";
 

@@ -12,4 +12,6 @@ abstract class IEducationInstitutionService {
 
   Future<List<EducationInstitution>> getAllInstitutions();
 
+  Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
+
 }
