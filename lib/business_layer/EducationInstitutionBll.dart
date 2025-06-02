@@ -64,4 +64,9 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
     return _educationInstitutionService.getAllInstitutions();
   }
 
+  @override
+  Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress) {
+    return _educationInstitutionService.getEducationInstitutionByWallet(ethereumAddress);
+  } 
+
 }
