@@ -81,4 +81,8 @@ class BackenConnection {
 
   String get getEducationInstitutionByEthereumAddress => '/api/protected/get-education-institution-by-ethereum-address/';
 
+  String get getMyExportedCv => '/api/protected/export-cv';
+
+  String get getMyCvPlace => "/assets/cv/";
+
 }
