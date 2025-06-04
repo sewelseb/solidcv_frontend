@@ -10,7 +10,7 @@ import 'package:solid_cv/models/User.dart';
 abstract class IUserService {
   Future<User> getUser(String id);
   Future<User> createUser(User user);
-
+  Future<String> getMyExportedCv();
   Future<User> login(User user);
 
   Future<List<User>> searchUsers(SearchTherms searchTherms);

@@ -411,6 +411,25 @@ class UserService extends IUserService {
     }
   }
 
+    @override
+  Future<String> getMyExportedCv() async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url+BackenConnection().getMyExportedCv),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken()
+      }
+    );
+
+     if (response.statusCode == 200) {
+      var myCv = jsonDecode(response.body)["cv"];
+      return myCv;
+    } else {
+      print(response.body);
+      throw Exception('Failure in getting cv');
+    }
+  }
+
   @override
   Future<void> updateUser(
       User user, XFile? image, XFile? imageCv, int id) async {
