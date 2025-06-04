@@ -99,7 +99,6 @@ class UserBll extends IUserBLL {
     return user.roles?.contains('ROLE_ADMIN') ?? false;
   }
 
-
   @override
   void addManualExperience(ManualExperience newExperience) {
     _userService.addManualExperience(newExperience);
@@ -108,11 +107,15 @@ class UserBll extends IUserBLL {
   @override
   Future<List<ManualExperience>> getMyManuallyAddedExperiences() {
     return _userService.getMyManuallyAddedExperiences();
-  } 
+  }
 
   @override
   void addManuallyPromotion(Promotion promotion, int experienceId) {
     _userService.addManuallyPromotion(promotion, experienceId);
   }
-  
+
+  @override
+  Future<String> getMyExportedCv() {
+    return _userService.getMyExportedCv();
+  }
 }

@@ -12,7 +12,7 @@ abstract class IUserBLL {
   Future<User> createUser(User user);
   Future<void> updateUser(User user, XFile? image, XFile? imageCv, int id);
   Future<User> login(User user);
-
+  Future<String> getMyExportedCv();
   Future<List<User>> searchUsers(SearchTherms searchTherms);
 
   Future<User> getCurrentUser();
