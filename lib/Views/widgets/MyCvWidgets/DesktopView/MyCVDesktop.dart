@@ -10,10 +10,12 @@ import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyCvDesktop extends StatefulWidget {
   const MyCvDesktop({super.key});
@@ -105,7 +107,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final bool isTablet = screenWidth < desktopBreakpoint && screenWidth >= tabletBreakpoint;
+    final bool isTablet =
+        screenWidth < desktopBreakpoint && screenWidth >= tabletBreakpoint;
     final bool isMobile = screenWidth < tabletBreakpoint;
 
     return Scaffold(
@@ -119,7 +122,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1100),
@@ -191,7 +195,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.white.withOpacity(0.15),
-                            backgroundImage: NetworkImage(user.getProfilePicture()),
+                            backgroundImage:
+                                NetworkImage(user.getProfilePicture()),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -208,23 +213,32 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         const SizedBox(height: 6),
                         Center(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               user.email ?? '',
-                              style: const TextStyle(fontSize: 12, color: Colors.white70),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.white70),
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
-                        _infoTile(icon: Icons.phone, text: user.phoneNumber ?? "-"),
+                        _infoTile(
+                            icon: Icons.phone, text: user.phoneNumber ?? "-"),
                         const SizedBox(height: 6),
-                        _infoTile(icon: Icons.link, text: user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                        _infoTile(
+                            icon: Icons.link,
+                            text:
+                                user.linkedin ?? "Ajoutez votre lien LinkedIn"),
                         const SizedBox(height: 6),
-                        _infoTile(icon: Icons.description, text: user.biography ?? '', expandable: true),
+                        _infoTile(
+                            icon: Icons.description,
+                            text: user.biography ?? '',
+                            expandable: true),
                         const SizedBox(height: 18),
                         const Divider(color: Colors.white24),
                       ],
@@ -244,7 +258,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       future: _userFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const SizedBox(height: 60, child: Center(child: CircularProgressIndicator()));
+          return const SizedBox(
+              height: 60, child: Center(child: CircularProgressIndicator()));
         }
         final user = snapshot.data!;
         return Column(
@@ -253,7 +268,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
             Row(
               children: [
                 Text(user.getEasyName() ?? '',
-                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontSize: 28, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 ElevatedButton(
                   onPressed: () async {
@@ -277,8 +293,29 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     ),
                   ),
                   child: const Text('Edit profile'),
-                )
+                ),
               ],
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var documentName =
+                    await _userBLL.getMyExportedCv();
+                final Uri documentUrl = Uri.parse(
+                  BackenConnection().url +
+                      BackenConnection().getMyCvPlace +
+                      documentName,
+                );
+                launchUrl(documentUrl);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: const Text('Télécharger CV'),
             ),
             const SizedBox(height: 8),
             const LinearProgressIndicator(
@@ -298,7 +335,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       children: [
         Row(
           children: [
-            const Text('Work Experience', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('Work Experience',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const Spacer(),
             IconButton(
               onPressed: _showAddWorkExperienceModal,
@@ -339,7 +377,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     );
   }
 
-  Widget _infoTile({required IconData icon, required String text, bool expandable = false}) {
+  Widget _infoTile(
+      {required IconData icon, required String text, bool expandable = false}) {
     if (text.trim().isEmpty) return const SizedBox.shrink();
 
     if (!expandable) {
@@ -372,7 +411,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                   text,
                   style: const TextStyle(color: Colors.white70, fontSize: 14),
                   maxLines: expanded ? null : 2,
-                  overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                  overflow:
+                      expanded ? TextOverflow.visible : TextOverflow.ellipsis,
                 ),
               ),
               Icon(
