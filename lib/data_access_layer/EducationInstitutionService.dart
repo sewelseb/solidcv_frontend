@@ -128,21 +128,63 @@ class EducationInstitutionService extends IEducationInstitutionService {
   }
 
   @override
-  Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress) async {
+  Future<EducationInstitution?> getEducationInstitutionByWallet(
+      String ethereumAddress) async {
     final response = await http.get(
-      Uri.parse(
-          BackenConnection().url + BackenConnection().getEducationInstitutionByEthereumAddress+ ethereumAddress),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getEducationInstitutionByEthereumAddress +
+          ethereumAddress),
       headers: {
         'Content-Type': 'application/json',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
-    
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return EducationInstitution.fromJson(data);
     }
     return null;
+  }
+
+  @override
+  Future<void> updateEducationInstitution(
+      EducationInstitution educationInstitution, XFile? image, int id) async {
+    {
+      String? imageBytesBaseimage;
+      if (image != null) {
+        List<int> imageBytes = await image.readAsBytes();
+        imageBytesBaseimage = base64Encode(imageBytes);
+      }
+
+      final response = await http.post(
+        Uri.parse(BackenConnection().url +
+            BackenConnection().updateEducationInstitution +
+            id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        },
+        body: jsonEncode({
+          'name': educationInstitution.name,
+          'addressNumber': educationInstitution.addressNumber,
+          'addressStreet': educationInstitution.addressStreet,
+          'addressCity': educationInstitution.addressCity,
+          'addressZipCode': educationInstitution.addressZipCode,
+          'addressCountry': educationInstitution.addressCountry,
+          'phoneNumber': educationInstitution.phoneNumber,
+          'email': educationInstitution.email,
+          'profilePicture': imageBytesBaseimage,
+          'profilePictureExtention': _getFileExtention(image),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception('Error updating education institution informations');
+      }
+    }
   }
 
   _getFileExtention(XFile? file) {

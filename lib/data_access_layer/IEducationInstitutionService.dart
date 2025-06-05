@@ -14,4 +14,5 @@ abstract class IEducationInstitutionService {
 
   Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
 
+  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, XFile? image, int id);
 }
