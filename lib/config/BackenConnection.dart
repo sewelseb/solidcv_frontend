@@ -85,4 +85,6 @@ class BackenConnection {
 
   String get getMyCvPlace => "/assets/cv/";
 
+  String get updateEducationInstitution=> "/api/protected/update-education-institution/";
+
 }
