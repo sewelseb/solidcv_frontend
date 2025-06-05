@@ -16,58 +16,87 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Organisations'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
       ),
       bottomNavigationBar: const MainBottomNavigationBar(),
+      backgroundColor: const Color(0xFFF7F8FC),
       body: DefaultTabController(
         length: 2,
         child: Column(
           children: <Widget>[
-            const TabBar(
-              tabs: [
-                Tab(text: 'My Companies'),
-                Tab(text: 'My Education Institutions'),
-              ],
+            Container(
+              color: Colors.white,
+              child: const TabBar(
+                labelColor: Color(0xFF7B3FE4),
+                unselectedLabelColor: Colors.black54,
+                indicatorColor: Color(0xFF7B3FE4),
+                tabs: [
+                  Tab(text: 'My Companies'),
+                  Tab(text: 'My Education Institutions'),
+                ],
+              ),
             ),
             Expanded(
               child: TabBarView(
                 children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        //screen size minus the app bar and the bottom navigation bar
-                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 124,
-                        child: const MyCompanies()
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/add-a-company-form');
-                          },
-                          child: const Text('+ Add Company'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, left: 0, right: 0),
+                    child: Column(
+                      children: [
+                        Expanded(child: MyCompanies()),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: SizedBox(
+                            width: 220,
+                            height: 44,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/add-a-company-form');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF7B3FE4),
+                                foregroundColor: Colors.white,
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14)),
+                              ),
+                              icon: const Icon(Icons.add_business_rounded),
+                              label: const Text('Add Company'),
+                            ),
+                          ),
                         ),
-                      ),
-                      // Add your list of companies here
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        //screen size minus the app bar and the bottom navigation bar
-                        height: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 124,
-                        child: const MyEducationInstitutions(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/add-a-education-institution-form');
-                          },
-                          child: const Text('+ Add Education Institution'),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12, left: 0, right: 0),
+                    child: Column(
+                      children: [
+                        Expanded(child: MyEducationInstitutions()),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: SizedBox(
+                            width: 270,
+                            height: 44,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/add-a-education-institution-form');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF7B3FE4),
+                                foregroundColor: Colors.white,
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14)),
+                              ),
+                              icon: const Icon(Icons.add_business_rounded),
+                              label: const Text('Add Education Institution'),
+                            ),
+                          ),
                         ),
-                      ),
-                      // Add your list of education institutions here
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
