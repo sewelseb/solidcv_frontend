@@ -21,7 +21,6 @@ class _MyEducationInstitutionsState extends State<MyEducationInstitutions> {
     educationinstitutions = _educationInstitutionBll.getMyEducationInstitutions();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EducationInstitution>>(
@@ -32,37 +31,98 @@ class _MyEducationInstitutionsState extends State<MyEducationInstitutions> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No companies found.'));
+          return const Center(child: Text('No education institutions found.'));
         } else {
-            return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final company = snapshot.data![index];
-              return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: ListTile(
-                leading: Icon(Icons.business, color: Theme.of(context).primaryColor),
-                title: Text(
-                company.name!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+          return Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 650),
+              child: GridView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  mainAxisExtent: 110,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 16,
                 ),
-                trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).primaryColor),
-                onTap: () {
-                // Handle onTap event if needed
-                  Navigator.pushNamed(
-                    context,
-                    "/my-educationInstitution-administration",
-                    arguments: EducationInstitutionParameter(id: company.id!),
-                  );
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final institution = snapshot.data![index];
+                  return _InstitutionCard(institution: institution);
                 },
               ),
-              );
-            },
-            );
+            ),
+          );
         }
       },
     );
   }
+}
 
-  
+class _InstitutionCard extends StatelessWidget {
+  final EducationInstitution institution;
+  const _InstitutionCard({required this.institution});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          "/my-educationInstitution-administration",
+          arguments: EducationInstitutionParameter(id: institution.id!),
+        );
+      },
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        color: Colors.white,
+        child: Row(
+          children: [
+            const SizedBox(width: 18),
+            CircleAvatar(
+              radius: 34,
+              backgroundColor: Colors.deepPurple.shade50,
+              backgroundImage: NetworkImage(institution.getProfilePicture()),
+            ),
+            const SizedBox(width: 22),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    institution.name ?? "Unnamed Institution",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black87),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    institution.getFullAddress() ?? "",
+                    style: const TextStyle(fontSize: 13, color: Colors.black54),
+                  ),
+                  if (institution.email != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2.5),
+                      child: Text(
+                        institution.email!,
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.black38),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios,
+                color: Color(0xFF7B3FE4), size: 23),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
+  }
 }
