@@ -1,3 +1,6 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
@@ -7,10 +10,9 @@ import 'package:solid_cv/models/User.dart';
 abstract class IUserBLL {
   Future<User> getUser(String id);
   Future<User> createUser(User user);
-  Future<User> updateUser(User user);
-
-  Future<User>  login(User user);
-
+  Future<void> updateUser(User user, XFile? image, XFile? imageCv, int id);
+  Future<User> login(User user);
+  Future<String> getMyExportedCv();
   Future<List<User>> searchUsers(SearchTherms searchTherms);
 
   Future<User> getCurrentUser();
@@ -32,4 +34,14 @@ abstract class IUserBLL {
   Future<List<Skill>> getSkillsFromUser(String userId);
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
+
+  Future<List<User>> getAllUsers();
+
+  Future<bool> isAdmin();
+
+  void addManualExperience(ManualExperience newExperience);
+
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences();
+
+  void addManuallyPromotion(Promotion promotion, int experienceId);
 }

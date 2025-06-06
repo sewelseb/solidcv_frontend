@@ -1,3 +1,6 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
@@ -7,8 +10,7 @@ import 'package:solid_cv/models/User.dart';
 abstract class IUserService {
   Future<User> getUser(String id);
   Future<User> createUser(User user);
-  Future<User> updateUser(User user);
-
+  Future<String> getMyExportedCv();
   Future<User> login(User user);
 
   Future<List<User>> searchUsers(SearchTherms searchTherms);
@@ -34,4 +36,15 @@ abstract class IUserService {
   Future<List<Skill>> getSkillsFromUser(String userId);
 
   Future<String> getFeedbacksOnProfile(String text, String userId);
+
+  Future<List<User>> getAllUsers();
+
+  void addManuallyPromotion(Promotion promotion, int experienceId);
+
+  void addManualExperience(ManualExperience newExperience);
+
+  Future<List<ManualExperience>> getMyManuallyAddedExperiences();
+
+    Future<void> updateUser(User user, XFile? image,XFile? imageCv, int id);
+
 }

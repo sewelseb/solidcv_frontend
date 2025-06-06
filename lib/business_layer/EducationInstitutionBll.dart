@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
@@ -10,52 +11,74 @@ import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/User.dart';
 
 class EducationInstitutionBll extends IEducationInstitutionBll {
-  final IEducationInstitutionService _educationInstitutionService = EducationInstitutionService();
+  final IEducationInstitutionService _educationInstitutionService =
+      EducationInstitutionService();
   final IWalletService _walletService = EtheriumWalletService();
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
-  
 
   @override
   Future<List<EducationInstitution>> getMyEducationInstitutions() {
     return _educationInstitutionService.getMyEducationInstitutions();
   }
-  
+
   @override
-  void addEducationInstitution(EducationInstitution educationInstitution) {
-    _educationInstitutionService.addEducationInstitution(educationInstitution);
+  void addEducationInstitution(
+      EducationInstitution educationInstitution, XFile? image) {
+    _educationInstitutionService.addEducationInstitution(
+        educationInstitution, image);
   }
-  
+
   @override
   Future<EducationInstitution> getEducationInstitution(int id) {
     return _educationInstitutionService.getEducationInstitution(id);
   }
-  
+
   @override
-  setEthereumAddress(EducationInstitution educationInstitution, String ethereumAddress, String privateKey, String password) async {
-    if (! await isWalletAddressValid(ethereumAddress)) return false;
+  setEthereumAddress(EducationInstitution educationInstitution,
+      String ethereumAddress, String privateKey, String password) async {
+    if (!await isWalletAddressValid(ethereumAddress)) return false;
 
     //save the keys on the local device
     _walletService.storeKeys(ethereumAddress, privateKey, password);
 
-    _educationInstitutionService.setEthereumAddress(educationInstitution, ethereumAddress);
+    _educationInstitutionService.setEthereumAddress(
+        educationInstitution, ethereumAddress);
   }
 
-   Future<bool> isWalletAddressValid(String address) async {
+  Future<bool> isWalletAddressValid(String address) async {
     try {
       var ballance = await _walletService.getBalanceInWei(address);
       return true;
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
-
   }
 
   @override
-  void createCertificate(EducationInstitution educationInstitution, User user, Certificate certificate, String password) async {
-    var token = await _blockchainWalletBll.createCertificateToken(certificate, user, educationInstitution, password);
+  void createCertificate(EducationInstitution educationInstitution, User user,
+      Certificate certificate, String password) async {
+    var token = await _blockchainWalletBll.createCertificateToken(
+        certificate, user, educationInstitution, password);
 
     //Save all in the database
   }
 
+  @override
+  Future<List<EducationInstitution>> getAllInstitutions() {
+    return _educationInstitutionService.getAllInstitutions();
+  }
+
+  @override
+  Future<EducationInstitution?> getEducationInstitutionByWallet(
+      String ethereumAddress) {
+    return _educationInstitutionService
+        .getEducationInstitutionByWallet(ethereumAddress);
+  }
+
+  @override
+  Future<void> updateEducationInstitution(
+      EducationInstitution educationInstitution, XFile? image, int id) {
+    return _educationInstitutionService.updateEducationInstitution(
+        educationInstitution, image, id);
+  }
 }

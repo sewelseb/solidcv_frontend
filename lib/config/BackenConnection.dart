@@ -53,4 +53,38 @@ class BackenConnection {
   String get getSkillsFromUserApi => "/api/protected/get-skills-from-user/";
 
   String get getFeedbacksOnProfileApi => "/api/protected/get-ai-feedback-on-user-for-a-job-description";
+
+
+  String get getAllUsersForAdmin => "/api/admin/get-all-users";
+
+  String get getAllCompaniesForAdmin => "/api/admin/get-all-companies";
+
+  String get getAllEducationInstitutionsForAdmin => "/api/admin/get-all-education-institutions";
+  
+  String get getAllStatisticsForAdmin => "/api/admin/get-all-statistics";
+  
+  String get addManuallyPromotion => "/api/protected/add-manually-promotion/";
+
+  String get companyProfilePicFolder => '/assets/company/profile-pictures/';
+
+  String get userProfilePicFolder => '/assets/user/profile-pictures/';
+
+  String get imageAssetFolder => '/assets/images/';
+
+  String get educationInstitutionProfilePicFolder => '/assets/education-institution/profile-pictures/';
+
+  String get updateCompany => '/api/protected/update-company/';
+
+  String get updateUser => '/api/protected/update-user/';
+
+  String get getCompanyByEthereumAddress => '/api/protected/get-company-by-ethereum-address/';
+
+  String get getEducationInstitutionByEthereumAddress => '/api/protected/get-education-institution-by-ethereum-address/';
+
+  String get getMyExportedCv => '/api/protected/export-cv';
+
+  String get getMyCvPlace => "/assets/cv/";
+
+  String get updateEducationInstitution=> "/api/protected/update-education-institution/";
+
 }

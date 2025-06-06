@@ -1,3 +1,5 @@
+import 'package:solid_cv/config/BackenConnection.dart';
+
 class Company {
   final int? id;
   final String? name;
@@ -9,6 +11,7 @@ class Company {
   final String? phoneNumber;
   final String? email;
   final String? ethereumAddress;
+  final String? profilePicture;
 
   Company({
     this.id,
@@ -21,6 +24,7 @@ class Company {
     required this.phoneNumber,
     required this.email,
     this.ethereumAddress,
+    this.profilePicture,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -35,6 +39,7 @@ class Company {
       phoneNumber: json['phoneNumber'],
       email: json['email'],
       ethereumAddress: json['ethereumAddress'],
+      profilePicture: json['profilePicture'],
     );
   }
 
@@ -50,6 +55,7 @@ class Company {
       'phoneNumber': phoneNumber,
       'email': email,
       'ethereumAddress': ethereumAddress,
+      'profilePicture': profilePicture,
     };
   }
 
@@ -85,6 +91,15 @@ class Company {
 
   getSafePhoneNumber() {
     return phoneNumber ?? '';
+  }
+
+  String getProfilePicture() {
+    if (profilePicture != null && profilePicture!.isNotEmpty) {
+      return BackenConnection().url +
+          BackenConnection().companyProfilePicFolder +
+          (profilePicture as String);
+    }
+    return '${BackenConnection().url}${BackenConnection().imageAssetFolder}company.png';
   }
 
 }

@@ -1,7 +1,9 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
@@ -15,8 +17,8 @@ class CompanyBll extends ICompanyBll {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
 
   @override
-  Future<Company> createCompany(Company company) {
-    return _companyService.createCompany(company);
+  Future<Company> createCompany(Company company,XFile? image) {
+    return _companyService.createCompany(company, image);
   }
 
   @override
@@ -37,9 +39,9 @@ class CompanyBll extends ICompanyBll {
   }
 
   @override
-  Future<Company> updateCompany(Company company) {
-    // TODO: implement updateCompany
-    throw UnimplementedError();
+   Future<void> updateCompany(Company company, XFile? image, int id) {
+    
+    return _companyService.updateCompany(company, image,id);
   }
   
   @override
@@ -52,6 +54,12 @@ class CompanyBll extends ICompanyBll {
     var token = await _blockchainWalletBll.createWorkExperienceToken(experienceRecord, id, user.id!, password);
     experienceRecord.ethereumToken = token;
     _companyService.addEmployee(user, experienceRecord, id);
+  }
+
+  @override
+  addEmployeeEvents(User user,WorkEvent event,int companyId,String password) async {
+    final token = await _blockchainWalletBll.createWorkEventToken(event,companyId,user.id!,password,
+  );
   }
   
   @override
@@ -78,5 +86,13 @@ class CompanyBll extends ICompanyBll {
 
   }
 
-  
+  @override
+  Future<List<Company>> getAllCompanies() {
+    return _companyService.getAllCompanies();
+  }
+
+  @override
+  Future<Company?> fetchCompanyByWallet(String ethereumAddress) {
+    return _companyService.fetchCompanyByWallet(ethereumAddress);
+  }
 }

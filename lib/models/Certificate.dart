@@ -18,8 +18,10 @@ class Certificate {
   String? documentIPFSUrl;
   String? teachingInstitutionName;
   String? fileExtention;
+  String? logoUrl;
+  String? issuerBlockCahinWalletAddress;
 
-  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? teachingInstitutionName});
+  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress});
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -66,6 +68,7 @@ class Certificate {
       imagelink: certificate.imagelink,
       ipfsHash: certificate.ipfsHash,
       documentIPFSUrl: certificate.documentIPFSUrl,
+      issuerBlockCahinWalletAddress: certificate.issuerBlockCahinWalletAddress,
     );
   }
 }
