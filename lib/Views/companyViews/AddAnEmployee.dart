@@ -148,6 +148,7 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
     final TextEditingController endPasswordController = TextEditingController();
     final TextEditingController promotePasswordController =
         TextEditingController();
+    final contextOutsideDialog = context;
 
     DateTime? _startDate;
     DateTime? _endDate;
@@ -158,44 +159,48 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return LayoutBuilder(
-  builder: (context, constraints) {
-    double maxWidth;
-    if (constraints.maxWidth < 600) {
-      maxWidth = constraints.maxWidth * 0.98;
-    } else {
-      maxWidth = 540;
-    }
+          builder: (context, constraints) {
+            double maxWidth;
+            if (constraints.maxWidth < 600) {
+              maxWidth = constraints.maxWidth * 0.98;
+            } else {
+              maxWidth = 540;
+            }
 
-    return AlertDialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
-      content: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: maxWidth,
-        ),
-        child: FutureBuilder<List<CleanExperience>>(
-          future: _workExperiences,
-          builder: (context, snapshot) {
-            final dropdownItems = snapshot.hasData
-                ? _buildDropdownItems(snapshot.data!)
-                : [];
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: maxWidth,
+                ),
+                child: FutureBuilder<List<CleanExperience>>(
+                  future: _workExperiences,
+                  builder: (context, snapshot) {
+                    final dropdownItems = snapshot.hasData
+                        ? _buildDropdownItems(snapshot.data!)
+                        : [];
 
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Add or Update Experience',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
+                    return SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Add or Update Experience',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
                           Card(
                             elevation: 0,
                             color: Colors.grey[50],
@@ -265,33 +270,52 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                                                 BorderRadius.circular(10)),
                                       ),
                                       onPressed: () async {
-                                        final company = await _companyBll
-                                            .getCompany(_companyId);
-                                        final event = WorkCreatedEvent(
-                                          id: randomBytesAsHexString(16),
-                                          timestamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                          title: roleController.text,
-                                          startDate: _startDate
-                                                  ?.millisecondsSinceEpoch ??
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                          description:
-                                              descriptionController.text,
-                                          companyName:
-                                              company.name ?? 'Unknown',
-                                          companyWallet:
-                                              company.ethereumAddress ?? '',
-                                          location: 'Unknown',
-                                          experienceStreamId:
-                                              randomBytesAsHexString(16),
-                                        );
-                                        await _companyBll.addEmployeeEvents(
-                                            user,
-                                            event,
-                                            _companyId,
-                                            createPasswordController.text);
+                                        bool isSuccess = false;
+                                        String message = '';
+                                        try {
+                                          final company = await _companyBll
+                                              .getCompany(_companyId);
+                                          final event = WorkCreatedEvent(
+                                            id: randomBytesAsHexString(16),
+                                            timestamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            title: roleController.text,
+                                            startDate: _startDate
+                                                    ?.millisecondsSinceEpoch ??
+                                                DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                            description:
+                                                descriptionController.text,
+                                            companyName:
+                                                company.name ?? 'Unknown',
+                                            companyWallet:
+                                                company.ethereumAddress ?? '',
+                                            location: 'Unknown',
+                                            experienceStreamId:
+                                                randomBytesAsHexString(16),
+                                          );
+                                          await _companyBll.addEmployeeEvents(
+                                              user,
+                                              event,
+                                              _companyId,
+                                              createPasswordController.text);
+                                          isSuccess = true;
+                                          message = "Work experience created!";
+                                        } catch (e) {
+                                          isSuccess = false;
+                                          message = "Error: $e";
+                                        }
                                         Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(
+                                                contextOutsideDialog)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                            backgroundColor: isSuccess
+                                                ? Colors.green
+                                                : Colors.red,
+                                          ),
+                                        );
                                       },
                                       child: const Text('+ Create',
                                           style: TextStyle(
@@ -389,29 +413,49 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                                       icon: const Icon(Icons.stop,
                                           color: Colors.white),
                                       onPressed: () async {
-                                        final company = await _companyBll
-                                            .getCompany(_companyId);
-                                        final event = WorkEndedEvent(
-                                          id: randomBytesAsHexString(16),
-                                          timestamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                          endDate: _endDate
-                                                  ?.millisecondsSinceEpoch ??
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                          experienceStreamId:
-                                              _selectedStreamEndEventId ?? '',
-                                          companyName:
-                                              company.name ?? 'Unknown',
-                                          companyWallet:
-                                              company.ethereumAddress ?? '',
-                                        );
-                                        await _companyBll.addEmployeeEvents(
+                                        bool isSuccess = false;
+                                        String message = '';
+                                        try {
+                                          final company = await _companyBll
+                                              .getCompany(_companyId);
+                                          final event = WorkEndedEvent(
+                                            id: randomBytesAsHexString(16),
+                                            timestamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            endDate: _endDate
+                                                    ?.millisecondsSinceEpoch ??
+                                                DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                            experienceStreamId:
+                                                _selectedStreamEndEventId ?? '',
+                                            companyName:
+                                                company.name ?? 'Unknown',
+                                            companyWallet:
+                                                company.ethereumAddress ?? '',
+                                          );
+                                          await _companyBll.addEmployeeEvents(
                                             user,
                                             event,
                                             _companyId,
-                                            endPasswordController.text);
+                                            endPasswordController.text,
+                                          );
+                                          isSuccess = true;
+                                          message = "Experience ended!";
+                                        } catch (e) {
+                                          isSuccess = false;
+                                          message = "Error: $e";
+                                        }
                                         Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(
+                                                contextOutsideDialog)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                            backgroundColor: isSuccess
+                                                ? Colors.green
+                                                : Colors.red,
+                                          ),
+                                        );
                                       },
                                       label: const Text('End',
                                           style: TextStyle(
@@ -514,31 +558,51 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
                                       icon: const Icon(Icons.trending_up,
                                           color: Colors.white),
                                       onPressed: () async {
-                                        final company = await _companyBll
-                                            .getCompany(_companyId);
-                                        final event = WorkPromotedEvent(
-                                          id: randomBytesAsHexString(16),
-                                          timestamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                          newTitle: newTitleController.text,
-                                          promotionDate: _promotionDate
-                                                  ?.millisecondsSinceEpoch ??
-                                              DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                          experienceStreamId:
-                                              _selectedStreamPromoteEventId ??
-                                                  '',
-                                          companyName:
-                                              company.name ?? 'Unknown',
-                                          companyWallet:
-                                              company.ethereumAddress ?? '',
-                                        );
-                                        await _companyBll.addEmployeeEvents(
+                                        bool isSuccess = false;
+                                        String message = '';
+                                        try {
+                                          final company = await _companyBll
+                                              .getCompany(_companyId);
+                                          final event = WorkPromotedEvent(
+                                            id: randomBytesAsHexString(16),
+                                            timestamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            newTitle: newTitleController.text,
+                                            promotionDate: _promotionDate
+                                                    ?.millisecondsSinceEpoch ??
+                                                DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                            experienceStreamId:
+                                                _selectedStreamPromoteEventId ??
+                                                    '',
+                                            companyName:
+                                                company.name ?? 'Unknown',
+                                            companyWallet:
+                                                company.ethereumAddress ?? '',
+                                          );
+                                          await _companyBll.addEmployeeEvents(
                                             user,
                                             event,
                                             _companyId,
-                                            promotePasswordController.text);
+                                            promotePasswordController.text,
+                                          );
+                                          isSuccess = true;
+                                          message = "Promotion validated!";
+                                        } catch (e) {
+                                          isSuccess = false;
+                                          message = "Error: $e";
+                                        }
                                         Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(
+                                                contextOutsideDialog)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                            backgroundColor: isSuccess
+                                                ? Colors.green
+                                                : Colors.red,
+                                          ),
+                                        );
                                       },
                                       label: const Text('Promote',
                                           style: TextStyle(
