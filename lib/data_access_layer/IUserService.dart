@@ -1,4 +1,5 @@
-import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
+
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -45,6 +46,6 @@ abstract class IUserService {
 
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
 
-    Future<void> updateUser(User user, XFile? image,XFile? imageCv, int id);
+    Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
 
 }

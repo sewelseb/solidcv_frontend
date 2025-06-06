@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
@@ -430,59 +431,34 @@ class UserService extends IUserService {
     }
   }
 
-  @override
-  Future<void> updateUser(
-      User user, XFile? image, XFile? imageCv, int id) async {
-    {
-      String? imageBytesBaseimage;
-      if (image != null) {
-        List<int> imageBytes = await image.readAsBytes();
-        imageBytesBaseimage = base64Encode(imageBytes);
-      }
+@override
+Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id) async {
+  String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-      String? imageBytesBaseimageCv;
-      if (imageCv != null) {
-        List<int> imageBytesCv = await imageCv.readAsBytes();
-        imageBytesBaseimageCv = base64Encode(imageBytesCv);
-      }
+  final response = await http.post(
+    Uri.parse(BackenConnection().url +
+        BackenConnection().updateUser +
+        id.toString()),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+    },
+    body: jsonEncode({
+      'firstName': user.firstName,
+      'lastName': user.lastName,
+      'phoneNumber': user.phoneNumber,
+      'biography': user.biography,
+      'linkedin': user.linkedin,
+      if (imageBase64 != null) 'profilePicture': imageBase64,
+      if (imageBase64 != null) 'profilePictureExtention': imageExt,
+    }),
+  );
 
-      final response = await http.post(
-        Uri.parse(BackenConnection().url +
-            BackenConnection().updateUser +
-            id.toString()),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-        },
-        body: jsonEncode({
-          'firstName': user.firstName,
-          'lastName': user.lastName,
-          'phoneNumber': user.phoneNumber,
-          'biography': user.biography,
-          'linkedin': user.linkedin,
-          if (imageBytesBaseimageCv != null) 'cv': imageBytesBaseimageCv,
-          if (imageBytesBaseimageCv != null)
-            'cvExtention': _getFileExtention(imageCv),
-          if (imageBytesBaseimage != null)
-            'profilePicture': imageBytesBaseimage,
-          if (imageBytesBaseimage != null)
-            'profilePictureExtention': _getFileExtention(image),
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception('Error updating user information');
-      }
-    }
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw Exception('Error updating user information');
   }
+}
 
-  _getFileExtention(XFile? file) {
-    if (file == null) return "";
-
-    var stringArray = file.name.split(".");
-
-    return stringArray.last;
-  }
 }
