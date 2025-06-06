@@ -4,48 +4,42 @@ import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Company.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CompanyService extends ICompanyService {
-  @override
-  Future<Company> createCompany(Company company, XFile? image) async {
-    String? imageBytesBaseimage;
-    if (image != null) {
-      List<int> imageBytes = await image.readAsBytes();
-      imageBytesBaseimage = base64Encode(imageBytes);
-    }
+@override
+Future<Company> createCompany(Company company, Uint8List? imageBytes, String? imageExt) async {
+  String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-    final response = await http.post(
-      Uri.parse(BackenConnection().url + BackenConnection().createCompanyApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-      },
-      body: jsonEncode(<String, String?>{
-        'name': company.name,
-        'addressNumber': company.addressNumber,
-        'addressStreet': company.addressStreet,
-        'addressCity': company.addressCity,
-        'addressZipCode': company.addressZipCode,
-        'addressCountry': company.addressCountry,
-        'phoneNumber': company.phoneNumber,
-        'email': company.email,
-        'profilePicture': imageBytesBaseimage,
-        'profilePictureExtention': _getFileExtention(image),
-      }),
-    );
+  final response = await http.post(
+    Uri.parse(BackenConnection().url + BackenConnection().createCompanyApi),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+    },
+    body: jsonEncode({
+      'name': company.name,
+      'addressNumber': company.addressNumber,
+      'addressStreet': company.addressStreet,
+      'addressCity': company.addressCity,
+      'addressZipCode': company.addressZipCode,
+      'addressCountry': company.addressCountry,
+      'phoneNumber': company.phoneNumber,
+      'email': company.email,
+      if (imageBase64 != null) 'profilePicture': imageBase64,
+      if (imageBase64 != null) 'profilePictureExtention': imageExt,
+    }),
+  );
 
-    if (response.statusCode == 200) {
-      Company company = Company.fromJson(jsonDecode(response.body));
-      return company;
-    } else {
-      throw Exception('Creating company failure');
-    }
+  if (response.statusCode == 200) {
+    Company company = Company.fromJson(jsonDecode(response.body));
+    return company;
+  } else {
+    throw Exception('Creating company failure');
   }
+}
 
   @override
   Future<Company> deleteCompany(int id) {
@@ -209,11 +203,4 @@ class CompanyService extends ICompanyService {
     return null;
   }
 
-  _getFileExtention(XFile? file) {
-    if (file == null) return "";
-
-    var stringArray = file.name.split(".");
-
-    return stringArray.last;
-  }
 }
