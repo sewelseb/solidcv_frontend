@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -10,7 +12,7 @@ import 'package:solid_cv/models/User.dart';
 abstract class IUserBLL {
   Future<User> getUser(String id);
   Future<User> createUser(User user);
-  Future<void> updateUser(User user, XFile? image, XFile? imageCv, int id);
+  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
   Future<User> login(User user);
   Future<String> getMyExportedCv();
   Future<List<User>> searchUsers(SearchTherms searchTherms);

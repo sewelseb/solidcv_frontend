@@ -1,7 +1,7 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
@@ -36,7 +36,8 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   final _passwordController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  XFile? _pickedImage;
+  Uint8List? _pickedImageBytes;
+  String? _pickedImageExt;
 
   bool _isSubmitting = false;
 
@@ -86,11 +87,16 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (image != null) {
-      setState(() => _pickedImage = image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result != null && result.files.single.bytes != null) {
+      setState(() {
+        _pickedImageBytes = result.files.single.bytes!;
+        _pickedImageExt = result.files.single.extension;
+      });
     }
   }
 
@@ -112,8 +118,8 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
         ethereumAddress: _ethereumAddressController.text,
       );
 
-      await _companyBll.updateCompany(
-          updatedCompany, _pickedImage, updatedCompany.id!);
+      await _companyBll.updateCompany(updatedCompany, _pickedImageBytes,
+          _pickedImageExt, updatedCompany.id!);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -121,7 +127,8 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
       );
       setState(() {
         _companyFuture = _companyBll.getCompany(updatedCompany.id!);
-        _pickedImage = null;
+        _pickedImageBytes = null;
+        _pickedImageExt = null;
       });
     } catch (e) {
       if (!mounted) return;
@@ -149,225 +156,241 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
     );
   }
 
-@override
-Widget build(BuildContext context) {
-  final screenWidth = MediaQuery.of(context).size.width;
-  final isWide = screenWidth > 950;
-  final isMobile = screenWidth < 600;
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWide = screenWidth > 950;
+    final isMobile = screenWidth < 600;
 
-  return Scaffold(
-    appBar: AppBar(
-      title: Text(
-        'Company Administration',
-        style: GoogleFonts.inter(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Company Administration',
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
+        backgroundColor: _primaryColor,
+        elevation: 1,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      backgroundColor: _primaryColor,
-      elevation: 1,
-      iconTheme: const IconThemeData(color: Colors.white),
-    ),
-    bottomNavigationBar: const MainBottomNavigationBar(),
-    backgroundColor: Colors.white,
-    body: FutureBuilder<Company>(
-      future: _companyFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData) {
-          return const Center(child: Text('No data available'));
-        }
+      bottomNavigationBar: const MainBottomNavigationBar(),
+      backgroundColor: Colors.white,
+      body: FutureBuilder<Company>(
+        future: _companyFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData) {
+            return const Center(child: Text('No data available'));
+          }
 
-        final company = snapshot.data!;
+          final company = snapshot.data!;
 
-        return ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(scrollbars: false),
-          child: Scrollbar(
-            controller: _scrollController,
-            thumbVisibility: true,
-            trackVisibility: true,
-            child: SingleChildScrollView(
+          return ScrollConfiguration(
+            behavior: const ScrollBehavior().copyWith(scrollbars: false),
+            child: Scrollbar(
               controller: _scrollController,
-              padding: EdgeInsets.symmetric(
-                vertical: isMobile ? 24 : 36,
-                horizontal: isMobile ? 10 : 32,
-              ),
-              child: Center(
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 1050),
-                  child: Card(
-                    elevation: 7,
-                    color: _glassBackground,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(28.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Center(
-                              child: InkWell(
-                                onTap: _pickImage,
-                                borderRadius: BorderRadius.circular(60),
-                                child: CircleAvatar(
-                                  radius: 55,
-                                  backgroundColor: Colors.deepPurple.shade50,
-                                  backgroundImage: _pickedImage != null
-                                      ? FileImage(File(_pickedImage!.path))
-                                      : NetworkImage(company.getProfilePicture()),
-                                  child: (_pickedImage == null &&
-                                          (company.profilePicture == null ||
-                                              company.profilePicture!.isEmpty))
-                                      ? const Icon(Icons.camera_alt_outlined,
-                                          size: 38, color: Colors.deepPurple)
-                                      : null,
-                                ),
+              thumbVisibility: true,
+              trackVisibility: true,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: EdgeInsets.symmetric(
+                  vertical: isMobile ? 24 : 36,
+                  horizontal: isMobile ? 10 : 32,
+                ),
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 1050),
+                    child: Card(
+                      elevation: 7,
+                      color: _glassBackground,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(28.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Center(
+                                child: InkWell(
+                                    onTap: _pickImage,
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: CircleAvatar(
+                                      radius: 55,
+                                      backgroundColor:
+                                          Colors.deepPurple.shade50,
+                                      backgroundImage: _pickedImageBytes != null
+                                          ? MemoryImage(_pickedImageBytes!)
+                                          : NetworkImage(
+                                              company.getProfilePicture()),
+                                    )),
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            const Text(
-                              "Change company logo/image",
-                              style: TextStyle(color: Colors.black54, fontSize: 15),
-                            ),
-                            const SizedBox(height: 30),
-                            isWide
-                                ? Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(child: _buildMainFields()),
-                                      const SizedBox(width: 30),
-                                      Expanded(child: _buildOtherFields()),
-                                    ],
-                                  )
-                                : Column(
-                                    children: [
-                                      _buildMainFields(),
-                                      const SizedBox(height: 20),
-                                      _buildOtherFields(),
-                                    ],
-                                  ),
-                            const SizedBox(height: 28),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 52,
-                              child: ElevatedButton.icon(
-                                onPressed: _isSubmitting ? null : _submit,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: _primaryColor,
-                                  foregroundColor: Colors.white,
-                                  textStyle: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  elevation: 2,
-                                ),
-                                icon: _isSubmitting
-                                    ? const SizedBox(
-                                        width: 22,
-                                        height: 22,
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 3, color: Colors.white),
-                                      )
-                                    : const Icon(Icons.save),
-                                label: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                                  child: Text(
-                                      _isSubmitting ? "Submitting..." : "Update Company"),
-                                ),
+                              const SizedBox(height: 12),
+                              const Text(
+                                "Change company logo/image",
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 15),
                               ),
-                            ),
-                            const SizedBox(height: 36),
-                            _buildSectionCard(
-                              isMobile: isMobile,
-                              title: "Ethereum Wallet",
-                              icon: Icons.account_balance_wallet,
-                              content: Column(
-                                children: [
-                                  _buildTextField(_ethereumAddressController,
-                                      "Ethereum Address", Icons.account_balance_wallet),
-                                  const SizedBox(height: 16),
-                                  _buildTextField(_ethereumPrivateKeyController,
-                                      "Ethereum Private key", Icons.lock,
-                                      obscure: true),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'This is the Ethereum address that will be used to mint tokens for your employees.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
-                                    style: GoogleFonts.inter(
-                                        color: Colors.black54, fontSize: 13, height: 1.2),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  _buildTextField(_passwordController,
-                                      "Password (encrypts private key)", Icons.password,
-                                      obscure: true),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'This password will be used to encrypt your private key. Make sure to remember it. (There is no way to recover it)',
-                                    style: GoogleFonts.inter(
-                                        color: Colors.black54, fontSize: 12),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton.icon(
-                                      onPressed: () async {
-                                        await _companyBll.setEthereumAddress(
-                                          company,
-                                          _ethereumAddressController.text,
-                                          _ethereumPrivateKeyController.text,
-                                          _passwordController.text,
-                                        );
-                                        if (!mounted) return;
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Ethereum address saved!')),
-                                        );
-                                        setState(() {});
-                                      },
-                                      icon: const Icon(Icons.save),
-                                      label: const Text('Save Ethereum'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: _primaryColor,
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(12)),
-                                      ),
+                              const SizedBox(height: 30),
+                              isWide
+                                  ? Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(child: _buildMainFields()),
+                                        const SizedBox(width: 30),
+                                        Expanded(child: _buildOtherFields()),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        _buildMainFields(),
+                                        const SizedBox(height: 20),
+                                        _buildOtherFields(),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            _buildSectionCard(
-                              isMobile: isMobile,
-                              title: "Employees",
-                              icon: Icons.people,
-                              content: SizedBox(
+                              const SizedBox(height: 28),
+                              SizedBox(
                                 width: double.infinity,
+                                height: 52,
                                 child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    var args = CompanyParameter(id: company.id!);
-                                    Navigator.pushNamed(
-                                        context, '/company/add-an-employee',
-                                        arguments: args);
-                                  },
-                                  icon: const Icon(Icons.person_add_alt_1),
-                                  label: const Text('+ Add Employee'),
+                                  onPressed: _isSubmitting ? null : _submit,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: _primaryColor,
                                     foregroundColor: Colors.white,
+                                    textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    elevation: 2,
+                                  ),
+                                  icon: _isSubmitting
+                                      ? const SizedBox(
+                                          width: 22,
+                                          height: 22,
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 3,
+                                              color: Colors.white),
+                                        )
+                                      : const Icon(Icons.save),
+                                  label: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6.0),
+                                    child: Text(_isSubmitting
+                                        ? "Submitting..."
+                                        : "Update Company"),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                          ],
+                              const SizedBox(height: 36),
+                              _buildSectionCard(
+                                isMobile: isMobile,
+                                title: "Ethereum Wallet",
+                                icon: Icons.account_balance_wallet,
+                                content: Column(
+                                  children: [
+                                    _buildTextField(
+                                        _ethereumAddressController,
+                                        "Ethereum Address",
+                                        Icons.account_balance_wallet),
+                                    const SizedBox(height: 16),
+                                    _buildTextField(
+                                        _ethereumPrivateKeyController,
+                                        "Ethereum Private key",
+                                        Icons.lock,
+                                        obscure: true),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'This is the Ethereum address that will be used to mint tokens for your employees.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
+                                      style: GoogleFonts.inter(
+                                          color: Colors.black54,
+                                          fontSize: 13,
+                                          height: 1.2),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    _buildTextField(
+                                        _passwordController,
+                                        "Password (encrypts private key)",
+                                        Icons.password,
+                                        obscure: true),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'This password will be used to encrypt your private key. Make sure to remember it. (There is no way to recover it)',
+                                      style: GoogleFonts.inter(
+                                          color: Colors.black54, fontSize: 12),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () async {
+                                          await _companyBll.setEthereumAddress(
+                                            company,
+                                            _ethereumAddressController.text,
+                                            _ethereumPrivateKeyController.text,
+                                            _passwordController.text,
+                                          );
+                                          if (!mounted) return;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    'Ethereum address saved!')),
+                                          );
+                                          setState(() {});
+                                        },
+                                        icon: const Icon(Icons.save),
+                                        label: const Text('Save Ethereum'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: _primaryColor,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              _buildSectionCard(
+                                isMobile: isMobile,
+                                title: "Employees",
+                                icon: Icons.people,
+                                content: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      var args =
+                                          CompanyParameter(id: company.id!);
+                                      Navigator.pushNamed(
+                                          context, '/company/add-an-employee',
+                                          arguments: args);
+                                    },
+                                    icon: const Icon(Icons.person_add_alt_1),
+                                    label: const Text('+ Add Employee'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: _primaryColor,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -375,14 +398,11 @@ Widget build(BuildContext context) {
                 ),
               ),
             ),
-          ),
-        );
-      },
-    ),
-  );
-}
-
-
+          );
+        },
+      ),
+    );
+  }
 
   Widget _buildMainFields() {
     return Column(

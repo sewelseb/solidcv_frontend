@@ -69,10 +69,10 @@ class _MyCvMobileState extends State<MyCvMobile> {
       ...manual.map(UnifiedExperienceViewModel.fromManual),
     ];
 
-    for (var exp in all) {
-      if (exp.companyWallet != null) {
-        final company = await _company.fetchCompanyByWallet(exp.companyWallet!);
-        exp.companyLogoUrl = company?.getProfilePicture();
+    for (var experience in all) {
+      if (experience.companyWallet != null) {
+        final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
+        experience.companyLogoUrl = company?.getProfilePicture();
       }
     }
     all.sort((a, b) {

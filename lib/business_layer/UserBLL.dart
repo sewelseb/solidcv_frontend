@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
@@ -24,8 +26,8 @@ class UserBll extends IUserBLL {
   }
 
   @override
-  Future<void> updateUser(User user, XFile? image, XFile? imageCv, int id) {
-    return _userService.updateUser(user, image, imageCv, id);
+  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id) {
+    return _userService.updateUser(user, imageBytes, imageExt, id);
   }
 
   @override

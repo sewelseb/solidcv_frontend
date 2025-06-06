@@ -1,6 +1,6 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/Views/utils/RegexValidator.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
@@ -27,7 +27,8 @@ class _AddanEducationInstitutionFormRouteState
   final _countryController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
-  XFile? _pickedImage;
+  Uint8List? _pickedImageBytes;
+  String? _pickedImageExt;
   bool _isSubmitting = false;
 
   @override
@@ -44,11 +45,16 @@ class _AddanEducationInstitutionFormRouteState
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (image != null) {
-      setState(() => _pickedImage = image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result != null && result.files.single.bytes != null) {
+      setState(() {
+        _pickedImageBytes = result.files.single.bytes!;
+        _pickedImageExt = result.files.single.extension;
+      });
     }
   }
 
@@ -68,7 +74,7 @@ class _AddanEducationInstitutionFormRouteState
         email: _emailController.text,
       );
       _educationInstitutionBll.addEducationInstitution(
-          educationInstitution, _pickedImage);
+          educationInstitution, _pickedImageBytes, _pickedImageExt);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -161,10 +167,10 @@ class _AddanEducationInstitutionFormRouteState
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.deepPurple.shade50,
-                            backgroundImage: _pickedImage != null
-                                ? FileImage(File(_pickedImage!.path))
+                            backgroundImage: _pickedImageBytes != null
+                                ? MemoryImage(_pickedImageBytes!)
                                 : null,
-                            child: _pickedImage == null
+                            child: _pickedImageBytes == null
                                 ? const Icon(Icons.camera_alt_outlined,
                                     size: 38, color: Colors.deepPurple)
                                 : null,

@@ -1,7 +1,7 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -26,8 +26,8 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
   late TextEditingController _linkedinController;
   final ScrollController _scrollController = ScrollController();
 
-  XFile? _pickedProfilePic;
-  XFile? _pickedCv;
+  Uint8List? _pickedProfilePicBytes;
+  String? _pickedProfilePicExt;
   bool _isSaving = false;
 
   @override
@@ -58,12 +58,15 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
   }
 
   Future<void> _pickProfilePicture() async {
-    final picker = ImagePicker();
-    final image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (image != null) {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result != null && result.files.single.bytes != null) {
       setState(() {
-        _pickedProfilePic = image;
+        _pickedProfilePicBytes = result.files.single.bytes!;
+        _pickedProfilePicExt = result.files.single.extension;
       });
     }
   }
@@ -83,7 +86,11 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
         email: widget.user.email,
       );
       await _userBll.updateUser(
-          updatedUser, _pickedProfilePic, _pickedCv, updatedUser.id!);
+        updatedUser,
+        _pickedProfilePicBytes,
+        _pickedProfilePicExt,
+        updatedUser.id!,
+      );
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -159,16 +166,10 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                             child: CircleAvatar(
                               radius: 55,
                               backgroundColor: Colors.deepPurple.shade50,
-                              backgroundImage: _pickedProfilePic != null
-                                  ? FileImage(File(_pickedProfilePic!.path))
+                              backgroundImage: _pickedProfilePicBytes != null
+                                  ? MemoryImage(_pickedProfilePicBytes!)
                                   : NetworkImage(
                                       widget.user.getProfilePicture()),
-                              child: (_pickedProfilePic == null &&
-                                      (widget.user.profilePicture == null ||
-                                          widget.user.profilePicture!.isEmpty))
-                                  ? const Icon(Icons.camera_alt_outlined,
-                                      size: 38, color: Colors.deepPurple)
-                                  : null,
                             ),
                           ),
                         ),

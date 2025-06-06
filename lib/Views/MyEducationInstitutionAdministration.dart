@@ -1,7 +1,7 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/Views/Parameters/EducationInstitutionParameter.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
@@ -18,7 +18,8 @@ class MyEducationInstitutionAdministration extends StatefulWidget {
 
 class _MyEducationInstitutionAdministrationState
     extends State<MyEducationInstitutionAdministration> {
-  final IEducationInstitutionBll _educationInstitutionBll = EducationInstitutionBll();
+  final IEducationInstitutionBll _educationInstitutionBll =
+      EducationInstitutionBll();
   Future<EducationInstitution>? _educationInstitutionFuture;
   EducationInstitution? _educationInstitution;
 
@@ -37,7 +38,8 @@ class _MyEducationInstitutionAdministrationState
   final _passwordController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  XFile? _pickedImage;
+  Uint8List? _pickedImageBytes;
+  String? _pickedImageExt;
   bool _isSubmitting = false;
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
@@ -50,19 +52,25 @@ class _MyEducationInstitutionAdministrationState
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_educationInstitutionFuture == null) {
-      final EducationInstitutionParameter args =
-          ModalRoute.of(context)!.settings.arguments as EducationInstitutionParameter;
-      _educationInstitutionFuture = _educationInstitutionBll.getEducationInstitution(args.id).then((educationInstitution) {
+      final EducationInstitutionParameter args = ModalRoute.of(context)!
+          .settings
+          .arguments as EducationInstitutionParameter;
+      _educationInstitutionFuture = _educationInstitutionBll
+          .getEducationInstitution(args.id)
+          .then((educationInstitution) {
         _educationInstitution = educationInstitution;
         _nameController.text = educationInstitution.name ?? '';
-        _addressNumberController.text = educationInstitution.addressNumber ?? '';
-        _addressStreetController.text = educationInstitution.addressStreet ?? '';
+        _addressNumberController.text =
+            educationInstitution.addressNumber ?? '';
+        _addressStreetController.text =
+            educationInstitution.addressStreet ?? '';
         _cityController.text = educationInstitution.addressCity ?? '';
         _zipCodeController.text = educationInstitution.addressZipCode ?? '';
         _countryController.text = educationInstitution.addressCountry ?? '';
         _phoneNumberController.text = educationInstitution.phoneNumber ?? '';
         _emailController.text = educationInstitution.email ?? '';
-        _ethereumAddressController.text = educationInstitution.ethereumAddress ?? '';
+        _ethereumAddressController.text =
+            educationInstitution.ethereumAddress ?? '';
         return educationInstitution;
       });
     }
@@ -86,11 +94,16 @@ class _MyEducationInstitutionAdministrationState
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (image != null) {
-      setState(() => _pickedImage = image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result != null && result.files.single.bytes != null) {
+      setState(() {
+        _pickedImageBytes = result.files.single.bytes!;
+        _pickedImageExt = result.files.single.extension;
+      });
     }
   }
 
@@ -114,15 +127,20 @@ class _MyEducationInstitutionAdministrationState
       );
 
       await _educationInstitutionBll.updateEducationInstitution(
-          updatedInstitution, _pickedImage, updatedInstitution.id!);
+          updatedInstitution,
+          _pickedImageBytes,
+          _pickedImageExt,
+          updatedInstitution.id!);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Education Institution updated!')),
       );
       setState(() {
-        _educationInstitutionFuture = _educationInstitutionBll.getEducationInstitution(updatedInstitution.id!);
-        _pickedImage = null;
+        _educationInstitutionFuture = _educationInstitutionBll
+            .getEducationInstitution(updatedInstitution.id!);
+        _pickedImageBytes = null;
+        _pickedImageExt = null;
       });
     } catch (e) {
       if (!mounted) return;
@@ -218,27 +236,24 @@ class _MyEducationInstitutionAdministrationState
                                   child: CircleAvatar(
                                     radius: 55,
                                     backgroundColor: Colors.deepPurple.shade50,
-                                    backgroundImage: _pickedImage != null
-                                        ? FileImage(File(_pickedImage!.path))
-                                        : NetworkImage(institution.getProfilePicture()),
-                                    child: (_pickedImage == null &&
-                                            (institution.profilePicture == null ||
-                                                institution.profilePicture!.isEmpty))
-                                        ? const Icon(Icons.camera_alt_outlined,
-                                            size: 38, color: Colors.deepPurple)
-                                        : null,
+                                    backgroundImage: _pickedImageBytes != null
+                                        ? MemoryImage(_pickedImageBytes!)
+                                        : NetworkImage(
+                                            institution.getProfilePicture()),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 12),
                               const Text(
                                 "Change institution logo/image",
-                                style: TextStyle(color: Colors.black54, fontSize: 15),
+                                style: TextStyle(
+                                    color: Colors.black54, fontSize: 15),
                               ),
                               const SizedBox(height: 30),
                               isWide
                                   ? Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(child: _buildMainFields()),
                                         const SizedBox(width: 30),
@@ -262,9 +277,11 @@ class _MyEducationInstitutionAdministrationState
                                     backgroundColor: _primaryColor,
                                     foregroundColor: Colors.white,
                                     textStyle: const TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12)),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
                                     elevation: 2,
                                   ),
                                   icon: _isSubmitting
@@ -272,13 +289,16 @@ class _MyEducationInstitutionAdministrationState
                                           width: 22,
                                           height: 22,
                                           child: CircularProgressIndicator(
-                                              strokeWidth: 3, color: Colors.white),
+                                              strokeWidth: 3,
+                                              color: Colors.white),
                                         )
                                       : const Icon(Icons.save),
                                   label: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                                    child: Text(
-                                        _isSubmitting ? "Submitting..." : "Update Institution"),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6.0),
+                                    child: Text(_isSubmitting
+                                        ? "Submitting..."
+                                        : "Update Institution"),
                                   ),
                                 ),
                               ),
@@ -289,21 +309,29 @@ class _MyEducationInstitutionAdministrationState
                                 icon: Icons.account_balance_wallet,
                                 content: Column(
                                   children: [
-                                    _buildTextField(_ethereumAddressController,
-                                        "Ethereum Address", Icons.account_balance_wallet),
+                                    _buildTextField(
+                                        _ethereumAddressController,
+                                        "Ethereum Address",
+                                        Icons.account_balance_wallet),
                                     const SizedBox(height: 16),
-                                    _buildTextField(_ethereumPrivateKeyController,
-                                        "Ethereum Private key", Icons.lock,
+                                    _buildTextField(
+                                        _ethereumPrivateKeyController,
+                                        "Ethereum Private key",
+                                        Icons.lock,
                                         obscure: true),
                                     const SizedBox(height: 10),
                                     Text(
                                       'This is the Ethereum address that will be used to mint certificates or diplomas.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
                                       style: GoogleFonts.inter(
-                                          color: Colors.black54, fontSize: 13, height: 1.2),
+                                          color: Colors.black54,
+                                          fontSize: 13,
+                                          height: 1.2),
                                     ),
                                     const SizedBox(height: 10),
-                                    _buildTextField(_passwordController,
-                                        "Password (encrypts private key)", Icons.password,
+                                    _buildTextField(
+                                        _passwordController,
+                                        "Password (encrypts private key)",
+                                        Icons.password,
                                         obscure: true),
                                     const SizedBox(height: 8),
                                     Text(
@@ -316,16 +344,19 @@ class _MyEducationInstitutionAdministrationState
                                       width: double.infinity,
                                       child: ElevatedButton.icon(
                                         onPressed: () async {
-                                          await _educationInstitutionBll.setEthereumAddress(
+                                          await _educationInstitutionBll
+                                              .setEthereumAddress(
                                             institution,
                                             _ethereumAddressController.text,
                                             _ethereumPrivateKeyController.text,
                                             _passwordController.text,
                                           );
                                           if (!mounted) return;
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
                                             const SnackBar(
-                                                content: Text('Ethereum address saved!')),
+                                                content: Text(
+                                                    'Ethereum address saved!')),
                                           );
                                           setState(() {});
                                         },
@@ -335,7 +366,8 @@ class _MyEducationInstitutionAdministrationState
                                           backgroundColor: _primaryColor,
                                           foregroundColor: Colors.white,
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
                                         ),
                                       ),
                                     ),
@@ -351,7 +383,8 @@ class _MyEducationInstitutionAdministrationState
                                   width: double.infinity,
                                   child: ElevatedButton.icon(
                                     onPressed: () {
-                                      var args = EducationInstitutionParameter(id: institution.id!);
+                                      var args = EducationInstitutionParameter(
+                                          id: institution.id!);
                                       Navigator.pushNamed(
                                         context,
                                         '/educationInstitution/add-a-certificate-to-user',
@@ -359,12 +392,14 @@ class _MyEducationInstitutionAdministrationState
                                       );
                                     },
                                     icon: const Icon(Icons.person_add_alt_1),
-                                    label: const Text('+ Add Certificates to User'),
+                                    label: const Text(
+                                        '+ Add Certificates to User'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: _primaryColor,
                                       foregroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12)),
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
                                     ),
                                   ),
                                 ),
@@ -388,11 +423,14 @@ class _MyEducationInstitutionAdministrationState
   Widget _buildMainFields() {
     return Column(
       children: [
-        _buildTextField(_nameController, "Institution Name", Icons.school, required: true),
+        _buildTextField(_nameController, "Institution Name", Icons.school,
+            required: true),
         const SizedBox(height: 18),
-        _buildTextField(_addressNumberController, "Address number", Icons.location_on),
+        _buildTextField(
+            _addressNumberController, "Address number", Icons.location_on),
         const SizedBox(height: 18),
-        _buildTextField(_addressStreetController, "Address street", Icons.location_on),
+        _buildTextField(
+            _addressStreetController, "Address street", Icons.location_on),
         const SizedBox(height: 18),
         _buildTextField(_cityController, "City", Icons.location_city),
       ],
@@ -402,7 +440,8 @@ class _MyEducationInstitutionAdministrationState
   Widget _buildOtherFields() {
     return Column(
       children: [
-        _buildTextField(_zipCodeController, "Zip code", Icons.local_post_office),
+        _buildTextField(
+            _zipCodeController, "Zip code", Icons.local_post_office),
         const SizedBox(height: 18),
         _buildTextField(_countryController, "Country", Icons.flag),
         const SizedBox(height: 18),
@@ -477,7 +516,8 @@ class _MyEducationInstitutionAdministrationState
                   ),
                 ),
                 padding: const EdgeInsets.all(8),
-                child: Icon(icon, color: Colors.white, size: isMobile ? 22 : 28),
+                child:
+                    Icon(icon, color: Colors.white, size: isMobile ? 22 : 28),
               ),
               const SizedBox(width: 12),
               Expanded(

@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/my-cv': (context) => const MyCvRoute(),
         '/my-organisation': (context) => const MyOrganisationsRoute(),
         '/my-educationInstitution-administration': (context) =>
-            MyEducationInstitutionAdministration(),
+           const MyEducationInstitutionAdministration(),
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
           return EditProfileRoute(user: user);
