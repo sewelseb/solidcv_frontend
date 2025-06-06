@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/models/Company.dart';
 import 'package:solid_cv/models/ExperienceRecord.dart';
@@ -8,7 +7,7 @@ import 'package:solid_cv/models/User.dart';
 
 abstract class ICompanyBll {
   Future<Company> getCompany(int id);
-  Future<Company> createCompany(Company company, XFile? image);
+  Future<Company> createCompany(Company company, Uint8List? imageBytes, String? imageExt);
   Future<void> updateCompany(Company company, Uint8List? imageBytes, String? imageExt, int id);
   Future<Company> deleteCompany(int id);
 

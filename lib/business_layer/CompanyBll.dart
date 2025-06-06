@@ -19,8 +19,8 @@ class CompanyBll extends ICompanyBll {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
 
   @override
-  Future<Company> createCompany(Company company, XFile? image) {
-    return _companyService.createCompany(company, image);
+  Future<Company> createCompany(Company company, Uint8List? imageBytes, String? imageExt) {
+    return _companyService.createCompany(company, imageBytes, imageExt);
   }
 
   @override
