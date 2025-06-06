@@ -1,6 +1,6 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/Views/utils/RegexValidator.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
@@ -25,7 +25,8 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
   final _countryController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
-  XFile? _pickedImage;
+  Uint8List? _pickedImageBytes;
+  String? _pickedImageExt;
   bool _isSubmitting = false;
 
   @override
@@ -42,11 +43,16 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (image != null) {
-      setState(() => _pickedImage = image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+      allowMultiple: false,
+    );
+    if (result != null && result.files.single.bytes != null) {
+      setState(() {
+        _pickedImageBytes = result.files.single.bytes!;
+        _pickedImageExt = result.files.single.extension;
+      });
     }
   }
 
@@ -67,7 +73,8 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
         email: _emailController.text,
       );
 
-      await _companyBll.createCompany(company, _pickedImage);
+      await _companyBll.createCompany(
+          company, _pickedImageBytes, _pickedImageExt);
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -129,11 +136,11 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                           child: CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.deepPurple.shade50,
-                            backgroundImage: _pickedImage != null
-                                ? FileImage(File(_pickedImage!.path))
+                            backgroundImage: _pickedImageBytes != null
+                                ? MemoryImage(_pickedImageBytes!)
                                 : null,
-                            child: _pickedImage == null
-                                ? Icon(Icons.camera_alt_outlined,
+                            child: _pickedImageBytes == null
+                                ? const Icon(Icons.camera_alt_outlined,
                                     size: 38, color: Colors.deepPurple)
                                 : null,
                           ),
