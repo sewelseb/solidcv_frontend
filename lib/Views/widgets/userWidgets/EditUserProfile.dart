@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:io' as io show File;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
@@ -169,15 +168,8 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                               backgroundColor: Colors.deepPurple.shade50,
                               backgroundImage: _pickedProfilePicBytes != null
                                   ? MemoryImage(_pickedProfilePicBytes!)
-                                  : (widget.user.getProfilePicture() != null
-                                      ? NetworkImage(widget.user.getProfilePicture())
-                                      : null) as ImageProvider?,
-                              child: (_pickedProfilePicBytes == null &&
-                                      (widget.user.profilePicture == null ||
-                                          widget.user.profilePicture!.isEmpty))
-                                  ? const Icon(Icons.camera_alt_outlined,
-                                      size: 38, color: Colors.deepPurple)
-                                  : null,
+                                  : NetworkImage(
+                                      widget.user.getProfilePicture()),
                             ),
                           ),
                         ),
