@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
@@ -31,40 +32,35 @@ class EducationInstitutionService extends IEducationInstitutionService {
     }
   }
 
-  @override
-  void addEducationInstitution(
-      EducationInstitution educationInstitution, XFile? image) async {
-    String? imageBytesBaseimage;
-    if (image != null) {
-      List<int> imageBytes = await image.readAsBytes();
-      imageBytesBaseimage = base64Encode(imageBytes);
-    }
+@override
+void addEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt) async {
+  String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-    final response = await http.post(
-      Uri.parse(BackenConnection().url +
-          BackenConnection().addEducationInstitutionApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-      },
-      body: jsonEncode(<String, String?>{
-        'name': educationInstitution.name,
-        'addressNumber': educationInstitution.addressNumber,
-        'addressStreet': educationInstitution.addressStreet,
-        'addressCity': educationInstitution.addressCity,
-        'addressZipCode': educationInstitution.addressZipCode,
-        'addressCountry': educationInstitution.addressCountry,
-        'phoneNumber': educationInstitution.phoneNumber,
-        'email': educationInstitution.email,
-        'profilePicture': imageBytesBaseimage,
-        'profilePictureExtention': _getFileExtention(image),
-      }),
-    );
+  final response = await http.post(
+    Uri.parse(BackenConnection().url +
+        BackenConnection().addEducationInstitutionApi),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+    },
+    body: jsonEncode({
+      'name': educationInstitution.name,
+      'addressNumber': educationInstitution.addressNumber,
+      'addressStreet': educationInstitution.addressStreet,
+      'addressCity': educationInstitution.addressCity,
+      'addressZipCode': educationInstitution.addressZipCode,
+      'addressCountry': educationInstitution.addressCountry,
+      'phoneNumber': educationInstitution.phoneNumber,
+      'email': educationInstitution.email,
+      if (imageBase64 != null) 'profilePicture': imageBase64,
+      if (imageBase64 != null) 'profilePictureExtention': imageExt,
+    }),
+  );
 
-    if (response.statusCode != 200) {
-      throw Exception('Adding company failure');
-    }
+  if (response.statusCode != 200) {
+    throw Exception('Adding institution failure');
   }
+}
 
   @override
   Future<EducationInstitution> getEducationInstitution(int id) async {
@@ -149,49 +145,38 @@ class EducationInstitutionService extends IEducationInstitutionService {
 
   @override
   Future<void> updateEducationInstitution(
-      EducationInstitution educationInstitution, XFile? image, int id) async {
-    {
-      String? imageBytesBaseimage;
-      if (image != null) {
-        List<int> imageBytes = await image.readAsBytes();
-        imageBytesBaseimage = base64Encode(imageBytes);
-      }
+      EducationInstitution educationInstitution,
+      Uint8List? imageBytes,
+      String? imageExt,
+      int id) async {
+    String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-      final response = await http.post(
-        Uri.parse(BackenConnection().url +
-            BackenConnection().updateEducationInstitution +
-            id.toString()),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-        },
-        body: jsonEncode({
-          'name': educationInstitution.name,
-          'addressNumber': educationInstitution.addressNumber,
-          'addressStreet': educationInstitution.addressStreet,
-          'addressCity': educationInstitution.addressCity,
-          'addressZipCode': educationInstitution.addressZipCode,
-          'addressCountry': educationInstitution.addressCountry,
-          'phoneNumber': educationInstitution.phoneNumber,
-          'email': educationInstitution.email,
-          'profilePicture': imageBytesBaseimage,
-          'profilePictureExtention': _getFileExtention(image),
-        }),
-      );
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().updateEducationInstitution +
+          id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'name': educationInstitution.name,
+        'addressNumber': educationInstitution.addressNumber,
+        'addressStreet': educationInstitution.addressStreet,
+        'addressCity': educationInstitution.addressCity,
+        'addressZipCode': educationInstitution.addressZipCode,
+        'addressCountry': educationInstitution.addressCountry,
+        'phoneNumber': educationInstitution.phoneNumber,
+        'email': educationInstitution.email,
+        if (imageBase64 != null) 'profilePicture': imageBase64,
+        if (imageBase64 != null) 'profilePictureExtention': imageExt,
+      }),
+    );
 
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception('Error updating education institution informations');
-      }
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Error updating education institution informations');
     }
-  }
-
-  _getFileExtention(XFile? file) {
-    if (file == null) return "";
-
-    var stringArray = file.name.split(".");
-
-    return stringArray.last;
   }
 }

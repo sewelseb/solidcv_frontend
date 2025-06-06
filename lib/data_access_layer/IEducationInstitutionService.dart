@@ -1,10 +1,11 @@
-import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
+
 import 'package:solid_cv/models/EducationInstitution.dart';
 
 abstract class IEducationInstitutionService {
   Future<List<EducationInstitution>> getMyEducationInstitutions();
 
-  void addEducationInstitution(EducationInstitution educationInstitution, XFile? image);
+  void addEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt);
 
   Future<EducationInstitution> getEducationInstitution(int id);
 
@@ -14,5 +15,5 @@ abstract class IEducationInstitutionService {
 
   Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
 
-  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, XFile? image, int id);
+  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt, int id);
 }
