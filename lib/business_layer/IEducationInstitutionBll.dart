@@ -1,5 +1,7 @@
 
 
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
@@ -8,7 +10,7 @@ import 'package:solid_cv/models/User.dart';
 abstract class IEducationInstitutionBll {
   Future<List<EducationInstitution>> getMyEducationInstitutions();
 
-  void addEducationInstitution(EducationInstitution educationInstitution, XFile? image);
+  void addEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt);
 
   Future<EducationInstitution> getEducationInstitution(int id);
 
@@ -20,5 +22,5 @@ abstract class IEducationInstitutionBll {
 
   Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
 
-  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, XFile? image, int id);
+  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt, int id);
 }
