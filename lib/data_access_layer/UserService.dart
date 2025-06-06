@@ -13,7 +13,6 @@ import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 
 class UserService extends IUserService {
   @override
