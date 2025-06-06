@@ -17,8 +17,10 @@ class UnifiedExperienceViewModel {
   final String? location;
   final int? startDate;
   final int? endDate;
+  final String? companyWallet;
   final List<Promotion> promotions;
   final ExperienceOrigin origin;
+  String? companyLogoUrl;
 
   UnifiedExperienceViewModel({
     required this.title,
@@ -28,8 +30,10 @@ class UnifiedExperienceViewModel {
     this.description,
     this.location,
     this.endDate,
+    this.companyWallet,
     this.promotions = const [],
     this.manualId,
+    this.companyLogoUrl,
   });
 
   String get label => origin == ExperienceOrigin.blockchain ? 'Verified' : 'Manual';
@@ -43,6 +47,7 @@ class UnifiedExperienceViewModel {
       description: e.description,
       location: e.location,
       startDate: e.startDate ?? 0,
+      companyWallet: e.companyWallet,
       endDate: e.endDate,
       promotions: e.promotions,
       origin: ExperienceOrigin.blockchain,

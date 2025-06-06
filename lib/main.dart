@@ -19,6 +19,8 @@ import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
 import 'package:solid_cv/Views/widgets/SessionValidatorToken.dart';
+import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
+import 'package:solid_cv/models/User.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +54,10 @@ class MyApp extends StatelessWidget {
         '/my-organisation': (context) => const MyOrganisationsRoute(),
         '/my-educationInstitution-administration': (context) =>
             MyEducationInstitutionAdministration(),
+        '/user/edit-profile': (context) {
+          final user = ModalRoute.of(context)?.settings.arguments as User;
+          return EditProfileRoute(user: user);
+        },
         '/add-a-company-form': (context) => const AddACompanyFormRoute(),
         '/add-a-education-institution-form': (context) =>
             const AddanEducationInstitutionFormRoute(),
@@ -61,11 +67,10 @@ class MyApp extends StatelessWidget {
         '/company/add-an-employee': (context) => const AddAnEmployee(),
         '/educationInstitution/add-a-certificate-to-user': (context) =>
             CreateACertificate(),
-            '/admin/dashboard': (context) => const AdminDashboardPage(),
-            '/admin/users': (context) => AdminUsersPage(),
-            '/admin/companies': (context) => const AdminCompaniesPage(),
-            '/admin/institutions': (context) => const AdminInstitutionsPage(),
-
+        '/admin/dashboard': (context) => const AdminDashboardPage(),
+        '/admin/users': (context) => AdminUsersPage(),
+        '/admin/companies': (context) => const AdminCompaniesPage(),
+        '/admin/institutions': (context) => const AdminInstitutionsPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {

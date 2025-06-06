@@ -73,7 +73,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Company created!')),
       );
-      Navigator.pop(context);
+      Navigator.pushNamed(context, '/my-organisation');
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +90,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
       prefixIcon: icon != null ? Icon(icon) : null,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       filled: true,
-      fillColor: Colors.grey.shade100,
+      fillColor: Colors.white,
     );
   }
 

@@ -74,7 +74,12 @@ class _AddanEducationInstitutionFormRouteState
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Education Institution added!')),
       );
-      Navigator.pop(context);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/my-organisation',
+        (route) => false,
+        arguments: {'tabIndex': 1},
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -91,7 +96,7 @@ class _AddanEducationInstitutionFormRouteState
       prefixIcon: icon != null ? Icon(icon) : null,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       filled: true,
-      fillColor: Colors.grey.shade100,
+      fillColor: Colors.white,
     );
   }
 

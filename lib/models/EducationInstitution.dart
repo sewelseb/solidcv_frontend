@@ -100,6 +100,6 @@ class EducationInstitution {
           BackenConnection().educationInstitutionProfilePicFolder +
           (profilePicture as String);
     }
-    return "";
+    return '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png';
   }
 }

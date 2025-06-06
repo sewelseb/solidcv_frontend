@@ -158,46 +158,44 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return LayoutBuilder(
-          builder: (context, constraints) {
-            double maxWidth = 540;
-            if (constraints.maxWidth < 600)
-              maxWidth = constraints.maxWidth * 0.96;
-            return AlertDialog(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(28),
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
-              content: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: maxWidth,
-                  minWidth: 320,
-                ),
-                child: FutureBuilder<List<CleanExperience>>(
-                  future: _workExperiences,
-                  builder: (context, snapshot) {
-                    final dropdownItems = snapshot.hasData
-                        ? _buildDropdownItems(snapshot.data!)
-                        : [];
+  builder: (context, constraints) {
+    double maxWidth;
+    if (constraints.maxWidth < 600) {
+      maxWidth = constraints.maxWidth * 0.98;
+    } else {
+      maxWidth = 540;
+    }
 
-                    // Partie UI
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Add or Update Experience',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(28),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+      content: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: maxWidth,
+        ),
+        child: FutureBuilder<List<CleanExperience>>(
+          future: _workExperiences,
+          builder: (context, snapshot) {
+            final dropdownItems = snapshot.hasData
+                ? _buildDropdownItems(snapshot.data!)
+                : [];
+
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Add or Update Experience',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
                           Card(
                             elevation: 0,
                             color: Colors.grey[50],

@@ -12,4 +12,7 @@ abstract class IEducationInstitutionService {
 
   Future<List<EducationInstitution>> getAllInstitutions();
 
+  Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
+
+  Future<void> updateEducationInstitution(EducationInstitution educationInstitution, XFile? image, int id);
 }

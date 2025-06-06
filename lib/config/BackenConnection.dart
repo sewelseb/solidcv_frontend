@@ -67,10 +67,24 @@ class BackenConnection {
 
   String get companyProfilePicFolder => '/assets/company/profile-pictures/';
 
+  String get userProfilePicFolder => '/assets/user/profile-pictures/';
+
   String get imageAssetFolder => '/assets/images/';
 
   String get educationInstitutionProfilePicFolder => '/assets/education-institution/profile-pictures/';
 
   String get updateCompany => '/api/protected/update-company/';
+
+  String get updateUser => '/api/protected/update-user/';
+
+  String get getCompanyByEthereumAddress => '/api/protected/get-company-by-ethereum-address/';
+
+  String get getEducationInstitutionByEthereumAddress => '/api/protected/get-education-institution-by-ethereum-address/';
+
+  String get getMyExportedCv => '/api/protected/export-cv';
+
+  String get getMyCvPlace => "/assets/cv/";
+
+  String get updateEducationInstitution=> "/api/protected/update-education-institution/";
 
 }

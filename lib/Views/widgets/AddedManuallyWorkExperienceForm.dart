@@ -20,8 +20,6 @@ class _AddedManuallyWorkExperienceFormState extends State<AddedManuallyWorkExper
   String? _title, _company, _description, _location;
 
   final _promotionList = <Map<String, dynamic>>[];
-  final _promotionTitleControllers = <TextEditingController>[];
-  final _promotionDateControllers = <TextEditingController>[];
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +45,6 @@ class _AddedManuallyWorkExperienceFormState extends State<AddedManuallyWorkExper
                 });
               }),
               const SizedBox(height: 10),
-              TextButton.icon(
-                onPressed: () {
-                  setState(() {
-                    _promotionList.add({});
-                    _promotionTitleControllers.add(TextEditingController());
-                    _promotionDateControllers.add(TextEditingController());
-                  });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Add promotion'),
-              ),
             ],
           ),
         ),
