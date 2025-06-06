@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
@@ -17,7 +19,7 @@ class CompanyBll extends ICompanyBll {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
 
   @override
-  Future<Company> createCompany(Company company,XFile? image) {
+  Future<Company> createCompany(Company company, XFile? image) {
     return _companyService.createCompany(company, image);
   }
 
@@ -39,36 +41,44 @@ class CompanyBll extends ICompanyBll {
   }
 
   @override
-   Future<void> updateCompany(Company company, XFile? image, int id) {
-    
-    return _companyService.updateCompany(company, image,id);
+  Future<void> updateCompany(
+      Company company, Uint8List? imageBytes, String? imageExt, int id) {
+    return _companyService.updateCompany(company, imageBytes, imageExt, id);
   }
-  
+
   @override
   Future<List<Company>> getMyCompanies() {
     return _companyService.getMyCompanies();
   }
 
   @override
-  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password) async {
-    var token = await _blockchainWalletBll.createWorkExperienceToken(experienceRecord, id, user.id!, password);
+  addEmployee(User user, ExperienceRecord experienceRecord, int id,
+      String password) async {
+    var token = await _blockchainWalletBll.createWorkExperienceToken(
+        experienceRecord, id, user.id!, password);
     experienceRecord.ethereumToken = token;
     _companyService.addEmployee(user, experienceRecord, id);
   }
 
   @override
-  addEmployeeEvents(User user,WorkEvent event,int companyId,String password) async {
-    final token = await _blockchainWalletBll.createWorkEventToken(event,companyId,user.id!,password,
-  );
+  addEmployeeEvents(
+      User user, WorkEvent event, int companyId, String password) async {
+    final token = await _blockchainWalletBll.createWorkEventToken(
+      event,
+      companyId,
+      user.id!,
+      password,
+    );
   }
-  
+
   @override
-  setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password) async {
-    if (! await isWalletAddressValid(ethereumAddress)) return false;
+  setEthereumAddress(Company company, String ethereumAddress, String privateKey,
+      String password) async {
+    if (!await isWalletAddressValid(ethereumAddress)) return false;
 
     //save the keys on the local device
     _walletService.storeKeys(ethereumAddress, privateKey, password);
-    
+
     // Save the address to the user's profile
     _companyService.saveWalletAddressForCurrentUser(company, ethereumAddress);
 
@@ -79,11 +89,9 @@ class CompanyBll extends ICompanyBll {
     try {
       var ballance = await _walletService.getBalanceInWei(address);
       return true;
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
-
   }
 
   @override
