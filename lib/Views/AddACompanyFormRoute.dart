@@ -80,7 +80,11 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Company created!')),
       );
-      Navigator.pushNamed(context, '/my-organisation');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/my-organisation',
+        (route) => false,
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
