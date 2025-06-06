@@ -90,4 +90,9 @@ class CompanyBll extends ICompanyBll {
   Future<List<Company>> getAllCompanies() {
     return _companyService.getAllCompanies();
   }
+
+  @override
+  Future<Company?> fetchCompanyByWallet(String ethereumAddress) {
+    return _companyService.fetchCompanyByWallet(ethereumAddress);
+  }
 }

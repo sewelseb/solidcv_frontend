@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -19,97 +20,155 @@ class WorkExperienceCard extends StatelessWidget {
     final start = _formatDate(experience.startDate);
     final end = _formatDate(experience.endDate);
     final hasPromotions = experience.promotions.isNotEmpty;
+    final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
+        ? experience.companyLogoUrl!
+        : '${BackenConnection().url}${BackenConnection().imageAssetFolder}company.png';
 
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: glassCardDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 650;
+
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                margin: const EdgeInsets.only(right: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(experience.title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 4),
-                    Text(experience.company, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 4),
-                    Text('$start - $end', style: const TextStyle(fontSize: 13, color: Colors.grey)),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_pin, size: 16, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Text(experience.location ?? '', style: const TextStyle(fontSize: 13, color: Colors.grey)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              if (isNarrow) _buildBadge(isVerified),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    width: 48,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
-                      color: isVerified ? Colors.green : Colors.deepPurple,
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                        image: NetworkImage(logoUrl),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    child: Row(
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(isVerified ? Icons.verified : Icons.edit, size: 14, color: Colors.white),
-                        const SizedBox(width: 4),
-                        Text(
-                          isVerified ? 'Verified by the blockchain' : 'Manually added',
-                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    experience.title,
+                                    style: const TextStyle(
+                                        fontSize: 17, fontWeight: FontWeight.w700),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    experience.company,
+                                    style: const TextStyle(
+                                        fontSize: 15, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text('$start - $end',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.grey)),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.location_pin,
+                                          size: 16, color: Colors.grey),
+                                      const SizedBox(width: 4),
+                                      Flexible(
+                                        child: Text(
+                                          experience.location ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 13, color: Colors.grey),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (!isNarrow)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: _buildBadge(isVerified),
+                              ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  // TextButton(
-                  //   onPressed: () {},
-                  //   style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                  //   child: const Text('View détails'),
-                  // ),
                 ],
               ),
+              if (hasPromotions) ...[
+                const SizedBox(height: 16),
+                ...experience.promotions.map((p) {
+                  final date = DateTime.fromMillisecondsSinceEpoch(p.date);
+                  return Text(
+                      '• ${p.newTitle} – ${date.day}/${date.month}/${date.year}',
+                      style: const TextStyle(fontSize: 14));
+                }),
+              ],
+              if (experience.description?.isNotEmpty ?? false) ...[
+                const SizedBox(height: 12),
+                Text(
+                  experience.description!,
+                  style: const TextStyle(fontSize: 14.5, color: Colors.black87),
+                ),
+              ],
+              if (!isVerified)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () =>
+                        _showAddPromotionDialog(context, experience.manualId!),
+                    style:
+                        TextButton.styleFrom(foregroundColor: Colors.deepPurple),
+                    child: const Text('Add a promotion'),
+                  ),
+                ),
             ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBadge(bool isVerified) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: isVerified ? Colors.green : Colors.deepPurple,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isVerified ? Icons.verified : Icons.edit,
+            size: 14,
+            color: Colors.white,
           ),
-          if (hasPromotions) ...[
-            const SizedBox(height: 16),
-            ...experience.promotions.map((p) {
-              final date = DateTime.fromMillisecondsSinceEpoch(p.date);
-              return Text('• ${p.newTitle} – ${date.day}/${date.month}/${date.year}', style: const TextStyle(fontSize: 14));
-            }),
-          ],
-          if (experience.description?.isNotEmpty ?? false) ...[
-            const SizedBox(height: 12),
-            Text(experience.description!, style: const TextStyle(fontSize: 14.5, color: Colors.black87)),
-          ],
-          if (!isVerified)
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => _showAddPromotionDialog(context, experience.manualId!),
-                style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                child: const Text('Add a promotion'),
-              ),
+          const SizedBox(width: 4),
+          Text(
+            isVerified ? 'Verified by the blockchain' : 'Manually added',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
             ),
+          ),
         ],
       ),
     );
@@ -130,7 +189,8 @@ class WorkExperienceCard extends StatelessWidget {
             children: [
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(labelText: 'Titre de promotion'),
+                decoration:
+                    const InputDecoration(labelText: 'Titre de promotion'),
               ),
               TextField(
                 controller: dateController,
@@ -145,7 +205,8 @@ class WorkExperienceCard extends StatelessWidget {
                   );
                   if (picked != null) {
                     selectedDate = picked;
-                    dateController.text = picked.toIso8601String().split('T')[0];
+                    dateController.text =
+                        picked.toIso8601String().split('T')[0];
                   }
                 },
               ),
@@ -165,7 +226,7 @@ class WorkExperienceCard extends StatelessWidget {
                     date: selectedDate!.millisecondsSinceEpoch,
                   );
                   var userBLL = UserBll();
-                   userBLL.addManuallyPromotion(promotion, manualExperienceId);
+                  userBLL.addManuallyPromotion(promotion, manualExperienceId);
                   Navigator.of(context).pop();
                   if (onPromotionAdded != null) onPromotionAdded!();
                 }

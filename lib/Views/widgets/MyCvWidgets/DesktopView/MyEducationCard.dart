@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
 class EducationCard extends StatelessWidget {
@@ -22,130 +23,161 @@ class EducationCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: glassCardDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 720;
+
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                margin: const EdgeInsets.only(right: 15),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      certificate.title ?? 'Untitled',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      certificate.type ?? 'Certificate',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    if (certificate.publicationDate != null)
-                      Text(
-                        'Date: ${formatDate(certificate.publicationDate!)}',
-                        style:
-                            const TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    const SizedBox(height: 4),
-                    if (certificate.teachingInstitutionName != null)
-                      Row(
-                        children: [
-                          const Icon(Icons.school,
-                              size: 16, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          Text(
-                            certificate.teachingInstitutionName!,
-                            style: const TextStyle(
-                                fontSize: 13, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              if (isNarrow) _buildBadge(badgeColor, badgeLabel),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    width: 48,
+                    height: 48,
+                    margin: const EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
-                      color: badgeColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          isValidated ? Icons.verified : Icons.edit,
-                          size: 14,
-                          color: Colors.white,
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey.shade200,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          certificate.logoUrl ??
+                              '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          badgeLabel,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    certificate.title ?? 'Untitled',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    certificate.type ?? 'Certificate',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  if (certificate.publicationDate != null)
+                                    Text(
+                                      'Date: ${formatDate(certificate.publicationDate!)}',
+                                      style: const TextStyle(
+                                          fontSize: 13, color: Colors.grey),
+                                    ),
+                                  const SizedBox(height: 4),
+                                  if (certificate.teachingInstitutionName !=
+                                      null)
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.school,
+                                            size: 16, color: Colors.grey),
+                                        const SizedBox(width: 4),
+                                        Flexible(
+                                          child: Text(
+                                            certificate.teachingInstitutionName!,
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.grey),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                            if (!isNarrow)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: _buildBadge(badgeColor, badgeLabel),
+                              ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  // const SizedBox(height: 8),
-                  // TextButton(
-                  //   onPressed: () {}, // TODO: Implement details modal
-                  //   style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                  //   child: const Text('View details'),
-                  // ),
                 ],
               ),
+              if (certificate.description != null &&
+                  certificate.description!.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  certificate.description!,
+                  style:
+                      const TextStyle(fontSize: 14.5, color: Colors.black87),
+                ),
+              ],
+              if (certificate.curriculum != null &&
+                  certificate.curriculum!.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  'Curriculum: ${certificate.curriculum!}',
+                  style:
+                      const TextStyle(fontSize: 13.5, color: Colors.black87),
+                ),
+              ],
+              if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Text(
+                  'Grade: ${certificate.grade!}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
             ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBadge(Color color, String label) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            label.contains('Verified') ? Icons.verified : Icons.edit,
+            size: 14,
+            color: Colors.white,
           ),
-          if (certificate.description != null &&
-              certificate.description!.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Text(
-              certificate.description!,
-              style: const TextStyle(fontSize: 14.5, color: Colors.black87),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-          if (certificate.curriculum != null &&
-              certificate.curriculum!.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            Text(
-              'Curriculum: ${certificate.curriculum!}',
-              style: const TextStyle(fontSize: 13.5, color: Colors.black87),
-            ),
-          ],
-          if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(
-              'Grade: ${certificate.grade!}',
-              style: const TextStyle(
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-                color: Colors.black54,
-              ),
-            ),
-          ],
+          ),
         ],
       ),
     );

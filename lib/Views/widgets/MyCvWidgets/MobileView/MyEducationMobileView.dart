@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileCard.dart';
+import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
+import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -18,6 +20,8 @@ class MyEducationMobileView extends StatefulWidget {
 class _MyEducationMobileViewState extends State<MyEducationMobileView> {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
   final IUserBLL _userBll = UserBll();
+  final IEducationInstitutionBll _educationInstitutionBll =
+      EducationInstitutionBll();
 
   late Future<List<Certificate>> _certificates;
   late Future<List<Certificate>> _manuallyAddedCertificates;
@@ -28,7 +32,19 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
   void initState() {
     super.initState();
     _publicationDateController = TextEditingController();
-    _certificates = _blockchainWalletBll.getCertificatesForCurrentUser();
+    _certificates = _blockchainWalletBll
+        .getCertificatesForCurrentUser()
+        .then((certs) async {
+      for (final cert in certs) {
+        if (cert.issuerBlockCahinWalletAddress != null) {
+          final institution =
+              await _educationInstitutionBll.getEducationInstitutionByWallet(
+                  cert.issuerBlockCahinWalletAddress!);
+          cert.logoUrl = institution?.getProfilePicture();
+        }
+      }
+      return certs;
+    });
     _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
   }
 
