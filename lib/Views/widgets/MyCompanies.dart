@@ -15,43 +15,59 @@ class MyCompanies extends StatefulWidget {
 class _MyCompaniesState extends State<MyCompanies> {
   late Future<List<Company>> companies;
   final ICompanyBll _companyBll = CompanyBll();
+  final ScrollController _scrollController = ScrollController();
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     companies = _companyBll.getMyCompanies();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return FutureBuilder<List<Company>>(
       future: companies,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('Error: \${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No companies found.'));
         } else {
-          return Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 650),
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 12), 
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, 
-                  mainAxisExtent: 110, 
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 16,
+          return ScrollConfiguration(
+            behavior: const ScrollBehavior().copyWith(overscroll: false),
+            child: Scrollbar(
+              controller: _scrollController,
+              thumbVisibility: true,
+              trackVisibility: true,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.vertical,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 650),
+                    child: GridView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 12),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisExtent: isSmallScreen ? 130 : 110,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 16,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final company = snapshot.data![index];
+                        return _CompanyCard(company: company);
+                      },
+                    ),
+                  ),
                 ),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final company = snapshot.data![index];
-                  return _CompanyCard(company: company);
-                },
               ),
             ),
           );
@@ -82,48 +98,59 @@ class _CompanyCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
         ),
         color: Colors.white,
-        child: Row(
-          children: [
-            const SizedBox(width: 18),
-            CircleAvatar(
-              radius: 34,
-              backgroundColor: Colors.deepPurple.shade50,
-              backgroundImage: NetworkImage(company.getProfilePicture()),
-            ),
-            const SizedBox(width: 22),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    company.name ?? "Unnamed Company",
-                    style: const TextStyle(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.deepPurple.shade50,
+                backgroundImage: NetworkImage(company.getProfilePicture()),
+              ),
+              const SizedBox(width: 18),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      company.name ?? "Unnamed Company",
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: Colors.black87),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    company.getFullAddress() ?? "",
-                    style: const TextStyle(fontSize: 13, color: Colors.black54),
-                  ),
-                  if (company.email != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2.5),
-                      child: Text(
-                        company.email!,
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.black38),
+                        color: Colors.black87,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      company.getFullAddress() ?? "",
+                      style:
+                          const TextStyle(fontSize: 13, color: Colors.black54),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (company.email != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          company.email!,
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.black38),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            const Icon(Icons.arrow_forward_ios,
-                color: Color(0xFF7B3FE4), size: 23),
-            const SizedBox(width: 16),
-          ],
+              const Icon(Icons.arrow_forward_ios,
+                  color: Color(0xFF7B3FE4), size: 23),
+            ],
+          ),
         ),
       ),
     );
