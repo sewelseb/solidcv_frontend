@@ -298,8 +298,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var documentName =
-                    await _userBLL.getMyExportedCv();
+                var documentName = await _userBLL.getMyExportedCv();
                 final Uri documentUrl = Uri.parse(
                   BackenConnection().url +
                       BackenConnection().getMyCvPlace +
@@ -315,7 +314,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              child: const Text('Télécharger CV'),
+              child: const Text('Download CV'),
             ),
             const SizedBox(height: 8),
             const LinearProgressIndicator(

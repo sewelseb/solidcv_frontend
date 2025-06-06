@@ -14,6 +14,8 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:solid_cv/config/BackenConnection.dart';
 
 class MyCvMobile extends StatefulWidget {
   const MyCvMobile({super.key});
@@ -179,6 +181,27 @@ class _MyCvMobileState extends State<MyCvMobile> {
                           icon: Icons.description,
                           text: user.biography ?? "",
                           expandable: true),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () async {
+                          var documentName = await _userBLL.getMyExportedCv();
+                          final Uri documentUrl = Uri.parse(
+                            BackenConnection().url +
+                                BackenConnection().getMyCvPlace +
+                                documentName,
+                          );
+                          launchUrl(documentUrl);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          elevation: 1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        child: const Text('Download CV'),
+                      ),
                     ],
                   ),
                 ),
