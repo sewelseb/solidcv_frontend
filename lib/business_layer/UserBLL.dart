@@ -112,4 +112,9 @@ class UserBll extends IUserBLL {
   Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId) {
     return _userService.getUsersManuallyAddedExperiences(userId);
   }
+  
+  @override
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) {
+    return _userService.getUsersManuallyAddedCertificates(userId);
+  }
 }

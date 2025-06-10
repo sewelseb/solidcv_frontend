@@ -41,4 +41,6 @@ abstract class IUserBLL {
   void addManuallyPromotion(Promotion promotion, int experienceId);
 
   Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId);
+
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId);
 }
