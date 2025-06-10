@@ -87,4 +87,6 @@ class BackenConnection {
 
   String get updateEducationInstitution=> "/api/protected/update-education-institution/";
 
+  String get getUsersManuallyAddedExperiences => "/api/protected/get-users-manually-added-work-experience/";
+
 }
