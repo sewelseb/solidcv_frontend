@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/LogouHandler.dart';
+import 'package:solid_cv/Views/widgets/LogoutHandler.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
   const MainBottomNavigationBar({super.key});
