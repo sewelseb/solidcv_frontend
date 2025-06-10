@@ -1,12 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:solid_cv/Views/widgets/LogouHandler.dart';
 
 class MainBottomNavigationBar extends StatefulWidget {
   const MainBottomNavigationBar({super.key});
 
   @override
-  State<MainBottomNavigationBar> createState() => _MainBottomNavigationBarState();
+  State<MainBottomNavigationBar> createState() =>
+      _MainBottomNavigationBarState();
 }
 
 class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
@@ -29,7 +30,8 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
         Navigator.pushNamed(context, '/verify-a-cv');
         break;
       case 4:
-        await _logout();
+        await handleLogout(context);
+
         return;
     }
     setState(() {
@@ -40,9 +42,12 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     final route = ModalRoute.of(context)?.settings.name;
-    if (route == '/loggedin/home') _selectedIndex = 0;
-    else if (route == '/my-cv') _selectedIndex = 1;
-    else if (route == '/my-organisation') _selectedIndex = 2;
+    if (route == '/loggedin/home')
+      _selectedIndex = 0;
+    else if (route == '/my-cv')
+      _selectedIndex = 1;
+    else if (route == '/my-organisation')
+      _selectedIndex = 2;
     else if (route == '/verify-a-cv') _selectedIndex = 3;
 
     final isMobile = MediaQuery.of(context).size.width < 600;
@@ -74,7 +79,8 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white70,
               selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.normal),
               iconSize: isMobile ? 26 : 28,
               items: const [
                 BottomNavigationBarItem(
@@ -121,33 +127,5 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
         ),
       ),
     );
-  }
-
-  Future<void> _logout() async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Logout'),
-          content: const Text('Are you sure you want to log out?'),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            TextButton(
-              child: const Text('Log out'),
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirm == true) {
-      const storage = FlutterSecureStorage();
-      await storage.delete(key: 'jwt');
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-    }
   }
 }
