@@ -89,4 +89,5 @@ class BackenConnection {
 
   String get getUsersManuallyAddedExperiences => "/api/protected/get-users-manually-added-work-experience/";
 
+  String get getUsersManuallyAddedCertificates => "/api/protected/get-users-manually-added-certificates/";
 }
