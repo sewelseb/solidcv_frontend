@@ -61,30 +61,31 @@ class _MyCvMobileState extends State<MyCvMobile> {
       _userBLL.getMyManuallyAddedExperiences(),
     ]);
 
-    final clean = results[0] as List<CleanExperience>;
-    final manual = results[1] as List<ManualExperience>;
+    final cleanExperienceList = results[0] as List<CleanExperience>;
+    final manualExperienceList = results[1] as List<ManualExperience>;
 
-    final all = [
-      ...clean.map(UnifiedExperienceViewModel.fromClean),
-      ...manual.map(UnifiedExperienceViewModel.fromManual),
+    final unifiedList = [
+      ...cleanExperienceList.map(UnifiedExperienceViewModel.fromClean),
+      ...manualExperienceList.map(UnifiedExperienceViewModel.fromManual),
     ];
 
-    for (var experience in all) {
+    for (var experience in unifiedList) {
       if (experience.companyWallet != null) {
         final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
         experience.companyLogoUrl = company?.getProfilePicture();
+        experience.location = '${company?.addressCity}, ${company?.addressCountry}';
       }
     }
-    all.sort((a, b) {
+    unifiedList.sort((a, b) {
       if (a.endDate == null) return -1;
       if (b.endDate == null) return 1;
       return b.endDate!.compareTo(a.endDate!);
     });
 
-    _cachedExperiences = all;
+    _cachedExperiences = unifiedList;
     _lastFetchTime = DateTime.now();
 
-    return all;
+    return unifiedList;
   }
 
   Future<void> _showAddWorkExperienceModal() async {
