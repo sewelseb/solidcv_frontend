@@ -45,4 +45,6 @@ abstract class IUserService {
 
   Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId);
 
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId);
+
 }
