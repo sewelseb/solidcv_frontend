@@ -11,7 +11,6 @@ import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
-import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
 import 'package:solid_cv/Views/admin-views/AdminCompaniesListPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminDashboardPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dart';
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ).copyWith(
         appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF7B3FE4),
             foregroundColor: Colors.white,
             shadowColor: Colors.black,
             elevation: 5),
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         '/my-cv': (context) => const MyCvRoute(),
         '/my-organisation': (context) => const MyOrganisationsRoute(),
         '/my-educationInstitution-administration': (context) =>
-           const MyEducationInstitutionAdministration(),
+            const MyEducationInstitutionAdministration(),
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
           return EditProfileRoute(user: user);
@@ -76,9 +75,10 @@ class MyApp extends StatelessWidget {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
-            builder: (context) => UserPage(id: id),
+            builder: (context) => UserCvDesktop(userId: id),
           );
         }
+
         if (settings.name != null &&
             settings.name!.startsWith('/check-my-skill-with-ai/')) {
           final id =
