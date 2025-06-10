@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/MyEducationCard.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
+import 'package:solid_cv/models/CertificatWrapper.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -23,8 +24,7 @@ class _MyEducationState extends State<MyEducation> {
   final IEducationInstitutionBll _educationInstitutionBll =
       EducationInstitutionBll();
 
-  late Future<List<Certificate>> _certificates;
-  late Future<List<Certificate>> _manuallyAddedCertificates;
+  late Future<List<CertificatWrapper>> _allCertificates;
   late TextEditingController _publicationDateController;
   File? file;
 
@@ -32,20 +32,26 @@ class _MyEducationState extends State<MyEducation> {
   void initState() {
     super.initState();
     _publicationDateController = TextEditingController();
-    _certificates = _blockchainWalletBll
-        .getCertificatesForCurrentUser()
-        .then((certs) async {
-      for (final cert in certs) {
-        if (cert.issuerBlockCahinWalletAddress != null) {
-          final institution =
-              await _educationInstitutionBll.getEducationInstitutionByWallet(
-                  cert.issuerBlockCahinWalletAddress!);
-          cert.logoUrl = institution?.getProfilePicture();
-        }
+    _allCertificates = _loadAllCertificates();
+  }
+
+  Future<List<CertificatWrapper>> _loadAllCertificates() async {
+    final blockchain = await _blockchainWalletBll.getCertificatesForCurrentUser();
+    for (final cert in blockchain) {
+      if (cert.issuerBlockCahinWalletAddress != null) {
+        final institution =
+            await _educationInstitutionBll.getEducationInstitutionByWallet(
+                cert.issuerBlockCahinWalletAddress!);
+        cert.logoUrl = institution?.getProfilePicture();
       }
-      return certs;
-    });
-    _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
+    }
+
+    final manual = await _userBll.getMyManuallyAddedCertificates();
+
+    return [
+      ...blockchain.map((e) => CertificatWrapper(e, true)),
+      ...manual.map((e) => CertificatWrapper(e, false)),
+    ];
   }
 
   @override
@@ -61,8 +67,8 @@ class _MyEducationState extends State<MyEducation> {
       children: [
         _buildHeader(context),
         const SizedBox(height: 16),
-        FutureBuilder<List<Certificate>>(
-          future: _certificates,
+        FutureBuilder<List<CertificatWrapper>>(
+          future: _allCertificates,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Padding(
@@ -76,45 +82,14 @@ class _MyEducationState extends State<MyEducation> {
               );
             }
 
-            final blockchainCerts = snapshot.data ?? [];
+            final certs = snapshot.data ?? [];
 
             return Column(
-              children: blockchainCerts
-                  .map(
-                    (c) => EducationCard(
-                      certificate: c,
-                      isValidated: true,
-                    ),
-                  )
-                  .toList(),
-            );
-          },
-        ),
-        FutureBuilder<List<Certificate>>(
-          future: _manuallyAddedCertificates,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              );
-            } else if (snapshot.hasError) {
-              return Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
-
-            final manualCerts = snapshot.data ?? [];
-
-            return Column(
-              children: manualCerts
-                  .map(
-                    (c) => EducationCard(
-                      certificate: c,
-                      isValidated: false,
-                    ),
-                  )
+              children: certs
+                  .map((c) => EducationCard(
+                        certificate: c.cert,
+                        isValidated: c.isBlockchain,
+                      ))
                   .toList(),
             );
           },
@@ -202,8 +177,8 @@ class _MyEducationState extends State<MyEducation> {
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: 'Teaching Institution'),
+                    decoration:
+                        const InputDecoration(labelText: 'Teaching Institution'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a teaching institution';
@@ -295,7 +270,6 @@ class _MyEducationState extends State<MyEducation> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // Add the new certificate to the list
                   setState(() {
                     _userBll.addMyCertificateManually(
                       Certificate(
@@ -309,8 +283,7 @@ class _MyEducationState extends State<MyEducation> {
                         file: file,
                       ),
                     );
-                    _manuallyAddedCertificates =
-                        _userBll.getMyManuallyAddedCertificates();
+                    _allCertificates = _loadAllCertificates();
                   });
                   Navigator.of(context).pop();
                 }
@@ -347,8 +320,6 @@ class _MyEducationState extends State<MyEducation> {
 
     if (result != null) {
       file = File(result.files.single.path!);
-    } else {
-      // User canceled the picker
     }
   }
 
@@ -361,3 +332,4 @@ class _MyEducationState extends State<MyEducation> {
         ),
       );
 }
+
