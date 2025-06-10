@@ -14,7 +14,7 @@ class UnifiedExperienceViewModel {
   final String title;
   final String company;
   final String? description;
-  final String? location;
+  String? location;
   final int? startDate;
   final int? endDate;
   final String? companyWallet;
