@@ -6,7 +6,7 @@ import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
-import 'package:solid_cv/models/Certificate.dart';
+import 'package:solid_cv/models/CertificatWrapper.dart';
 
 class UserEducation extends StatefulWidget {
   final String userId;
@@ -22,7 +22,7 @@ class _UserEducationState extends State<UserEducation> {
   final IBlockchainWalletBll _blockchainWalletBLL = BlockchainWalletBll();
   final IEducationInstitutionBll _institutionBLL = EducationInstitutionBll();
 
-  late Future<List<_CertWrapper>> _certificatesFuture;
+  late Future<List<CertificatWrapper>> _certificatesFuture;
 
   @override
   void initState() {
@@ -30,9 +30,9 @@ class _UserEducationState extends State<UserEducation> {
     _certificatesFuture = _loadCertificates();
   }
 
-  Future<List<_CertWrapper>> _loadCertificates() async {
+  Future<List<CertificatWrapper>> _loadCertificates() async {
     final user = await _userBLL.getUser(widget.userId);
-    final List<_CertWrapper> result = [];
+    final List<CertificatWrapper> result = [];
 
     if (user.ethereumAddress != null) {
       final blockchainCerts =
@@ -44,13 +44,13 @@ class _UserEducationState extends State<UserEducation> {
                   cert.issuerBlockCahinWalletAddress!);
           cert.logoUrl = institution?.getProfilePicture();
         }
-        result.add(_CertWrapper(cert, true));
+        result.add(CertificatWrapper(cert, true));
       }
     }
 
     final manualCerts =
         await _userBLL.getUsersManuallyAddedCertificates(widget.userId);
-    result.addAll(manualCerts.map((c) => _CertWrapper(c, false)));
+    result.addAll(manualCerts.map((c) => CertificatWrapper(c, false)));
 
     return result;
   }
@@ -69,7 +69,7 @@ class _UserEducationState extends State<UserEducation> {
           ),
         ),
         const SizedBox(height: 16),
-        FutureBuilder<List<_CertWrapper>>(
+        FutureBuilder<List<CertificatWrapper>>(
           future: _certificatesFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -93,8 +93,3 @@ class _UserEducationState extends State<UserEducation> {
   }
 }
 
-class _CertWrapper {
-  final Certificate cert;
-  final bool isBlockchain;
-  _CertWrapper(this.cert, this.isBlockchain);
-}
