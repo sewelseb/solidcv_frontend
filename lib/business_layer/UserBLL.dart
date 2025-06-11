@@ -120,4 +120,9 @@ class UserBll extends IUserBLL {
   Future<String> getMyExportedCv() {
     return _userService.getMyExportedCv();
   }
+
+  @override
+  Future<Map<String, dynamic>> verifyEmail(String token) {
+    return _userService.verifyEmail(token);
+  }
 }

@@ -46,4 +46,6 @@ abstract class IUserBLL {
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
 
   void addManuallyPromotion(Promotion promotion, int experienceId);
+
+  Future<Map<String, dynamic>> verifyEmail(String token);
 }
