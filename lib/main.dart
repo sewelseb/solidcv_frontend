@@ -18,7 +18,10 @@ import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dar
 import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
-import 'package:solid_cv/Views/widgets/SessionValidatorToken.dart';
+import 'package:solid_cv/Views/widgets/AuthGuard.dart';
+import 'package:solid_cv/Views/widgets/EmailWidgets/EmailSuccessedPage.dart';
+import 'package:solid_cv/Views/widgets/EmailWidgets/EmailVerifyFailedPage.dart';
+import 'package:solid_cv/Views/widgets/EmailWidgets/VerifyEmailPage.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
 import 'package:solid_cv/models/User.dart';
 
@@ -44,39 +47,43 @@ class MyApp extends StatelessWidget {
             shadowColor: Colors.black,
             elevation: 5),
       ),
-      home: const SessionValidatorTokenPage(),
-      initialRoute: '/',
       routes: {
-        '/login': (context) => const HomeRoute(),
+        '/': (context) => const HomeRoute(),
         '/register': (context) => const RegisterRoute(),
-        '/loggedin/home': (context) => const LoggedInHome(),
-        '/my-cv': (context) => const MyCvRoute(),
-        '/my-organisation': (context) => const MyOrganisationsRoute(),
+        '/loggedin/home': (context) => const AuthGuard(child:LoggedInHome()),
+        '/my-cv': (context) => const AuthGuard(child:MyCvRoute()),
+        '/my-organisation': (context) => const AuthGuard(child:MyOrganisationsRoute()),
         '/my-educationInstitution-administration': (context) =>
-           const MyEducationInstitutionAdministration(),
+            const AuthGuard(child:MyEducationInstitutionAdministration()),
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
-          return EditProfileRoute(user: user);
+          return AuthGuard(child:EditProfileRoute(user: user));
         },
-        '/add-a-company-form': (context) => const AddACompanyFormRoute(),
+        '/verify-email': (context) {
+          final email = ModalRoute.of(context)?.settings.arguments as String?;
+          return VerifyEmailPage(email: email ?? '');
+        },
+        '/email-verified-success': (context) => const EmailVerifiedSuccessPage(),
+        '/email-verify-failed': (context) => const EmailVerifyFailedPage(),
+        '/add-a-company-form': (context) => const AuthGuard(child:AddACompanyFormRoute()),
         '/add-a-education-institution-form': (context) =>
-            const AddanEducationInstitutionFormRoute(),
-        '/verify-a-cv': (context) => const VerifyACvRoute(),
+            const AuthGuard(child:AddanEducationInstitutionFormRoute()),
+        '/verify-a-cv': (context) => const AuthGuard(child:VerifyACvRoute()),
         '/my-company-administration': (context) =>
-            const MyCompanyAdministration(),
-        '/company/add-an-employee': (context) => const AddAnEmployee(),
+            const AuthGuard(child:MyCompanyAdministration()),
+        '/company/add-an-employee': (context) => const AuthGuard(child:AddAnEmployee()),
         '/educationInstitution/add-a-certificate-to-user': (context) =>
-            CreateACertificate(),
-        '/admin/dashboard': (context) => const AdminDashboardPage(),
-        '/admin/users': (context) => AdminUsersPage(),
-        '/admin/companies': (context) => const AdminCompaniesPage(),
-        '/admin/institutions': (context) => const AdminInstitutionsPage(),
+            AuthGuard(child:CreateACertificate()),
+        '/admin/dashboard': (context) => const AuthGuard(child:AdminDashboardPage()),
+        '/admin/users': (context) => AuthGuard(child:AdminUsersPage()),
+        '/admin/companies': (context) => const AuthGuard(child:AdminCompaniesPage()),
+        '/admin/institutions': (context) => const AuthGuard(child:AdminInstitutionsPage()),
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
-            builder: (context) => UserPage(id: id),
+            builder: (context) => AuthGuard(child:UserPage(id: id)),
           );
         }
         if (settings.name != null &&
@@ -84,7 +91,7 @@ class MyApp extends StatelessWidget {
           final id =
               settings.name!.substring('/check-my-skill-with-ai/'.length);
           return MaterialPageRoute(
-            builder: (context) => CheckMySkillsWithAIPage(id: id),
+            builder: (context) => AuthGuard(child:CheckMySkillsWithAIPage(id: id)),
           );
         }
         return null; // Let `onUnknownRoute` handle this case.
