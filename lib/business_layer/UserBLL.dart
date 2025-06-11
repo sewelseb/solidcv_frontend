@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -129,5 +128,15 @@ class UserBll extends IUserBLL {
   @override
   Future<String> resendEmailVerification(String email) {
     return _userService.resendEmailVerification(email);
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) {
+    return _userService.requestPasswordReset(email);
+  }
+
+  @override
+  Future<void> resetPassword(String token, String newPassword) {
+    return _userService.resetPassword(token, newPassword);
   }
 }

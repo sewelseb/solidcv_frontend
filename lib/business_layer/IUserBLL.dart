@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -50,4 +49,8 @@ abstract class IUserBLL {
   Future<Map<String, dynamic>> verifyEmail(String token);
 
   Future<String> resendEmailVerification(String email);
+
+  Future<void> requestPasswordReset(String email);
+
+  Future<void> resetPassword(String token, String newPassword);
 }
