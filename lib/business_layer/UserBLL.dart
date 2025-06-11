@@ -125,4 +125,9 @@ class UserBll extends IUserBLL {
   Future<Map<String, dynamic>> verifyEmail(String token) {
     return _userService.verifyEmail(token);
   }
+
+  @override
+  Future<String> resendEmailVerification(String email) {
+    return _userService.resendEmailVerification(email);
+  }
 }

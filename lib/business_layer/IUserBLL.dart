@@ -48,4 +48,6 @@ abstract class IUserBLL {
   void addManuallyPromotion(Promotion promotion, int experienceId);
 
   Future<Map<String, dynamic>> verifyEmail(String token);
+
+  Future<String> resendEmailVerification(String email);
 }
