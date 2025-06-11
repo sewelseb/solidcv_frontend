@@ -61,8 +61,8 @@ class UserService extends IUserService {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      print(response);
-      throw Exception('Login failure');
+      final data = jsonDecode(response.body);
+      throw Exception(data['message']);
     }
   }
 
@@ -475,6 +475,25 @@ class UserService extends IUserService {
     } else {
       throw Exception(
           jsonDecode(response.body)['error'] ?? 'Error verifying email');
+    }
+  }
+
+  @override
+  Future<String> resendEmailVerification(String email) async {
+    final response = await http.post(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().resendEmailVerification),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'email': email}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['message'];
+    } else {
+      throw Exception(jsonDecode(response.body)['error']);
     }
   }
 }
