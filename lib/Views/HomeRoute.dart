@@ -252,7 +252,9 @@ class _LoginForm extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/forgot-password');
+            },
             child: const Text("Forgot password?",
                 style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 14)),
           ),
