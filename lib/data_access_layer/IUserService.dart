@@ -52,4 +52,8 @@ abstract class IUserService {
 
   Future<String> resendEmailVerification(String email);
 
+  Future<void> requestPasswordReset(String email);
+
+  Future<void> resetPassword(String token, String newPassword);
+
 }

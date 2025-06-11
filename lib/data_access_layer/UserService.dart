@@ -471,10 +471,17 @@ class UserService extends IUserService {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      return {
+        "success": true,
+        "message": data['message'] ?? "Your email has been verified!",
+      };
     } else {
-      throw Exception(
-          jsonDecode(response.body)['error'] ?? 'Error verifying email');
+      final data = jsonDecode(response.body);
+      return {
+        "success": false,
+        "message": data['error'] ?? 'Error verifying email',
+      };
     }
   }
 
@@ -494,6 +501,33 @@ class UserService extends IUserService {
       return data['message'];
     } else {
       throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    final response = await http.post(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().requestPasswordReset),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ??
+          'Failed to request password reset');
+    }
+  }
+
+  @override
+  Future<void> resetPassword(String token, String newPassword) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().resetPassword),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'token': token, 'password': newPassword}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Failed to reset password');
     }
   }
 }
