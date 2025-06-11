@@ -411,17 +411,16 @@ class UserService extends IUserService {
     }
   }
 
-    @override
+  @override
   Future<String> getMyExportedCv() async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyExportedCv),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken()
-      }
-    );
+        Uri.parse(BackenConnection().url + BackenConnection().getMyExportedCv),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken()
+        });
 
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       var myCv = jsonDecode(response.body)["cv"];
       return myCv;
     } else {
@@ -430,34 +429,52 @@ class UserService extends IUserService {
     }
   }
 
-@override
-Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id) async {
-  String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
+  @override
+  Future<void> updateUser(
+      User user, Uint8List? imageBytes, String? imageExt, int id) async {
+    String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-  final response = await http.post(
-    Uri.parse(BackenConnection().url +
-        BackenConnection().updateUser +
-        id.toString()),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-    },
-    body: jsonEncode({
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'phoneNumber': user.phoneNumber,
-      'biography': user.biography,
-      'linkedin': user.linkedin,
-      if (imageBase64 != null) 'profilePicture': imageBase64,
-      if (imageBase64 != null) 'profilePictureExtention': imageExt,
-    }),
-  );
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().updateUser +
+          id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'phoneNumber': user.phoneNumber,
+        'biography': user.biography,
+        'linkedin': user.linkedin,
+        if (imageBase64 != null) 'profilePicture': imageBase64,
+        if (imageBase64 != null) 'profilePictureExtention': imageExt,
+      }),
+    );
 
-  if (response.statusCode == 200) {
-    return;
-  } else {
-    throw Exception('Error updating user information');
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Error updating user information');
+    }
   }
-}
 
+  @override
+  Future<Map<String, dynamic>> verifyEmail(String token) async {
+    final response = await http.get(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().verifyEmail + token),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Error verifying email');
+    }
+  }
 }
