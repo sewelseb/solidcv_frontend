@@ -14,7 +14,7 @@ class User {
   List<String>? roles;
   String? token;
   String? ethereumAddress;
-  String? isVerified;
+  bool? isVerified;
 
   User({
     this.id,
