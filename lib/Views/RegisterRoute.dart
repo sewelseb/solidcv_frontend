@@ -52,7 +52,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
       user = await _userBll.createUser(user);
       Navigator.pushReplacementNamed(
         context,
-        '/verify-email',
+        '/sent-verification-email',
         arguments: user.email ?? '',
       );
     } catch (e) {
