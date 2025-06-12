@@ -46,6 +46,14 @@ abstract class IUserService {
 
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
 
-    Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
+  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
+
+  Future<Map<String, dynamic>> verifyEmail(String token);
+
+  Future<String> resendEmailVerification(String email);
+
+  Future<void> requestPasswordReset(String email);
+
+  Future<void> resetPassword(String token, String newPassword);
 
 }

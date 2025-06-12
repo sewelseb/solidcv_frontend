@@ -87,4 +87,12 @@ class BackenConnection {
 
   String get updateEducationInstitution=> "/api/protected/update-education-institution/";
 
+  String get verifyEmail => "/api/verify-email/";
+
+  String get resendEmailVerification => "/api/resend-email-verification";
+
+  String get requestPasswordReset => "/api/request-password-reset";
+
+  String get resetPassword => "/api/reset-password";
+
 }

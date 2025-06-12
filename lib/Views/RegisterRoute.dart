@@ -50,11 +50,11 @@ class _RegisterRouteState extends State<RegisterRoute> {
       user.password = password;
 
       user = await _userBll.createUser(user);
-
-      const storage = FlutterSecureStorage();
-      await storage.write(key: 'jwt', value: user.token);
-
-      Navigator.pushNamed(context, '/loggedin/home');
+      Navigator.pushReplacementNamed(
+        context,
+        '/sent-verification-email',
+        arguments: user.email ?? '',
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration failed: $e')),
@@ -297,8 +297,7 @@ class _RegisterForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child: const Text("Sign up",
-              style: TextStyle(color: Colors.white)),
+          child: const Text("Sign up", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(

@@ -147,7 +147,7 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
     if (confirm == true) {
       const storage = FlutterSecureStorage();
       await storage.delete(key: 'jwt');
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     }
   }
 }

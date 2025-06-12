@@ -45,9 +45,18 @@ class _HomeRouteState extends State<HomeRoute> {
 
       Navigator.pushNamed(context, '/loggedin/home');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
-      );
+      String errorMessage = e.toString();
+
+      if (errorMessage.contains('email not verified')) {
+        Navigator.pushReplacementNamed(context, '/sent-verification-email',
+            arguments: email);
+        return;
+      }
+      if (errorMessage.contains('invalid credentials')) {
+        errorMessage = 'Incorrect email or password.';
+      } else if (errorMessage.contains('missing credentials')) {
+        errorMessage = 'Account does not exist.';
+      }
     }
   }
 
@@ -243,7 +252,9 @@ class _LoginForm extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/forgot-password');
+            },
             child: const Text("Forgot password?",
                 style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 14)),
           ),
