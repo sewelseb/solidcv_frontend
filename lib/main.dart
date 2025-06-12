@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
-            builder: (context) => UserCvDesktop(userId: id),
+            builder: (context) => UserPage(userId: id),
           );
         }
 
