@@ -54,6 +54,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
+    final user = await _userFuture;
+    if (user.ethereumAddress == null) {
+      return [];
+    }
+
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
         DateTime.now().difference(_lastFetchTime!) < _cacheTimeout) {
@@ -75,9 +80,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
 
     for (var experience in unifiedList) {
       if (experience.companyWallet != null) {
-        final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
+        final company =
+            await _company.fetchCompanyByWallet(experience.companyWallet!);
         experience.companyLogoUrl = company?.getProfilePicture();
-        experience.location = '${company?.addressCity}, ${company?.addressCountry}';
+        experience.location =
+            '${company?.addressCity}, ${company?.addressCountry}';
       }
     }
 
