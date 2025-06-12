@@ -11,6 +11,8 @@ import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
+import 'package:solid_cv/models/User.dart';
+
 class MyEducation extends StatefulWidget {
   const MyEducation({Key? key}) : super(key: key);
 
@@ -23,6 +25,7 @@ class _MyEducationState extends State<MyEducation> {
   final IUserBLL _userBll = UserBll();
   final IEducationInstitutionBll _educationInstitutionBll =
       EducationInstitutionBll();
+  late Future<User> _userFuture;
 
   late Future<List<CertificatWrapper>> _allCertificates;
   late TextEditingController _publicationDateController;
@@ -32,11 +35,18 @@ class _MyEducationState extends State<MyEducation> {
   void initState() {
     super.initState();
     _publicationDateController = TextEditingController();
+    _userFuture = _userBll.getCurrentUser();
+
     _allCertificates = _loadAllCertificates();
   }
 
   Future<List<CertificatWrapper>> _loadAllCertificates() async {
-    final blockchain = await _blockchainWalletBll.getCertificatesForCurrentUser();
+    final user = await _userFuture;
+    if (user.ethereumAddress == null) {
+      return [];
+    }
+    final blockchain =
+        await _blockchainWalletBll.getCertificatesForCurrentUser();
     for (final cert in blockchain) {
       if (cert.issuerBlockCahinWalletAddress != null) {
         final institution =
@@ -80,6 +90,8 @@ class _MyEducationState extends State<MyEducation> {
                 padding: const EdgeInsets.all(24),
                 child: Text('Error: ${snapshot.error}'),
               );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("No education certificate yet."));;
             }
 
             final certs = snapshot.data ?? [];
@@ -177,8 +189,8 @@ class _MyEducationState extends State<MyEducation> {
                     },
                   ),
                   TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Teaching Institution'),
+                    decoration: const InputDecoration(
+                        labelText: 'Teaching Institution'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a teaching institution';
@@ -332,4 +344,3 @@ class _MyEducationState extends State<MyEducation> {
         ),
       );
 }
-
