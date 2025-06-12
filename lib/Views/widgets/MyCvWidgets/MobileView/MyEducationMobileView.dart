@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileCard.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
+import 'package:solid_cv/models/CertificatWrapper.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -9,6 +10,8 @@ import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+
+import 'package:solid_cv/models/User.dart';
 
 class MyEducationMobileView extends StatefulWidget {
   const MyEducationMobileView({Key? key}) : super(key: key);
@@ -22,30 +25,43 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
   final IUserBLL _userBll = UserBll();
   final IEducationInstitutionBll _educationInstitutionBll =
       EducationInstitutionBll();
+  late Future<User> _userFuture;
 
-  late Future<List<Certificate>> _certificates;
-  late Future<List<Certificate>> _manuallyAddedCertificates;
   late TextEditingController _publicationDateController;
   File? file;
+  late Future<List<CertificatWrapper>> _allCertificates;
 
   @override
   void initState() {
     super.initState();
     _publicationDateController = TextEditingController();
-    _certificates = _blockchainWalletBll
-        .getCertificatesForCurrentUser()
-        .then((certs) async {
-      for (final cert in certs) {
-        if (cert.issuerBlockCahinWalletAddress != null) {
-          final institution =
-              await _educationInstitutionBll.getEducationInstitutionByWallet(
-                  cert.issuerBlockCahinWalletAddress!);
-          cert.logoUrl = institution?.getProfilePicture();
-        }
+    _userFuture = _userBll.getCurrentUser();
+
+    _allCertificates = _loadAllCertificates();
+  }
+
+  Future<List<CertificatWrapper>> _loadAllCertificates() async {
+    final user = await _userFuture;
+    if (user.ethereumAddress == null) {
+      return [];
+    }
+    final blockchain =
+        await _blockchainWalletBll.getCertificatesForCurrentUser();
+    for (final cert in blockchain) {
+      if (cert.issuerBlockCahinWalletAddress != null) {
+        final institution =
+            await _educationInstitutionBll.getEducationInstitutionByWallet(
+                cert.issuerBlockCahinWalletAddress!);
+        cert.logoUrl = institution?.getProfilePicture();
       }
-      return certs;
-    });
-    _manuallyAddedCertificates = _userBll.getMyManuallyAddedCertificates();
+    }
+
+    final manual = await _userBll.getMyManuallyAddedCertificates();
+
+    return [
+      ...blockchain.map((e) => CertificatWrapper(e, true)),
+      ...manual.map((e) => CertificatWrapper(e, false)),
+    ];
   }
 
   @override
@@ -61,8 +77,8 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
       children: [
         _buildHeader(context),
         const SizedBox(height: 16),
-        FutureBuilder<List<Certificate>>(
-          future: _certificates,
+        FutureBuilder<List<CertificatWrapper>>(
+          future: _allCertificates,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Padding(
@@ -74,47 +90,18 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
                 padding: const EdgeInsets.all(24),
                 child: Text('Error: ${snapshot.error}'),
               );
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("No education certificate yet."));
             }
 
-            final blockchainCerts = snapshot.data ?? [];
+            final certs = snapshot.data ?? [];
 
             return Column(
-              children: blockchainCerts
-                  .map(
-                    (c) => EducationMobileCard(
-                      certificate: c,
-                      isValidated: true,
-                    ),
-                  )
-                  .toList(),
-            );
-          },
-        ),
-        FutureBuilder<List<Certificate>>(
-          future: _manuallyAddedCertificates,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              );
-            } else if (snapshot.hasError) {
-              return Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
-
-            final manualCerts = snapshot.data ?? [];
-
-            return Column(
-              children: manualCerts
-                  .map(
-                    (c) => EducationMobileCard(
-                      certificate: c,
-                      isValidated: false,
-                    ),
-                  )
+              children: certs
+                  .map((c) => EducationMobileCard(
+                        certificate: c.cert,
+                        isValidated: c.isBlockchain,
+                      ))
                   .toList(),
             );
           },
@@ -309,8 +296,8 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
                         file: file,
                       ),
                     );
-                    _manuallyAddedCertificates =
-                        _userBll.getMyManuallyAddedCertificates();
+                     _allCertificates = _loadAllCertificates();
+
                   });
                   Navigator.of(context).pop();
                 }
