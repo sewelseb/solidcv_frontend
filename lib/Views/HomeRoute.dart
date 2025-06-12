@@ -48,7 +48,7 @@ class _HomeRouteState extends State<HomeRoute> {
       String errorMessage = e.toString();
 
       if (errorMessage.contains('email not verified')) {
-        Navigator.pushReplacementNamed(context, '/verify-email',
+        Navigator.pushReplacementNamed(context, '/sent-verification-email',
             arguments: email);
         return;
       }
