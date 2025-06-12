@@ -50,6 +50,11 @@ class _MyCvMobileState extends State<MyCvMobile> {
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
+
+    final user = await _userFuture;
+    if (user.ethereumAddress == null) {
+      return [];
+    }
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
         DateTime.now().difference(_lastFetchTime!) < _cacheTimeout) {
