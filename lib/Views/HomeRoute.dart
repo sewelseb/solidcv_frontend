@@ -318,6 +318,8 @@ class _LoginForm extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 10),
+        const _PrivacyPolicyLink(),
       ],
     );
   }
@@ -953,4 +955,41 @@ class _BottomAngleClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class _PrivacyPolicyLink extends StatelessWidget {
+  const _PrivacyPolicyLink();
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    return Center(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          Navigator.pushNamed(
+              context, '/privacy-policy'); // à déclarer dans tes routes
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.privacy_tip_outlined,
+                  color: Color(0xFF7B3FE4), size: isMobile ? 20 : 22),
+              const SizedBox(width: 8),
+              Text(
+                "Privacy Policy",
+                style: TextStyle(
+                  color: Color(0xFF7B3FE4),
+                  fontWeight: FontWeight.w600,
+                  fontSize: isMobile ? 14 : 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
