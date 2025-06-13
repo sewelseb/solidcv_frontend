@@ -968,7 +968,7 @@ class _PrivacyPolicyLink extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         onTap: () {
           Navigator.pushNamed(
-              context, '/privacy-policy'); // à déclarer dans tes routes
+              context, '/privacy-policy'); 
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
