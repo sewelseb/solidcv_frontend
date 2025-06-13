@@ -236,12 +236,12 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         ),
                         const SizedBox(height: 10),
                         _infoTile(
-                            icon: Icons.phone, text: user.phoneNumber ?? "-"),
+                            icon: Icons.phone, text: user.phoneNumber ?? "Add your phone number"),
                         const SizedBox(height: 6),
                         _infoTile(
                             icon: Icons.link,
                             text:
-                                user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                                user.linkedin ?? "Add your LinkedIn",),
                         const SizedBox(height: 6),
                         _infoTile(
                             icon: Icons.description,

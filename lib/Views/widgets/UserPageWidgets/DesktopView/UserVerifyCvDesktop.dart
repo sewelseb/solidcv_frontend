@@ -221,7 +221,7 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
                         _infoTile(
                             icon: Icons.link,
                             text:
-                                user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                                user.linkedin ?? "-",),
                         const SizedBox(height: 6),
                         _infoTile(
                             icon: Icons.description,

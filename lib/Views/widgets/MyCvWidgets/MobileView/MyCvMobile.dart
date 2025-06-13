@@ -181,7 +181,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                          text: user.linkedin ?? "Add your LinkedIn",),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,

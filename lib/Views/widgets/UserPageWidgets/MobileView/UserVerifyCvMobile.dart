@@ -140,7 +140,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "Ajoutez votre lien LinkedIn"),
+                          text: user.linkedin ?? "-"),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
