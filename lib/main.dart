@@ -8,6 +8,7 @@ import 'package:solid_cv/Views/MyCompanyAdministration.dart';
 import 'package:solid_cv/Views/MyCvRoute.dart';
 import 'package:solid_cv/Views/MyEducationInstitutionAdministration.dart';
 import 'package:solid_cv/Views/MyOrganisationRoute.dart';
+import 'package:solid_cv/Views/PrivacyPolicyPage.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
             const AuthGuard(child: MyOrganisationsRoute()),
         '/my-educationInstitution-administration': (context) =>
             const AuthGuard(child: MyEducationInstitutionAdministration()),
+        '/privacy-policy': (context) => const PrivacyPolicyPage(),
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
           return AuthGuard(child: EditProfileRoute(user: user));
