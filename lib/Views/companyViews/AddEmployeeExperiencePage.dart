@@ -68,17 +68,19 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
   }
 
   List<DropdownMenuItem<String>> _buildDropdownItems(
-      List<CleanExperience> experiences) {
+      List<CleanExperience> experiences, Company company) {
     final filtered = experiences
         .where((e) =>
             e.title != null &&
             e.startDate != null &&
-            e.experienceStreamId != null)
+            e.experienceStreamId != null &&
+            e.companyWallet != null &&
+            e.companyWallet == company.ethereumAddress)
         .toList();
 
     return filtered.map<DropdownMenuItem<String>>((e) {
       final label =
-          "${e.companyName ?? 'Company'} - ${e.title ?? 'Title'} (${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(e.startDate!))})";
+          "${e.title ?? 'Title'} (${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(e.startDate!))})";
       return DropdownMenuItem<String>(
         value: e.experienceStreamId!,
         child: Text(label),
@@ -124,7 +126,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                           padding: EdgeInsets.symmetric(vertical: 40),
                           child: Center(
                             child: Text(
-                              "Cet utilisateur n'a pas de wallet associé.",
+                              "This user does not have a valid Ethereum address. ",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   color: Colors.redAccent),
@@ -134,442 +136,504 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                       : FutureBuilder<List<CleanExperience>>(
                           future: _workExperiences,
                           builder: (context, snapshot) {
-                            final dropdownItems = snapshot.hasData
-                                ? _buildDropdownItems(snapshot.data!)
-                                : [];
+                            return FutureBuilder<Company>(
+                              future: widget.company,
+                              builder: (context, companySnap) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.waiting ||
+                                    companySnap.connectionState ==
+                                        ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                if (snapshot.hasError || companySnap.hasError) {
+                                  return const Center(
+                                    child: Text('Error'),
+                                  );
+                                }
 
-                            return SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Add or Update Experience for "${widget.user.getEasyName() ?? '-'}"',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 21,
-                                      color: Color(0xFF7B3FE4),
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  const SizedBox(height: 24),
-                                  // Create Experience Card
-                                  Card(
-                                    elevation: 0,
-                                    color: Colors.grey[50],
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    margin: EdgeInsets.zero,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 18, vertical: 22),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "▶️ Create Work Experience",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const SizedBox(height: 14),
-                                          _field(roleController, "Role"),
-                                          _field(descriptionController,
-                                              "Description"),
-                                          _dateField(
-                                            context,
-                                            startDateController,
-                                            "Start Date",
-                                            _startDate,
-                                            (date) {
-                                              setState(() {
-                                                _startDate = date;
-                                                startDateController.text =
-                                                    DateFormat('dd/MM/yyyy')
-                                                        .format(date);
-                                              });
-                                            },
-                                          ),
-                                          _passwordField(
-                                              createPasswordController,
-                                              "Wallet Password"),
-                                          const SizedBox(height: 18),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.deepPurple[300],
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                if (!snapshot.hasData || !companySnap.hasData) {
+                                  return const SizedBox();
+                                }
+
+                                final experiences = snapshot.data!;
+                                final company = companySnap.data!;
+                                final dropdownItems =
+                                    _buildDropdownItems(experiences, company);
+
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Add or Update Experience for "${widget.user.getEasyName() ?? '-'}"',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 21,
+                                          color: Color(0xFF7B3FE4),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 24),
+                                      // Create Experience Card
+                                      Card(
+                                        elevation: 0,
+                                        color: Colors.grey[50],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        margin: EdgeInsets.zero,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18, vertical: 22),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                "▶️ Create Work Experience",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              const SizedBox(height: 14),
+                                              _field(roleController, "Role"),
+                                              _field(descriptionController,
+                                                  "Description"),
+                                              _dateField(
+                                                context,
+                                                startDateController,
+                                                "Start Date",
+                                                _startDate,
+                                                (date) {
+                                                  setState(() {
+                                                    _startDate = date;
+                                                    startDateController.text =
+                                                        DateFormat('dd/MM/yyyy')
+                                                            .format(date);
+                                                  });
+                                                },
+                                              ),
+                                              _passwordField(
+                                                  createPasswordController,
+                                                  "Wallet Password"),
+                                              const SizedBox(height: 18),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.deepPurple[300],
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         vertical: 16),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
+                                                  onPressed: () async {
+                                                    bool isSuccess = false;
+                                                    String message = '';
+                                                    try {
+                                                      final company =
+                                                          await widget.company;
+                                                      final event =
+                                                          WorkCreatedEvent(
+                                                        id: randomBytesAsHexString(
+                                                            16),
+                                                        timestamp: DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch,
+                                                        title:
+                                                            roleController.text,
+                                                        startDate: _startDate
+                                                                ?.millisecondsSinceEpoch ??
+                                                            DateTime.now()
+                                                                .millisecondsSinceEpoch,
+                                                        description:
+                                                            descriptionController
+                                                                .text,
+                                                        companyName:
+                                                            company.name ??
+                                                                'Unknown',
+                                                        companyWallet: company
+                                                                .ethereumAddress ??
+                                                            '',
+                                                        location: 'Unknown',
+                                                        experienceStreamId:
+                                                            randomBytesAsHexString(
+                                                                16),
+                                                      );
+                                                      await widget.companyBll
+                                                          .addEmployeeEvents(
+                                                              widget.user,
+                                                              event,
+                                                              widget.companyId,
+                                                              createPasswordController
+                                                                  .text);
+                                                      isSuccess = true;
+                                                      message =
+                                                          "Work experience created!";
+                                                    } catch (e) {
+                                                      isSuccess = false;
+                                                      message = "Error: $e";
+                                                    }
+                                                    if (!mounted) return;
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(message),
+                                                        backgroundColor:
+                                                            isSuccess
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                      ),
+                                                    );
+                                                    if (isSuccess)
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                  },
+                                                  child: const Text(
+                                                    '+ Create',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  ),
                                                 ),
                                               ),
-                                              onPressed: () async {
-                                                bool isSuccess = false;
-                                                String message = '';
-                                                try {
-                                                  final company =
-                                                      await widget.company;
-                                                  final event =
-                                                      WorkCreatedEvent(
-                                                    id: randomBytesAsHexString(
-                                                        16),
-                                                    timestamp: DateTime.now()
-                                                        .millisecondsSinceEpoch,
-                                                    title: roleController.text,
-                                                    startDate: _startDate
-                                                            ?.millisecondsSinceEpoch ??
-                                                        DateTime.now()
-                                                            .millisecondsSinceEpoch,
-                                                    description:
-                                                        descriptionController
-                                                            .text,
-                                                    companyName: company.name ??
-                                                        'Unknown',
-                                                    companyWallet: company
-                                                            .ethereumAddress ??
-                                                        '',
-                                                    location: 'Unknown',
-                                                    experienceStreamId:
-                                                        randomBytesAsHexString(
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 26),
+                                      // End Experience Card
+                                      Card(
+                                        elevation: 0,
+                                        color: Colors.grey[50],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        margin: EdgeInsets.zero,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18, vertical: 22),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Row(
+                                                children: [
+                                                  Icon(Icons.stop_circle,
+                                                      color: Colors.red,
+                                                      size: 22),
+                                                  SizedBox(width: 6),
+                                                  Text("End Experience",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 14),
+                                              DropdownButtonFormField<String>(
+                                                value:
+                                                    _selectedStreamEndEventId,
+                                                isExpanded: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText:
+                                                      "Select Experience to End",
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                items: dropdownItems.cast<
+                                                    DropdownMenuItem<String>>(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedStreamEndEventId =
+                                                        value;
+                                                  });
+                                                },
+                                              ),
+                                              _dateField(
+                                                context,
+                                                endDateController,
+                                                "End Date",
+                                                _endDate,
+                                                (date) {
+                                                  setState(() {
+                                                    _endDate = date;
+                                                    endDateController.text =
+                                                        DateFormat('dd/MM/yyyy')
+                                                            .format(date);
+                                                  });
+                                                },
+                                              ),
+                                              _passwordField(
+                                                  endPasswordController,
+                                                  "Wallet Password"),
+                                              const SizedBox(height: 18),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton.icon(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.red[400],
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 16),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                  ),
+                                                  icon: const Icon(Icons.stop,
+                                                      color: Colors.white),
+                                                  onPressed: () async {
+                                                    bool isSuccess = false;
+                                                    String message = '';
+                                                    try {
+                                                      final company =
+                                                          await widget.company;
+                                                      final event =
+                                                          WorkEndedEvent(
+                                                        id: randomBytesAsHexString(
                                                             16),
-                                                  );
-                                                  await widget.companyBll
-                                                      .addEmployeeEvents(
-                                                          widget.user,
-                                                          event,
-                                                          widget.companyId,
-                                                          createPasswordController
-                                                              .text);
-                                                  isSuccess = true;
-                                                  message =
-                                                      "Work experience created!";
-                                                } catch (e) {
-                                                  isSuccess = false;
-                                                  message = "Error: $e";
-                                                }
-                                                if (!mounted) return;
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(message),
-                                                    backgroundColor: isSuccess
-                                                        ? Colors.green
-                                                        : Colors.red,
-                                                  ),
-                                                );
-                                                if (isSuccess)
-                                                  Navigator.of(context).pop();
-                                              },
-                                              child: const Text(
-                                                '+ Create',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
+                                                        timestamp: DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch,
+                                                        endDate: _endDate
+                                                                ?.millisecondsSinceEpoch ??
+                                                            DateTime.now()
+                                                                .millisecondsSinceEpoch,
+                                                        experienceStreamId:
+                                                            _selectedStreamEndEventId ??
+                                                                '',
+                                                        companyName:
+                                                            company.name ??
+                                                                'Unknown',
+                                                        companyWallet: company
+                                                                .ethereumAddress ??
+                                                            '',
+                                                      );
+                                                      await widget.companyBll
+                                                          .addEmployeeEvents(
+                                                        widget.user,
+                                                        event,
+                                                        widget.companyId,
+                                                        endPasswordController
+                                                            .text,
+                                                      );
+                                                      isSuccess = true;
+                                                      message =
+                                                          "Experience ended!";
+                                                    } catch (e) {
+                                                      isSuccess = false;
+                                                      message = "Error: $e";
+                                                    }
+                                                    if (!mounted) return;
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(message),
+                                                        backgroundColor:
+                                                            isSuccess
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                      ),
+                                                    );
+                                                    if (isSuccess)
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                  },
+                                                  label: const Text('End',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16)),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 26),
-                                  // End Experience Card
-                                  Card(
-                                    elevation: 0,
-                                    color: Colors.grey[50],
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16)),
-                                    margin: EdgeInsets.zero,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 18, vertical: 22),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Row(
-                                            children: [
-                                              Icon(Icons.stop_circle,
-                                                  color: Colors.red, size: 22),
-                                              SizedBox(width: 6),
-                                              Text("End Experience",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
                                             ],
                                           ),
-                                          const SizedBox(height: 14),
-                                          DropdownButtonFormField<String>(
-                                            value: _selectedStreamEndEventId,
-                                            isExpanded: true,
-                                            decoration: const InputDecoration(
-                                              labelText:
-                                                  "Select Experience to End",
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            items: dropdownItems.cast<
-                                                DropdownMenuItem<String>>(),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _selectedStreamEndEventId =
-                                                    value;
-                                              });
-                                            },
-                                          ),
-                                          _dateField(
-                                            context,
-                                            endDateController,
-                                            "End Date",
-                                            _endDate,
-                                            (date) {
-                                              setState(() {
-                                                _endDate = date;
-                                                endDateController.text =
-                                                    DateFormat('dd/MM/yyyy')
-                                                        .format(date);
-                                              });
-                                            },
-                                          ),
-                                          _passwordField(endPasswordController,
-                                              "Wallet Password"),
-                                          const SizedBox(height: 18),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: ElevatedButton.icon(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.red[400],
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 16),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                              icon: const Icon(Icons.stop,
-                                                  color: Colors.white),
-                                              onPressed: () async {
-                                                bool isSuccess = false;
-                                                String message = '';
-                                                try {
-                                                  final company =
-                                                      await widget.company;
-                                                  final event = WorkEndedEvent(
-                                                    id: randomBytesAsHexString(
-                                                        16),
-                                                    timestamp: DateTime.now()
-                                                        .millisecondsSinceEpoch,
-                                                    endDate: _endDate
-                                                            ?.millisecondsSinceEpoch ??
-                                                        DateTime.now()
-                                                            .millisecondsSinceEpoch,
-                                                    experienceStreamId:
-                                                        _selectedStreamEndEventId ??
-                                                            '',
-                                                    companyName: company.name ??
-                                                        'Unknown',
-                                                    companyWallet: company
-                                                            .ethereumAddress ??
-                                                        '',
-                                                  );
-                                                  await widget.companyBll
-                                                      .addEmployeeEvents(
-                                                    widget.user,
-                                                    event,
-                                                    widget.companyId,
-                                                    endPasswordController.text,
-                                                  );
-                                                  isSuccess = true;
-                                                  message = "Experience ended!";
-                                                } catch (e) {
-                                                  isSuccess = false;
-                                                  message = "Error: $e";
-                                                }
-                                                if (!mounted) return;
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(message),
-                                                    backgroundColor: isSuccess
-                                                        ? Colors.green
-                                                        : Colors.red,
-                                                  ),
-                                                );
-                                                if (isSuccess)
-                                                  Navigator.of(context).pop();
-                                              },
-                                              label: const Text('End',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 26),
-                                  // Promote Card
-                                  Card(
-                                    elevation: 0,
-                                    color: Colors.grey[50],
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16)),
-                                    margin: EdgeInsets.zero,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 18, vertical: 22),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Row(
+                                      const SizedBox(height: 26),
+                                      // Promote Card
+                                      Card(
+                                        elevation: 0,
+                                        color: Colors.grey[50],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        margin: EdgeInsets.zero,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18, vertical: 22),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Icon(Icons.trending_up,
-                                                  color: Colors.blue, size: 22),
-                                              SizedBox(width: 6),
-                                              Text("Promote",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                              const Row(
+                                                children: [
+                                                  Icon(Icons.trending_up,
+                                                      color: Colors.blue,
+                                                      size: 22),
+                                                  SizedBox(width: 6),
+                                                  Text("Promote",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 14),
+                                              DropdownButtonFormField<String>(
+                                                value:
+                                                    _selectedStreamPromoteEventId,
+                                                isExpanded: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  labelText:
+                                                      "Select Experience to Promote",
+                                                  border: OutlineInputBorder(),
+                                                ),
+                                                items: dropdownItems.cast<
+                                                    DropdownMenuItem<String>>(),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedStreamPromoteEventId =
+                                                        value;
+                                                  });
+                                                },
+                                              ),
+                                              _field(newTitleController,
+                                                  "New Title"),
+                                              _dateField(
+                                                context,
+                                                promotionDateController,
+                                                "Promotion Date",
+                                                _promotionDate,
+                                                (date) {
+                                                  setState(() {
+                                                    _promotionDate = date;
+                                                    promotionDateController
+                                                            .text =
+                                                        DateFormat('dd/MM/yyyy')
+                                                            .format(date);
+                                                  });
+                                                },
+                                              ),
+                                              _passwordField(
+                                                  promotePasswordController,
+                                                  "Wallet Password"),
+                                              const SizedBox(height: 18),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: ElevatedButton.icon(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.blue[400],
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 16),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                  ),
+                                                  icon: const Icon(
+                                                      Icons.trending_up,
+                                                      color: Colors.white),
+                                                  onPressed: () async {
+                                                    bool isSuccess = false;
+                                                    String message = '';
+                                                    try {
+                                                      final company =
+                                                          await widget.company;
+                                                      final event =
+                                                          WorkPromotedEvent(
+                                                        id: randomBytesAsHexString(
+                                                            16),
+                                                        timestamp: DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch,
+                                                        newTitle:
+                                                            newTitleController
+                                                                .text,
+                                                        promotionDate: _promotionDate
+                                                                ?.millisecondsSinceEpoch ??
+                                                            DateTime.now()
+                                                                .millisecondsSinceEpoch,
+                                                        experienceStreamId:
+                                                            _selectedStreamPromoteEventId ??
+                                                                '',
+                                                        companyName:
+                                                            company.name ??
+                                                                'Unknown',
+                                                        companyWallet: company
+                                                                .ethereumAddress ??
+                                                            '',
+                                                      );
+                                                      await widget.companyBll
+                                                          .addEmployeeEvents(
+                                                        widget.user,
+                                                        event,
+                                                        widget.companyId,
+                                                        promotePasswordController
+                                                            .text,
+                                                      );
+                                                      isSuccess = true;
+                                                      message =
+                                                          "Promotion validated!";
+                                                    } catch (e) {
+                                                      isSuccess = false;
+                                                      message = "Error: $e";
+                                                    }
+                                                    if (!mounted) return;
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(message),
+                                                        backgroundColor:
+                                                            isSuccess
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                      ),
+                                                    );
+                                                    if (isSuccess)
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                  },
+                                                  label: const Text('Promote',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16)),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          const SizedBox(height: 14),
-                                          DropdownButtonFormField<String>(
-                                            value:
-                                                _selectedStreamPromoteEventId,
-                                            isExpanded: true,
-                                            decoration: const InputDecoration(
-                                              labelText:
-                                                  "Select Experience to Promote",
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            items: dropdownItems.cast<
-                                                DropdownMenuItem<String>>(),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _selectedStreamPromoteEventId =
-                                                    value;
-                                              });
-                                            },
-                                          ),
-                                          _field(
-                                              newTitleController, "New Title"),
-                                          _dateField(
-                                            context,
-                                            promotionDateController,
-                                            "Promotion Date",
-                                            _promotionDate,
-                                            (date) {
-                                              setState(() {
-                                                _promotionDate = date;
-                                                promotionDateController.text =
-                                                    DateFormat('dd/MM/yyyy')
-                                                        .format(date);
-                                              });
-                                            },
-                                          ),
-                                          _passwordField(
-                                              promotePasswordController,
-                                              "Wallet Password"),
-                                          const SizedBox(height: 18),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: ElevatedButton.icon(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.blue[400],
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 16),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                              ),
-                                              icon: const Icon(
-                                                  Icons.trending_up,
-                                                  color: Colors.white),
-                                              onPressed: () async {
-                                                bool isSuccess = false;
-                                                String message = '';
-                                                try {
-                                                  final company =
-                                                      await widget.company;
-                                                  final event =
-                                                      WorkPromotedEvent(
-                                                    id: randomBytesAsHexString(
-                                                        16),
-                                                    timestamp: DateTime.now()
-                                                        .millisecondsSinceEpoch,
-                                                    newTitle:
-                                                        newTitleController.text,
-                                                    promotionDate: _promotionDate
-                                                            ?.millisecondsSinceEpoch ??
-                                                        DateTime.now()
-                                                            .millisecondsSinceEpoch,
-                                                    experienceStreamId:
-                                                        _selectedStreamPromoteEventId ??
-                                                            '',
-                                                    companyName: company.name ??
-                                                        'Unknown',
-                                                    companyWallet: company
-                                                            .ethereumAddress ??
-                                                        '',
-                                                  );
-                                                  await widget.companyBll
-                                                      .addEmployeeEvents(
-                                                    widget.user,
-                                                    event,
-                                                    widget.companyId,
-                                                    promotePasswordController
-                                                        .text,
-                                                  );
-                                                  isSuccess = true;
-                                                  message =
-                                                      "Promotion validated!";
-                                                } catch (e) {
-                                                  isSuccess = false;
-                                                  message = "Error: $e";
-                                                }
-                                                if (!mounted) return;
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(message),
-                                                    backgroundColor: isSuccess
-                                                        ? Colors.green
-                                                        : Colors.red,
-                                                  ),
-                                                );
-                                                if (isSuccess)
-                                                  Navigator.of(context).pop();
-                                              },
-                                              label: const Text('Promote',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16)),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             );
                           },
                         ),
