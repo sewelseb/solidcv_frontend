@@ -16,12 +16,11 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
   final IUserBLL _userBLL = UserBll();
   late Future<List<User>> _usersFromSearch;
   final TextEditingController searchController = TextEditingController();
-final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // Initial load with empty search
     _usersFromSearch = _userBLL.searchUsers(SearchTherms(term: ""));
   }
 
@@ -38,17 +37,7 @@ final ScrollController _scrollController = ScrollController();
     final bool isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Verify a CV',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF7B3FE4),
-            )),
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Color(0xFF7B3FE4)),
-      ),
+      appBar: AppBar(title: const Text('Verify a CV')),
       bottomNavigationBar: const MainBottomNavigationBar(),
       backgroundColor: const Color(0xFFF7F8FC),
       body: Scrollbar(
@@ -71,7 +60,8 @@ final ScrollController _scrollController = ScrollController();
                       borderRadius: BorderRadius.circular(26)),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 16 : 34, vertical: isMobile ? 24 : 38),
+                        horizontal: isMobile ? 16 : 34,
+                        vertical: isMobile ? 24 : 38),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -99,7 +89,8 @@ final ScrollController _scrollController = ScrollController();
                               borderRadius: BorderRadius.circular(10),
                             ),
                             prefixIcon: const Icon(Icons.search),
-                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 10),
                           ),
                           controller: searchController,
                           onChanged: (value) => _search(),
@@ -108,17 +99,23 @@ final ScrollController _scrollController = ScrollController();
                         FutureBuilder<List<User>>(
                           future: _usersFromSearch,
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: Padding(
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: Padding(
                                 padding: EdgeInsets.all(22),
                                 child: CircularProgressIndicator(),
                               ));
                             } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.isEmpty) {
                               return const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 30),
-                                child: Center(child: Text('No user found.',
+                                child: Center(
+                                    child: Text(
+                                  'No user found.',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.black45,
@@ -130,7 +127,8 @@ final ScrollController _scrollController = ScrollController();
                               return ListView.separated(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 12),
                                 itemCount: users.length,
                                 itemBuilder: (context, index) {
                                   final user = users[index];
@@ -139,24 +137,29 @@ final ScrollController _scrollController = ScrollController();
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(14),
                                       onTap: () {
-                                        Navigator.pushNamed(context, '/user/${user.id}');
+                                        Navigator.pushNamed(
+                                            context, '/user/${user.id}');
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFF8F7FF),
-                                          borderRadius: BorderRadius.circular(14),
+                                          borderRadius:
+                                              BorderRadius.circular(14),
                                           border: Border.all(
-                                              color: Colors.deepPurple.shade50, width: 1),
+                                              color: Colors.deepPurple.shade50,
+                                              width: 1),
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 12, horizontal: 10),
                                         child: Row(
                                           children: [
                                             CircleAvatar(
-                                              backgroundColor: Colors.deepPurple.shade50,
+                                              backgroundColor:
+                                                  Colors.deepPurple.shade50,
                                               radius: 21,
                                               child: Icon(Icons.person,
-                                                  color: Colors.deepPurple, size: 25),
+                                                  color: Colors.deepPurple,
+                                                  size: 25),
                                             ),
                                             const SizedBox(width: 15),
                                             Expanded(
@@ -169,7 +172,8 @@ final ScrollController _scrollController = ScrollController();
                                               ),
                                             ),
                                             Icon(Icons.arrow_forward_ios,
-                                                color: Colors.deepPurple.shade200,
+                                                color:
+                                                    Colors.deepPurple.shade200,
                                                 size: 18),
                                           ],
                                         ),
