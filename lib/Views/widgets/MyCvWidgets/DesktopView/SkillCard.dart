@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/models/Skill.dart';
 
 class SkillCard extends StatelessWidget {
@@ -16,7 +17,7 @@ class SkillCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.all(16),
-      decoration: _glassCardDecoration(),
+      decoration: glassCardDecoration(),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 300;
@@ -60,17 +61,6 @@ class SkillCard extends StatelessWidget {
                   ],
                 );
         },
-      ),
-    );
-  }
-
-  BoxDecoration _glassCardDecoration() {
-    return BoxDecoration(
-      color: Colors.white.withOpacity(0.85),
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(
-        color: const Color(0xFF7B3FE4).withOpacity(0.18),
-        width: 1.4,
       ),
     );
   }

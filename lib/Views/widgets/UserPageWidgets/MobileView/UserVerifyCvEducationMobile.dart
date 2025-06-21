@@ -132,13 +132,4 @@ class _UserVerifyCvEducationMobileState
       ],
     );
   }
-
-  BoxDecoration glassCardDecoration() => BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFF7B3FE4).withOpacity(0.18),
-          width: 1.4,
-        ),
-      );
 }

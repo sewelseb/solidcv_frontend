@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
@@ -88,7 +89,7 @@ class EducationMobileCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     if (certificate.publicationDate != null)
                       Text(
-                        'Date: ${formatDate(certificate.publicationDate!)}',
+                        'Date: ${FormatDate().formatDateForCertificate(certificate.publicationDate!)}',
                         style:
                             const TextStyle(fontSize: 13, color: Colors.grey),
                       ),
@@ -155,14 +156,4 @@ class EducationMobileCard extends StatelessWidget {
         ),
       );
 
-  String formatDate(String? input) {
-    try {
-      if (input == null || input.isEmpty) return 'Date inconnue';
-      final micros = int.parse(input);
-      final date = DateTime.fromMicrosecondsSinceEpoch(micros);
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return 'Date invalide';
-    }
-  }
 }

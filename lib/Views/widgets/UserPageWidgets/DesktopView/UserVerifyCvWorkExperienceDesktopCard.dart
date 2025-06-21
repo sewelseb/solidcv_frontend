@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/Views/utils/FormatDate.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 
@@ -13,8 +15,8 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isVerified = experience.isVerified;
-    final start = _formatDate(experience.startDate);
-    final end = _formatDate(experience.endDate);
+    final start = FormatDate().formatDateForExperience(experience.startDate);
+    final end = FormatDate().formatDateForExperience(experience.endDate);
     final hasPromotions = experience.promotions.isNotEmpty;
     final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
         ? experience.companyLogoUrl!
@@ -159,20 +161,4 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
     );
   }
 
-  String _formatDate(int? millis) {
-    if (millis == null) return 'Ongoing';
-    final date = DateTime.fromMillisecondsSinceEpoch(millis);
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
-  BoxDecoration glassCardDecoration() {
-    return BoxDecoration(
-      color: Colors.white.withOpacity(0.85),
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(
-        color: const Color(0xFF7B3FE4).withOpacity(0.18),
-        width: 1.4,
-      ),
-    );
-  }
 }
