@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/models/Company.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
 
 abstract class ICompanyBll {
@@ -12,8 +11,6 @@ abstract class ICompanyBll {
   Future<Company> deleteCompany(int id);
 
   Future<List<Company>> getMyCompanies();
-
-  addEmployee(User user, ExperienceRecord experienceRecord, int id, String password);
 
   setEthereumAddress(Company company, String ethereumAddress, String privateKey, String password);
 

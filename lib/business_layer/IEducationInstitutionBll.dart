@@ -2,7 +2,6 @@
 
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/User.dart';

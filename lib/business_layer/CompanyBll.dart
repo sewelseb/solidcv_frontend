@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
@@ -10,7 +9,6 @@ import 'package:solid_cv/data_access_layer/BlockChain/IWalletService.dart';
 import 'package:solid_cv/data_access_layer/CompanyService.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/models/Company.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
 
 class CompanyBll extends ICompanyBll {
@@ -49,15 +47,6 @@ class CompanyBll extends ICompanyBll {
   @override
   Future<List<Company>> getMyCompanies() {
     return _companyService.getMyCompanies();
-  }
-
-  @override
-  addEmployee(User user, ExperienceRecord experienceRecord, int id,
-      String password) async {
-    var token = await _blockchainWalletBll.createWorkExperienceToken(
-        experienceRecord, id, user.id!, password);
-    experienceRecord.ethereumToken = token;
-    _companyService.addEmployee(user, experienceRecord, id);
   }
 
   @override

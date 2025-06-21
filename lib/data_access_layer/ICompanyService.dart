@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:solid_cv/models/Company.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
-import 'package:solid_cv/models/User.dart';
 
 abstract class ICompanyService {
   Future<List<Company>> getCompanies();
@@ -13,8 +11,6 @@ abstract class ICompanyService {
   Future<Company> deleteCompany(int id);
 
   Future<List<Company>> getMyCompanies();
-
-  void addEmployee(User user, ExperienceRecord experienceRecord, int id);
 
   void saveWalletAddressForCurrentUser(Company company, String ethereumAddress);
 

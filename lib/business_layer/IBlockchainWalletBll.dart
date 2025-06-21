@@ -1,26 +1,18 @@
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkCreatEvent.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSWorkEvent.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:web3dart/web3dart.dart';
 
 abstract class IBlockchainWalletBll {
   Future<bool> saveWalletAddressForCurrentUser(String address);
 
-  Future<String> createWorkExperienceToken(ExperienceRecord experienceRecord, int companyId, int userId, String password);
-
-  Future<List<ExperienceRecord>> getWorkExperiencesForCurrentUser();
-
   createCertificateToken(Certificate certificate, User user, EducationInstitution educationInstitution, String password);
 
   Future<List<Certificate>> getCertificatesForCurrentUser();
 
   Future<Wallet> createANewWalletAddressForCurrentUser(String password);
-
-  Future<List<ExperienceRecord>> getWorkExperience(String ethereumAddress);
 
   Future<List<Certificate>> getCertificates(String ethereumAddress);
 

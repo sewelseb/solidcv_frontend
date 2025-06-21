@@ -5,8 +5,6 @@ import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Company.dart';
 import 'package:http/http.dart' as http;
-import 'package:solid_cv/models/ExperienceRecord.dart';
-import 'package:solid_cv/models/User.dart';
 
 class CompanyService extends ICompanyService {
 @override
@@ -121,26 +119,6 @@ Future<Company> createCompany(Company company, Uint8List? imageBytes, String? im
       return companies.map((company) => Company.fromJson(company)).toList();
     } else {
       throw Exception('Getting companies failure');
-    }
-  }
-
-  @override
-  void addEmployee(User user, ExperienceRecord experienceRecord, int id) async {
-    final response = await http.post(
-      Uri.parse(BackenConnection().url + BackenConnection().addEmployeeApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-      },
-      body: jsonEncode(<String, dynamic>{
-        'userId': user.id,
-        'experienceRecord': experienceRecord.toJson(),
-        'companyId': id,
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Adding employee failure');
     }
   }
 
