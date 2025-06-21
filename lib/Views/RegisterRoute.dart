@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
@@ -20,6 +19,20 @@ class _RegisterRouteState extends State<RegisterRoute> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmationController =
       TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _passwordConfirmationFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmationController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _passwordConfirmationFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _handleRegister() async {
     final email = _emailController.text.trim();
@@ -50,11 +63,11 @@ class _RegisterRouteState extends State<RegisterRoute> {
       user.password = password;
 
       user = await _userBll.createUser(user);
-
-      const storage = FlutterSecureStorage();
-      await storage.write(key: 'jwt', value: user.token);
-
-      Navigator.pushNamed(context, '/loggedin/home');
+      Navigator.pushReplacementNamed(
+        context,
+        '/sent-verification-email',
+        arguments: user.email ?? '',
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration failed: $e')),
@@ -107,6 +120,9 @@ class _RegisterRouteState extends State<RegisterRoute> {
             ),
             child: _RegisterForm(
               isMobile: true,
+              emailFocusNode: _emailFocusNode,
+              passwordFocusNode: _passwordFocusNode,
+              passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
               obscurePassword: _obscurePassword,
               obscureConfirmPassword: _obscureConfirmPassword,
               onTogglePassword: () {
@@ -145,6 +161,9 @@ class _RegisterRouteState extends State<RegisterRoute> {
                 constraints: BoxConstraints(maxWidth: isTablet ? 400 : 420),
                 child: _RegisterForm(
                   isMobile: false,
+                  emailFocusNode: _emailFocusNode,
+                  passwordFocusNode: _passwordFocusNode,
+                  passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
                   obscurePassword: _obscurePassword,
                   obscureConfirmPassword: _obscureConfirmPassword,
                   onTogglePassword: () {
@@ -193,6 +212,9 @@ class _RegisterForm extends StatelessWidget {
   final TextEditingController passwordController;
   final TextEditingController passwordConfirmationController;
   final VoidCallback onRegisterPressed;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+  final FocusNode passwordConfirmationFocusNode;
 
   const _RegisterForm({
     required this.isMobile,
@@ -204,6 +226,9 @@ class _RegisterForm extends StatelessWidget {
     required this.passwordController,
     required this.passwordConfirmationController,
     required this.onRegisterPressed,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
+    required this.passwordConfirmationFocusNode,
   });
 
   @override
@@ -234,6 +259,10 @@ class _RegisterForm extends StatelessWidget {
         const SizedBox(height: 32),
         TextField(
           controller: emailController,
+          focusNode: emailFocusNode,
+          keyboardType: TextInputType.emailAddress,
+          onSubmitted: (_) =>
+              FocusScope.of(context).requestFocus(passwordFocusNode),
           decoration: InputDecoration(
             labelText: "Email address",
             hintText: "example@domain.com",
@@ -244,12 +273,14 @@ class _RegisterForm extends StatelessWidget {
             ),
             prefixIcon: const Icon(Icons.email_outlined),
           ),
-          keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: 16),
         TextField(
           controller: passwordController,
           obscureText: obscurePassword,
+          focusNode: passwordFocusNode,
+          onSubmitted: (_) => FocusScope.of(context)
+              .requestFocus(passwordConfirmationFocusNode),
           decoration: InputDecoration(
             labelText: "Password",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -269,6 +300,8 @@ class _RegisterForm extends StatelessWidget {
         TextField(
           controller: passwordConfirmationController,
           obscureText: obscureConfirmPassword,
+          focusNode: passwordConfirmationFocusNode,
+          onSubmitted: (_) => onRegisterPressed(),
           decoration: InputDecoration(
             labelText: "Confirm password",
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -297,8 +330,7 @@ class _RegisterForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child: const Text("Sign up",
-              style: TextStyle(color: Colors.white)),
+          child: const Text("Sign up", style: TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(

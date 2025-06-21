@@ -14,6 +14,7 @@ class User {
   List<String>? roles;
   String? token;
   String? ethereumAddress;
+  bool? isVerified;
 
   User({
     this.id,
@@ -29,6 +30,7 @@ class User {
     this.roles,
     this.token,
     this.ethereumAddress,
+    this.isVerified,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class User {
       roles: json['roles'] != null ? List<String>.from(json['roles']) : null,
       token: json['token'],
       ethereumAddress: json['ethereumAddress'],
+      isVerified: json['isVerified'],
     );
   }
 
