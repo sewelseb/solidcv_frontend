@@ -100,6 +100,11 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
     final bool isMobile = screenWidth < tabletBreakpoint;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Verify CV'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
+      ),
       backgroundColor: const Color(0xFFF9FBFC),
       bottomNavigationBar: const MainBottomNavigationBar(),
       drawer: isMobile ? Drawer(child: _buildSidebar(width: 220)) : null,

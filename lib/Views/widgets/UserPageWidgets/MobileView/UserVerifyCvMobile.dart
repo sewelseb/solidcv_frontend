@@ -92,6 +92,11 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FBFC),
+      appBar: AppBar(
+        title: const Text('Verify CV'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
+      ),
       bottomNavigationBar: const MainBottomNavigationBar(),
       body: SafeArea(
         child: FutureBuilder<User>(
