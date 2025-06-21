@@ -147,7 +147,12 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                             const SizedBox(height: 32),
                             const MyEducation(),
                             const SizedBox(height: 32),
-                            const MySkills(),
+                            MySkills(
+                              onSkillAdded: () {
+                                _refreshTrigger
+                                    .value++;
+                              },
+                            ),
                           ],
                         );
                       },
@@ -236,12 +241,13 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         ),
                         const SizedBox(height: 10),
                         _infoTile(
-                            icon: Icons.phone, text: user.phoneNumber ?? "Add your phone number"),
+                            icon: Icons.phone,
+                            text: user.phoneNumber ?? "Add your phone number"),
                         const SizedBox(height: 6),
                         _infoTile(
-                            icon: Icons.link,
-                            text:
-                                user.linkedin ?? "Add your LinkedIn",),
+                          icon: Icons.link,
+                          text: user.linkedin ?? "Add your LinkedIn",
+                        ),
                         const SizedBox(height: 6),
                         _infoTile(
                             icon: Icons.description,
