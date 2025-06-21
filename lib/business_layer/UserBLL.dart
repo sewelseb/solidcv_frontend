@@ -138,5 +138,3 @@ class UserBll extends IUserBLL {
     return _userService.resetPassword(token, newPassword);
   }
 }
-  
-
