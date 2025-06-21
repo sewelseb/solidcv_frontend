@@ -117,7 +117,8 @@ class UserBll extends IUserBLL {
   @override
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) {
     return _userService.getUsersManuallyAddedCertificates(userId);
-
+  }
+  @override
   Future<Map<String, dynamic>> verifyEmail(String token) {
     return _userService.verifyEmail(token);
   }
@@ -137,3 +138,5 @@ class UserBll extends IUserBLL {
     return _userService.resetPassword(token, newPassword);
   }
 }
+  
+
