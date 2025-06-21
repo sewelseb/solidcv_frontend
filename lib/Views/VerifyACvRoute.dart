@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -14,98 +13,183 @@ class VerifyACvRoute extends StatefulWidget {
 }
 
 class _VerifyACvRouteState extends State<VerifyACvRoute> {
-  IUserBLL _userBLL = UserBll();
+  final IUserBLL _userBLL = UserBll();
   late Future<List<User>> _usersFromSearch;
   final TextEditingController searchController = TextEditingController();
+final ScrollController _scrollController = ScrollController();
 
-  
+  @override
+  void initState() {
+    super.initState();
+    // Initial load with empty search
+    _usersFromSearch = _userBLL.searchUsers(SearchTherms(term: ""));
+  }
+
+  void _search() {
+    setState(() {
+      var searchTerms = SearchTherms();
+      searchTerms.term = searchController.text;
+      _usersFromSearch = _userBLL.searchUsers(searchTerms);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var searchTherms = SearchTherms();
-    searchTherms.term = searchController.text;
-    _usersFromSearch = _userBLL.searchUsers(searchTherms);
+    final bool isMobile = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify a CV'),
+        title: const Text('Verify a CV',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF7B3FE4),
+            )),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Color(0xFF7B3FE4)),
       ),
       bottomNavigationBar: const MainBottomNavigationBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      backgroundColor: const Color(0xFFF7F8FC),
+      body: Scrollbar(
+        thumbVisibility: true,
+        controller: _scrollController,
+        radius: const Radius.circular(18),
+        thickness: 7,
         child: ListView(
-          shrinkWrap: true,
+          controller: _scrollController,
+          padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 0 : 0, vertical: isMobile ? 10 : 32),
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Search User',
-                      border: OutlineInputBorder(),
-                    ),
-                    controller: searchController,
-                    onChanged: (value) {
-                      var searchTherms = SearchTherms();
-                      searchTherms.term = searchController.text;
-                      _usersFromSearch = _userBLL.searchUsers(searchTherms);
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  FutureBuilder<List<User>>(
-                    future: _usersFromSearch,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                            child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData ||
-                          snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No user found.'));
-                      } else {
-                        return SizedBox(
-                          height: MediaQuery.of(context).size.height -
-                              200, //height of the screen - height of the other widgets
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              final user = snapshot.data![index];
-                              return Card(
-                                margin: const EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 16.0),
-                                child: ListTile(
-                                  leading: Icon(Icons.person,
-                                      color: Theme.of(context).primaryColor),
-                                  title: Text(
-                                    user.getEasyName()!,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  trailing: Icon(Icons.arrow_forward_ios,
-                                      color: Theme.of(context).primaryColor),
-                                  onTap: () async {
-                                    // Handle onTap event if needed
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/user/${user.id}',
-                                    );
-                                  },
-                                ),
-                              );
-                            },
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 570),
+                child: Card(
+                  color: Colors.white,
+                  elevation: 7,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 16 : 34, vertical: isMobile ? 24 : 38),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Center(
+                          child: Text(
+                            "Search for a user and verify their CV",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 21,
+                              color: Color(0xFF7B3FE4),
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      }
-                    },
+                        ),
+                        const SizedBox(height: 22),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Search User',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color(0xFF7B3FE4), width: 1.5),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            prefixIcon: const Icon(Icons.search),
+                            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                          ),
+                          controller: searchController,
+                          onChanged: (value) => _search(),
+                        ),
+                        const SizedBox(height: 18),
+                        FutureBuilder<List<User>>(
+                          future: _usersFromSearch,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: Padding(
+                                padding: EdgeInsets.all(22),
+                                child: CircularProgressIndicator(),
+                              ));
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 30),
+                                child: Center(child: Text('No user found.',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black45,
+                                      fontStyle: FontStyle.italic),
+                                )),
+                              );
+                            } else {
+                              final users = snapshot.data!;
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                itemCount: users.length,
+                                itemBuilder: (context, index) {
+                                  final user = users[index];
+                                  return Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(14),
+                                      onTap: () {
+                                        Navigator.pushNamed(context, '/user/${user.id}');
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFF8F7FF),
+                                          borderRadius: BorderRadius.circular(14),
+                                          border: Border.all(
+                                              color: Colors.deepPurple.shade50, width: 1),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 10),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor: Colors.deepPurple.shade50,
+                                              radius: 21,
+                                              child: Icon(Icons.person,
+                                                  color: Colors.deepPurple, size: 25),
+                                            ),
+                                            const SizedBox(width: 15),
+                                            Expanded(
+                                              child: Text(
+                                                user.getEasyName() ?? "-",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: Colors.black87),
+                                              ),
+                                            ),
+                                            Icon(Icons.arrow_forward_ios,
+                                                color: Colors.deepPurple.shade200,
+                                                size: 18),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
           ],
-        )),
+        ),
+      ),
     );
   }
 }
