@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/FeedbackDialog.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/SkillBll.dart';
@@ -8,10 +9,12 @@ import 'package:solid_cv/models/Skill.dart';
 class UserVerifyCvSkillsDesktop extends StatefulWidget {
   final String userId;
 
-  const UserVerifyCvSkillsDesktop({Key? key, required this.userId}) : super(key: key);
+  const UserVerifyCvSkillsDesktop({Key? key, required this.userId})
+      : super(key: key);
 
   @override
-  _UserVerifyCvSkillsDesktopState createState() => _UserVerifyCvSkillsDesktopState();
+  _UserVerifyCvSkillsDesktopState createState() =>
+      _UserVerifyCvSkillsDesktopState();
 }
 
 class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
@@ -255,26 +258,7 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
   void _showFeedbacksDialog(String feedbacks) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Feedbacks'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text(feedbacks),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+      builder: (_) => FeedbackDialog(feedbacks: feedbacks),
     );
   }
 }
