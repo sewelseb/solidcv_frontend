@@ -47,4 +47,13 @@ abstract class IUserService {
 
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId);
 
+  Future<Map<String, dynamic>> verifyEmail(String token);
+
+  Future<String> resendEmailVerification(String email);
+
+  Future<void> requestPasswordReset(String email);
+
+  Future<void> resetPassword(String token, String newPassword);
+
+
 }

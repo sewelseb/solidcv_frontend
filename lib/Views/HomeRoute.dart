@@ -17,6 +17,17 @@ class _HomeRouteState extends State<HomeRoute> {
   final IUserBLL _userBll = UserBll();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> _handleLogin() async {
     final email = _emailController.text.trim();
@@ -45,9 +56,18 @@ class _HomeRouteState extends State<HomeRoute> {
 
       Navigator.pushNamed(context, '/loggedin/home');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
-      );
+      String errorMessage = e.toString();
+
+      if (errorMessage.contains('email not verified')) {
+        Navigator.pushReplacementNamed(context, '/sent-verification-email',
+            arguments: email);
+        return;
+      }
+      if (errorMessage.contains('invalid credentials')) {
+        errorMessage = 'Incorrect email or password.';
+      } else if (errorMessage.contains('missing credentials')) {
+        errorMessage = 'Account does not exist.';
+      }
     }
   }
 
@@ -106,6 +126,8 @@ class _HomeRouteState extends State<HomeRoute> {
               },
               emailController: _emailController,
               passwordController: _passwordController,
+              emailFocusNode: _emailFocusNode,
+              passwordFocusNode: _passwordFocusNode,
               onLoginPressed: _handleLogin,
             ),
           ),
@@ -138,6 +160,8 @@ class _HomeRouteState extends State<HomeRoute> {
                   },
                   emailController: _emailController,
                   passwordController: _passwordController,
+                  emailFocusNode: _emailFocusNode,
+                  passwordFocusNode: _passwordFocusNode,
                   onLoginPressed: _handleLogin,
                 ),
               ),
@@ -170,6 +194,8 @@ class _LoginForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final VoidCallback onLoginPressed;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
 
   const _LoginForm({
     required this.isMobile,
@@ -178,6 +204,8 @@ class _LoginForm extends StatelessWidget {
     required this.emailController,
     required this.passwordController,
     required this.onLoginPressed,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
   });
 
   @override
@@ -208,6 +236,9 @@ class _LoginForm extends StatelessWidget {
         const SizedBox(height: 32),
         TextField(
           controller: emailController,
+          focusNode: emailFocusNode,
+          onSubmitted: (_) =>
+              FocusScope.of(context).requestFocus(passwordFocusNode),
           decoration: InputDecoration(
             labelText: "Email address",
             hintText: "example@domain.com",
@@ -223,6 +254,8 @@ class _LoginForm extends StatelessWidget {
         const SizedBox(height: 16),
         TextField(
           controller: passwordController,
+          focusNode: passwordFocusNode,
+          onSubmitted: (_) => onLoginPressed(),
           obscureText: obscurePassword,
           decoration: InputDecoration(
             labelText: "Password",
@@ -243,7 +276,9 @@ class _LoginForm extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/forgot-password');
+            },
             child: const Text("Forgot password?",
                 style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 14)),
           ),
@@ -283,6 +318,8 @@ class _LoginForm extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 10),
+        const _PrivacyPolicyLink(),
       ],
     );
   }
@@ -918,4 +955,41 @@ class _BottomAngleClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class _PrivacyPolicyLink extends StatelessWidget {
+  const _PrivacyPolicyLink();
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    return Center(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          Navigator.pushNamed(
+              context, '/privacy-policy'); 
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.privacy_tip_outlined,
+                  color: Color(0xFF7B3FE4), size: isMobile ? 20 : 22),
+              const SizedBox(width: 8),
+              Text(
+                "Privacy Policy",
+                style: TextStyle(
+                  color: Color(0xFF7B3FE4),
+                  fontWeight: FontWeight.w600,
+                  fontSize: isMobile ? 14 : 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

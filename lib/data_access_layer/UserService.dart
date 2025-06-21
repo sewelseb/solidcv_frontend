@@ -60,8 +60,8 @@ class UserService extends IUserService {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      print(response);
-      throw Exception('Login failure');
+      final data = jsonDecode(response.body);
+      throw Exception(data['message']);
     }
   }
 
@@ -417,17 +417,16 @@ class UserService extends IUserService {
     }
   }
 
-    @override
+  @override
   Future<String> getMyExportedCv() async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url+BackenConnection().getMyExportedCv),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken()
-      }
-    );
+        Uri.parse(BackenConnection().url + BackenConnection().getMyExportedCv),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken()
+        });
 
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       var myCv = jsonDecode(response.body)["cv"];
       return myCv;
     } else {
@@ -436,34 +435,105 @@ class UserService extends IUserService {
     }
   }
 
-@override
-Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id) async {
-  String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
+  @override
+  Future<void> updateUser(
+      User user, Uint8List? imageBytes, String? imageExt, int id) async {
+    String? imageBase64 = imageBytes != null ? base64Encode(imageBytes) : null;
 
-  final response = await http.post(
-    Uri.parse(BackenConnection().url +
-        BackenConnection().updateUser +
-        id.toString()),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-    },
-    body: jsonEncode({
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'phoneNumber': user.phoneNumber,
-      'biography': user.biography,
-      'linkedin': user.linkedin,
-      if (imageBase64 != null) 'profilePicture': imageBase64,
-      if (imageBase64 != null) 'profilePictureExtention': imageExt,
-    }),
-  );
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().updateUser +
+          id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'phoneNumber': user.phoneNumber,
+        'biography': user.biography,
+        'linkedin': user.linkedin,
+        if (imageBase64 != null) 'profilePicture': imageBase64,
+        if (imageBase64 != null) 'profilePictureExtention': imageExt,
+      }),
+    );
 
-  if (response.statusCode == 200) {
-    return;
-  } else {
-    throw Exception('Error updating user information');
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Error updating user information');
+    }
   }
-}
 
+  @override
+  Future<Map<String, dynamic>> verifyEmail(String token) async {
+    final response = await http.get(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().verifyEmail + token),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      return {
+        "success": true,
+        "message": data['message'] ?? "Your email has been verified!",
+      };
+    } else {
+      final data = jsonDecode(response.body);
+      return {
+        "success": false,
+        "message": data['error'] ?? 'Error verifying email',
+      };
+    }
+  }
+
+  @override
+  Future<String> resendEmailVerification(String email) async {
+    final response = await http.post(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().resendEmailVerification),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'email': email}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['message'];
+    } else {
+      throw Exception(jsonDecode(response.body)['error']);
+    }
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) async {
+    final response = await http.post(
+      Uri.parse(
+          BackenConnection().url + BackenConnection().requestPasswordReset),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ??
+          'Failed to request password reset');
+    }
+  }
+
+  @override
+  Future<void> resetPassword(String token, String newPassword) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().resetPassword),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'token': token, 'password': newPassword}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Failed to reset password');
+    }
+  }
 }
