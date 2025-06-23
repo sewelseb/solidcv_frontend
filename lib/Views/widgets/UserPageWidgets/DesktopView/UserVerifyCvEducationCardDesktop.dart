@@ -4,15 +4,15 @@ import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
-class EducationCard extends StatelessWidget {
+class UserVerifyCvEducationCardDesktop extends StatelessWidget {
   final Certificate certificate;
   final bool isValidated;
 
-  const EducationCard({
-    Key? key,
+  const UserVerifyCvEducationCardDesktop({
+    super.key,
     required this.certificate,
     required this.isValidated,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -184,5 +184,6 @@ class EducationCard extends StatelessWidget {
       ),
     );
   }
+
 
 }

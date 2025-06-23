@@ -12,7 +12,6 @@ import 'package:solid_cv/Views/PrivacyPolicyPage.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
-import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
 import 'package:solid_cv/Views/admin-views/AdminCompaniesListPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminDashboardPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dart';
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ).copyWith(
         appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF7B3FE4),
             foregroundColor: Colors.white,
             shadowColor: Colors.black,
             elevation: 5),
@@ -59,6 +58,7 @@ class MyApp extends StatelessWidget {
         '/my-educationInstitution-administration': (context) =>
             const AuthGuard(child: MyEducationInstitutionAdministration()),
         '/privacy-policy': (context) => const PrivacyPolicyPage(),
+
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
           return AuthGuard(child: EditProfileRoute(user: user));
@@ -96,7 +96,8 @@ class MyApp extends StatelessWidget {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
-            builder: (context) => AuthGuard(child: UserPage(id: id)),
+
+            builder: (context) => AuthGuard(child: UserPage(userId: id)),
           );
         }
 

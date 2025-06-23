@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
-import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/WorkExperienceCard.dart';
-import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/MyEducation.dart';
-import 'package:solid_cv/Views/widgets/MySkills.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvSkillsDesktop.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvWorkExperienceDesktopCard.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvEducationDesktop.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
-import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSCleanExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/models/User.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class MyCvDesktop extends StatefulWidget {
-  const MyCvDesktop({super.key});
+class UserVerifyCvDesktop extends StatefulWidget {
+  final String userId;
+  const UserVerifyCvDesktop({super.key, this.userId = ''});
 
   @override
-  State<MyCvDesktop> createState() => _MyCvDesktopState();
+  State<UserVerifyCvDesktop> createState() => _UserVerifyCvDesktopState();
 }
 
-class _MyCvDesktopState extends State<MyCvDesktop> {
+class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
   late final ICompanyBll _company = CompanyBll();
@@ -44,17 +42,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
   void initState() {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
-    _userFuture = _userBLL.getCurrentUser();
-  }
-
-  void _refreshExperiences() {
-    _cachedExperiences = null;
-    _lastFetchTime = null;
-    _refreshTrigger.value++;
+    _userFuture = _userBLL.getUser(widget.userId);
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
-    final user = await _userFuture;
+    final user = await _userFuture; 
     if (user.ethereumAddress == null) {
       return [];
     }
@@ -66,8 +58,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     }
 
     final results = await Future.wait([
-      _blockchainWalletBll.getEventsForCurrentUser(),
-      _userBLL.getMyManuallyAddedExperiences(),
+      _blockchainWalletBll.getEventsForUser(user.ethereumAddress!),
+      _userBLL.getUsersManuallyAddedExperiences(widget.userId),
     ]);
 
     final cleanExperienceList = results[0] as List<CleanExperience>;
@@ -100,18 +92,6 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     return unifiedList;
   }
 
-  Future<void> _showAddWorkExperienceModal() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AddedManuallyWorkExperienceForm(
-        onSubmit: (manual) async {
-          _userBLL.addManualExperience(manual);
-          _refreshExperiences();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -120,6 +100,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     final bool isMobile = screenWidth < tabletBreakpoint;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Verify CV'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
+      ),
       backgroundColor: const Color(0xFFF9FBFC),
       bottomNavigationBar: const MainBottomNavigationBar(),
       drawer: isMobile ? Drawer(child: _buildSidebar(width: 220)) : null,
@@ -145,14 +130,9 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                             const SizedBox(height: 32),
                             _buildExperienceSection(),
                             const SizedBox(height: 32),
-                            const MyEducation(),
+                            UserVerifyCvEducationDesktop(userId:widget.userId),
                             const SizedBox(height: 32),
-                            MySkills(
-                              onSkillAdded: () {
-                                _refreshTrigger
-                                    .value++;
-                              },
-                            ),
+                            UserVerifyCvSkillsDesktop(userId: widget.userId),
                           ],
                         );
                       },
@@ -241,13 +221,12 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         ),
                         const SizedBox(height: 10),
                         _infoTile(
-                            icon: Icons.phone,
-                            text: user.phoneNumber ?? "Add your phone number"),
+                            icon: Icons.phone, text: user.phoneNumber ?? "-"),
                         const SizedBox(height: 6),
                         _infoTile(
-                          icon: Icons.link,
-                          text: user.linkedin ?? "Add your LinkedIn",
-                        ),
+                            icon: Icons.link,
+                            text:
+                                user.linkedin ?? "-",),
                         const SizedBox(height: 6),
                         _infoTile(
                             icon: Icons.description,
@@ -285,50 +264,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     style: const TextStyle(
                         fontSize: 28, fontWeight: FontWeight.bold)),
                 const Spacer(),
-                ElevatedButton(
-                  onPressed: () async {
-                    final updated = await Navigator.pushNamed(
-                      context,
-                      '/user/edit-profile',
-                      arguments: user,
-                    );
-                    if (updated == true) {
-                      setState(() {
-                        _userFuture = _userBLL.getCurrentUser();
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: const Text('Edit profile'),
-                ),
               ],
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var documentName = await _userBLL.getMyExportedCv();
-                final Uri documentUrl = Uri.parse(
-                  BackenConnection().url +
-                      BackenConnection().getMyCvPlace +
-                      documentName,
-                );
-                launchUrl(documentUrl);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Download CV'),
             ),
             const SizedBox(height: 8),
             const LinearProgressIndicator(
@@ -346,16 +282,10 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        const Row(
           children: [
-            const Text('Work Experience',
+            Text('Work Experience',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const Spacer(),
-            IconButton(
-              onPressed: _showAddWorkExperienceModal,
-              icon: const Icon(Icons.add_circle_outline),
-              tooltip: 'Add experience',
-            ),
           ],
         ),
         const SizedBox(height: 12),
@@ -368,13 +298,12 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else if (snapshot.hasError) {
-              return Text("Error: \${snapshot.error}");
+              return Text("Error: {$snapshot.error}");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return Column(
                 children: snapshot.data!
-                    .map((e) => WorkExperienceCard(
+                    .map((e) => UserVerifyCvWorkExperienceDesktopCard(
                           experience: e,
-                          onPromotionAdded: _refreshExperiences,
                         ))
                     .toList(),
               );

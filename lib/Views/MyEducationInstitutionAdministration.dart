@@ -358,7 +358,12 @@ class _MyEducationInstitutionAdministrationState
                                                 content: Text(
                                                     'Ethereum address saved!')),
                                           );
-                                          setState(() {});
+                                          setState(() {
+                                            _educationInstitutionFuture =
+                                                _educationInstitutionBll
+                                                    .getEducationInstitution(
+                                                        institution.id!);
+                                          });
                                         },
                                         icon: const Icon(Icons.save),
                                         label: const Text('Save Ethereum'),
@@ -379,30 +384,47 @@ class _MyEducationInstitutionAdministrationState
                                 isMobile: isMobile,
                                 title: "Trainees and Students",
                                 icon: Icons.people,
-                                content: SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      var args = EducationInstitutionParameter(
-                                          id: institution.id!);
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/educationInstitution/add-a-certificate-to-user',
-                                        arguments: args,
-                                      );
-                                    },
-                                    icon: const Icon(Icons.person_add_alt_1),
-                                    label: const Text(
-                                        '+ Add Certificates to User'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: _primaryColor,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                    ),
-                                  ),
-                                ),
+                                content: (institution.ethereumAddress == null ||
+                                        institution.ethereumAddress!.isEmpty)
+                                    ? const Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 18.0),
+                                        child: Text(
+                                          "Please add an Ethereum address before adding certificates.",
+                                          style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontStyle: FontStyle.italic,
+                                            fontSize: 15,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            var args =
+                                                EducationInstitutionParameter(
+                                                    id: institution.id!);
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/educationInstitution/add-a-certificate-to-user',
+                                              arguments: args,
+                                            );
+                                          },
+                                          icon: const Icon(
+                                              Icons.person_add_alt_1),
+                                          label: const Text(
+                                              '+ Add Certificates to User'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: _primaryColor,
+                                            foregroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                          ),
+                                        ),
+                                      ),
                               ),
                               const SizedBox(height: 12),
                             ],

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
-class EducationMobileCard extends StatelessWidget {
+class UserVerifyCvEducationMobileCard extends StatelessWidget {
   final Certificate certificate;
   final bool isValidated;
 
-  const EducationMobileCard({
-    Key? key,
+  const UserVerifyCvEducationMobileCard({
+    super.key,
     required this.certificate,
     required this.isValidated,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -146,14 +147,5 @@ class EducationMobileCard extends StatelessWidget {
       ),
     );
   }
-
-  BoxDecoration glassCardDecoration() => BoxDecoration(
-        color: Colors.white.withOpacity(0.85),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFF7B3FE4).withOpacity(0.18),
-          width: 1.4,
-        ),
-      );
 
 }

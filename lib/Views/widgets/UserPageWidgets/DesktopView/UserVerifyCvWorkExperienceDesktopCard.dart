@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
-import 'package:solid_cv/business_layer/UserBLL.dart';
 
-class WorkExperienceCard extends StatelessWidget {
+class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
   final UnifiedExperienceViewModel experience;
-  final VoidCallback? onPromotionAdded;
 
-  const WorkExperienceCard({
+  const UserVerifyCvWorkExperienceDesktopCard({
     super.key,
     required this.experience,
-    this.onPromotionAdded,
   });
 
   @override
@@ -128,17 +124,6 @@ class WorkExperienceCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 14.5, color: Colors.black87),
                 ),
               ],
-              if (!isVerified)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () =>
-                        _showAddPromotionDialog(context, experience.manualId!),
-                    style:
-                        TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                    child: const Text('Add a promotion'),
-                  ),
-                ),
             ],
           );
         },
@@ -175,71 +160,5 @@ class WorkExperienceCard extends StatelessWidget {
       ),
     );
   }
-
-  void _showAddPromotionDialog(BuildContext context, int manualExperienceId) {
-    final titleController = TextEditingController();
-    final dateController = TextEditingController();
-    DateTime? selectedDate;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Ajouter une promotion'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration:
-                    const InputDecoration(labelText: 'Titre de promotion'),
-              ),
-              TextField(
-                controller: dateController,
-                readOnly: true,
-                decoration: const InputDecoration(labelText: 'Date'),
-                onTap: () async {
-                  final picked = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
-                  );
-                  if (picked != null) {
-                    selectedDate = picked;
-                    dateController.text =
-                        picked.toIso8601String().split('T')[0];
-                  }
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final newTitle = titleController.text.trim();
-                if (newTitle.isNotEmpty && selectedDate != null) {
-                  final promotion = Promotion(
-                    newTitle: newTitle,
-                    date: selectedDate!.millisecondsSinceEpoch,
-                  );
-                  var userBLL = UserBll();
-                  userBLL.addManuallyPromotion(promotion, manualExperienceId);
-                  Navigator.of(context).pop();
-                  if (onPromotionAdded != null) onPromotionAdded!();
-                }
-              },
-              child: const Text('Ajouter'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
 
 }

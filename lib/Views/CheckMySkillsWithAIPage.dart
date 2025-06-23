@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/FeedbackDialog.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/SkillBll.dart';
@@ -26,6 +27,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
   bool isQuestionLoading = false;
   Question? _currentQuestion;
   final TextEditingController userMessageController = TextEditingController();
+  final FocusNode _userMessageFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -161,59 +163,61 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
               ],
             ),
           ),
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: userMessageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+          if (hasTestStarted) ...[
+            const Divider(height: 1),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: userMessageController,
+                      focusNode: _userMessageFocusNode,
+                      onSubmitted: (_) => _handleSend(skill),
+                      decoration: InputDecoration(
+                        hintText: 'Type your message...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_currentQuestion == null ||
-                        userMessageController.text.isEmpty) return;
-
-                    final userResponse = userMessageController.text;
-
-                    setState(() {
-                      messages
-                          .add(_Message(text: userResponse, sender: 'User'));
-                      userMessageController.clear();
-                      isQuestionLoading = true;
-                    });
-
-                    _currentQuestion!.answer = userResponse;
-                    await _skillBll.sendAnswerToAI(_currentQuestion!);
-
-                    final newQuestion =
-                        await _skillBll.getAQuestionsForSkill(skill.id!);
-
-                    setState(() {
-                      _currentQuestion = newQuestion;
-                      messages.add(
-                          _Message(text: newQuestion.question, sender: 'AI'));
-                      isQuestionLoading = false;
-                      hasTestStarted = true;
-                    });
-                  },
-                  child: const Text('Send'),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () => _handleSend(skill),
+                    child: const Text('Send'),
+                  ),
+                ],
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
+  }
+
+  void _handleSend(Skill skill) async {
+    if (_currentQuestion == null || userMessageController.text.isEmpty) return;
+
+    final userResponse = userMessageController.text;
+
+    setState(() {
+      messages.add(_Message(text: userResponse, sender: 'User'));
+      userMessageController.clear();
+      isQuestionLoading = true;
+    });
+
+    _currentQuestion!.answer = userResponse;
+    await _skillBll.sendAnswerToAI(_currentQuestion!);
+
+    final newQuestion = await _skillBll.getAQuestionsForSkill(skill.id!);
+
+    setState(() {
+      _currentQuestion = newQuestion;
+      messages.add(_Message(text: newQuestion.question, sender: 'AI'));
+      isQuestionLoading = false;
+      hasTestStarted = true;
+    });
   }
 
   void _getNewAiQuestion(Skill skill) async {
@@ -232,20 +236,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
   void _showFeedbacksDialog(String feedbacks) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Feedbacks'),
-          content: SingleChildScrollView(
-            child: ListBody(children: [Text(feedbacks)]),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      },
+      builder: (_) => FeedbackDialog(feedbacks: feedbacks),
     );
   }
 }

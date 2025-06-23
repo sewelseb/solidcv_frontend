@@ -8,7 +8,6 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Certificate.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
@@ -146,22 +145,6 @@ class UserService extends IUserService {
     }
   }
 
-  @override
-  void addManuallyAddedWorkExperience(ExperienceRecord newExperience) async {
-    var response = await http.post(
-      Uri.parse(BackenConnection().url +
-          BackenConnection().addManuallyAddedWorkExperienceApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-      },
-      body: jsonEncode(newExperience.toJson()),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Adding manually added work experience failure');
-    }
-  }
 
   @override
   void addManualExperience(ManualExperience newExperience) async {
@@ -202,29 +185,6 @@ class UserService extends IUserService {
   }
 
   @override
-  Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() async {
-    var response = await http.get(
-      Uri.parse(BackenConnection().url +
-          BackenConnection().getMyManuallyAddedWorkExperiencesApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
-      },
-    );
-
-    if (response.statusCode == 200) {
-      List<ExperienceRecord> experiences = (jsonDecode(response.body) as List)
-          .map((i) => ExperienceRecord.fromJson(i))
-          .toList();
-      return experiences;
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Getting manually added work experiences failure');
-    }
-  }
-
-  @override
   Future<List<ManualExperience>> getMyManuallyAddedExperiences() async {
     var response = await http.get(
       Uri.parse(BackenConnection().url +
@@ -244,6 +204,29 @@ class UserService extends IUserService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Getting manually added work experiences failure');
+    }
+  }
+
+    @override
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getUsersManuallyAddedExperiences+ userId),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<ManualExperience> experiences = (jsonDecode(response.body) as List)
+          .map((i) => ManualExperience.fromJson(i))
+          .toList();
+      return experiences;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting manually added work experiences for a user failure');
     }
   }
 
@@ -269,6 +252,29 @@ class UserService extends IUserService {
     var response = await http.get(
       Uri.parse(BackenConnection().url +
           BackenConnection().getMyManuallyAddedCertificatesApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<Certificate> certificates = (jsonDecode(response.body) as List)
+          .map((i) => Certificate.fromJson(i))
+          .toList();
+      return certificates;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Getting manually added certificates failure');
+    }
+  }
+
+    @override
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getUsersManuallyAddedCertificates + userId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),

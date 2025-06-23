@@ -345,7 +345,10 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                                 content: Text(
                                                     'Ethereum address saved!')),
                                           );
-                                          setState(() {});
+                                          setState(() {
+                                            _companyFuture = _companyBll
+                                                .getCompany(company.id!);
+                                          });
                                         },
                                         icon: const Icon(Icons.save),
                                         label: const Text('Save Ethereum'),
@@ -366,27 +369,40 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                 isMobile: isMobile,
                                 title: "Employees",
                                 icon: Icons.people,
-                                content: SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () {
-                                      var args =
-                                          CompanyParameter(id: company.id!);
-                                      Navigator.pushNamed(
-                                          context, '/company/add-an-employee',
-                                          arguments: args);
-                                    },
-                                    icon: const Icon(Icons.person_add_alt_1),
-                                    label: const Text('+ Add Employee'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: _primaryColor,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                    ),
-                                  ),
-                                ),
+                                content: (company.ethereumAddress == null ||
+                                        company.ethereumAddress!.isEmpty)
+                                    ? const Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Text(
+                                          "Add your company's Ethereum address to manage employees.",
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontStyle: FontStyle.italic),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () {
+                                            var args = CompanyParameter(
+                                                id: company.id!);
+                                            Navigator.pushNamed(context,
+                                                '/company/add-an-employee',
+                                                arguments: args);
+                                          },
+                                          icon: const Icon(
+                                              Icons.person_add_alt_1),
+                                          label: const Text('+ Add Employee'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: _primaryColor,
+                                            foregroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                          ),
+                                        ),
+                                      ),
                               ),
                               const SizedBox(height: 12),
                             ],

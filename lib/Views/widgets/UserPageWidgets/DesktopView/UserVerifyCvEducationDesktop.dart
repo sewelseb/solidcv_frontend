@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/AddManuallyCertificateDialog.dart';
-import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/MyEducationCard.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvEducationCardDesktop.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/CertificatWrapper.dart';
@@ -8,18 +7,19 @@ import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
-import 'dart:io';
 
 import 'package:solid_cv/models/User.dart';
 
-class MyEducation extends StatefulWidget {
-  const MyEducation({Key? key}) : super(key: key);
+class UserVerifyCvEducationDesktop extends StatefulWidget {
+    final String userId;
+
+  const UserVerifyCvEducationDesktop({super.key, required this.userId});
 
   @override
-  _MyEducationState createState() => _MyEducationState();
+  _UserVerifyCvEducationDesktopState createState() => _UserVerifyCvEducationDesktopState();
 }
 
-class _MyEducationState extends State<MyEducation> {
+class _UserVerifyCvEducationDesktopState extends State<UserVerifyCvEducationDesktop> {
   final IBlockchainWalletBll _blockchainWalletBll = BlockchainWalletBll();
   final IUserBLL _userBll = UserBll();
   final IEducationInstitutionBll _educationInstitutionBll =
@@ -28,39 +28,47 @@ class _MyEducationState extends State<MyEducation> {
 
   late Future<List<CertificatWrapper>> _allCertificates;
   late TextEditingController _publicationDateController;
-  File? file;
 
   @override
   void initState() {
     super.initState();
+    _userFuture = _userBll.getUser(widget.userId);
     _publicationDateController = TextEditingController();
-    _userFuture = _userBll.getCurrentUser();
-
     _allCertificates = _loadAllCertificates();
   }
 
   Future<List<CertificatWrapper>> _loadAllCertificates() async {
-    final user = await _userFuture;
+  final user = await _userFuture; 
+
     if (user.ethereumAddress == null) {
       return [];
     }
-    final blockchain =
-        await _blockchainWalletBll.getCertificatesForCurrentUser();
-    for (final cert in blockchain) {
+    final results = await Future.wait([
+      _blockchainWalletBll.getCertificates(user.ethereumAddress!),
+      _userBll.getUsersManuallyAddedCertificates(widget.userId),
+    ]);
+
+
+    final certificateFromBlockchainList = results[0];
+    final manuallyAddedCertificate = results[1];
+
+
+    final List<CertificatWrapper> allCertificates = [];
+    for (final cert in certificateFromBlockchainList) {
       if (cert.issuerBlockCahinWalletAddress != null) {
         final institution =
             await _educationInstitutionBll.getEducationInstitutionByWallet(
                 cert.issuerBlockCahinWalletAddress!);
         cert.logoUrl = institution?.getProfilePicture();
       }
+      allCertificates.add(CertificatWrapper(cert, true));
     }
 
-    final manual = await _userBll.getMyManuallyAddedCertificates();
+    for (final cert in manuallyAddedCertificate) {
+      allCertificates.add(CertificatWrapper(cert, false));
+    }
 
-    return [
-      ...blockchain.map((e) => CertificatWrapper(e, true)),
-      ...manual.map((e) => CertificatWrapper(e, false)),
-    ];
+    return allCertificates;
   }
 
   @override
@@ -90,14 +98,14 @@ class _MyEducationState extends State<MyEducation> {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text("No education certificate yet."));
+             return const Center(child: Text("No education certificate yet."));
             }
 
             final certs = snapshot.data ?? [];
 
             return Column(
               children: certs
-                  .map((c) => EducationCard(
+                  .map((c) => UserVerifyCvEducationCardDesktop(
                         certificate: c.cert,
                         isValidated: c.isBlockchain,
                       ))
@@ -110,31 +118,16 @@ class _MyEducationState extends State<MyEducation> {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
-        const Text(
+        Text(
           'Education',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const Spacer(),
-        IconButton(
-          onPressed: () async {
-            await AddManuallyCertificateDialog.show(
-              context,
-              onAdd: (certificate) async {
-                await _userBll.addMyCertificateManually(certificate);
-                setState(() {
-                  _allCertificates = _loadAllCertificates();
-                });
-              },
-            );
-          },
-          icon: const Icon(Icons.add_circle_outline),
-          tooltip: 'Add education',
-        ),
+        Spacer(),
       ],
     );
   }

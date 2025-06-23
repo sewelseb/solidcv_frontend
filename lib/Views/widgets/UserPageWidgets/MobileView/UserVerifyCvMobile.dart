@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
-import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileView.dart';
-import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/WorkExperienceMobileCard.dart';
-import 'package:solid_cv/Views/widgets/MySkills.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/MobileView/UserVerifyCvEducationMobile.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/MobileView/UserVerifyCvSkillsMobile.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/MobileView/UserVerifyCvWorkExperienceMobile.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
@@ -14,17 +13,16 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/models/User.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:solid_cv/config/BackenConnection.dart';
 
-class MyCvMobile extends StatefulWidget {
-  const MyCvMobile({super.key});
+class UserVerifyCvMobile extends StatefulWidget {
+  final String userId;
+  const UserVerifyCvMobile({super.key, required this.userId});
 
   @override
-  State<MyCvMobile> createState() => _MyCvMobileState();
+  State<UserVerifyCvMobile> createState() => _UserVerifyCvMobileState();
 }
 
-class _MyCvMobileState extends State<MyCvMobile> {
+class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
   late Future<User> _userFuture;
@@ -40,21 +38,15 @@ class _MyCvMobileState extends State<MyCvMobile> {
   void initState() {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
-    _userFuture = _userBLL.getCurrentUser();
-  }
-
-  void _refreshExperiences() {
-    _cachedExperiences = null;
-    _lastFetchTime = null;
-    _refreshTrigger.value++;
+    _userFuture = _userBLL.getUser(widget.userId);
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
-
     final user = await _userFuture;
     if (user.ethereumAddress == null) {
       return [];
     }
+
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
         DateTime.now().difference(_lastFetchTime!) < _cacheTimeout) {
@@ -62,8 +54,8 @@ class _MyCvMobileState extends State<MyCvMobile> {
     }
 
     final results = await Future.wait([
-      _blockchainWalletBll.getEventsForCurrentUser(),
-      _userBLL.getMyManuallyAddedExperiences(),
+      _blockchainWalletBll.getEventsForUser(user.ethereumAddress!),
+      _userBLL.getUsersManuallyAddedExperiences(widget.userId),
     ]);
 
     final cleanExperienceList = results[0] as List<CleanExperience>;
@@ -76,11 +68,14 @@ class _MyCvMobileState extends State<MyCvMobile> {
 
     for (var experience in unifiedList) {
       if (experience.companyWallet != null) {
-        final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
+        final company =
+            await _company.fetchCompanyByWallet(experience.companyWallet!);
         experience.companyLogoUrl = company?.getProfilePicture();
-        experience.location = '${company?.addressCity}, ${company?.addressCountry}';
+        experience.location =
+            '${company?.addressCity}, ${company?.addressCountry}';
       }
     }
+
     unifiedList.sort((a, b) {
       if (a.endDate == null) return -1;
       if (b.endDate == null) return 1;
@@ -93,22 +88,15 @@ class _MyCvMobileState extends State<MyCvMobile> {
     return unifiedList;
   }
 
-  Future<void> _showAddWorkExperienceModal() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AddedManuallyWorkExperienceForm(
-        onSubmit: (manual) async {
-          _userBLL.addManualExperience(manual);
-          _refreshExperiences();
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FBFC),
+      appBar: AppBar(
+        title: const Text('Verify CV'),
+        elevation: 1,
+        backgroundColor: const Color(0xFF7B3FE4),
+      ),
       bottomNavigationBar: const MainBottomNavigationBar(),
       body: SafeArea(
         child: FutureBuilder<User>(
@@ -152,62 +140,17 @@ class _MyCvMobileState extends State<MyCvMobile> {
                             fontSize: 14, color: Colors.white70),
                       ),
                       const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final updated = await Navigator.pushNamed(
-                            context,
-                            '/user/edit-profile',
-                            arguments: user,
-                          );
-                          if (updated == true) {
-                            setState(() {
-                              _userFuture = _userBLL.getCurrentUser();
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text('Edit profile'),
-                      ),
-                      const SizedBox(height: 12),
                       _infoTile(
                           icon: Icons.phone, text: user.phoneNumber ?? "-"),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "Add your LinkedIn",),
+                          text: user.linkedin ?? "-"),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
                           text: user.biography ?? "",
                           expandable: true),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () async {
-                          var documentName = await _userBLL.getMyExportedCv();
-                          final Uri documentUrl = Uri.parse(
-                            BackenConnection().url +
-                                BackenConnection().getMyCvPlace +
-                                documentName,
-                          );
-                          launchUrl(documentUrl);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text('Download CV'),
-                      ),
                     ],
                   ),
                 ),
@@ -218,9 +161,9 @@ class _MyCvMobileState extends State<MyCvMobile> {
                       const SizedBox(height: 16),
                       _buildExperienceSection(),
                       const SizedBox(height: 24),
-                      const MyEducationMobileView(),
+                      UserVerifyCvEducationMobile(userId: widget.userId),
                       const SizedBox(height: 24),
-                      const MySkills(),
+                      UserVerifyCvSkillsMobile(userId: widget.userId),
                     ],
                   ),
                 ),
@@ -294,17 +237,12 @@ class _MyCvMobileState extends State<MyCvMobile> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const Row(
               children: [
-                const Text('Work Experience',
+                Text('Work Experience',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const Spacer(),
-                IconButton(
-                  onPressed: _showAddWorkExperienceModal,
-                  icon: const Icon(Icons.add_circle_outline),
-                  tooltip: 'Add experience',
-                ),
+                Spacer(),
               ],
             ),
             const SizedBox(height: 12),
@@ -314,13 +252,13 @@ class _MyCvMobileState extends State<MyCvMobile> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text("Error: \${snapshot.error}");
+                  return Text("Error: {$snapshot.error}");
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Column(
                     children: snapshot.data!
-                        .map((e) => WorkExperienceCardMobile(
-                            experience: e,
-                            onPromotionAdded: _refreshExperiences))
+                        .map((e) => UserVerifyCvWorkExperienceCardMobile(
+                              experience: e,
+                            ))
                         .toList(),
                   );
                 } else {

@@ -6,7 +6,6 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
 import 'package:solid_cv/models/Certificate.dart';
-import 'package:solid_cv/models/ExperienceRecord.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
 import 'package:solid_cv/models/User.dart';
@@ -42,16 +41,6 @@ class UserBll extends IUserBLL {
   @override
   Future<User> getCurrentUser() {
     return _userService.getCurrentUser();
-  }
-
-  @override
-  void addManuallyAddedWorkExperience(ExperienceRecord newExperience) {
-    _userService.addManuallyAddedWorkExperience(newExperience);
-  }
-
-  @override
-  Future<List<ExperienceRecord>> getMyManuallyAddedWorkExperiences() {
-    return _userService.getMyManuallyAddedWorkExperiences();
   }
 
   @override
@@ -120,6 +109,15 @@ class UserBll extends IUserBLL {
     return _userService.getMyExportedCv();
   }
 
+  @override
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId) {
+    return _userService.getUsersManuallyAddedExperiences(userId);
+  }
+  
+  @override
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) {
+    return _userService.getUsersManuallyAddedCertificates(userId);
+  }
   @override
   Future<Map<String, dynamic>> verifyEmail(String token) {
     return _userService.verifyEmail(token);

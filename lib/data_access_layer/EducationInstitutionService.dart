@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 
