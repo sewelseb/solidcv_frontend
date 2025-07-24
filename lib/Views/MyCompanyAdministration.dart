@@ -293,23 +293,23 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 36),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: "Ethereum Wallet",
+                                title: "Base Blochchain Wallet",
                                 icon: Icons.account_balance_wallet,
                                 content: Column(
                                   children: [
                                     _buildTextField(
                                         _ethereumAddressController,
-                                        "Ethereum Address",
+                                        "Base Blochchain Address",
                                         Icons.account_balance_wallet),
                                     const SizedBox(height: 16),
                                     _buildTextField(
                                         _ethereumPrivateKeyController,
-                                        "Ethereum Private key",
+                                        "Base Blochchain Private key",
                                         Icons.lock,
                                         obscure: true),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'This is the Ethereum address that will be used to mint tokens for your employees.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
+                                      'This is the Base Blochchain address that will be used to mint tokens for your employees.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
                                       style: GoogleFonts.inter(
                                           color: Colors.black54,
                                           fontSize: 13,
@@ -343,7 +343,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                               .showSnackBar(
                                             const SnackBar(
                                                 content: Text(
-                                                    'Ethereum address saved!')),
+                                                    'Base Blochchain address saved!')),
                                           );
                                           setState(() {
                                             _companyFuture = _companyBll
@@ -375,7 +375,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8.0),
                                         child: Text(
-                                          "Add your company's Ethereum address to manage employees.",
+                                          "Add your company's Base Blochchain address to manage employees.",
                                           style: TextStyle(
                                               color: Colors.redAccent,
                                               fontStyle: FontStyle.italic),

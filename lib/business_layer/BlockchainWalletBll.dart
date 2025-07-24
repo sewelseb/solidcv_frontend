@@ -65,10 +65,10 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     //mint the token
     var reciever = await _userService.getUser(user.id.toString());
     if (reciever.ethereumAddress == null) {
-      throw Exception("User does not have an ethereum address");
+      throw Exception("User does not have an Base Blochchain address");
     }
     if (educationInstitution.ethereumAddress == null) {
-      throw Exception("Company does not have an ethereum address");
+      throw Exception("Company does not have an Base Blochchain address");
     }
     var tokenAddress = await _walletService.mintCertificateToken(privateKey,
         educationInstitution.ethereumAddress!, reciever.ethereumAddress!, url);
@@ -85,11 +85,11 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
     final receiver = await _userService.getUser(userId.toString());
 
     if (receiver.ethereumAddress == null) {
-      throw Exception("User does not have an Ethereum address");
+      throw Exception("User does not have an Base Blochchain address");
     }
 
     if (company.ethereumAddress == null) {
-      throw Exception("Company does not have an Ethereum address");
+      throw Exception("Company does not have an Base Blochchain address");
     }
 
     final cid = await _ipfsService.saveWorkEvent(event);

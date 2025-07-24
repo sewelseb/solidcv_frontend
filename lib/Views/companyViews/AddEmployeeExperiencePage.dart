@@ -126,7 +126,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                           padding: EdgeInsets.symmetric(vertical: 40),
                           child: Center(
                             child: Text(
-                              "This user does not have a valid Ethereum address. ",
+                              "This user does not have a valid Base Blochchain address. ",
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   color: Colors.redAccent),

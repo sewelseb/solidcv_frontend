@@ -222,7 +222,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         Icon(Icons.check_circle_outline, color: _primaryColor, size: isMobile ? 60 : 80),
         const SizedBox(height: 24),
         Text(
-          'Your Ethereum Wallet',
+          'Your Base Blochchain Wallet',
           style: GoogleFonts.inter(
             fontSize: isMobile ? 22 : 26,
             fontWeight: FontWeight.bold,
@@ -337,12 +337,12 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         children: [
           _buildSectionCard(
             title: 'Connect an Existing Wallet',
-            description: "If you already have an Ethereum wallet, enter its public address to link it to your SolidCV account.",
+            description: "If you already have an Base Blochchain wallet, enter its public address to link it to your SolidCV account.",
             icon: Icons.link,
             formFields: [
               TextField(
                 controller: _walletAddressController,
-                decoration: _textFieldDecoration("Ethereum Address", prefixIcon: Icons.account_balance_wallet_outlined),
+                decoration: _textFieldDecoration("Base Blochchain Address", prefixIcon: Icons.account_balance_wallet_outlined),
                 keyboardType: TextInputType.text,
               ),
               const SizedBox(height: 20),
@@ -356,7 +356,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           const SizedBox(height: 32),
           _buildSectionCard(
             title: 'Create a New Wallet',
-            description: "SolidCV can generate a new secure Ethereum wallet for you. Choose a strong password to protect your private key.",
+            description: "SolidCV can generate a new secure Base Blochchain wallet for you. Choose a strong password to protect your private key.",
             icon: Icons.add_circle_outline,
             formFields: [
               TextField(

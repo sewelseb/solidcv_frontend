@@ -97,7 +97,7 @@ void addEducationInstitution(EducationInstitution educationInstitution, Uint8Lis
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Setting ethereum address failure');
+      throw Exception('Setting Base Blochchain address failure');
     }
   }
 
