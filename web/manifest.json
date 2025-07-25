@@ -1,11 +1,11 @@
 {
-    "name": "solid_cv",
-    "short_name": "solid_cv",
+    "name": "Solid CV - Professional CV Validation",
+    "short_name": "Solid CV",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#7B3FE4",
+    "theme_color": "#7B3FE4",
+    "description": "Professional CV validation and verification platform using blockchain technology.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
