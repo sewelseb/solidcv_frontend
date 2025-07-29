@@ -84,8 +84,8 @@ class _HomeRouteState extends State<HomeRoute> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: screenHeight < 700 ? 700 : screenHeight,
+            Container(
+              height: isMobile ? (screenHeight < 600 ? 600 : screenHeight * 0.9) : (screenHeight < 700 ? 700 : screenHeight),
               width: double.infinity,
               child: isMobile
                   ? _buildMobileLayout(screenWidth, screenHeight)
@@ -103,38 +103,52 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Widget _buildMobileLayout(double screenWidth, double screenHeight) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            'lib/assets/hero_image.png',
-            width: double.infinity,
-            height: screenHeight * (screenWidth < 400 ? 0.40 : 0.45),
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 32,
-            ),
-            child: _LoginForm(
-              isMobile: true,
-              obscurePassword: _obscurePassword,
-              onTogglePassword: () {
-                setState(() => _obscurePassword = !_obscurePassword);
-              },
-              emailController: _emailController,
-              passwordController: _passwordController,
-              emailFocusNode: _emailFocusNode,
-              passwordFocusNode: _passwordFocusNode,
-              onLoginPressed: _handleLogin,
-            ),
-          ),
-        ],
+  final availableHeight = screenHeight < 600 ? 600 : screenHeight * 0.9;
+  final imageHeight = availableHeight * 0.35; // Reduced from 0.4 to give more space to form
+  final formHeight = availableHeight * 0.65; // Increased from 0.6
+  
+  return Column(
+    children: [
+      Container(
+        height: imageHeight,
+        width: double.infinity,
+        child: Image.asset(
+          'lib/assets/hero_image.png',
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
       ),
-    );
-  }
+      Container(
+        height: formHeight,
+        child: SingleChildScrollView( // Added scrollability back for safety
+          child: Container(
+            constraints: BoxConstraints(
+              minHeight: formHeight - 40, // Ensure minimum height but allow overflow
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20, // Reduced padding
+            ),
+            child: Center(
+              child: _LoginForm(
+                isMobile: true,
+                obscurePassword: _obscurePassword,
+                onTogglePassword: () {
+                  setState(() => _obscurePassword = !_obscurePassword);
+                },
+                emailController: _emailController,
+                passwordController: _passwordController,
+                emailFocusNode: _emailFocusNode,
+                passwordFocusNode: _passwordFocusNode,
+                onLoginPressed: _handleLogin,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
 
   Widget _buildDesktopOrTabletLayout(
       double screenWidth, double screenHeight, bool isTablet) {
@@ -143,15 +157,16 @@ class _HomeRouteState extends State<HomeRoute> {
         Expanded(
           flex: isTablet ? 5 : 2,
           child: Center(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.03,
-                0,
-                screenWidth > 1200 ? 80 : 40,
-                0,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: isTablet ? 400 : 420,
+                maxHeight: screenHeight * 0.8,
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: isTablet ? 400 : 420),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.03,
+                  vertical: 20,
+                ),
                 child: _LoginForm(
                   isMobile: false,
                   obscurePassword: _obscurePassword,
@@ -171,7 +186,7 @@ class _HomeRouteState extends State<HomeRoute> {
         Expanded(
           flex: isTablet ? 5 : 3,
           child: Container(
-            height: screenHeight,
+            height: double.infinity,
             alignment: Alignment.center,
             color: Colors.white,
             child: Image.asset(
@@ -338,18 +353,21 @@ class AboutUsSection extends StatelessWidget {
     return Container(
       color: const Color(0xFFF9F6FC),
       padding:
-          EdgeInsets.symmetric(vertical: 64, horizontal: isMobile ? 16 : 24),
+          EdgeInsets.symmetric(
+            vertical: isMobile ? 48 : 64, 
+            horizontal: isMobile ? 16 : 24
+          ),
       child: Column(
         children: [
-          const Text(
+          Text(
             "Discover SolidCV",
             style: TextStyle(
-                fontSize: 32,
+                fontSize: isMobile ? 26 : 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: isMobile ? 32 : 48),
           _AboutUsBlock(
             imagePath: 'lib/assets/section1.png',
             title: 'Reinventing Trust in Recruitment',
@@ -358,9 +376,9 @@ class AboutUsSection extends StatelessWidget {
             reverse: false,
             isMobile: isMobile,
           ),
-          const SizedBox(height: 64),
+          SizedBox(height: isMobile ? 48 : 64),
           const _SectionDivider(),
-          const SizedBox(height: 64),
+          SizedBox(height: isMobile ? 48 : 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section2.png',
             title: 'The Blockchain Revolution Serving Your Diplomas',
@@ -369,9 +387,9 @@ class AboutUsSection extends StatelessWidget {
             reverse: true,
             isMobile: isMobile,
           ),
-          const SizedBox(height: 64),
+          SizedBox(height: isMobile ? 48 : 64),
           const _SectionDivider(),
-          const SizedBox(height: 64),
+          SizedBox(height: isMobile ? 48 : 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section3.png',
             title: 'A Virtuous Ecosystem for All Stakeholders',
@@ -414,10 +432,15 @@ class _AboutUsBlock extends StatelessWidget {
       imageMaxWidth = screenWidth * 0.6;
     }
 
-    Widget imageWidget = Image.asset(
-      imagePath,
-      fit: BoxFit.contain,
-      width: imageMaxWidth,
+    Widget imageWidget = ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: imageMaxWidth,
+        maxHeight: 300,
+      ),
+      child: Image.asset(
+        imagePath,
+        fit: BoxFit.contain,
+      ),
     );
 
     Widget textWidget = Container(
@@ -469,22 +492,20 @@ class _AboutUsBlock extends StatelessWidget {
           ? [textWidget, const SizedBox(width: 40), imageWidget]
           : [imageWidget, const SizedBox(width: 40), textWidget];
 
-      return Padding(
+      return Container(
         padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 16),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children.map((child) {
-                return Flexible(
-                  flex: 1,
-                  fit: FlexFit.loose,
-                  child: child,
-                );
-              }).toList(),
-            );
-          },
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children.map((child) {
+              return Flexible(
+                flex: 1,
+                fit: FlexFit.loose,
+                child: child,
+              );
+            }).toList(),
+          ),
         ),
       );
     }
@@ -492,7 +513,7 @@ class _AboutUsBlock extends StatelessWidget {
 }
 
 class _SectionDivider extends StatelessWidget {
-  const _SectionDivider({super.key});
+  const _SectionDivider();
 
   @override
   Widget build(BuildContext context) {
@@ -521,46 +542,74 @@ class TargetAudienceSection extends StatelessWidget {
     return Container(
       color: Colors.white,
       padding:
-          EdgeInsets.symmetric(vertical: 64, horizontal: isMobile ? 16 : 32),
-      child: const Column(
+          EdgeInsets.symmetric(
+            vertical: isMobile ? 48 : 64, 
+            horizontal: isMobile ? 16 : 32
+          ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             "Who is SolidCV for?",
             style: TextStyle(
-                fontSize: 28,
+                fontSize: isMobile ? 24 : 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 48),
-          Wrap(
-            spacing: 24,
-            runSpacing: 32,
-            alignment: WrapAlignment.center,
-            children: [
-              _TargetCard(
-                title: "For All Professionals",
-                description:
-                    "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
-                imagePath: 'lib/assets/user.png',
+          SizedBox(height: isMobile ? 32 : 48),
+          isMobile 
+            ? Column(
+                children: const [
+                  _TargetCard(
+                    title: "For All Professionals",
+                    description:
+                        "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
+                    imagePath: 'lib/assets/user.png',
+                  ),
+                  SizedBox(height: 32),
+                  _TargetCard(
+                    title: "For Companies",
+                    description:
+                        "Recruit more efficiently with verified CVs, reducing time and verification costs.",
+                    imagePath: 'lib/assets/company.png',
+                  ),
+                  SizedBox(height: 32),
+                  _TargetCard(
+                    title: "For Educational Institutions",
+                    description:
+                        "Offer your students tamper-proof, shareable digital certifications.",
+                    imagePath: 'lib/assets/institution.png',
+                  ),
+                ],
+              )
+            : const Wrap(
+                spacing: 24,
+                runSpacing: 32,
+                alignment: WrapAlignment.center,
+                children: [
+                  _TargetCard(
+                    title: "For All Professionals",
+                    description:
+                        "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
+                    imagePath: 'lib/assets/user.png',
+                  ),
+                  _TargetCard(
+                    title: "For Companies",
+                    description:
+                        "Recruit more efficiently with verified CVs, reducing time and verification costs.",
+                    imagePath: 'lib/assets/company.png',
+                  ),
+                  _TargetCard(
+                    title: "For Educational Institutions",
+                    description:
+                        "Offer your students tamper-proof, shareable digital certifications.",
+                    imagePath: 'lib/assets/institution.png',
+                  ),
+                ],
               ),
-              _TargetCard(
-                title: "For Companies",
-                description:
-                    "Recruit more efficiently with verified CVs, reducing time and verification costs.",
-                imagePath: 'lib/assets/company.png',
-              ),
-              _TargetCard(
-                title: "For Educational Institutions",
-                description:
-                    "Offer your students tamper-proof, shareable digital certifications.",
-                imagePath: 'lib/assets/institution.png',
-              ),
-            ],
-          ),
-          SizedBox(height: 64),
-          _SectionDivider(),
+          SizedBox(height: isMobile ? 48 : 64),
+          const _SectionDivider(),
         ],
       ),
     );
@@ -580,18 +629,30 @@ class _TargetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 280,
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
+    return Container(
+      width: isMobile ? double.infinity : 280,
+      constraints: BoxConstraints(
+        maxWidth: isMobile ? MediaQuery.of(context).size.width - 32 : 280,
+      ),
       child: Column(
         children: [
-          Image.asset(imagePath, height: 160),
-          const SizedBox(height: 16),
+          Image.asset(imagePath, height: isMobile ? 140 : 160),
+          SizedBox(height: isMobile ? 12 : 16),
           Text(title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                fontWeight: FontWeight.bold, 
+                fontSize: isMobile ? 16 : 18
+              ),
               textAlign: TextAlign.center),
-          const SizedBox(height: 12),
+          SizedBox(height: isMobile ? 8 : 12),
           Text(description,
-              style: const TextStyle(fontSize: 14, color: Colors.black54),
+              style: TextStyle(
+                fontSize: isMobile ? 13 : 14, 
+                color: Colors.black54,
+                height: 1.4
+              ),
               textAlign: TextAlign.center),
         ],
       ),
@@ -610,55 +671,91 @@ class PricingSection extends StatelessWidget {
       color: Colors.white,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(
-        vertical: 34,
+        vertical: isMobile ? 24 : 34,
         horizontal: isMobile ? 16 : 32,
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             "Our Flexible Offers",
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: isMobile ? 24 : 28, 
+              fontWeight: FontWeight.bold
+            ),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 48),
+          SizedBox(height: isMobile ? 32 : 48),
           Center(
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 24,
-              runSpacing: 32,
-              children: [
-                _UnifiedPricingCard(
-                  title: "User",
-                  freeFeatures: ["Create and share your CV"],
-                  paidFeatures: [
-                    "Statistics on your CV views and attention points",
-                    "Premium CV templates",
+            child: isMobile 
+              ? Column(
+                  children: const [
+                    _UnifiedPricingCard(
+                      title: "User",
+                      freeFeatures: ["Create and share your CV"],
+                      paidFeatures: [
+                        "Statistics on your CV views and attention points",
+                        "Premium CV templates",
+                      ],
+                      price: "4,99€",
+                    ),
+                    SizedBox(height: 24),
+                    _UnifiedPricingCard(
+                      title: "Institution",
+                      freeFeatures: ["Issue credentials to users"],
+                      paidFeatures: [
+                        "Advanced statistics on certification usage",
+                      ],
+                      price: "4,99€",
+                    ),
+                    SizedBox(height: 24),
+                    _UnifiedPricingCard(
+                      title: "Company",
+                      freeFeatures: [
+                        "Issue credentials to users",
+                        "Verify CVs",
+                      ],
+                      paidFeatures: [],
+                      price: "4,99€ / 49,99€",
+                    ),
                   ],
-                  price: "4,99€",
-                ),
-                _UnifiedPricingCard(
-                  title: "Institution",
-                  freeFeatures: ["Issue credentials to users"],
-                  paidFeatures: [
-                    "Advanced statistics on certification usage",
+                )
+              : const Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 24,
+                  runSpacing: 32,
+                  children: [
+                    _UnifiedPricingCard(
+                      title: "User",
+                      freeFeatures: ["Create and share your CV"],
+                      paidFeatures: [
+                        "Statistics on your CV views and attention points",
+                        "Premium CV templates",
+                      ],
+                      price: "4,99€",
+                    ),
+                    _UnifiedPricingCard(
+                      title: "Institution",
+                      freeFeatures: ["Issue credentials to users"],
+                      paidFeatures: [
+                        "Advanced statistics on certification usage",
+                      ],
+                      price: "4,99€",
+                    ),
+                    _UnifiedPricingCard(
+                      title: "Company",
+                      freeFeatures: [
+                        "Issue credentials to users",
+                        "Verify CVs",
+                      ],
+                      paidFeatures: [],
+                      price: "4,99€ / 49,99€",
+                    ),
                   ],
-                  price: "4,99€",
                 ),
-                _UnifiedPricingCard(
-                  title: "Company",
-                  freeFeatures: [
-                    "Issue credentials to users",
-                    "Verify CVs",
-                  ],
-                  paidFeatures: [],
-                  price: "4,99€ / 49,99€",
-                ),
-              ],
-            ),
           ),
-          SizedBox(height: 64),
-          _SectionDivider(),
+          SizedBox(height: isMobile ? 48 : 64),
+          const _SectionDivider(),
         ],
       ),
     );
@@ -683,12 +780,14 @@ class _UnifiedPricingCard extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 768;
     final isCompany = title.toLowerCase() == "company";
 
-    return SizedBox(
-      width: isMobile ? double.infinity : 340,
-      height: 540,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: isMobile ? 400 : 540,
+        maxWidth: isMobile ? double.infinity : 340,
+      ),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
-        alignment: Alignment.topCenter,
+        width: isMobile ? double.infinity : 340,
+        padding: EdgeInsets.all(isMobile ? 20 : 24),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -704,89 +803,75 @@ class _UnifiedPricingCard extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(title,
-                style: const TextStyle(
-                    fontSize: 22,
+                style: TextStyle(
+                    fontSize: isMobile ? 20 : 22,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87)),
-            const SizedBox(height: 12),
-            const Text("Included for free",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            ...freeFeatures.map((f) => _featureRow(f, isFree: true)),
-            const SizedBox(height: 16),
+            SizedBox(height: isMobile ? 8 : 12),
+            Text("Included for free",
+                style: TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
+            SizedBox(height: isMobile ? 6 : 8),
+            ...freeFeatures.map((f) => _featureRow(f, isFree: true, isMobile: isMobile)),
+            SizedBox(height: isMobile ? 12 : 16),
             if (!isCompany)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Premium features – $price",
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 8),
-                  ...paidFeatures.map((f) => _featureRow(f, isFree: false)),
+                      style: TextStyle(
+                          fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
+                  SizedBox(height: isMobile ? 6 : 8),
+                  ...paidFeatures.map((f) => _featureRow(f, isFree: false, isMobile: isMobile)),
                 ],
               ),
             if (isCompany)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Premium features – 4,99€",
+                  Text("Premium features – 4,99€",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 8),
+                          TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
+                  SizedBox(height: isMobile ? 6 : 8),
                   _featureRow("Advanced statistics on credential usage",
-                      isFree: false),
-                  const SizedBox(height: 16),
-                  const Text("Premium features – 49,99€",
+                      isFree: false, isMobile: isMobile),
+                  SizedBox(height: isMobile ? 12 : 16),
+                  Text("Premium features – 49,99€",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 8),
+                          TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
+                  SizedBox(height: isMobile ? 6 : 8),
                   _featureRow("AI-generated feedback on employee profiles",
-                      isFree: false),
+                      isFree: false, isMobile: isMobile),
                 ],
               ),
-            const Spacer(),
-            // Center(
-            //   child: ElevatedButton(
-            //     onPressed: () {},
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: const Color(0xFF7B3FE4),
-            //       foregroundColor: Colors.white,
-            //       padding:
-            //           const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(12),
-            //       ),
-            //     ),
-            //     child: const Text("Choose this offer",
-            //         style: TextStyle(fontSize: 15)),
-            //   ),
-            // ),
-            const SizedBox(height: 16),
+            SizedBox(height: isMobile ? 12 : 16),
           ],
         ),
       ),
     );
   }
 
-  static Widget _featureRow(String text, {required bool isFree}) {
+  static Widget _featureRow(String text, {required bool isFree, bool isMobile = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(vertical: isMobile ? 3 : 4),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             isFree ? Icons.check_circle_outline : Icons.star_border,
-            size: 20,
+            size: isMobile ? 18 : 20,
             color: isFree ? Colors.green : const Color(0xFF7B3FE4),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: isMobile ? 6 : 8),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                  fontSize: 14,
-                  color: isFree ? Colors.black87 : Colors.black54),
+                  fontSize: isMobile ? 13 : 14,
+                  color: isFree ? Colors.black87 : Colors.black54,
+                  height: 1.3),
             ),
           ),
         ],
@@ -827,11 +912,16 @@ class ContactUsSection extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 16),
+          padding: EdgeInsets.symmetric(
+            vertical: isMobile ? 60 : 80, 
+            horizontal: 16
+          ),
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 1000),
-              padding: const EdgeInsets.all(32),
+              constraints: BoxConstraints(
+                maxWidth: isMobile ? MediaQuery.of(context).size.width - 32 : 1000
+              ),
+              padding: EdgeInsets.all(isMobile ? 24 : 32),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -846,8 +936,8 @@ class ContactUsSection extends StatelessWidget {
               child: isMobile
                   ? Column(
                       children: [
-                        Image.asset('lib/assets/contact.png', height: 180),
-                        const SizedBox(height: 24),
+                        Image.asset('lib/assets/contact.png', height: 140),
+                        const SizedBox(height: 20),
                         const _ContactForm(),
                       ],
                     )
@@ -876,26 +966,28 @@ class _ContactForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Contact Us",
           style: TextStyle(
-            fontSize: 28,
+            fontSize: isMobile ? 24 : 28,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
-        SizedBox(height: 16),
+        SizedBox(height: isMobile ? 12 : 16),
         Text(
           "sebastien.debeauffort@outlook.com",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: isMobile ? 16 : 18,
             color: Colors.black54,
           ),
         ),
-        SizedBox(height: 24),
+        SizedBox(height: isMobile ? 16 : 24),
 
         // _buildTextField(label: "Full Name"),
         // const SizedBox(height: 16),
