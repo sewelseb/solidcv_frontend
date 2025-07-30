@@ -55,7 +55,7 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
         padding: const EdgeInsets.all(16.0),
         child: UserSearchList(
           cardTitle: "Search a user to add as employee",
-          cardSubtitle: "Click a user to add them to your company",
+          cardSubtitle: "Click on a user to add to your company",
           onSearch: (term) => _userBLL.searchUsers(SearchTherms(term: term)),
           onUserTap: (user) {
             Navigator.push(

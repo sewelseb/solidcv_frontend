@@ -35,6 +35,8 @@ class UserBll extends IUserBLL {
 
   @override
   Future<List<User>> searchUsers(SearchTherms searchTherms) {
+    if (searchTherms.term == null  || searchTherms.term!.isEmpty) return Future.value([]);
+
     return _userService.searchUsers(searchTherms);
   }
 
