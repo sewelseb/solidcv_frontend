@@ -143,4 +143,9 @@ class UserBll extends IUserBLL {
   void deleteManualExperience(int manualExperienceId) {
     return _userService.deleteManualExperience(manualExperienceId);
   }
+  
+  @override
+  void deleteManualyAddedCertificate(int manualExperienceId) {
+    return _userService.deleteManualyAddedCertificate(manualExperienceId);
+  }
 }

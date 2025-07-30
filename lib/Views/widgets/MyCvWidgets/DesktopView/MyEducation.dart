@@ -100,6 +100,11 @@ class _MyEducationState extends State<MyEducation> {
                   .map((c) => EducationCard(
                         certificate: c.cert,
                         isValidated: c.isBlockchain,
+                        onCertificateDeleted: () {
+                          setState(() {
+                            _allCertificates = _loadAllCertificates();
+                          });
+                        },
                       ))
                   .toList(),
             );

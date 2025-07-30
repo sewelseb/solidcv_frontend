@@ -2,21 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 
-class EducationMobileCard extends StatelessWidget {
+class EducationMobileCard extends StatefulWidget {
   final Certificate certificate;
   final bool isValidated;
+  final VoidCallback? onCertificateDeleted; // Add this callback
 
   const EducationMobileCard({
     Key? key,
     required this.certificate,
     required this.isValidated,
+    this.onCertificateDeleted, // Add this parameter
   }) : super(key: key);
 
   @override
+  State<EducationMobileCard> createState() => _EducationMobileCardState();
+}
+
+class _EducationMobileCardState extends State<EducationMobileCard> {
+  final IUserBLL _userBLL = UserBll();
+
+  @override
   Widget build(BuildContext context) {
-    final Color badgeColor = isValidated ? Colors.green : Colors.deepPurple;
-    final String badgeLabel = isValidated ? 'Verified' : 'Manually';
+    final Color badgeColor = widget.isValidated ? Colors.green : Colors.deepPurple;
+    final String badgeLabel = widget.isValidated ? 'Verified by the Blockchain' : 'Manually added';
 
     return Container(
       width: double.infinity,
@@ -36,7 +47,7 @@ class EducationMobileCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  isValidated ? Icons.verified : Icons.edit,
+                  widget.isValidated ? Icons.verified : Icons.edit,
                   size: 14,
                   color: Colors.white,
                 ),
@@ -64,7 +75,7 @@ class EducationMobileCard extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                      certificate.logoUrl ??
+                      widget.certificate.logoUrl ??
                           '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
                     ),
                   ),
@@ -76,25 +87,25 @@ class EducationMobileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      certificate.title ?? 'Untitled',
+                      widget.certificate.title ?? 'Untitled',
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      certificate.type ?? 'Certificate',
+                      widget.certificate.type ?? 'Certificate',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
-                    if (certificate.publicationDate != null)
+                    if (widget.certificate.publicationDate != null)
                       Text(
-                        'Date: ${FormatDate().formatDateForCertificate(certificate.publicationDate!)}',
+                        'Date: ${FormatDate().formatDateForCertificate(widget.certificate.publicationDate!)}',
                         style:
                             const TextStyle(fontSize: 13, color: Colors.grey),
                       ),
                     const SizedBox(height: 4),
-                    if (certificate.teachingInstitutionName != null)
+                    if (widget.certificate.teachingInstitutionName != null)
                       Row(
                         children: [
                           const Icon(Icons.school,
@@ -102,7 +113,7 @@ class EducationMobileCard extends StatelessWidget {
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
-                              certificate.teachingInstitutionName!,
+                              widget.certificate.teachingInstitutionName!,
                               style: const TextStyle(
                                   fontSize: 13, color: Colors.grey),
                               overflow: TextOverflow.ellipsis,
@@ -115,26 +126,26 @@ class EducationMobileCard extends StatelessWidget {
               ),
             ],
           ),
-          if (certificate.description != null &&
-              certificate.description!.isNotEmpty) ...[
+          if (widget.certificate.description != null &&
+              widget.certificate.description!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
-              certificate.description!,
+              widget.certificate.description!,
               style: const TextStyle(fontSize: 14.5, color: Colors.black87),
             ),
           ],
-          if (certificate.curriculum != null &&
-              certificate.curriculum!.isNotEmpty) ...[
+          if (widget.certificate.curriculum != null &&
+              widget.certificate.curriculum!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
-              'Curriculum: ${certificate.curriculum!}',
+              'Curriculum: ${widget.certificate.curriculum!}',
               style: const TextStyle(fontSize: 13.5, color: Colors.black87),
             ),
           ],
-          if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
+          if (widget.certificate.grade != null && widget.certificate.grade!.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              'Grade: ${certificate.grade!}',
+              'Grade: ${widget.certificate.grade!}',
               style: const TextStyle(
                 fontSize: 13,
                 fontStyle: FontStyle.italic,
@@ -142,8 +153,60 @@ class EducationMobileCard extends StatelessWidget {
               ),
             ),
           ],
+          if (!widget.isValidated)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(
+                    onPressed: () =>
+                        _showDeleteConfirmationDialog(context, int.parse(widget.certificate.id!)),
+                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, int manualExperienceId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this certificate? This action is irreversible.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  _userBLL.deleteManualyAddedCertificate(manualExperienceId);
+                  Navigator.of(context).pop();
+                  
+                  widget.onCertificateDeleted!();
+
+                } catch (e) {
+                  Navigator.of(context).pop();
+                  // Show error message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error deleting certificate: $e')),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -155,5 +218,4 @@ class EducationMobileCard extends StatelessWidget {
           width: 1.4,
         ),
       );
-
 }

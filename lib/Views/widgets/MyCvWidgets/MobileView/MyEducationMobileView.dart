@@ -100,6 +100,11 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
                   .map((c) => EducationMobileCard(
                         certificate: c.cert,
                         isValidated: c.isBlockchain,
+                         onCertificateDeleted: () {
+                          setState(() {
+                            _allCertificates = _loadAllCertificates();
+                          });
+                        },
                       ))
                   .toList(),
             );

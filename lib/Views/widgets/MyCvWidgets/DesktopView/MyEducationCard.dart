@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 
-class EducationCard extends StatelessWidget {
+class EducationCard extends StatefulWidget {
   final Certificate certificate;
   final bool isValidated;
+  final VoidCallback? onCertificateDeleted; // Add this callback
 
   const EducationCard({
     Key? key,
     required this.certificate,
     required this.isValidated,
+    this.onCertificateDeleted, // Add this parameter
   }) : super(key: key);
 
   @override
+  State<EducationCard> createState() => _EducationCardState();
+}
+
+class _EducationCardState extends State<EducationCard> {
+  final IUserBLL _userBLL = UserBll();
+
+  @override
   Widget build(BuildContext context) {
-    final Color badgeColor = isValidated ? Colors.green : Colors.deepPurple;
+    final Color badgeColor = widget.isValidated ? Colors.green : Colors.deepPurple;
     final String badgeLabel =
-        isValidated ? 'Verified by the blockchain' : 'Manually added';
+        widget.isValidated ? 'Verified by the blockchain' : 'Manually added';
 
     return Container(
       width: double.infinity,
@@ -46,7 +57,7 @@ class EducationCard extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          certificate.logoUrl ??
+                          widget.certificate.logoUrl ??
                               '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
                         ),
                       ),
@@ -64,7 +75,7 @@ class EducationCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    certificate.title ?? 'Untitled',
+                                    widget.certificate.title ?? 'Untitled',
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
@@ -72,21 +83,21 @@ class EducationCard extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    certificate.type ?? 'Certificate',
+                                    widget.certificate.type ?? 'Certificate',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  if (certificate.publicationDate != null)
+                                  if (widget.certificate.publicationDate != null)
                                     Text(
-                                      'Date: ${FormatDate().formatDateForCertificate(certificate.publicationDate!)}',
+                                      'Date: ${FormatDate().formatDateForCertificate(widget.certificate.publicationDate!)}',
                                       style: const TextStyle(
                                           fontSize: 13, color: Colors.grey),
                                     ),
                                   const SizedBox(height: 4),
-                                  if (certificate.teachingInstitutionName !=
+                                  if (widget.certificate.teachingInstitutionName !=
                                       null)
                                     Row(
                                       children: [
@@ -95,7 +106,7 @@ class EducationCard extends StatelessWidget {
                                         const SizedBox(width: 4),
                                         Flexible(
                                           child: Text(
-                                            certificate.teachingInstitutionName!,
+                                            widget.certificate.teachingInstitutionName!,
                                             style: const TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.grey),
@@ -119,28 +130,28 @@ class EducationCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (certificate.description != null &&
-                  certificate.description!.isNotEmpty) ...[
+              if (widget.certificate.description != null &&
+                  widget.certificate.description!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  certificate.description!,
+                  widget.certificate.description!,
                   style:
                       const TextStyle(fontSize: 14.5, color: Colors.black87),
                 ),
               ],
-              if (certificate.curriculum != null &&
-                  certificate.curriculum!.isNotEmpty) ...[
+              if (widget.certificate.curriculum != null &&
+                  widget.certificate.curriculum!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'Curriculum: ${certificate.curriculum!}',
+                  'Curriculum: ${widget.certificate.curriculum!}',
                   style:
                       const TextStyle(fontSize: 13.5, color: Colors.black87),
                 ),
               ],
-              if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
+              if (widget.certificate.grade != null && widget.certificate.grade!.isNotEmpty) ...[
                 const SizedBox(height: 6),
                 Text(
-                  'Grade: ${certificate.grade!}',
+                  'Grade: ${widget.certificate.grade!}',
                   style: const TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
@@ -148,6 +159,21 @@ class EducationCard extends StatelessWidget {
                   ),
                 ),
               ],
+              if (!widget.isValidated)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () =>
+                          _showDeleteConfirmationDialog(context, int.parse(widget.certificate.id!)),
+                      style: TextButton.styleFrom(foregroundColor: Colors.red),
+                      child: const Text('Delete'),
+                    )
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -185,4 +211,33 @@ class EducationCard extends StatelessWidget {
     );
   }
 
+  void _showDeleteConfirmationDialog(BuildContext context, int manualExperienceId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this certificate? This action is irreversible.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                _userBLL.deleteManualyAddedCertificate(manualExperienceId);
+                Navigator.of(context).pop();
+                // Trigger parent refresh
+                if (widget.onCertificateDeleted != null) {
+                  widget.onCertificateDeleted!();
+                }
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

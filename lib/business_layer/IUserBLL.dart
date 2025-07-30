@@ -55,4 +55,6 @@ abstract class IUserBLL {
 
   void deleteManualExperience(int manualExperienceId);
 
+  void deleteManualyAddedCertificate(int manualExperienceId);
+
 }

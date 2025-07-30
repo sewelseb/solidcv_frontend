@@ -57,5 +57,7 @@ abstract class IUserService {
 
   void deleteManualExperience(int manualExperienceId);
 
+  void deleteManualyAddedCertificate(int manualExperienceId);
+
 
 }

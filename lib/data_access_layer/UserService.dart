@@ -286,6 +286,22 @@ class UserService extends IUserService {
     }
   }
 
+  @override
+  void deleteManualyAddedCertificate(int manualExperienceId) async {
+    final response = await http.delete(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().deleteManualyAddedCertificate + manualExperienceId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Deleting manually added certificate failure');
+    }
+  }
+
     @override
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) async {
     var response = await http.get(
