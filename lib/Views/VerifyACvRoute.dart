@@ -21,7 +21,7 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
   @override
   void initState() {
     super.initState();
-    _usersFromSearch = _userBLL.searchUsers(SearchTherms(term: ""));
+    _usersFromSearch = Future.value([]);
   }
 
   void _search() {
