@@ -52,19 +52,27 @@ class _MyCvMobileState extends State<MyCvMobile> {
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
 
     final user = await _userFuture;
-    if (user.ethereumAddress == null) {
-      return [];
-    }
+
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
         DateTime.now().difference(_lastFetchTime!) < _cacheTimeout) {
       return _cachedExperiences!;
     }
 
-    final results = await Future.wait([
-      _blockchainWalletBll.getEventsForCurrentUser(),
-      _userBLL.getMyManuallyAddedExperiences(),
-    ]);
+    List<dynamic> results;
+
+    if (user.ethereumAddress == null) {
+      results = await Future.wait([
+        Future.value(<CleanExperience>[]),
+        _userBLL.getMyManuallyAddedExperiences(),
+      ]);
+    }
+    else {
+      results = await Future.wait([
+        _blockchainWalletBll.getEventsForCurrentUser(),
+        _userBLL.getMyManuallyAddedExperiences(),
+      ]);
+    }
 
     final cleanExperienceList = results[0] as List<CleanExperience>;
     final manualExperienceList = results[1] as List<ManualExperience>;

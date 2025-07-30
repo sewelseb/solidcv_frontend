@@ -55,9 +55,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
     final user = await _userFuture;
-    if (user.ethereumAddress == null) {
-      return [];
-    }
+    
 
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
@@ -65,10 +63,21 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       return _cachedExperiences!;
     }
 
-    final results = await Future.wait([
-      _blockchainWalletBll.getEventsForCurrentUser(),
-      _userBLL.getMyManuallyAddedExperiences(),
-    ]);
+    List<dynamic> results;
+
+    if (user.ethereumAddress == null) {
+      results = await Future.wait([
+        Future.value(<CleanExperience>[]),
+        _userBLL.getMyManuallyAddedExperiences(),
+      ]);
+    }
+    else {
+      results = await Future.wait([
+        _blockchainWalletBll.getEventsForCurrentUser(),
+        _userBLL.getMyManuallyAddedExperiences(),
+      ]);
+    }
+    
 
     final cleanExperienceList = results[0] as List<CleanExperience>;
     final manualExperienceList = results[1] as List<ManualExperience>;
@@ -368,7 +377,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else if (snapshot.hasError) {
-              return Text("Error: \${snapshot.error}");
+              return Text("Error: ${snapshot.error}");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return Column(
                 children: snapshot.data!

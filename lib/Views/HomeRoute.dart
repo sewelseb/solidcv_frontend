@@ -104,44 +104,41 @@ class _HomeRouteState extends State<HomeRoute> {
 
   Widget _buildMobileLayout(double screenWidth, double screenHeight) {
   final availableHeight = screenHeight < 600 ? 600 : screenHeight * 0.9;
-  final imageHeight = availableHeight * 0.35; // Reduced from 0.4 to give more space to form
-  final formHeight = availableHeight * 0.65; // Increased from 0.6
   
   return Column(
     children: [
-      Container(
-        height: imageHeight,
-        width: double.infinity,
-        child: Image.asset(
-          'lib/assets/hero_image.png',
+      // Image section - flexible height
+      Expanded(
+        flex: 4, // 40% of available space
+        child: Container(
           width: double.infinity,
-          fit: BoxFit.cover,
+          child: Image.asset(
+            'lib/assets/hero_image.png',
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
-      Container(
-        height: formHeight,
-        child: SingleChildScrollView( // Added scrollability back for safety
-          child: Container(
-            constraints: BoxConstraints(
-              minHeight: formHeight - 40, // Ensure minimum height but allow overflow
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20, // Reduced padding
-            ),
-            child: Center(
-              child: _LoginForm(
-                isMobile: true,
-                obscurePassword: _obscurePassword,
-                onTogglePassword: () {
-                  setState(() => _obscurePassword = !_obscurePassword);
-                },
-                emailController: _emailController,
-                passwordController: _passwordController,
-                emailFocusNode: _emailFocusNode,
-                passwordFocusNode: _passwordFocusNode,
-                onLoginPressed: _handleLogin,
-              ),
+      // Form section - flexible height
+      Expanded(
+        flex: 6, // 60% of available space
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16, // Reduced padding
+          ),
+          child: Center(
+            child: _LoginForm(
+              isMobile: true,
+              obscurePassword: _obscurePassword,
+              onTogglePassword: () {
+                setState(() => _obscurePassword = !_obscurePassword);
+              },
+              emailController: _emailController,
+              passwordController: _passwordController,
+              emailFocusNode: _emailFocusNode,
+              passwordFocusNode: _passwordFocusNode,
+              onLoginPressed: _handleLogin,
             ),
           ),
         ),
@@ -226,14 +223,14 @@ class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(
-      fontSize: isMobile ? 26 : 30,
+      fontSize: isMobile ? 22 : 30, // Slightly smaller on mobile
       fontWeight: FontWeight.bold,
       color: Colors.black87,
     );
     final subtitleStyle = TextStyle(
-      fontSize: isMobile ? 15 : 16,
+      fontSize: isMobile ? 13 : 16, // Smaller on mobile
       color: Colors.black54,
-      height: 1.5,
+      height: 1.3, // Tighter line height
     );
 
     return Column(
@@ -244,11 +241,11 @@ class _LoginForm extends StatelessWidget {
         Text("Welcome to SolidCV",
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
-        const SizedBox(height: 8),
+        SizedBox(height: isMobile ? 4 : 8), // Reduced spacing
         Text("Sign in to manage your verified credentials.",
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
-        const SizedBox(height: 32),
+        SizedBox(height: isMobile ? 20 : 32), // Reduced spacing
         TextField(
           controller: emailController,
           focusNode: emailFocusNode,
@@ -263,10 +260,14 @@ class _LoginForm extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             prefixIcon: const Icon(Icons.email_outlined),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: isMobile ? 10 : 16, // Reduced mobile padding
+            ),
           ),
           keyboardType: TextInputType.emailAddress,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: isMobile ? 10 : 16), // Reduced spacing
         TextField(
           controller: passwordController,
           focusNode: passwordFocusNode,
@@ -285,9 +286,13 @@ class _LoginForm extends StatelessWidget {
                   obscurePassword ? Icons.visibility : Icons.visibility_off),
               onPressed: onTogglePassword,
             ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: isMobile ? 10 : 16, // Reduced mobile padding
+            ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: isMobile ? 6 : 12), // Reduced spacing
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
@@ -295,16 +300,16 @@ class _LoginForm extends StatelessWidget {
               Navigator.pushNamed(context, '/forgot-password');
             },
             child: const Text("Forgot password?",
-                style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 14)),
+                style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 13)), // Smaller text
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: isMobile ? 12 : 24), // Reduced spacing
         ElevatedButton(
           onPressed: onLoginPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF7B3FE4),
-            minimumSize: const Size(double.infinity, 50),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            minimumSize: Size(double.infinity, isMobile ? 44 : 50), // Slightly smaller mobile button
+            padding: EdgeInsets.symmetric(vertical: isMobile ? 10 : 16), // Reduced mobile padding
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             textStyle:
@@ -312,12 +317,12 @@ class _LoginForm extends StatelessWidget {
           ),
           child: const Text("Sign in", style: TextStyle(color: Colors.white)),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: isMobile ? 12 : 24), // Reduced spacing
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Don't have an account?",
-                style: TextStyle(fontSize: 14, color: Colors.black54)),
+                style: TextStyle(fontSize: 13, color: Colors.black54)), // Smaller text
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/register');
@@ -327,13 +332,13 @@ class _LoginForm extends StatelessWidget {
                 style: TextStyle(
                   color: Color(0xFF7B3FE4),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 13, // Smaller text
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: isMobile ? 6 : 10), // Reduced spacing
         const _PrivacyPolicyLink(),
       ],
     );
@@ -1042,6 +1047,7 @@ class _BottomAngleClipper extends CustomClipper<Path> {
     path.lineTo(size.width, 0);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
+    path.close();
     return path;
   }
 
@@ -1055,25 +1061,28 @@ class _PrivacyPolicyLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
+    
     return Center(
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: () {
-          Navigator.pushNamed(
-              context, '/privacy-policy'); 
+          Navigator.pushNamed(context, '/privacy-policy');
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.privacy_tip_outlined,
-                  color: Color(0xFF7B3FE4), size: isMobile ? 20 : 22),
+              Icon(
+                Icons.privacy_tip_outlined,
+                color: const Color(0xFF7B3FE4),
+                size: isMobile ? 20 : 22,
+              ),
               const SizedBox(width: 8),
               Text(
                 "Privacy Policy",
                 style: TextStyle(
-                  color: Color(0xFF7B3FE4),
+                  color: const Color(0xFF7B3FE4),
                   fontWeight: FontWeight.w600,
                   fontSize: isMobile ? 14 : 15,
                 ),
