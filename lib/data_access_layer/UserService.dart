@@ -231,6 +231,22 @@ class UserService extends IUserService {
   }
 
   @override
+  void deleteManualExperience(int manualExperienceId) async{
+    final response = await http.delete(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().deleteManualExperience + manualExperienceId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Deleting manually added work experience failure');
+    }
+  }
+
+  @override
   void addMyCertificateManually(Certificate certificate) async {
     var response = await http.post(
       Uri.parse(BackenConnection().url +
@@ -536,4 +552,6 @@ class UserService extends IUserService {
           jsonDecode(response.body)['error'] ?? 'Failed to reset password');
     }
   }
+  
+
 }

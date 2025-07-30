@@ -137,4 +137,8 @@ class UserBll extends IUserBLL {
   Future<void> resetPassword(String token, String newPassword) {
     return _userService.resetPassword(token, newPassword);
   }
+
+  void deleteManualExperience(int manualExperienceId) {
+    return _userService.deleteManualExperience(manualExperienceId);
+  }
 }

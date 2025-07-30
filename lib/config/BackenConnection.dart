@@ -99,4 +99,6 @@ class BackenConnection {
 
   String get resetPassword => "/api/reset-password";
 
+  String get deleteManualExperience => "/api/protected/delete-manually-added-work-experience/";
+
 }

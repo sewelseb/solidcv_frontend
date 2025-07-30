@@ -53,4 +53,6 @@ abstract class IUserBLL {
 
   Future<void> resetPassword(String token, String newPassword);
 
+  void deleteManualExperience(int manualExperienceId);
+
 }

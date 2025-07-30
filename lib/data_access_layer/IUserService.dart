@@ -55,5 +55,7 @@ abstract class IUserService {
 
   Future<void> resetPassword(String token, String newPassword);
 
+  void deleteManualExperience(int manualExperienceId);
+
 
 }
