@@ -5,4 +5,6 @@ abstract class IJobOfferBll {
 
   deleteJobOffer(int jobOfferId) {}
 
+  createJobOffer(JobOffer jobOffer) {}
+
 }

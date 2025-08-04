@@ -1,29 +1,40 @@
 class JobOffer {
-  final int id;
-  final String title;
-  final String description;
-  final String company;
+  final int? id;
+  final int? companyId;
+  final String? title;
+  final String? description;
+  final String? company;
   final String location;
-  final double salary;
+  final double? salary;
 
-  var isActive;
+  bool? isActive;
 
-  var createdAt;
+  int? createdAt;
+  String? requirements;
+  String? benefits;
+  String jobType;
+  String experienceLevel;
 
   JobOffer({
     required this.id,
+    required this.companyId,
     required this.title,
     required this.description,
     required this.company,
     required this.location,
     required this.salary,
     this.isActive = true,
-    this.createdAt,
+    this.createdAt, 
+    this.requirements,
+    this.benefits,
+    required this.jobType,
+    required this.experienceLevel,
   });
 
   factory JobOffer.fromJson(Map<String, dynamic> json) {
     return JobOffer(
       id: json['id'],
+      companyId: json['companyId'],
       title: json['title'],
       description: json['description'],
       company: json['company'],
@@ -31,6 +42,10 @@ class JobOffer {
       salary: json['salary'].toDouble(),
       isActive: json['isActive'] ?? true,
       createdAt: json['createdAt'],
+      requirements: json['requirements'],
+      benefits: json['benefits'],
+      jobType: json['jobType'],
+      experienceLevel: json['experienceLevel'],
     );
   }
 
