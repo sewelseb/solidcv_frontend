@@ -484,6 +484,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
+                  _currentUserFuture = _userBll.getCurrentUser();
+                  _walletAddressController.clear();
                   _createdWallet = null;
                 });
               },
