@@ -221,7 +221,6 @@ class _MySkillsState extends State<MySkills> {
       await _userBLL.addSkill(skillName);
 
       if (mounted) {
-        // Use the main widget's setState, not the dialog's setState
         setState(() {
           _skills = _userBLL.getMySkills();
         });
