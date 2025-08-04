@@ -367,12 +367,40 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
+                                title: "Job Offres",
+                                icon: Icons.work,
+                                content: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context,
+                                              '/company/manage-job-offers',
+                                              arguments: company.id!.toString());
+                                        },
+                                        icon: const Icon(Icons.business_center),
+                                        label: const Text('Manage Job Offers'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: _primaryColor,
+                                          foregroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12)),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              _buildSectionCard(
+                                isMobile: isMobile,
                                 title: "Employees",
                                 icon: Icons.people,
                                 content: (company.ethereumAddress == null ||
                                         company.ethereumAddress!.isEmpty)
                                     ? const Padding(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding: EdgeInsets.symmetric(
                                             vertical: 8.0),
                                         child: Text(
                                           "Add your company's Base Blochchain address to manage employees.",

@@ -17,6 +17,7 @@ import 'package:solid_cv/Views/admin-views/AdminDashboardPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
+import 'package:solid_cv/Views/companyViews/ManageJobOffers.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
 import 'package:solid_cv/Views/widgets/AuthGuard.dart';
 import 'package:solid_cv/Views/widgets/EmailWidgets/EmailVerificationResultPage.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ).copyWith(
         appBarTheme: const AppBarTheme(
-        backgroundColor: const Color(0xFF7B3FE4),
+            backgroundColor: const Color(0xFF7B3FE4),
             foregroundColor: Colors.white,
             shadowColor: Colors.black,
             elevation: 5),
@@ -58,7 +59,6 @@ class MyApp extends StatelessWidget {
         '/my-educationInstitution-administration': (context) =>
             const AuthGuard(child: MyEducationInstitutionAdministration()),
         '/privacy-policy': (context) => const PrivacyPolicyPage(),
-
         '/user/edit-profile': (context) {
           final user = ModalRoute.of(context)?.settings.arguments as User;
           return AuthGuard(child: EditProfileRoute(user: user));
@@ -91,12 +91,16 @@ class MyApp extends StatelessWidget {
             const AuthGuard(child: AdminCompaniesPage()),
         '/admin/institutions': (context) =>
             const AuthGuard(child: AdminInstitutionsPage()),
+        '/company/manage-job-offers': (context) {
+          return const AuthGuard(
+            child: ManageJobOffers(),
+          );
+        },
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
-
             builder: (context) => AuthGuard(child: UserPage(userId: id)),
           );
         }
