@@ -6,7 +6,7 @@ import 'package:solid_cv/models/Skill.dart';
 
 class MySkills extends StatefulWidget {
   final VoidCallback? onSkillAdded;
-  const MySkills({Key? key,this.onSkillAdded}) : super(key: key);
+  const MySkills({Key? key, this.onSkillAdded}) : super(key: key);
 
   @override
   _MySkillsState createState() => _MySkillsState();
@@ -206,47 +206,47 @@ class _MySkillsState extends State<MySkills> {
     );
   }
 
-Future<void> _onAddSkill(
-  void Function(void Function()) setDialogState,
-  TextEditingController controller,
-  BuildContext dialogContext,
-) async {
-  String skillName = controller.text.trim();
-  if (skillName.isEmpty) {
-    setDialogState(() => true);
-    return;
-  }
+  Future<void> _onAddSkill(
+    void Function(void Function()) setDialogState,
+    TextEditingController controller,
+    BuildContext dialogContext,
+  ) async {
+    String skillName = controller.text.trim();
+    if (skillName.isEmpty) {
+      setDialogState(() => true);
+      return;
+    }
 
-  try {
-    await _userBLL.addSkill(skillName);
+    try {
+      await _userBLL.addSkill(skillName);
 
-    if (mounted) {
-      // Use the main widget's setState, not the dialog's setState
-      super.setState(() {
-        _skills = _userBLL.getMySkills();
-      });
-      Navigator.of(dialogContext).pop();
+      if (mounted) {
+        // Use the main widget's setState, not the dialog's setState
+        setState(() {
+          _skills = _userBLL.getMySkills();
+        });
+        Navigator.of(dialogContext).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Skill added!'),
+            backgroundColor: const Color(0xFF7B3FE4),
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          ),
+        );
+        if (widget.onSkillAdded != null) {
+          widget.onSkillAdded!();
+        }
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Skill added!'),
-          backgroundColor: const Color(0xFF7B3FE4),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          content: Text('Error: $e'),
+          backgroundColor: Colors.red,
         ),
       );
-      if (widget.onSkillAdded != null) {
-        widget.onSkillAdded!();
-      }
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error: $e'),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
-
 }
