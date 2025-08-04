@@ -207,13 +207,13 @@ class _MySkillsState extends State<MySkills> {
   }
 
 Future<void> _onAddSkill(
-  void Function(void Function()) setState,
+  void Function(void Function()) setDialogState,
   TextEditingController controller,
   BuildContext dialogContext,
 ) async {
   String skillName = controller.text.trim();
   if (skillName.isEmpty) {
-    setState(() => true);
+    setDialogState(() => true);
     return;
   }
 
@@ -221,7 +221,8 @@ Future<void> _onAddSkill(
     await _userBLL.addSkill(skillName);
 
     if (mounted) {
-      setState(() {
+      // Use the main widget's setState, not the dialog's setState
+      super.setState(() {
         _skills = _userBLL.getMySkills();
       });
       Navigator.of(dialogContext).pop();
