@@ -222,7 +222,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         Icon(Icons.check_circle_outline, color: _primaryColor, size: isMobile ? 60 : 80),
         const SizedBox(height: 24),
         Text(
-          'Your Base Blochchain Wallet',
+          'Your Base Blockchain Wallet',
           style: GoogleFonts.inter(
             fontSize: isMobile ? 22 : 26,
             fontWeight: FontWeight.bold,
@@ -240,6 +240,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           ),
         ),
         const SizedBox(height: 32),
+        
+        // Wallet Address Section
         LayoutBuilder(
           builder: (context, constraints) {
             double boxTargetWidth;
@@ -297,6 +299,122 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       );
                     },
                   )
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 30),
+
+        // Job Opportunities Section
+        LayoutBuilder(
+          builder: (context, constraints) {
+            double boxTargetWidth;
+            double maxBoxWidthOnDesktop = 550.0;
+
+            if (isMobile) {
+              boxTargetWidth = constraints.maxWidth;
+            } else {
+              boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
+                  ? constraints.maxWidth
+                  : maxBoxWidthOnDesktop;
+            }
+            return Container(
+              width: boxTargetWidth,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [_gradientStart.withOpacity(0.08), _gradientEnd.withOpacity(0.08)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: _primaryColor.withOpacity(0.2), width: 1.1),
+                boxShadow: [
+                  BoxShadow(
+                    color: _primaryColor.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [_gradientStart, _gradientEnd],
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: Icon(Icons.work_outline, color: Colors.white, size: isMobile ? 24 : 28),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Find Job Opportunities',
+                    style: GoogleFonts.inter(
+                      fontSize: isMobile ? 18 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Discover amazing job opportunities from companies. Apply directly and showcase your blockchain-verified credentials and your AI tested skills.',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: Colors.black54,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/jobs');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _primaryColor,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          vertical: isMobile ? 16 : 18,
+                          horizontal: 24,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        textStyle: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      icon: const Icon(Icons.search, size: 20),
+                      label: const Text('Browse Job Offers'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.verified, size: 16, color: _primaryColor),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Blockchain-verified applications',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: _primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             );
