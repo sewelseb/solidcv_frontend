@@ -6,12 +6,22 @@ import 'package:solid_cv/models/JobOffer.dart';
 class JobOfferBll extends IJobOfferBll {
     final IJobOfferService _jobOfferService = new JobOffreService();
 
-    createJobOffer(JobOffer jobOffer) {
+  createJobOffer(JobOffer jobOffer) {
     return _jobOfferService.createJobOffer(jobOffer);
   }
   
   @override
   Future<List<JobOffer>>? getJobOffersByCompany(int companyId) {
     return _jobOfferService.getJobOffersByCompany(companyId);
+  }
+  
+  @override
+  Future<JobOffer>? getJobOfferById(int jobOfferId) {
+    return _jobOfferService.getJobOfferById(jobOfferId);
+  }
+  
+  @override
+  updateJobOffer(JobOffer jobOffer) {
+    return _jobOfferService.updateJobOffer(jobOffer);
   }
 }

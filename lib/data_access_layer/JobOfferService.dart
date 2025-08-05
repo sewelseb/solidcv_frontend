@@ -45,4 +45,41 @@ class JobOffreService implements IJobOfferService {
     }
   }
   
+  @override
+  Future<JobOffer>? getJobOfferById(int jobOfferId) async {
+    var response = await http.get(Uri.parse(BackenConnection().url + BackenConnection().getJobOfferByIdApi + jobOfferId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return JobOffer.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load job offer');
+    }
+  }
+  
+  @override
+  updateJobOffer(JobOffer jobOffer) async {
+    var response = await http.put(Uri.parse(BackenConnection().url + BackenConnection().updateJobOfferApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(jobOffer.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      // Successfully updated job offer
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to update job offer');
+    }
+  }
+  
 }

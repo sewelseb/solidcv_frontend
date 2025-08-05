@@ -10,4 +10,8 @@ abstract class IJobOfferBll {
 
   createJobOffer(JobOffer jobOffer);
 
+  Future<JobOffer>? getJobOfferById(int jobOfferId);
+
+  updateJobOffer(JobOffer jobOffer);
+
 }
