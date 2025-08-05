@@ -6,12 +6,18 @@ abstract class IJobOfferBll {
 
   Future<List<JobOffer>>? getJobOffersByCompany(int companyId);
 
-  deleteJobOffer(int jobOfferId) {}
+  deleteJobOffer(int id);
 
   createJobOffer(JobOffer jobOffer);
 
   Future<JobOffer>? getJobOfferById(int jobOfferId);
 
   updateJobOffer(JobOffer jobOffer);
+
+  Future<List<JobOffer>>? getAllPublicJobOffers();
+
+  applyToJobOffer(int id) {}
+
+  Future<JobOffer>? getPublicJobOfferById(int id);
 
 }

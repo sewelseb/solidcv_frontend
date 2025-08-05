@@ -24,4 +24,19 @@ class JobOfferBll extends IJobOfferBll {
   updateJobOffer(JobOffer jobOffer) {
     return _jobOfferService.updateJobOffer(jobOffer);
   }
+  
+  @override
+  deleteJobOffer(int id) {
+    return _jobOfferService.deleteJobOffer(id);
+  }
+  
+  @override
+  Future<List<JobOffer>>? getAllPublicJobOffers() {
+    return _jobOfferService.getAllPublicJobOffers();
+  }
+  
+  @override
+  Future<JobOffer>? getPublicJobOfferById(int id) {
+    return _jobOfferService.getPublicJobOfferById(id);
+  }
 }

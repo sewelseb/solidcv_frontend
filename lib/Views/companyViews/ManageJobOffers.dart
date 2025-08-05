@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
@@ -36,6 +37,98 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
     setState(() {
       _jobOffersFuture = _jobOfferBll.getJobOffersByCompany(_companyId!);
     });
+  }
+
+  Future<void> _shareJobOffer(JobOffer jobOffer) async {
+    final url = 'https://www.solidcv.com/job-details/${jobOffer.id}';
+    
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.share, color: _primaryColor),
+            const SizedBox(width: 8),
+            const Text('Share Job Offer'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Share "${jobOffer.title}" with others:',
+              style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      url,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: url));
+                      Navigator.of(context).pop('copied');
+                    },
+                    icon: Icon(Icons.copy, color: _primaryColor),
+                    tooltip: 'Copy URL',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: url));
+              Navigator.of(context).pop('copied');
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: _primaryColor),
+            child: const Text('Copy Link', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (result == 'copied') {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Job offer URL copied to clipboard!'),
+          backgroundColor: Colors.green,
+          action: SnackBarAction(
+            label: 'View',
+            textColor: Colors.white,
+            onPressed: () {
+              Navigator.pushNamed(context, '/job-details/${jobOffer.id}');
+            },
+          ),
+        ),
+      );
+    }
+  }
+
+  void _viewJobOffer(JobOffer jobOffer) {
+    Navigator.pushNamed(context, '/job-details/${jobOffer.id}');
   }
 
   Future<void> _deleteJobOffer(int jobOfferId) async {
@@ -303,41 +396,89 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
+            child: Column(
               children: [
-                if (jobOffer.createdAt != null)
-                  Text(
-                    'Created ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt as int))}',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
+                Row(
+                  children: [
+                    if (jobOffer.createdAt != null)
+                      Text(
+                        'Created ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt as int))}',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    const Spacer(),
+                    // Share Button
+                    IconButton(
+                      onPressed: () => _shareJobOffer(jobOffer),
+                      icon: const Icon(Icons.share, size: 18),
+                      tooltip: 'Share Job Offer',
+                      style: IconButton.styleFrom(
+                        foregroundColor: _primaryColor,
+                        padding: const EdgeInsets.all(8),
+                      ),
                     ),
-                  ),
-                const Spacer(),
-                TextButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/company/edit-job-offer',
-                      arguments: jobOffer.id.toString(),
-                    ).then((_) => _refreshJobOffers());
-                  },
-                  icon: const Icon(Icons.edit, size: 16),
-                  label: const Text('Edit'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: _primaryColor,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                TextButton.icon(
-                  onPressed: () => _deleteJobOffer(jobOffer.id!),
-                  icon: const Icon(Icons.delete, size: 16),
-                  label: const Text('Delete'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
+                const SizedBox(height: 8),
+                // Action Buttons Row
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _viewJobOffer(jobOffer),
+                        icon: const Icon(Icons.visibility, size: 16),
+                        label: const Text('View'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: _primaryColor,
+                          side: BorderSide(color: _primaryColor),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/company/edit-job-offer',
+                            arguments: jobOffer.id.toString(),
+                          ).then((_) => _refreshJobOffers());
+                        },
+                        icon: const Icon(Icons.edit, size: 16),
+                        label: const Text('Edit'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _deleteJobOffer(jobOffer.id!),
+                        icon: const Icon(Icons.delete, size: 16),
+                        label: const Text('Delete'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: const BorderSide(color: Colors.red),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

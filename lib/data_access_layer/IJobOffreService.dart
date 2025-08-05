@@ -8,5 +8,11 @@ abstract class IJobOfferService {
   Future<JobOffer>? getJobOfferById(int jobOfferId);
 
   updateJobOffer(JobOffer jobOffer);
+
+  deleteJobOffer(int id);
+
+  Future<List<JobOffer>>? getAllPublicJobOffers();
+
+  Future<JobOffer>? getPublicJobOfferById(int id);
   
 }

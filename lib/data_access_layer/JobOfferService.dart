@@ -82,4 +82,57 @@ class JobOffreService implements IJobOfferService {
     }
   }
   
+  @override
+  deleteJobOffer(int id) async {
+    var response = await http.delete(Uri.parse(BackenConnection().url + BackenConnection().deleteJobOfferApi + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successfully deleted job offer
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to delete job offer');
+    }
+  }
+  
+  @override
+  Future<List<JobOffer>>? getAllPublicJobOffers() async {
+    var response = await http.get(Uri.parse(BackenConnection().url + BackenConnection().getAllPublicJobOffersApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((jobOffer) => JobOffer.fromJson(jobOffer)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load public job offers');
+    }
+  }
+  
+  @override
+  Future<JobOffer>? getPublicJobOfferById(int id) async {
+    var response = await http.get(Uri.parse(BackenConnection().url + BackenConnection().getPublicJobOfferByIdApi + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return JobOffer.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load public job offer');
+    }
+  }
+  
 }

@@ -3,12 +3,14 @@ import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
 import 'package:solid_cv/Views/HomeRoute.dart';
+import 'package:solid_cv/Views/JobDetails.dart';
 import 'package:solid_cv/Views/LoggedInHome.dart';
 import 'package:solid_cv/Views/MyCompanyAdministration.dart';
 import 'package:solid_cv/Views/MyCvRoute.dart';
 import 'package:solid_cv/Views/MyEducationInstitutionAdministration.dart';
 import 'package:solid_cv/Views/MyOrganisationRoute.dart';
 import 'package:solid_cv/Views/PrivacyPolicyPage.dart';
+import 'package:solid_cv/Views/PublicJobOffers.dart';
 import 'package:solid_cv/Views/RegisterRoute.dart';
 import 'package:solid_cv/Views/UserPage.dart';
 import 'package:solid_cv/Views/VerifyACvRoute.dart';
@@ -53,6 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const HomeRoute(),
+        '/login': (context) => const HomeRoute(),
         '/register': (context) => const RegisterRoute(),
         '/loggedin/home': (context) => const AuthGuard(child: LoggedInHome()),
         '/my-cv': (context) => const AuthGuard(child: MyCvRoute()),
@@ -108,6 +111,7 @@ class MyApp extends StatelessWidget {
             child: EditJobOffer(),
           );
         },
+        '/jobs': (context) => const PublicJobOffers(),
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
@@ -140,6 +144,16 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(
             builder: (context) =>
                 AuthGuard(child: CheckMySkillsWithAIPage(id: id)),
+          );
+        }
+
+        if (settings.name != null &&
+            settings.name!.startsWith('/job-details/')) {
+          final id =
+              settings.name!.substring('/job-details/'.length);
+          return MaterialPageRoute(
+            builder: (context) =>
+                JobDetails(jobOfferId: id),
           );
         }
         return null; // Let `onUnknownRoute` handle this case.
