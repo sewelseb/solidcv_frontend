@@ -59,6 +59,11 @@ class JobOffer {
       'salary': salary,
       'isActive': isActive,
       'createdAt': createdAt,
+      'requirements': requirements,
+      'benefits': benefits,
+      'jobType': jobType,
+      'experienceLevel': experienceLevel,
+      'companyId': companyId,
     };
   }
 }

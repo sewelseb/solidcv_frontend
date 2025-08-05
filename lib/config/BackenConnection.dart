@@ -103,4 +103,6 @@ class BackenConnection {
 
   String get deleteManualyAddedCertificate => "/api/protected/delete-manually-added-certification/";
 
+  String get createJobOfferApi => "/api/protected/create-job-offer";
+
 }
