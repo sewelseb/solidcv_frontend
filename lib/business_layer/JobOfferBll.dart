@@ -2,6 +2,7 @@ import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/data_access_layer/IJobOffreService.dart';
 import 'package:solid_cv/data_access_layer/JobOfferService.dart';
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:solid_cv/models/User.dart';
 
 class JobOfferBll extends IJobOfferBll {
     final IJobOfferService _jobOfferService = new JobOffreService();
@@ -43,5 +44,10 @@ class JobOfferBll extends IJobOfferBll {
   @override
   applyToJobOffer(int id) {
     return _jobOfferService.applyToJobOffer(id);
+  }
+
+  @override
+  Future<List<User>>? getApplicationsToJobOffer(int id) {
+    return _jobOfferService.getApplicationsToJobOffer(id);
   }
 }

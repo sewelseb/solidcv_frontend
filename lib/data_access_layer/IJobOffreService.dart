@@ -1,4 +1,5 @@
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:solid_cv/models/User.dart';
 
 abstract class IJobOfferService {
   createJobOffer(JobOffer jobOffer);
@@ -16,5 +17,7 @@ abstract class IJobOfferService {
   Future<JobOffer>? getPublicJobOfferById(int id);
 
   applyToJobOffer(int id);
+
+  Future<List<User>>? getApplicationsToJobOffer(int id);
   
 }

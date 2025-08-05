@@ -1,6 +1,7 @@
 import 'package:solid_cv/data_access_layer/IJobOffreService.dart';
 import 'package:solid_cv/data_access_layer/JobOfferService.dart';
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:solid_cv/models/User.dart';
 
 abstract class IJobOfferBll {
 
@@ -19,5 +20,7 @@ abstract class IJobOfferBll {
   applyToJobOffer(int id);
 
   Future<JobOffer>? getPublicJobOfferById(int id);
+
+  Future<List<User>>? getApplicationsToJobOffer(int id);
 
 }

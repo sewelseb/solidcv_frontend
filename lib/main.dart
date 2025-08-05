@@ -21,6 +21,7 @@ import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/companyViews/CreateJobOffer.dart';
 import 'package:solid_cv/Views/companyViews/EditJobOffer.dart';
+import 'package:solid_cv/Views/companyViews/JobApplications.dart';
 import 'package:solid_cv/Views/companyViews/ManageJobOffers.dart';
 import 'package:solid_cv/Views/educationInstitutionViews/CreateACertificate.dart';
 import 'package:solid_cv/Views/widgets/AuthGuard.dart';
@@ -109,6 +110,11 @@ class MyApp extends StatelessWidget {
         '/company/edit-job-offer': (context) {
            return const AuthGuard(
             child: EditJobOffer(),
+          );
+        },
+        '/company/job-applications': (context) {
+          return const AuthGuard(
+            child: JobApplications(),
           );
         },
         '/jobs': (context) => const PublicJobOffers(),

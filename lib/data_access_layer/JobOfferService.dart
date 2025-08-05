@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'dart:convert';
 
+import 'package:solid_cv/models/User.dart';
+
 class JobOffreService implements IJobOfferService {
 
   @override
@@ -150,6 +152,25 @@ class JobOffreService implements IJobOfferService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to apply to job offer');
+    }
+  }
+
+  @override
+  Future<List<User>>? getApplicationsToJobOffer(int id) async {
+    var response = await http.get(Uri.parse(BackenConnection().url + BackenConnection().getApplicationsToJobOfferApi + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((user) => User.fromJson(user)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load job applications');
     }
   }
   
