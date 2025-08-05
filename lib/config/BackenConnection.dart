@@ -117,4 +117,6 @@ class BackenConnection {
 
   String get getPublicJobOfferByIdApi => "/api/get-public-job-offer/";
 
+  String get applyToJobOfferApi => "/api/protected/apply-job-offer/";
+
 }

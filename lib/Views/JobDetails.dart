@@ -203,15 +203,15 @@ class _JobDetailsState extends State<JobDetails> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.blue.shade200),
         ),
-        child: Row(
+        child: const Row(
           children: [
-            const SizedBox(
+            SizedBox(
               width: 20,
               height: 20,
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
-            const SizedBox(width: 12),
-            const Text('Checking login status...'),
+            SizedBox(width: 12),
+            Text('Checking login status...'),
           ],
         ),
       );
@@ -308,7 +308,8 @@ class _JobDetailsState extends State<JobDetails> {
         elevation: 1,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      bottomNavigationBar: const MainBottomNavigationBar(),
+      // Conditionally show bottom navigation bar only for connected users
+      bottomNavigationBar: _currentUser != null ? const MainBottomNavigationBar() : null,
       backgroundColor: Colors.grey.shade50,
       body: FutureBuilder<JobOffer>(
         future: _jobOfferFuture,

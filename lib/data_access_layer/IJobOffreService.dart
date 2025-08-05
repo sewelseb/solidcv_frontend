@@ -14,5 +14,7 @@ abstract class IJobOfferService {
   Future<List<JobOffer>>? getAllPublicJobOffers();
 
   Future<JobOffer>? getPublicJobOfferById(int id);
+
+  applyToJobOffer(int id);
   
 }

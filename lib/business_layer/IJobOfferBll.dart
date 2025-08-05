@@ -16,7 +16,7 @@ abstract class IJobOfferBll {
 
   Future<List<JobOffer>>? getAllPublicJobOffers();
 
-  applyToJobOffer(int id) {}
+  applyToJobOffer(int id);
 
   Future<JobOffer>? getPublicJobOfferById(int id);
 

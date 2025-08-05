@@ -39,4 +39,9 @@ class JobOfferBll extends IJobOfferBll {
   Future<JobOffer>? getPublicJobOfferById(int id) {
     return _jobOfferService.getPublicJobOfferById(id);
   }
+  
+  @override
+  applyToJobOffer(int id) {
+    return _jobOfferService.applyToJobOffer(id);
+  }
 }

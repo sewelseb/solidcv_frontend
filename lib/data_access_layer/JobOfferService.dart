@@ -135,4 +135,22 @@ class JobOffreService implements IJobOfferService {
     }
   }
   
+  @override
+  applyToJobOffer(int id) async {
+    var response = await http.post(Uri.parse(BackenConnection().url + BackenConnection().applyToJobOfferApi + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Successfully applied to job offer
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to apply to job offer');
+    }
+  }
+  
 }

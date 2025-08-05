@@ -255,7 +255,18 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
           ),
         ],
       ),
-      bottomNavigationBar: const MainBottomNavigationBar(),
+      // Conditionally show bottom navigation bar only for connected users
+      bottomNavigationBar: FutureBuilder<User?>(
+        future: _currentUserFuture,
+        builder: (context, snapshot) {
+          final user = snapshot.data;
+          if (user != null) {
+            return const MainBottomNavigationBar();
+          } else {
+            return const SizedBox.shrink(); // No bottom navigation bar for non-connected users
+          }
+        },
+      ),
       backgroundColor: Colors.grey.shade50,
       body: RefreshIndicator(
         onRefresh: _refreshJobOffers,
