@@ -26,4 +26,23 @@ class JobOffreService implements IJobOfferService {
     }
   }
   
+  @override
+  Future<List<JobOffer>>? getJobOffersByCompany(int companyId) async {
+    var response = await http.get(Uri.parse(BackenConnection().url + BackenConnection().getJobOffersByCompanyApi + companyId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      return jsonResponse.map((jobOffer) => JobOffer.fromJson(jobOffer)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load job offers');
+    }
+  }
+  
 }

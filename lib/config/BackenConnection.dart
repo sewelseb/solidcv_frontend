@@ -105,4 +105,6 @@ class BackenConnection {
 
   String get createJobOfferApi => "/api/protected/create-job-offer";
 
+  String get getJobOffersByCompanyApi => "/api/protected/company/all-job-offers/";
+
 }

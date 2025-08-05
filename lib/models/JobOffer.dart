@@ -1,9 +1,11 @@
+import 'package:solid_cv/models/Company.dart';
+
 class JobOffer {
   final int? id;
   final int? companyId;
   final String? title;
   final String? description;
-  final String? company;
+  final Company? company;
   final String location;
   final double? salary;
 
@@ -37,9 +39,15 @@ class JobOffer {
       companyId: json['companyId'],
       title: json['title'],
       description: json['description'],
-      company: json['company'],
+      company: Company.fromJson(json['company']),
       location: json['location'],
-      salary: json['salary'].toDouble(),
+      salary: json['salary'] is double
+          ? json['salary']
+          : json['salary'] is int
+              ? (json['salary'] as int).toDouble()
+              : json['salary'] is String
+                  ? double.tryParse(json['salary'])
+                  : null,
       isActive: json['isActive'] ?? true,
       createdAt: json['createdAt'],
       requirements: json['requirements'],
