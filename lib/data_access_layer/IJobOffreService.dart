@@ -1,3 +1,4 @@
+import 'package:solid_cv/models/ApplicantAIFeedback.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
 
@@ -19,5 +20,8 @@ abstract class IJobOfferService {
   applyToJobOffer(int id);
 
   Future<List<User>>? getApplicationsToJobOffer(int id);
-  
+
+  Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId);
+
+  Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId);
 }

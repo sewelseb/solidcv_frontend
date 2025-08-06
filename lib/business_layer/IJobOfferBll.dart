@@ -25,8 +25,8 @@ abstract class IJobOfferBll {
 
   Future<List<User>>? getApplicationsToJobOffer(int id);
 
-  Future<ApplicantAIFeedback>? getAIFeedback(int i, int j) {}
+  Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId);
 
-  generateAIFeedback(int i, int j) {}
+  Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId);
 
 }

@@ -1,6 +1,7 @@
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/data_access_layer/IJobOffreService.dart';
 import 'package:solid_cv/data_access_layer/JobOfferService.dart';
+import 'package:solid_cv/models/ApplicantAIFeedback.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
 
@@ -49,5 +50,15 @@ class JobOfferBll extends IJobOfferBll {
   @override
   Future<List<User>>? getApplicationsToJobOffer(int id) {
     return _jobOfferService.getApplicationsToJobOffer(id);
+  }
+  
+  @override
+  Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId) {
+    return _jobOfferService.generateAIFeedback(userId, jobOfferId);
+  }
+  
+  @override
+  Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId) async {
+    return await _jobOfferService.getAIFeedback(userId, jobOfferId);
   }
 }

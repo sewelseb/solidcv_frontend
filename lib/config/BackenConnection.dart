@@ -121,4 +121,8 @@ class BackenConnection {
 
   String get getApplicationsToJobOfferApi => "/api/protected/company/get-job-offer-applicants/";
 
+  String get generateAIFeedbackApi => "/api/protected/company/job-offer-applicants/generate-ai-feedback/";
+
+  String get getAIFeedbackApi => "/api/protected/company/job-offer-applicants/get-ai-feedback/";
+
 }

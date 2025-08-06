@@ -1,5 +1,6 @@
 import 'package:solid_cv/data_access_layer/IJobOffreService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
+import 'package:solid_cv/models/ApplicantAIFeedback.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:http/http.dart' as http;
 import 'package:solid_cv/config/BackenConnection.dart';
@@ -171,6 +172,47 @@ class JobOffreService implements IJobOfferService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load job applications');
+    }
+  }
+
+  @override
+  Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url + BackenConnection().generateAIFeedbackApi+'$jobOfferId/$userId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      }
+    );
+
+    if (response.statusCode == 200) {
+      return ApplicantAIFeedback.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to generate AI feedback');
+    }
+  }
+  
+  @override
+  Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId) async {
+    var response = await http.get(
+      Uri.parse(BackenConnection().url + BackenConnection().getAIFeedbackApi + '$jobOfferId/$userId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return ApplicantAIFeedback.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      // No feedback found - return null instead of Future.value(null)
+      return null;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to get AI feedback');
     }
   }
   
