@@ -40,7 +40,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
   }
 
   Future<void> _shareJobOffer(JobOffer jobOffer) async {
-    final url = 'https://www.solidcv.com/job-details/${jobOffer.id}';
+    final url = 'https://www.solidcv.com/#/job-details/${jobOffer.id}';
     
     final result = await showDialog<String>(
       context: context,

@@ -57,8 +57,8 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
-  Future<void> _applyToJob(JobOffer jobOffer) async {
-    if (_currentUser == null) {
+  Future<void> _applyToJob(JobOffer jobOffer, User? currentUser) async {
+    if (currentUser == null) {
       _showLoginDialog();
       return;
     }
@@ -66,26 +66,281 @@ class _JobDetailsState extends State<JobDetails> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Apply to ${jobOffer.title}'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
           children: [
-            Text('Company: ${jobOffer.company?.name ?? 'Unknown'}'),
-            Text('Location: ${jobOffer.location ?? 'Not specified'}'),
-            const SizedBox(height: 16),
-            const Text('Are you sure you want to apply to this position?'),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: _primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(Icons.work, color: _primaryColor, size: 24),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Apply to ${jobOffer.title}',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Job details
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.business, size: 16, color: Colors.grey.shade600),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            jobOffer.company?.name ?? 'Unknown Company',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey.shade800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 16, color: Colors.grey.shade600),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            jobOffer.location ?? 'Location not specified',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (jobOffer.jobType != null) ...[
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: _primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              jobOffer.jobType!,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: _primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Recommendation section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.shade50,
+                      Colors.indigo.shade50,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(Icons.lightbulb, color: Colors.blue.shade700, size: 18),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Maximize Your Chances!',
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade800,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Before applying, we recommend:',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildRecommendationItem(
+                      icon: Icons.person,
+                      text: 'Complete your profile with personal information',
+                      color: Colors.blue.shade700,
+                    ),
+                    _buildRecommendationItem(
+                      icon: Icons.work_history,
+                      text: 'Add your work experiences and achievements',
+                      color: Colors.blue.shade700,
+                    ),
+                    _buildRecommendationItem(
+                      icon: Icons.psychology,
+                      text: 'Test and showcase your skills with AI validation',
+                      color: Colors.blue.shade700,
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.shade50,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.amber.shade200),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info, color: Colors.amber.shade700, size: 16),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'Recruiters will use AI to analyze your profile against this job!',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.amber.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              // Quick actions
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                        Navigator.pushNamed(context, '/my-cv');
+                      },
+                      icon: const Icon(Icons.edit, size: 16),
+                      label: const Text('Complete Profile'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: _primaryColor,
+                        side: BorderSide(color: _primaryColor),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                        Navigator.pushNamed(context, '/my-cv');
+                      },
+                      icon: const Icon(Icons.quiz, size: 16),
+                      label: const Text('Test Skills'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.orange.shade700,
+                        side: BorderSide(color: Colors.orange.shade700),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 16),
+              
+              Text(
+                'Are you ready to submit your application?',
+                style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.shade700,
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.inter(
+                color: Colors.grey.shade600,
+              ),
+            ),
           ),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: _primaryColor),
-            child: const Text('Apply', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _primaryColor,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            icon: const Icon(Icons.send, size: 16),
+            label: const Text('Apply Now'),
           ),
         ],
       ),
@@ -97,17 +352,44 @@ class _JobDetailsState extends State<JobDetails> {
         if (!mounted) return;
         
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Application submitted successfully!'),
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                const Expanded(child: Text('Application submitted successfully!')),
+              ],
+            ),
             backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            action: SnackBarAction(
+              label: 'View Applications',
+              textColor: Colors.white,
+              onPressed: () {
+                Navigator.pushNamed(context, '/my-applications');
+              },
+            ),
           ),
         );
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error submitting application: $e'),
+            content: Row(
+              children: [
+                const Icon(Icons.error, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Expanded(child: Text('Error submitting application: $e')),
+              ],
+            ),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         );
       }
@@ -177,7 +459,7 @@ class _JobDetailsState extends State<JobDetails> {
       width: double.infinity,
       height: 52,
       child: ElevatedButton.icon(
-        onPressed: () => _applyToJob(jobOffer),
+        onPressed: () => _applyToJob(jobOffer, _currentUser),
         style: ElevatedButton.styleFrom(
           backgroundColor: _currentUser != null ? _primaryColor : Colors.grey.shade600,
           foregroundColor: Colors.white,
@@ -551,5 +833,40 @@ class _JobDetailsState extends State<JobDetails> {
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }
+  }
+
+  Widget _buildRecommendationItem({
+    required IconData icon,
+    required String text,
+    required Color color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 2),
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Icon(icon, size: 12, color: color),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.inter(
+                fontSize: 13,
+                color: color,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
