@@ -77,6 +77,17 @@ class _JobApplicationsState extends State<JobApplications> {
     }
   }
 
+  void _showAIFeedback(User user) {
+    Navigator.pushNamed(
+      context,
+      '/company/applicant-ai-feedback',
+      arguments: {
+        'userId': user.id.toString(),
+        'jobOfferId': _jobOfferId.toString(),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -191,7 +202,7 @@ class _JobApplicationsState extends State<JobApplications> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.people,
                                       color: Colors.white,
                                       size: 16,
@@ -570,7 +581,7 @@ class _JobApplicationsState extends State<JobApplications> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Action Buttons
+                // Action Buttons - Updated to include AI Analysis
                 if (isMobile)
                   Column(
                     children: [
@@ -582,6 +593,23 @@ class _JobApplicationsState extends State<JobApplications> {
                           label: const Text('View Profile'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showAIFeedback(user),
+                          icon: const Icon(Icons.psychology, size: 16),
+                          label: const Text('AI Analysis'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple.shade600,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -616,7 +644,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: ElevatedButton.icon(
                           onPressed: () => _showUserProfile(user),
                           icon: const Icon(Icons.person, size: 16),
-                          label: const Text('View Profile'),
+                          label: const Text('Profile'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
                             foregroundColor: Colors.white,
@@ -627,7 +655,23 @@ class _JobApplicationsState extends State<JobApplications> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showAIFeedback(user),
+                          icon: const Icon(Icons.psychology, size: 16),
+                          label: const Text('AI Analysis'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple.shade600,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: () => _contactUser(user),

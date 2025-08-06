@@ -203,11 +203,33 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                 arguments: _companyId.toString(),
               ).then((_) => _refreshJobOffers());
             },
+            tooltip: 'Create Job Offer',
           ),
         ],
       ),
       bottomNavigationBar: const MainBottomNavigationBar(),
       backgroundColor: Colors.grey.shade50,
+      // Add floating action button for better mobile UX
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/company/create-job-offer',
+            arguments: _companyId.toString(),
+          ).then((_) => _refreshJobOffers());
+        },
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add),
+        label: Text(
+          isMobile ? 'Create' : 'Create Job Offer',
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        elevation: 4,
+        tooltip: 'Create a new job offer',
+      ),
       body: RefreshIndicator(
         onRefresh: _refreshJobOffers,
         child: FutureBuilder<List<JobOffer>>(
@@ -236,25 +258,41 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.work_off, size: 64, color: Colors.grey.shade400),
-                    const SizedBox(height: 16),
-                    Text(
-                      'No job offers found',
-                      style: GoogleFonts.inter(
-                        fontSize: 18,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500,
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: _primaryColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Create your first job offer to get started',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.grey.shade500,
+                      child: Icon(
+                        Icons.work_off, 
+                        size: 64, 
+                        color: _primaryColor.withOpacity(0.7),
                       ),
                     ),
                     const SizedBox(height: 24),
+                    Text(
+                      'No job offers yet',
+                      style: GoogleFonts.inter(
+                        fontSize: 24,
+                        color: Colors.grey.shade700,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Text(
+                        'Create your first job offer to start attracting talented candidates',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
                     ElevatedButton.icon(
                       onPressed: () {
                         Navigator.pushNamed(
@@ -263,15 +301,44 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                           arguments: _companyId.toString(),
                         ).then((_) => _refreshJobOffers());
                       },
-                      icon: const Icon(Icons.add),
-                      label: const Text('Create Job Offer'),
+                      icon: const Icon(Icons.add, size: 20),
+                      label: const Text('Create Your First Job Offer'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        elevation: 2,
+                        textStyle: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.blue.shade200, width: 1),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.lightbulb_outline, size: 16, color: Colors.blue.shade600),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Tip: Use detailed descriptions to attract better candidates',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.blue.shade700,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -286,13 +353,43 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${jobOffers.length} Job Offer${jobOffers.length != 1 ? 's' : ''}',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade700,
-                    ),
+                  // Header with count and quick action
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${jobOffers.length} Job Offer${jobOffers.length != 1 ? 's' : ''}',
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      ),
+                      if (!isMobile)
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/company/create-job-offer',
+                              arguments: _companyId.toString(),
+                            ).then((_) => _refreshJobOffers());
+                          },
+                          icon: const Icon(Icons.add, size: 18),
+                          label: const Text('New Job Offer'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            textStyle: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Expanded(
