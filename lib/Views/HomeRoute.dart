@@ -338,6 +338,26 @@ class _LoginForm extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(height: isMobile ? 12 : 20), // Increased spacing for new button
+        // Job Offers Button
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              Navigator.pushNamed(context, '/jobs');
+            },
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFF7B3FE4),
+              side: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+              minimumSize: Size(double.infinity, isMobile ? 44 : 50),
+              padding: EdgeInsets.symmetric(vertical: isMobile ? 10 : 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            icon: const Icon(Icons.work_outline),
+            label: const Text("Browse Job Opportunities"),
+          ),
+        ),
         SizedBox(height: isMobile ? 6 : 10), // Reduced spacing
         const _PrivacyPolicyLink(),
       ],

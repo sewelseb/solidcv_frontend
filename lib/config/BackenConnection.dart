@@ -103,4 +103,26 @@ class BackenConnection {
 
   String get deleteManualyAddedCertificate => "/api/protected/delete-manually-added-certification/";
 
+  String get createJobOfferApi => "/api/protected/create-job-offer";
+
+  String get getJobOffersByCompanyApi => "/api/protected/company/all-job-offers/";
+
+  String get getJobOfferByIdApi => "/api/protected/company/get-job-offer/";
+
+  String get updateJobOfferApi => "/api/protected/company/update-job-offer";
+
+  String get deleteJobOfferApi => "/api/protected/company/delete-job-offer/";
+
+  String get getAllPublicJobOffersApi => "/api/get-public-job-offers";
+
+  String get getPublicJobOfferByIdApi => "/api/get-public-job-offer/";
+
+  String get applyToJobOfferApi => "/api/protected/apply-job-offer/";
+
+  String get getApplicationsToJobOfferApi => "/api/protected/company/get-job-offer-applicants/";
+
+  String get generateAIFeedbackApi => "/api/protected/company/job-offer-applicants/generate-ai-feedback/";
+
+  String get getAIFeedbackApi => "/api/protected/company/job-offer-applicants/get-ai-feedback/";
+
 }
