@@ -9,7 +9,7 @@ typedef OnAddCertificate = void Function(Certificate cert);
 class AddManuallyCertificateDialog extends StatefulWidget {
   final OnAddCertificate onAdd;
 
-  const AddManuallyCertificateDialog({Key? key, required this.onAdd}) : super(key: key);
+  const AddManuallyCertificateDialog({super.key, required this.onAdd});
 
   static Future<void> show(BuildContext context, {required OnAddCertificate onAdd}) {
     return showDialog(
@@ -43,7 +43,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       child: Container(
         width: isMobile ? double.infinity : 420,
-        padding: EdgeInsets.fromLTRB(24, 30, 24, 20),
+        padding: const EdgeInsets.fromLTRB(24, 30, 24, 20),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -54,7 +54,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.workspace_premium_outlined, color: Color(0xFF7B3FE4), size: isMobile ? 24 : 30),
+                    Icon(Icons.workspace_premium_outlined, color: const Color(0xFF7B3FE4), size: isMobile ? 24 : 30),
                     const SizedBox(width: 10),
                     Flexible(
                       child: Text(
@@ -62,7 +62,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: isMobile ? 17 : 23,
-                          color: Color(0xFF7B3FE4),
+                          color: const Color(0xFF7B3FE4),
                           height: 1.2,
                         ),
                         maxLines: 2,
@@ -121,13 +121,13 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: 'Publication Date',
-                        prefixIcon: Icon(Icons.event, color: Color(0xFF7B3FE4)),
+                        prefixIcon: const Icon(Icons.event, color: Color(0xFF7B3FE4)),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
+                          borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                       ),
                       validator: (value) {
                         if (_publicationDate == null) return 'Please select a date';
@@ -139,17 +139,17 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                 const SizedBox(height: 10),
                 // Sélecteur de fichier stylé
                 ElevatedButton.icon(
-                  icon: Icon(Icons.attach_file_outlined, color: Colors.white, size: 20),
+                  icon: const Icon(Icons.attach_file_outlined, color: Colors.white, size: 20),
                   onPressed: _selectQuoteFile,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7B3FE4),
+                    backgroundColor: const Color(0xFF7B3FE4),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: EdgeInsets.symmetric(vertical: 13, horizontal: 14),
-                    textStyle: TextStyle(fontWeight: FontWeight.w600),
+                    padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 14),
+                    textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  label: Text("Select a file"),
+                  label: const Text("Select a file"),
                 ),
                 const SizedBox(height: 24),
                 Row(
@@ -158,12 +158,12 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                       child: OutlinedButton(
                         onPressed: () => Navigator.of(context).pop(),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: Color(0xFF7B3FE4),
-                          side: BorderSide(color: Color(0xFF7B3FE4), width: 1.2),
+                          foregroundColor: const Color(0xFF7B3FE4),
+                          side: const BorderSide(color: Color(0xFF7B3FE4), width: 1.2),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.symmetric(vertical: 13),
+                          padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.w600)),
+                        child: const Text('Cancel', style: TextStyle(fontWeight: FontWeight.w600)),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -188,13 +188,13 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF7B3FE4),
+                          backgroundColor: const Color(0xFF7B3FE4),
                           foregroundColor: Colors.white,
                           elevation: 2,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.symmetric(vertical: 13),
+                          padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: Text('Add', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text('Add', style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
@@ -219,10 +219,10 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
+            borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
             borderRadius: BorderRadius.circular(10),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         ),
         maxLines: multiline ? 3 : 1,
         validator: (value) => value == null || value.isEmpty ? 'Please enter $label' : null,

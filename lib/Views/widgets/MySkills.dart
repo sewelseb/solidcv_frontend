@@ -6,7 +6,7 @@ import 'package:solid_cv/models/Skill.dart';
 
 class MySkills extends StatefulWidget {
   final VoidCallback? onSkillAdded;
-  const MySkills({Key? key, this.onSkillAdded}) : super(key: key);
+  const MySkills({super.key, this.onSkillAdded});
 
   @override
   _MySkillsState createState() => _MySkillsState();
@@ -99,8 +99,8 @@ class _MySkillsState extends State<MySkills> {
   }
 
   void _showAddSkillDialog() {
-    final TextEditingController _controller = TextEditingController();
-    bool _error = false;
+    final TextEditingController controller = TextEditingController();
+    bool error = false;
 
     showDialog(
       context: context,
@@ -122,10 +122,10 @@ class _MySkillsState extends State<MySkills> {
                 children: [
                   const Row(
                     children: [
-                      const Icon(Icons.add_circle_outline,
+                      Icon(Icons.add_circle_outline,
                           color: Color(0xFF7B3FE4), size: 28),
-                      const SizedBox(width: 10),
-                      const Text(
+                      SizedBox(width: 10),
+                      Text(
                         'Add a Skill',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -137,7 +137,7 @@ class _MySkillsState extends State<MySkills> {
                   ),
                   const SizedBox(height: 22),
                   TextField(
-                    controller: _controller,
+                    controller: controller,
                     autofocus: true,
                     decoration: InputDecoration(
                       labelText: 'Skill name',
@@ -150,13 +150,13 @@ class _MySkillsState extends State<MySkills> {
                             color: Color(0xFF7B3FE4), width: 1.5),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      errorText: _error ? 'Please enter a skill name' : null,
+                      errorText: error ? 'Please enter a skill name' : null,
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 12),
                     ),
-                    onChanged: (_) => setState(() => _error = false),
+                    onChanged: (_) => setState(() => error = false),
                     onSubmitted: (_) =>
-                        _onAddSkill(setState, _controller, context),
+                        _onAddSkill(setState, controller, context),
                   ),
                   const SizedBox(height: 26),
                   Row(
@@ -180,7 +180,7 @@ class _MySkillsState extends State<MySkills> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () =>
-                              _onAddSkill(setState, _controller, context),
+                              _onAddSkill(setState, controller, context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF7B3FE4),
                             foregroundColor: Colors.white,

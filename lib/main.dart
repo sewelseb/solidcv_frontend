@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ).copyWith(
         appBarTheme: const AppBarTheme(
-            backgroundColor: const Color(0xFF7B3FE4),
+            backgroundColor: Color(0xFF7B3FE4),
             foregroundColor: Colors.white,
             shadowColor: Colors.black,
             elevation: 5),

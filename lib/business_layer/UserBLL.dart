@@ -140,6 +140,7 @@ class UserBll extends IUserBLL {
     return _userService.resetPassword(token, newPassword);
   }
 
+  @override
   void deleteManualExperience(int manualExperienceId) {
     return _userService.deleteManualExperience(manualExperienceId);
   }

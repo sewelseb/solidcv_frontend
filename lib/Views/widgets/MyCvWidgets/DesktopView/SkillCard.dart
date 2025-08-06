@@ -36,8 +36,8 @@ class SkillCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: onCheckWithAI,
-                      child: const Text('Check with AI'),
                       style: _buttonStyle(),
+                      child: const Text('Check with AI'),
                     ),
                   ],
                 )
@@ -55,8 +55,8 @@ class SkillCard extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: onCheckWithAI,
-                      child: const Text('Check with AI'),
                       style: _buttonStyle(),
+                      child: const Text('Check with AI'),
                     ),
                   ],
                 );

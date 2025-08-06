@@ -6,8 +6,9 @@ import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
 
 class JobOfferBll extends IJobOfferBll {
-    final IJobOfferService _jobOfferService = new JobOffreService();
+    final IJobOfferService _jobOfferService = JobOffreService();
 
+  @override
   createJobOffer(JobOffer jobOffer) {
     return _jobOfferService.createJobOffer(jobOffer);
   }

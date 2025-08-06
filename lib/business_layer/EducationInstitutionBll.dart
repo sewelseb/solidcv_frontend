@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';

@@ -9,8 +9,7 @@ import 'package:solid_cv/models/Skill.dart';
 class UserVerifyCvSkillsMobile extends StatefulWidget {
   final String userId;
 
-  const UserVerifyCvSkillsMobile({Key? key, required this.userId})
-      : super(key: key);
+  const UserVerifyCvSkillsMobile({super.key, required this.userId});
 
   @override
   _UserVerifyCvSkillsMobileState createState() =>

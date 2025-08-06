@@ -4,7 +4,7 @@ import 'package:solid_cv/data_access_layer/SkillService.dart';
 import 'package:solid_cv/models/Question.dart';
 
 class SkillBll extends ISkillBll {
-  ISkillService _skillService = SkillService();
+  final ISkillService _skillService = SkillService();
 
   @override
   Future<Question> getAQuestionsForSkill(int SkillId) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
-import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -66,11 +65,11 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Row(
+          content: const Row(
             children: [
-              const Icon(Icons.check_circle, color: Colors.white, size: 20),
-              const SizedBox(width: 8),
-              const Text('AI analysis generated successfully!'),
+              Icon(Icons.check_circle, color: Colors.white, size: 20),
+              SizedBox(width: 8),
+              Text('AI analysis generated successfully!'),
             ],
           ),
           backgroundColor: Colors.green,

@@ -322,7 +322,7 @@ class EtheriumWalletService implements IWalletService {
     var random = Random.secure();
 
     var credentials = EthPrivateKey.createRandom(random);
-    var address = await credentials.address;
+    var address = credentials.address;
 
     Wallet wallet = Wallet.createNew(credentials, password, random);
 

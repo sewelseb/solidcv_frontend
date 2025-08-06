@@ -295,9 +295,10 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                                 : Colors.red,
                                                       ),
                                                     );
-                                                    if (isSuccess)
+                                                    if (isSuccess) {
                                                       Navigator.of(context)
                                                           .pop();
+                                                    }
                                                   },
                                                   child: const Text(
                                                     '+ Create',
@@ -452,9 +453,10 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                                 : Colors.red,
                                                       ),
                                                     );
-                                                    if (isSuccess)
+                                                    if (isSuccess) {
                                                       Navigator.of(context)
                                                           .pop();
+                                                    }
                                                   },
                                                   label: const Text('End',
                                                       style: TextStyle(
@@ -614,9 +616,10 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                                 : Colors.red,
                                                       ),
                                                     );
-                                                    if (isSuccess)
+                                                    if (isSuccess) {
                                                       Navigator.of(context)
                                                           .pop();
+                                                    }
                                                   },
                                                   label: const Text('Promote',
                                                       style: TextStyle(

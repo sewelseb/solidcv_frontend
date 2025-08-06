@@ -387,7 +387,7 @@ class _MyEducationInstitutionAdministrationState
                                 content: (institution.ethereumAddress == null ||
                                         institution.ethereumAddress!.isEmpty)
                                     ? const Padding(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding: EdgeInsets.symmetric(
                                             vertical: 18.0),
                                         child: Text(
                                           "Please add an Base Blochchain address before adding certificates.",

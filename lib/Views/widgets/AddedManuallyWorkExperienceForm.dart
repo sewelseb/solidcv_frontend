@@ -53,7 +53,7 @@ class _AddedManuallyWorkExperienceFormState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(Icons.work_outline,
-                          color: Color(0xFF7B3FE4), size: isMobile ? 24 : 30),
+                          color: const Color(0xFF7B3FE4), size: isMobile ? 24 : 30),
                       const SizedBox(width: 10),
                       Flexible(
                         child: Text(

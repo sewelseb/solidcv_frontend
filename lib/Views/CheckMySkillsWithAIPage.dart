@@ -11,7 +11,7 @@ import 'package:solid_cv/models/Skill.dart';
 class CheckMySkillsWithAIPage extends StatefulWidget {
   final String id;
 
-  const CheckMySkillsWithAIPage({required this.id});
+  const CheckMySkillsWithAIPage({super.key, required this.id});
 
   @override
   _CheckMySkillsWithAIPageState createState() =>
@@ -41,7 +41,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
       appBar: AppBar(
         title: const Text('Check My Skills with AI'),
       ),
-      bottomNavigationBar: MainBottomNavigationBar(),
+      bottomNavigationBar: const MainBottomNavigationBar(),
       body: FutureBuilder<Skill>(
         future: _skillFuture,
         builder: (context, snapshot) {

@@ -14,6 +14,8 @@ import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/User.dart';
 
 class CreateACertificate extends StatefulWidget {
+  const CreateACertificate({super.key});
+
   @override
   _CreateACertificateState createState() => _CreateACertificateState();
 }

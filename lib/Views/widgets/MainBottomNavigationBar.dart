@@ -42,9 +42,9 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     final route = ModalRoute.of(context)?.settings.name;
-    if (route == '/loggedin/home')
+    if (route == '/loggedin/home') {
       _selectedIndex = 0;
-    else if (route == '/my-cv')
+    } else if (route == '/my-cv')
       _selectedIndex = 1;
     else if (route == '/my-organisation')
       _selectedIndex = 2;

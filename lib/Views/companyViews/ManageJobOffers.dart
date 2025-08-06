@@ -463,13 +463,13 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (jobOffer.location != null && jobOffer.location!.isNotEmpty)
+                if (jobOffer.location.isNotEmpty)
                   Row(
                     children: [
                       Icon(Icons.location_on, size: 16, color: Colors.grey.shade600),
                       const SizedBox(width: 4),
                       Text(
-                        jobOffer.location!,
+                        jobOffer.location,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           color: Colors.grey.shade600,

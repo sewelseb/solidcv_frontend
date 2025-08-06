@@ -8,9 +8,6 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/IPFSService.dart';
-import 'package:solid_cv/data_access_layer/BlockChain/NearWalletService.dart';
-import 'package:solid_cv/models/Company.dart';
 
 
 void main() {

@@ -13,7 +13,7 @@ import 'dart:io';
 import 'package:solid_cv/models/User.dart';
 
 class MyEducationMobileView extends StatefulWidget {
-  const MyEducationMobileView({Key? key}) : super(key: key);
+  const MyEducationMobileView({super.key});
 
   @override
   _MyEducationMobileViewState createState() => _MyEducationMobileViewState();

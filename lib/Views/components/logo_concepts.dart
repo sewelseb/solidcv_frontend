@@ -6,10 +6,10 @@ class SolidCVLogoCertificate extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogoCertificate({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,19 +107,19 @@ class SolidCVLogoBadge extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogoBadge({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFF9C6AFF), Color(0xFF7B3FE4)],
@@ -218,19 +218,19 @@ class SolidCVLogoMinimal extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogoMinimal({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFF9C6AFF), Color(0xFF7B3FE4)],
@@ -340,19 +340,19 @@ class SolidCVLogoTech extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogoTech({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [Color(0xFF9C6AFF), Color(0xFF7B3FE4)],
@@ -462,10 +462,10 @@ class SolidCVLogoShield extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogoShield({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

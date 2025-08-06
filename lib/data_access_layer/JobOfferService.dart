@@ -178,7 +178,7 @@ class JobOffreService implements IJobOfferService {
   @override
   Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId) async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url + BackenConnection().generateAIFeedbackApi+'$jobOfferId/$userId'),
+      Uri.parse('${BackenConnection().url}${BackenConnection().generateAIFeedbackApi}$jobOfferId/$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -197,7 +197,7 @@ class JobOffreService implements IJobOfferService {
   @override
   Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId) async {
     var response = await http.get(
-      Uri.parse(BackenConnection().url + BackenConnection().getAIFeedbackApi + '$jobOfferId/$userId'),
+      Uri.parse('${BackenConnection().url}${BackenConnection().getAIFeedbackApi}$jobOfferId/$userId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),

@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-import 'package:solid_cv/models/Company.dart';
 
 class IPFSWorkExperience {
   String? id;

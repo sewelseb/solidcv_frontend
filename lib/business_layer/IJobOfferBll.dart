@@ -1,6 +1,3 @@
-import 'package:solid_cv/Views/companyViews/ApplicantAIFeedbackView.dart';
-import 'package:solid_cv/data_access_layer/IJobOffreService.dart';
-import 'package:solid_cv/data_access_layer/JobOfferService.dart';
 import 'package:solid_cv/models/ApplicantAIFeedback.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';

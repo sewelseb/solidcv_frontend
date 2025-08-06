@@ -107,8 +107,8 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
 
   Set<String> _getUniqueLocations(List<JobOffer> jobOffers) {
     final locations = jobOffers
-        .where((job) => job.location != null && job.location!.isNotEmpty)
-        .map((job) => job.location!)
+        .where((job) => job.location.isNotEmpty)
+        .map((job) => job.location)
         .toSet();
     return {'All Locations', ...locations};
   }
@@ -597,22 +597,21 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         ],
                       ),
                     ),
-                    if (jobOffer.jobType != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: _primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          jobOffer.jobType!,
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: _primaryColor,
-                          ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: _primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        jobOffer.jobType,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: _primaryColor,
                         ),
                       ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -620,12 +619,12 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                 // Location and Salary Row
                 Row(
                   children: [
-                    if (jobOffer.location != null && jobOffer.location!.isNotEmpty) ...[
+                    if (jobOffer.location.isNotEmpty) ...[
                       Icon(Icons.location_on, size: 16, color: Colors.grey.shade600),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          jobOffer.location!,
+                          jobOffer.location,
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.grey.shade600,
@@ -634,19 +633,19 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         ),
                       ),
                     ],
-                    if (jobOffer.experienceLevel != null) ...[
-                      if (jobOffer.location != null && jobOffer.location!.isNotEmpty)
-                        const SizedBox(width: 16),
-                      Icon(Icons.trending_up, size: 16, color: Colors.grey.shade600),
-                      const SizedBox(width: 4),
-                      Text(
-                        jobOffer.experienceLevel!,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.grey.shade600,
-                        ),
+                    ...[
+                    if (jobOffer.location.isNotEmpty)
+                      const SizedBox(width: 16),
+                    Icon(Icons.trending_up, size: 16, color: Colors.grey.shade600),
+                    const SizedBox(width: 4),
+                    Text(
+                      jobOffer.experienceLevel,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
                       ),
-                    ],
+                    ),
+                  ],
                   ],
                 ),
                 const SizedBox(height: 12),

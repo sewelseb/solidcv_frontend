@@ -51,7 +51,7 @@ class Certificate {
       'ipfsHash': ipfsHash,
       'documentIPFSUrl': documentIPFSUrl,
       'teachingInstitutionName': teachingInstitutionName,
-      'fileExtention': file != null ? file!.path.split('.').last : null,
+      'fileExtention': file?.path.split('.').last,
       'publicationDateAsTimestamp': publicationDate != null ? DateTime.parse(publicationDate!).millisecondsSinceEpoch*1000 : null,
     };
   }

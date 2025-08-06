@@ -11,11 +11,11 @@ class EducationMobileCard extends StatefulWidget {
   final VoidCallback? onCertificateDeleted; // Add this callback
 
   const EducationMobileCard({
-    Key? key,
+    super.key,
     required this.certificate,
     required this.isValidated,
     this.onCertificateDeleted, // Add this parameter
-  }) : super(key: key);
+  });
 
   @override
   State<EducationMobileCard> createState() => _EducationMobileCardState();

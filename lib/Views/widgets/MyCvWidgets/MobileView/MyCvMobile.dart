@@ -322,7 +322,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text("Error: \${snapshot.error}");
+                  return const Text("Error: \${snapshot.error}");
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Column(
                     children: snapshot.data!

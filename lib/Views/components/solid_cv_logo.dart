@@ -5,10 +5,10 @@ class SolidCVLogo extends StatelessWidget {
   final bool showText;
 
   const SolidCVLogo({
-    Key? key,
+    super.key,
     this.size = 100.0,
     this.showText = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -218,11 +218,11 @@ class SolidCVIcon extends StatelessWidget {
   final bool showValidation;
 
   const SolidCVIcon({
-    Key? key,
+    super.key,
     this.size = 40.0,
     this.backgroundColor,
     this.showValidation = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

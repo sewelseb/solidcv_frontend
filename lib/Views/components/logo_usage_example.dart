@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/components/solid_cv_logo.dart';
 
 class LogoUsageExample extends StatelessWidget {
-  const LogoUsageExample({Key? key}) : super(key: key);
+  const LogoUsageExample({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class LogoUsageExample extends StatelessWidget {
 
 // Example of how to use in your existing AppBar
 class ExampleAppBarUsage extends StatelessWidget implements PreferredSizeWidget {
-  const ExampleAppBarUsage({Key? key}) : super(key: key);
+  const ExampleAppBarUsage({super.key});
 
   @override
   Widget build(BuildContext context) {

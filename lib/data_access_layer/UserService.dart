@@ -16,8 +16,9 @@ import 'package:http/http.dart' as http;
 class UserService extends IUserService {
   @override
   Future<User> createUser(User user) async {
-    if (user.email == null || user.password == null)
+    if (user.email == null || user.password == null) {
       throw Exception('email and password can\'t be null');
+    }
 
     final response = await http.post(
       Uri.parse(BackenConnection().url + BackenConnection().registerApi),
@@ -42,8 +43,9 @@ class UserService extends IUserService {
 
   @override
   Future<User> login(User user) async {
-    if (user.email == null || user.password == null)
+    if (user.email == null || user.password == null) {
       throw Exception('email and password can\'t be null');
+    }
 
     final response = await http.post(
       Uri.parse(BackenConnection().url + BackenConnection().loginApi),

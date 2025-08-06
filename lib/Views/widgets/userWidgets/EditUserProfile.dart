@@ -110,7 +110,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
   InputDecoration _inputDecoration(String label, {IconData? icon}) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: icon != null ? Icon(icon, color: Color(0xFF7B3FE4)) : null,
+      prefixIcon: icon != null ? Icon(icon, color: const Color(0xFF7B3FE4)) : null,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),

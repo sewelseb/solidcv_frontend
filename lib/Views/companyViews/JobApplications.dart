@@ -300,7 +300,7 @@ class _JobApplicationsState extends State<JobApplications> {
                   return Container(
                     height: 120,
                     padding: EdgeInsets.all(isMobile ? 20 : 32),
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),

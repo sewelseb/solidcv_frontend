@@ -1,6 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
-import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/config/IPFSConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/EtheriumWalletService.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IIPFSService.dart';

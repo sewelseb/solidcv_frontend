@@ -157,7 +157,7 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
                                               backgroundColor:
                                                   Colors.deepPurple.shade50,
                                               radius: 21,
-                                              child: Icon(Icons.person,
+                                              child: const Icon(Icons.person,
                                                   color: Colors.deepPurple,
                                                   size: 25),
                                             ),

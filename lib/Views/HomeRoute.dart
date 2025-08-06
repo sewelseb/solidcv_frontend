@@ -84,7 +84,7 @@ class _HomeRouteState extends State<HomeRoute> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: isMobile ? (screenHeight < 600 ? 600 : screenHeight * 0.9) : (screenHeight < 700 ? 700 : screenHeight),
               width: double.infinity,
               child: isMobile
@@ -110,7 +110,7 @@ class _HomeRouteState extends State<HomeRoute> {
       // Image section - flexible height
       Expanded(
         flex: 4, // 40% of available space
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: Image.asset(
             'lib/assets/hero_image.png',
@@ -584,8 +584,8 @@ class TargetAudienceSection extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 32 : 48),
           isMobile 
-            ? Column(
-                children: const [
+            ? const Column(
+                children: [
                   _TargetCard(
                     title: "For All Professionals",
                     description:
@@ -713,8 +713,8 @@ class PricingSection extends StatelessWidget {
           SizedBox(height: isMobile ? 32 : 48),
           Center(
             child: isMobile 
-              ? Column(
-                  children: const [
+              ? const Column(
+                  children: [
                     _UnifiedPricingCard(
                       title: "User",
                       freeFeatures: ["Create and share your CV"],

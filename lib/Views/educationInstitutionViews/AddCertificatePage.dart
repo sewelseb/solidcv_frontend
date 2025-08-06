@@ -43,7 +43,7 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
-    final ScrollController _outerScrollController = ScrollController();
+    final ScrollController outerScrollController = ScrollController();
 
     return Scaffold(
       appBar: AppBar(
@@ -53,12 +53,12 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
       ),
       backgroundColor: const Color(0xFFF7F8FC),
       body: Scrollbar(
-        controller: _outerScrollController,
+        controller: outerScrollController,
         thumbVisibility: true,
         thickness: 7,
         radius: const Radius.circular(16),
         child: SingleChildScrollView(
-          controller: _outerScrollController,
+          controller: outerScrollController,
           padding: EdgeInsets.symmetric(vertical: isMobile ? 12 : 32),
           child: Align(
             alignment: Alignment.topCenter,

@@ -13,7 +13,7 @@ import 'dart:io';
 import 'package:solid_cv/models/User.dart';
 
 class MyEducation extends StatefulWidget {
-  const MyEducation({Key? key}) : super(key: key);
+  const MyEducation({super.key});
 
   @override
   _MyEducationState createState() => _MyEducationState();

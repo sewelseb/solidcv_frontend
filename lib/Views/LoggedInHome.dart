@@ -91,21 +91,15 @@ class _LoggedInHomeState extends State<LoggedInHome> {
 
     final wallet = await _blockchainWalletBll.createANewWalletAddressForCurrentUser(password);
     if (mounted) {
-      if (wallet != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('New wallet created and address saved!')),
-        );
-        setState(() {
-          _createdWallet = wallet;
-          _currentUserFuture = _userBll.getCurrentUser();
-          _passwordController.clear();
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to create wallet.')),
-        );
-      }
-    }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('New wallet created and address saved!')),
+      );
+      setState(() {
+        _createdWallet = wallet;
+        _currentUserFuture = _userBll.getCurrentUser();
+        _passwordController.clear();
+      });
+        }
   }
 
   InputDecoration _textFieldDecoration(String label, {IconData? prefixIcon, Widget? suffixIcon}) {

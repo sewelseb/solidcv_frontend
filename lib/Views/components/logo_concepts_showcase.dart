@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/components/logo_concepts.dart';
 
 class LogoConceptsShowcase extends StatelessWidget {
-  const LogoConceptsShowcase({Key? key}) : super(key: key);
+  const LogoConceptsShowcase({super.key});
 
   @override
   Widget build(BuildContext context) {

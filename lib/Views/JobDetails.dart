@@ -425,11 +425,11 @@ class _JobDetailsState extends State<JobDetails> {
                               child: Column(
                                 children: [
                                   _buildInfoRow('Job Type', jobOffer.jobType, Icons.schedule),
-                                  if (jobOffer.jobType != null) const SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   _buildInfoRow('Experience Level', jobOffer.experienceLevel, Icons.trending_up),
-                                  if (jobOffer.experienceLevel != null) const SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   _buildInfoRow('Location', jobOffer.location, Icons.location_on),
-                                  if (jobOffer.location != null && jobOffer.salary != null) const SizedBox(height: 12),
+                                  if (jobOffer.salary != null) const SizedBox(height: 12),
                                   if (jobOffer.salary != null)
                                     _buildInfoRow('Salary', jobOffer.salary!.toString(), Icons.attach_money),
                                   if (jobOffer.createdAt != null) const SizedBox(height: 12),

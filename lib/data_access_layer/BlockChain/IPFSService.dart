@@ -11,11 +11,11 @@ import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:http/http.dart' as http;
 
 class IPFSService extends IIPFSService {
-  String _ipfsUrl = IPFSConnection().gatewayUrl;
-  String _pinataUrl = IPFSConnection().pinJsonUrl;
-  String _apiKey = IPFSConnection().apiKey;
-  String _apiSecret = IPFSConnection().apiSecret;
-  String _jwt = IPFSConnection().jwt;
+  final String _ipfsUrl = IPFSConnection().gatewayUrl;
+  final String _pinataUrl = IPFSConnection().pinJsonUrl;
+  final String _apiKey = IPFSConnection().apiKey;
+  final String _apiSecret = IPFSConnection().apiSecret;
+  final String _jwt = IPFSConnection().jwt;
 
   @override
   Future<String> saveWorkEvent(WorkEvent event) async {
@@ -83,7 +83,7 @@ Future<WorkEvent> getWorkEvent(String ipfsHash) async {
     var url = Uri.parse(IPFSConnection().pinJsonUrl);
     var body = jsonEncode({
       "pinataMetadata": {
-        "name": "Certificate-"+ipfsCertificate.id.toString(),
+        "name": "Certificate-${ipfsCertificate.id}",
       },
       // assuming client sends `nftMeta` json
       "pinataContent": ipfsCertificate.toJson(),
@@ -112,7 +112,7 @@ Future<WorkEvent> getWorkEvent(String ipfsHash) async {
 
     var request = http.MultipartRequest('POST', url)
       ..headers.addAll(headers)
-      ..files.add(http.MultipartFile.fromBytes('file', certificate.file!.readAsBytesSync(), filename: "certificateDocument-"+certificate.title!));
+      ..files.add(http.MultipartFile.fromBytes('file', certificate.file!.readAsBytesSync(), filename: "certificateDocument-${certificate.title!}"));
 
     final response = await request.send();
 
