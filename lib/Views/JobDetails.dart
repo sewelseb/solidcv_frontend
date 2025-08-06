@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
-import 'package:solid_cv/business_layer/UserBll.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
 
