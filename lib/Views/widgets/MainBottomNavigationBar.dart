@@ -14,8 +14,6 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) async {
-    if (index == _selectedIndex) return;
-
     switch (index) {
       case 0:
         Navigator.pushNamed(context, '/loggedin/home');
@@ -49,6 +47,10 @@ class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
     else if (route == '/my-organisation')
       _selectedIndex = 2;
     else if (route == '/verify-a-cv') _selectedIndex = 3;
+    else {
+      //no selected index
+      _selectedIndex = 4;
+    }
 
     final isMobile = MediaQuery.of(context).size.width < 600;
 
