@@ -85,7 +85,7 @@ class _HomeRouteState extends State<HomeRoute> {
         child: Column(
           children: [
             SizedBox(
-              height: isMobile ? (screenHeight < 600 ? 600 : screenHeight * 0.9) : (screenHeight < 700 ? 700 : screenHeight),
+                height: isMobile ? null : (screenHeight < 700 ? 700 : screenHeight),
               width: double.infinity,
               child: isMobile
                   ? _buildMobileLayout(screenWidth, screenHeight)
@@ -103,44 +103,36 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Widget _buildMobileLayout(double screenWidth, double screenHeight) {
-  final availableHeight = screenHeight < 600 ? 600 : screenHeight * 0.9;
-  
   return Column(
     children: [
-      // Image section - flexible height
-      Expanded(
-        flex: 4, // 40% of available space
-        child: SizedBox(
+      // Image section - fixed height
+      SizedBox(
+        height: screenHeight * 0.35, // Fixed 35% of screen height for image
+        width: double.infinity,
+        child: Image.asset(
+          'lib/assets/hero_image.png',
           width: double.infinity,
-          child: Image.asset(
-            'lib/assets/hero_image.png',
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+          fit: BoxFit.cover,
         ),
       ),
-      // Form section - flexible height
-      Expanded(
-        flex: 6, // 60% of available space
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 16, // Reduced padding
-          ),
-          child: Center(
-            child: _LoginForm(
-              isMobile: true,
-              obscurePassword: _obscurePassword,
-              onTogglePassword: () {
-                setState(() => _obscurePassword = !_obscurePassword);
-              },
-              emailController: _emailController,
-              passwordController: _passwordController,
-              emailFocusNode: _emailFocusNode,
-              passwordFocusNode: _passwordFocusNode,
-              onLoginPressed: _handleLogin,
-            ),
-          ),
+      // Form section - flexible height based on content
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+        child: _LoginForm(
+          isMobile: true,
+          obscurePassword: _obscurePassword,
+          onTogglePassword: () {
+            setState(() => _obscurePassword = !_obscurePassword);
+          },
+          emailController: _emailController,
+          passwordController: _passwordController,
+          emailFocusNode: _emailFocusNode,
+          passwordFocusNode: _passwordFocusNode,
+          onLoginPressed: _handleLogin,
         ),
       ),
     ],
