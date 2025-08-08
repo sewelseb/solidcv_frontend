@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
@@ -489,53 +490,321 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
     final isMobile = screenWidth < 600;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Job Opportunities',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: _primaryColor,
-        elevation: 1,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          FutureBuilder<User?>(
-            future: _currentUserFuture,
-            builder: (context, snapshot) {
-              final user = snapshot.data;
-              if (user != null) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Center(
-                    child: Text(
-                      'Welcome, ${user.firstName}',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+      backgroundColor: Colors.grey.shade50,
+      body: FutureBuilder<List<JobOffer>>(
+        future: _jobOffersFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
+                  const SizedBox(height: 16),
+                  Text('Error loading job offers: ${snapshot.error}'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _refreshJobOffers,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.work_off, size: 64, color: Colors.grey.shade400),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No job offers available',
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Check back later for new opportunities',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final allJobOffers = snapshot.data!;
+          final filteredJobOffers = _filterJobOffers(allJobOffers);
+          final uniqueLocations = _getUniqueLocations(allJobOffers);
+
+          return RefreshIndicator(
+            onRefresh: _refreshJobOffers,
+            child: CustomScrollView(
+              slivers: [
+                // Collapsible Search and Filter Header
+                SliverAppBar(
+                  expandedHeight: isMobile ? 400 : 380,
+                  floating: false,
+                  pinned: true,
+                  backgroundColor: _primaryColor,
+                  title: FutureBuilder<User?>(
+                    future: _currentUserFuture,
+                    builder: (context, snapshot) {
+                      final user = snapshot.data;
+                      if (user != null) {
+                        return Text(
+                          'Welcome, ${user.firstName}',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          'Job Opportunities',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  actions: [
+                    // Results count in collapsed state
+                    Container(
+                      margin: const EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${filteredJobOffers.length} jobs',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    FutureBuilder<User?>(
+                      future: _currentUserFuture,
+                      builder: (context, snapshot) {
+                        final user = snapshot.data;
+                        if (user == null) {
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              TextButton(
+                                onPressed: () => Navigator.pushNamed(context, '/login'),
+                                child: const Text('Login', style: TextStyle(color: Colors.white)),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pushNamed(context, '/register'),
+                                child: const Text('Register', style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [_gradientStart, _gradientEnd],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: SafeArea(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            isMobile ? 20 : 32,
+                            60, // Account for app bar
+                            isMobile ? 20 : 32,
+                            20,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header Section
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                                    ),
+                                    child: const Icon(
+                                      Icons.search,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Find Your Dream Job',
+                                          style: GoogleFonts.inter(
+                                            fontSize: isMobile ? 18 : 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Discover opportunities that match your skills',
+                                          style: GoogleFonts.inter(
+                                            fontSize: isMobile ? 13 : 14,
+                                            color: Colors.white.withOpacity(0.9),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              
+                              // Search Bar
+                              Container(
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: TextField(
+                                  controller: _searchController,
+                                  style: GoogleFonts.inter(
+                                    color: Colors.black87,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Search jobs...',
+                                    hintStyle: GoogleFonts.inter(
+                                      color: Colors.grey.shade500,
+                                      fontSize: 14,
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: _primaryColor,
+                                      size: 18,
+                                    ),
+                                    suffixIcon: _searchQuery.isNotEmpty
+                                        ? IconButton(
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: Colors.grey.shade600,
+                                              size: 18,
+                                            ),
+                                            onPressed: () {
+                                              _searchController.clear();
+                                              setState(() {
+                                                _searchQuery = '';
+                                              });
+                                            },
+                                          )
+                                        : null,
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _searchQuery = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              
+                              // Filters - Only visible when expanded
+                              _buildCollapsibleFilters(uniqueLocations, isMobile),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                );
-              } else {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/login'),
-                      child: const Text('Login', style: TextStyle(color: Colors.white)),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/register'),
-                      child: const Text('Register', style: TextStyle(color: Colors.white)),
-                    ),
-                  ],
-                );
-              }
-            },
-          ),
-        ],
+                ),
+                
+                // Job Offers List
+                SliverPadding(
+                  padding: EdgeInsets.all(isMobile ? 16 : 24),
+                  sliver: filteredJobOffers.isEmpty
+                      ? SliverFillRemaining(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search_off, size: 64, color: Colors.grey.shade400),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No jobs match your filters',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 18,
+                                    color: Colors.grey.shade600,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Try adjusting your search criteria',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    color: Colors.grey.shade500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final jobOffer = filteredJobOffers[index];
+                              return FutureBuilder<User?>(
+                                future: _currentUserFuture,
+                                builder: (context, userSnapshot) {
+                                  final currentUser = userSnapshot.data;
+                                  return _buildJobOfferCard(jobOffer, currentUser, isMobile);
+                                },
+                              );
+                            },
+                            childCount: filteredJobOffers.length,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
       // Conditionally show bottom navigation bar only for connected users
       bottomNavigationBar: FutureBuilder<User?>(
@@ -545,242 +814,9 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
           if (user != null) {
             return const MainBottomNavigationBar();
           } else {
-            return const SizedBox.shrink(); // No bottom navigation bar for non-connected users
+            return const SizedBox.shrink();
           }
         },
-      ),
-      backgroundColor: Colors.grey.shade50,
-      body: RefreshIndicator(
-        onRefresh: _refreshJobOffers,
-        child: FutureBuilder<List<JobOffer>>(
-          future: _jobOffersFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
-                    const SizedBox(height: 16),
-                    Text('Error loading job offers: ${snapshot.error}'),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _refreshJobOffers,
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.work_off, size: 64, color: Colors.grey.shade400),
-                    const SizedBox(height: 16),
-                    Text(
-                      'No job offers available',
-                      style: GoogleFonts.inter(
-                        fontSize: 18,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Check back later for new opportunities',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.grey.shade500,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            final allJobOffers = snapshot.data!;
-            final filteredJobOffers = _filterJobOffers(allJobOffers);
-            final uniqueLocations = _getUniqueLocations(allJobOffers);
-
-            return Column(
-              children: [
-                // Search and Filter Section
-                Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.all(isMobile ? 16 : 24),
-                  child: Column(
-                    children: [
-                      // Search Bar
-                      TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Search jobs, companies, or keywords...',
-                          prefixIcon: const Icon(Icons.search),
-                          suffixIcon: _searchQuery.isNotEmpty
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    setState(() {
-                                      _searchQuery = '';
-                                    });
-                                  },
-                                )
-                              : null,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: _primaryColor, width: 2),
-                          ),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      
-                      // Filters
-                      isMobile
-                          ? Column(
-                              children: [
-                                _buildFilterDropdown(
-                                  label: 'Location',
-                                  value: _selectedLocation,
-                                  items: uniqueLocations.toList(),
-                                  onChanged: (value) => setState(() => _selectedLocation = value!),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildFilterDropdown(
-                                        label: 'Type',
-                                        value: _selectedJobType,
-                                        items: _jobTypes,
-                                        onChanged: (value) => setState(() => _selectedJobType = value!),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: _buildFilterDropdown(
-                                        label: 'Level',
-                                        value: _selectedExperienceLevel,
-                                        items: _experienceLevels,
-                                        onChanged: (value) => setState(() => _selectedExperienceLevel = value!),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: _buildFilterDropdown(
-                                    label: 'Location',
-                                    value: _selectedLocation,
-                                    items: uniqueLocations.toList(),
-                                    onChanged: (value) => setState(() => _selectedLocation = value!),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: _buildFilterDropdown(
-                                    label: 'Type',
-                                    value: _selectedJobType,
-                                    items: _jobTypes,
-                                    onChanged: (value) => setState(() => _selectedJobType = value!),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: _buildFilterDropdown(
-                                    label: 'Level',
-                                    value: _selectedExperienceLevel,
-                                    items: _experienceLevels,
-                                    onChanged: (value) => setState(() => _selectedExperienceLevel = value!),
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ],
-                  ),
-                ),
-                
-                // Results
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(isMobile ? 16 : 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${filteredJobOffers.length} Job${filteredJobOffers.length != 1 ? 's' : ''} Found',
-                          style: GoogleFonts.inter(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Expanded(
-                          child: filteredJobOffers.isEmpty
-                              ? Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.search_off, size: 64, color: Colors.grey.shade400),
-                                      const SizedBox(height: 16),
-                                      Text(
-                                        'No jobs match your filters',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 18,
-                                          color: Colors.grey.shade600,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        'Try adjusting your search criteria',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : ListView.builder(
-                                  itemCount: filteredJobOffers.length,
-                                  itemBuilder: (context, index) {
-                                    final jobOffer = filteredJobOffers[index];
-                                    return FutureBuilder<User?>(
-                                      future: _currentUserFuture,
-                                      builder: (context, userSnapshot) {
-                                        final currentUser = userSnapshot.data;
-                                        return _buildJobOfferCard(jobOffer, currentUser, isMobile);
-                                      },
-                                    );
-                                  },
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
       ),
     );
   }
@@ -790,40 +826,142 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
     required String value,
     required List<String> items,
     required ValueChanged<String?> onChanged,
+    required IconData icon,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade700,
-            fontSize: 12,
+        Row(
+          children: [
+            Icon(
+              icon,
+              size: 14,
+              color: _primaryColor,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+                fontSize: 13,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: DropdownButtonFormField<String>(
+            value: value,
+            onChanged: onChanged,
+            dropdownColor: Colors.white,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              isDense: true,
+            ),
+            icon: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.grey.shade600,
+            ),
+            items: items.map((String item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }).toList(),
           ),
         ),
-        const SizedBox(height: 4),
-        DropdownButtonFormField<String>(
-          value: value,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade300),
+      ],
+    );
+  }
+
+  Widget _buildGlassFilterDropdown({
+    required String label,
+    required String value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+    required IconData icon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icon,
+              size: 14,
+              color: Colors.white.withOpacity(0.9),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            isDense: true,
-          ),
-          items: items.map((String item) {
-            return DropdownMenuItem<String>(
-              value: item,
-              child: Text(
-                item,
-                style: GoogleFonts.inter(fontSize: 14),
-                overflow: TextOverflow.ellipsis,
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w600,
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 13,
               ),
-            );
-          }).toList(),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.white.withOpacity(0.3)),
+          ),
+          child: DropdownButtonFormField<String>(
+            value: value,
+            onChanged: onChanged,
+            dropdownColor: _primaryColor.withOpacity(0.95),
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              isDense: true,
+            ),
+            icon: const Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+            items: items.map((String item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(
+                  item,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
@@ -1049,6 +1187,125 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCollapsibleFilters(Set<String> uniqueLocations, bool isMobile) {
+    return Container(
+      child: isMobile 
+        ? Column( // Stack filters vertically on mobile
+            children: [
+              _buildCompactFilter(
+                'Location',
+                _selectedLocation,
+                uniqueLocations.toList(),
+                (value) => setState(() => _selectedLocation = value!),
+                Icons.location_on,
+              ),
+              const SizedBox(height: 8),
+              _buildCompactFilter(
+                'Type',
+                _selectedJobType,
+                _jobTypes,
+                (value) => setState(() => _selectedJobType = value!),
+                Icons.work,
+              ),
+              const SizedBox(height: 8),
+              _buildCompactFilter(
+                'Level',
+                _selectedExperienceLevel,
+                _experienceLevels,
+                (value) => setState(() => _selectedExperienceLevel = value!),
+                Icons.trending_up,
+              ),
+            ],
+          )
+        : Row( // Row layout for desktop
+            children: [
+              Expanded(
+                flex: 2,
+                child: _buildCompactFilter(
+                  'Location',
+                  _selectedLocation,
+                  uniqueLocations.toList(),
+                  (value) => setState(() => _selectedLocation = value!),
+                  Icons.location_on,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildCompactFilter(
+                  'Type',
+                  _selectedJobType,
+                  _jobTypes,
+                  (value) => setState(() => _selectedJobType = value!),
+                  Icons.work,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildCompactFilter(
+                  'Level',
+                  _selectedExperienceLevel,
+                  _experienceLevels,
+                  (value) => setState(() => _selectedExperienceLevel = value!),
+                  Icons.trending_up,
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
+  Widget _buildCompactFilter(
+    String label,
+    String value,
+    List<String> items,
+    ValueChanged<String?> onChanged,
+    IconData icon,
+  ) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+    
+    return Container(
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white.withOpacity(0.5)),
+      ),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        onChanged: onChanged,
+        dropdownColor: Colors.white,
+        style: GoogleFonts.inter(
+          fontSize: isMobile ? 12 : 11,
+          color: Colors.black87,
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, size: 14, color: _primaryColor),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          isDense: true,
+        ),
+        icon: const Icon(Icons.keyboard_arrow_down, size: 14),
+        items: items.map((String item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(
+              // Show full text on mobile since we have more width
+              isMobile ? item : (
+                item == 'All Locations' ? 'All' : 
+                item == 'All Types' ? 'All' :
+                item == 'All Levels' ? 'All' : 
+                item.length > 8 ? '${item.substring(0, 8)}...' : item
+              ),
+              style: GoogleFonts.inter(fontSize: isMobile ? 12 : 11),
+              overflow: TextOverflow.ellipsis,
+            ),
+          );
+        }).toList(),
       ),
     );
   }
