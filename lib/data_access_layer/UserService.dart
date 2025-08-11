@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:typed_data';
+import 'dart:io';
 
+import 'package:file_picker/src/platform_file.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -568,6 +570,49 @@ class UserService extends IUserService {
     if (response.statusCode != 200) {
       throw Exception(
           jsonDecode(response.body)['error'] ?? 'Failed to reset password');
+    }
+  }
+
+  @override
+  Future<String> uploadCV(PlatformFile file) async {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse(BackenConnection().url + BackenConnection().uploadCvApi),
+    );
+    request.headers['X-Auth-Token'] = await APIConnectionHelper.getJwtToken();
+    
+    // Handle both bytes and path cases
+    if (file.bytes != null) {
+      // Web platform - use bytes
+      request.files.add(http.MultipartFile.fromBytes(
+        'cv',
+        file.bytes!,
+        filename: file.name,
+      ));
+    } else if (file.path != null) {
+      // Mobile/Desktop platform - use path
+      request.files.add(await http.MultipartFile.fromPath(
+        'cv',
+        file.path!,
+        filename: file.name,
+      ));
+    } else {
+      throw Exception('No file data available');
+    }
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      // Parse the response to get the actual file path/URL from server
+      final responseData = await response.stream.bytesToString();
+      final jsonResponse = jsonDecode(responseData);
+      
+      // Return the server's response (could be file path, URL, or success message)
+      return jsonResponse['filePath'] ?? jsonResponse['message'] ?? 'CV uploaded successfully';
+    } else {
+      final responseData = await response.stream.bytesToString();
+      final errorMessage = jsonDecode(responseData)['error'] ?? 'Failed to upload CV';
+      throw Exception(errorMessage);
     }
   }
   

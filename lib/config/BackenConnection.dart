@@ -125,4 +125,6 @@ class BackenConnection {
 
   String get getAIFeedbackApi => "/api/protected/company/job-offer-applicants/get-ai-feedback/";
 
+  String get uploadCvApi => "/api/protected/extract-cv-data";
+
 }

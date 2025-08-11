@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:file_picker/src/platform_file.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -58,6 +59,8 @@ abstract class IUserService {
   void deleteManualExperience(int manualExperienceId);
 
   void deleteManualyAddedCertificate(int manualExperienceId);
+
+  Future<String> uploadCV(PlatformFile file);
 
 
 }

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:file_picker/src/platform_file.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
@@ -148,5 +149,10 @@ class UserBll extends IUserBLL {
   @override
   void deleteManualyAddedCertificate(int manualExperienceId) {
     return _userService.deleteManualyAddedCertificate(manualExperienceId);
+  }
+
+  @override
+  Future<String> uploadCV(PlatformFile file) {
+    return _userService.uploadCV(file);
   }
 }

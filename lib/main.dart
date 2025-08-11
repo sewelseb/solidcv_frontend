@@ -32,6 +32,7 @@ import 'package:solid_cv/Views/widgets/EmailWidgets/ResetPasswordPage.dart';
 import 'package:solid_cv/Views/widgets/EmailWidgets/VerifyEmailPage.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/Views/FirstConfiguration.dart';
 
 void main() {
   runApp(const MyApp());
@@ -123,6 +124,11 @@ class MyApp extends StatelessWidget {
             child: ApplicantAIFeedbackView(),
           );
         },
+        '/user/first-configuration': (context) {
+          return const AuthGuard(
+            child: FirstConfiguration(),
+          );
+        },
         '/jobs': (context) => const PublicJobOffers(),
       },
       onGenerateRoute: (settings) {
@@ -168,6 +174,7 @@ class MyApp extends StatelessWidget {
                 JobDetails(jobOfferId: id),
           );
         }
+
         return null; // Let `onUnknownRoute` handle this case.
       },
       onUnknownRoute: (settings) {
