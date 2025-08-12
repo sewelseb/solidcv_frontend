@@ -334,7 +334,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
           ],
           const SizedBox(height: 4),
           Text(
-            '${_formatDate(DateTime.fromMillisecondsSinceEpoch(experience.startDateAsTimestamp ?? 0))} - ${_formatDate(DateTime.fromMillisecondsSinceEpoch(experience.endDateAsTimestamp ?? 0))}',
+            '${_formatDate(DateTime.fromMillisecondsSinceEpoch((experience.startDateAsTimestamp ?? 0)*1000))} - ${(experience.endDateAsTimestamp == null || experience.endDateAsTimestamp == 0) ? 'Present' : _formatDate(DateTime.fromMillisecondsSinceEpoch(experience.endDateAsTimestamp! *1000))}',
             style: GoogleFonts.inter(
               fontSize: 11,
               color: Colors.grey.shade600,
@@ -425,15 +425,20 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
     _descriptionController = TextEditingController(text: widget.experience.description ?? '');
     
     _startDate = widget.experience.startDateAsTimestamp != null 
-        ? DateTime.fromMillisecondsSinceEpoch(widget.experience.startDateAsTimestamp!)
+        ? DateTime.fromMillisecondsSinceEpoch(widget.experience.startDateAsTimestamp!*1000)
         : DateTime.now();
     
-    _endDate = widget.experience.endDateAsTimestamp != null 
-        ? DateTime.fromMillisecondsSinceEpoch(widget.experience.endDateAsTimestamp!)
-        : DateTime.now();
+    if (widget.experience.endDateAsTimestamp == null || widget.experience.endDateAsTimestamp == 0) {
+      _isCurrentJob = true;
+      _endDate = DateTime.now(); // Set to now if it's a current job
+    } else {
+      _isCurrentJob = false;
+      _endDate = DateTime.fromMillisecondsSinceEpoch(widget.experience.endDateAsTimestamp! * 1000);
+    }
+
     
     // Check if this is a current job (end date is very recent or in future)
-    _isCurrentJob = _endDate.isAfter(DateTime.now().subtract(const Duration(days: 30)));
+
   }
 
   @override
@@ -805,8 +810,8 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
               builder: (context, child) {
                 return Theme(
                   data: Theme.of(context).copyWith(
-                    colorScheme: ColorScheme.light(
-                      primary: const Color(0xFF7B3FE4),
+                    colorScheme: const ColorScheme.light(
+                      primary:  Color(0xFF7B3FE4),
                       onPrimary: Colors.white,
                       surface: Colors.white,
                       onSurface: Colors.black,

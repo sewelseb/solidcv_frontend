@@ -437,50 +437,6 @@ class _CVUploadStepState extends State<CVUploadStep>
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Extracted Data Summary:',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey.shade800,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      _buildDataCount(
-                                        Icons.work,
-                                        'Experience',
-                                        (_extractedData!['experiences'] as List?)?.length ?? 0,
-                                        Colors.blue,
-                                      ),
-                                      _buildDataCount(
-                                        Icons.school,
-                                        'Certificates',
-                                        (_extractedData!['certificates'] as List?)?.length ?? 0,
-                                        Colors.orange,
-                                      ),
-                                      _buildDataCount(
-                                        Icons.star,
-                                        'Skills',
-                                        (_extractedData!['skills'] as List?)?.length ?? 0,
-                                        Colors.purple,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ),

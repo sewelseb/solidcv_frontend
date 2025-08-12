@@ -200,7 +200,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             if (hasWalletConnected && _createdWallet == null) {
               return _buildWalletConnectedView(user, isMobile);
             } else {
-              return _buildWalletSetupView(isMobile);
+              return _buildWalletSetupView(isMobile, user); // Pass user to show config button
             }
           },
         ),
@@ -358,7 +358,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Our smart assistant will guide you through setting up your profile, uploading your CV, and optimizing your account for the best experience.',
+                    'Our smart assistant will guide you through setting up your profile, uploading your CV, and optimizing your account for the best experience. You can start this process even without a wallet.',
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: Colors.black54,
@@ -400,7 +400,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       Icon(Icons.timer, size: 16, color: Colors.orange.shade600),
                       const SizedBox(width: 4),
                       Text(
-                        'Takes just 3 minutes',
+                        'Takes just 3 minutes • No wallet required to start',
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.orange.shade600,
@@ -550,7 +550,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildWalletSetupView(bool isMobile) {
+  Widget _buildWalletSetupView(bool isMobile, User user) {
     if (_createdWallet != null) {
       return SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: isMobile ? 20.0 : 40.0, vertical: 24.0),
@@ -563,6 +563,10 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // First Configuration Section - Always show
+          _buildFirstConfigurationSection(isMobile),
+          const SizedBox(height: 32),
+          
           _buildSectionCard(
             title: 'Connect an Existing Wallet',
             description: "If you already have an Base Blochchain wallet, enter its public address to link it to your SolidCV account.",
@@ -607,6 +611,108 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               ),
             ],
             isMobile: isMobile,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Add this new method to build the first configuration section
+  Widget _buildFirstConfigurationSection(bool isMobile) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.orange.shade50, Colors.orange.shade100],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.orange.shade300, width: 1.1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.orange.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 0,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [Colors.orange.shade400, Colors.orange.shade600],
+              ),
+            ),
+            padding: const EdgeInsets.all(12),
+            child: Icon(Icons.psychology, color: Colors.white, size: isMobile ? 24 : 28),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Complete Your Profile Setup',
+            style: GoogleFonts.inter(
+              fontSize: isMobile ? 18 : 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Our smart assistant will guide you through setting up your profile, uploading your CV, and optimizing your account for the best experience. You can start this process even without a wallet.',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Colors.black54,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/user/first-configuration');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange.shade600,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(
+                  vertical: isMobile ? 16 : 18,
+                  horizontal: 24,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+                textStyle: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              icon: const Icon(Icons.auto_fix_high, size: 20),
+              label: const Text('Start Setup Assistant'),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.timer, size: 16, color: Colors.orange.shade600),
+              const SizedBox(width: 4),
+              Text(
+                'Takes just 3 minutes • No wallet required to start',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: Colors.orange.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ],
       ),

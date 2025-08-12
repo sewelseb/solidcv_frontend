@@ -190,7 +190,7 @@ class _WalletStepState extends State<WalletStep>
         setState(() {
           _isValidatingWallet = false;
         });
-        widget.onComplete(_hasWallet!, walletAddress);
+        widget.onComplete(true, walletAddress); // Make sure this is called
       }
     } catch (e) {
       if (mounted) {
@@ -207,6 +207,7 @@ class _WalletStepState extends State<WalletStep>
     // Set the button as clicked immediately to hide it
     setState(() {
       _continueBtnClicked = true;
+      _walletError = null; // Clear any previous errors
     });
     
     final walletAddress = _walletController.text.trim();
@@ -215,13 +216,14 @@ class _WalletStepState extends State<WalletStep>
       await _blockchainWalletBll.saveWalletAddressForCurrentUser(walletAddress);
 
       if (mounted) {
-        widget.onComplete(_hasWallet!, walletAddress);
+        // Successfully saved, call the completion callback
+        widget.onComplete(true, walletAddress); // Pass true for hasWallet and the address
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _walletError = 'Failed to save wallet: ${e.toString()}';
-          _continueBtnClicked = false; // Show button again if there's an error
+          _walletError = 'Failed to save wallet: ${e.toString().replaceAll('Exception: ', '')}';
+          _continueBtnClicked = false; // Reset button state so user can try again
         });
       }
     }
