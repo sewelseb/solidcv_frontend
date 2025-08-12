@@ -616,5 +616,51 @@ class UserService extends IUserService {
     }
   }
   
+  @override
+  void updateManuallyAddedExperience(ManualExperience updatedExperience) async {
+    final response = await http.put(
+      Uri.parse(BackenConnection().url + BackenConnection().updateExperienceApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(updatedExperience.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to update experience');
+    }
+  }
+  
+  @override
+  void updateManuallyAddedCertificate(Certificate updatedCertificate) async {
+    final response = await http.put(
+      Uri.parse(BackenConnection().url + BackenConnection().updateCertificateApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(updatedCertificate.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to update certificate');
+    }
+  }
+  
+  @override
+  void deleteSkill(int id) async {
+    final response = await http.delete(
+      Uri.parse('${BackenConnection().url}${BackenConnection().deleteSkillApi}$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to delete skill');
+    }
+  }
 
 }

@@ -60,4 +60,6 @@ abstract class IUserBLL {
 
   Future<String> uploadCV(PlatformFile file);
 
+  void deleteSkill(int id);
+
 }

@@ -127,4 +127,10 @@ class BackenConnection {
 
   String get uploadCvApi => "/api/protected/extract-cv-data";
 
+  String get updateExperienceApi => "/api/protected/edit-manually-added-work-experience";
+
+  String get updateCertificateApi => "/api/protected/update-manually-added-certification";
+
+  String get deleteSkillApi => "/api/protected/delete-skill/";
+
 }

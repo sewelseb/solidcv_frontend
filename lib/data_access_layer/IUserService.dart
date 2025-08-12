@@ -62,5 +62,11 @@ abstract class IUserService {
 
   Future<String> uploadCV(PlatformFile file);
 
+  void updateManuallyAddedExperience(ManualExperience updatedExperience);
+
+  void updateManuallyAddedCertificate(Certificate updatedCertificate);
+
+  void deleteSkill(int id);
+
 
 }

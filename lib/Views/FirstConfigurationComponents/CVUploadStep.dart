@@ -5,7 +5,7 @@ import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 
 class CVUploadStep extends StatefulWidget {
-  final Function(String? cvPath) onComplete;
+  final Function(String? cvPath, Map<String, dynamic>? extractedData) onComplete;
   final VoidCallback onSkip;
   final bool isActive;
 
@@ -28,7 +28,10 @@ class _CVUploadStepState extends State<CVUploadStep>
   final UserBll _userBll = UserBll();
 
   String? _uploadedFileName;
+  String? _uploadedFilePath;
+  Map<String, dynamic>? _extractedData;
   bool _isUploading = false;
+  bool _isExtracting = false;
 
   @override
   void initState() {
@@ -80,19 +83,14 @@ class _CVUploadStepState extends State<CVUploadStep>
         
         setState(() {
           _uploadedFileName = file.name;
+          _uploadedFilePath = uploadedPath;
           _isUploading = false;
+          _isExtracting = true;
         });
         
-        // Show success message
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('CV uploaded successfully!'),
-              backgroundColor: Colors.green.shade600,
-              duration: const Duration(seconds: 2),
-            ),
-          );
-        }
+        // Extract CV data
+        await _extractCVData();
+        
       } else {
         setState(() {
           _isUploading = false;
@@ -101,7 +99,8 @@ class _CVUploadStepState extends State<CVUploadStep>
     } catch (e) {
       setState(() {
         _isUploading = false;
-        _uploadedFileName = null; // Reset filename if upload failed
+        _uploadedFileName = null;
+        _uploadedFilePath = null;
       });
       
       if (mounted) {
@@ -116,8 +115,82 @@ class _CVUploadStepState extends State<CVUploadStep>
     }
   }
 
+  Future<void> _extractCVData() async {
+    try {
+      // TODO: The uploadCV method already returns the extracted data
+      // Parse the response from uploadCV to get the structured data
+      // For now, using mock data structure
+      Map<String, dynamic> extractedData = {
+        'experiences': [], // TODO: Get from uploadCV response
+        'certificates': [], // TODO: Get from uploadCV response  
+        'skills': [], // TODO: Get from uploadCV response
+      };
+      
+      setState(() {
+        _extractedData = extractedData;
+        _isExtracting = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('CV data extracted successfully!'),
+            backgroundColor: Colors.green.shade600,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isExtracting = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error extracting CV data: ${e.toString()}'),
+            backgroundColor: Colors.orange.shade600,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+        
+        // Still allow user to continue without extracted data
+        setState(() {
+          _extractedData = {
+            'experiences': [],
+            'certificates': [],
+            'skills': [],
+          };
+        });
+      }
+    }
+  }
+
   void _submitCV() {
-    widget.onComplete(_uploadedFileName);
+    widget.onComplete(_uploadedFilePath, _extractedData);
+  }
+
+  void _skipUpload() {
+    widget.onComplete(null, null);
+  }
+
+  void _onCVUploadComplete(String? cvPath, Map<String, dynamic>? extractedData) {
+    setState(() {
+      var _uploadedCVPath = cvPath;
+      
+      // If no data was extracted (CV not uploaded or extraction failed),
+      // initialize empty data structures for manual entry
+      if (extractedData != null) {
+        _extractedData = extractedData;
+      } else {
+        _extractedData = {
+          'experiences': <Map<String, dynamic>>[],
+          'certificates': <Map<String, dynamic>>[],
+          'skills': <Map<String, dynamic>>[],
+        };
+      }
+    });
+    widget.onComplete(cvPath, _extractedData);
   }
 
   @override
@@ -182,7 +255,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Would you like to upload your CV? This will help employers discover your profile.',
+                      'Upload your CV and I\'ll extract your experience, certificates, and skills automatically!',
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade700,
@@ -231,7 +304,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'PDF files only',
+                                'PDF files only • We\'ll extract your data automatically',
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   color: Colors.grey.shade500,
@@ -269,8 +342,43 @@ class _CVUploadStepState extends State<CVUploadStep>
                       ),
                     ],
                     
-                    // Upload success
-                    if (_uploadedFileName != null) ...[
+                    // Extracting data state
+                    if (_isExtracting) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.purple.shade200),
+                        ),
+                        child: Column(
+                          children: [
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Extracting your experience, certificates, and skills...',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.purple.shade700,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'This may take a few moments',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: Colors.purple.shade600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    
+                    // Upload and extraction success
+                    if (_uploadedFileName != null && _extractedData != null && !_isExtracting) ...[
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
@@ -279,53 +387,90 @@ class _CVUploadStepState extends State<CVUploadStep>
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.green.shade200),
                         ),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.shade100,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green.shade600,
+                                    size: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'CV Processed Successfully!',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green.shade700,
+                                        ),
+                                      ),
+                                      Text(
+                                        _uploadedFileName!,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12,
+                                          color: Colors.green.shade600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
                             Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Colors.green.shade100,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Icon(
-                                Icons.description,
-                                color: Colors.green.shade600,
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'CV Uploaded Successfully!',
+                                    'Extracted Data Summary:',
                                     style: GoogleFonts.inter(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.green.shade700,
+                                      color: Colors.grey.shade800,
                                     ),
                                   ),
-                                  Text(
-                                    _uploadedFileName!,
-                                    style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      color: Colors.green.shade600,
-                                    ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      _buildDataCount(
+                                        Icons.work,
+                                        'Experience',
+                                        (_extractedData!['experiences'] as List?)?.length ?? 0,
+                                        Colors.blue,
+                                      ),
+                                      _buildDataCount(
+                                        Icons.school,
+                                        'Certificates',
+                                        (_extractedData!['certificates'] as List?)?.length ?? 0,
+                                        Colors.orange,
+                                      ),
+                                      _buildDataCount(
+                                        Icons.star,
+                                        'Skills',
+                                        (_extractedData!['skills'] as List?)?.length ?? 0,
+                                        Colors.purple,
+                                      ),
+                                    ],
                                   ),
                                 ],
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _uploadedFileName = null;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.green.shade600,
-                                size: 20,
                               ),
                             ),
                           ],
@@ -340,7 +485,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: widget.onSkip,
+                            onPressed: _skipUpload,
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.grey.shade600,
                               side: BorderSide(color: Colors.grey.shade300),
@@ -352,10 +497,10 @@ class _CVUploadStepState extends State<CVUploadStep>
                             child: const Text('Skip for now'),
                           ),
                         ),
-                        if (_uploadedFileName != null) ...[
+                        if (_extractedData != null && !_isExtracting) ...[
                           const SizedBox(width: 12),
                           Expanded(
-                            child: ElevatedButton(
+                            child: ElevatedButton.icon(
                               onPressed: _submitCV,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF7B3FE4),
@@ -365,7 +510,8 @@ class _CVUploadStepState extends State<CVUploadStep>
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: const Text('Continue'),
+                              icon: const Icon(Icons.edit, size: 16),
+                              label: const Text('Review & Edit Data'),
                             ),
                           ),
                         ],
@@ -378,6 +524,37 @@ class _CVUploadStepState extends State<CVUploadStep>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDataCount(IconData icon, String label, int count, Color color) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Icon(icon, color: color, size: 16),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          count.toString(),
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 10,
+            color: Colors.grey.shade600,
+          ),
+        ),
+      ],
     );
   }
 

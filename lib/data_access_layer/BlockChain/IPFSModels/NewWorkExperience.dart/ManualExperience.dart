@@ -41,6 +41,7 @@ class ManualExperience {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'company': company,
       'description': description,

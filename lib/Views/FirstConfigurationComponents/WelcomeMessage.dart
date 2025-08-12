@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeMessage extends StatefulWidget {
-  const WelcomeMessage({super.key});
+  final VoidCallback? onStartSetup;
+  
+  const WelcomeMessage({
+    super.key,
+    this.onStartSetup,
+  });
 
   @override
   State<WelcomeMessage> createState() => _WelcomeMessageState();
@@ -176,6 +181,35 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    // Start Setup Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Handle start setup action
+                          widget.onStartSetup?.call();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF7B3FE4),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 2,
+                        ),
+                        icon: const Icon(Icons.rocket_launch, size: 18),
+                        label: Text(
+                          'Start Setup',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ],
