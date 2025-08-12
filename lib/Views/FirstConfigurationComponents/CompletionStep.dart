@@ -111,7 +111,7 @@ class _CompletionStepState extends State<CompletionStep>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '🎉 Setup Complete!',
+                      '🎉 Welcome to SolidCV!',
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -120,166 +120,98 @@ class _CompletionStepState extends State<CompletionStep>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Great! Your account is now configured and ready to use.',
+                      'Your account is now set up and ready to use. Choose where you\'d like to start your journey:',
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade700,
                         height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     
-                    // Configuration summary
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade200),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Configuration Summary:',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey.shade800,
+                    // Navigation buttons
+                    Column(
+                      children: [
+                        // Home Page Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _navigateToPage('/loggedin/home'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF7B3FE4),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
+                            ),
+                            icon: const Icon(Icons.home, size: 20),
+                            label: Text(
+                              'Go to Home Page',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          
-                          // Wallet status
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade100,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  Icons.account_balance_wallet,
-                                  color: Colors.green.shade600,
-                                  size: 16,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Blockchain Wallet',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                    ),
-                                    Text(
-                                      widget.hasWallet == true ? 'Connected' : 'Created',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        color: Colors.green.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(
-                                Icons.check_circle,
-                                color: Colors.green.shade600,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                          
-                          if (widget.walletAddress != null) ...[
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.grey.shade300),
-                              ),
-                              child: Text(
-                                widget.walletAddress!,
-                                style: GoogleFonts.inter(
-                                  fontSize: 11,
-                                  color: Colors.grey.shade600,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 12),
+                        
+                        // CV Page Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToPage('/my-cv'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF7B3FE4),
+                              side: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                          ],
-                          
-                          const SizedBox(height: 16),
-                          
-                          // CV status
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: widget.hasCVUploaded 
-                                      ? Colors.green.shade100 
-                                      : Colors.orange.shade100,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  Icons.description,
-                                  color: widget.hasCVUploaded 
-                                      ? Colors.green.shade600 
-                                      : Colors.orange.shade600,
-                                  size: 16,
-                                ),
+                            icon: const Icon(Icons.description, size: 20),
+                            label: Text(
+                              'View My CV',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'CV Upload',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                    ),
-                                    Text(
-                                      widget.hasCVUploaded ? 'Uploaded' : 'Skipped',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        color: widget.hasCVUploaded 
-                                            ? Colors.green.shade600 
-                                            : Colors.orange.shade600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Icon(
-                                widget.hasCVUploaded 
-                                    ? Icons.check_circle 
-                                    : Icons.info,
-                                color: widget.hasCVUploaded 
-                                    ? Colors.green.shade600 
-                                    : Colors.orange.shade600,
-                                size: 18,
-                              ),
-                            ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 12),
+                        
+                        // Organization Page Button
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () => _navigateToPage('/my-organisation'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.green.shade600,
+                              side: BorderSide(color: Colors.green.shade600, width: 2),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            icon: const Icon(Icons.business, size: 20),
+                            label: Text(
+                              'Create an organization',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     
-                    // Next steps info
+                    // Welcome tip
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
@@ -293,7 +225,7 @@ class _CompletionStepState extends State<CompletionStep>
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'You can now apply for jobs, verify credentials, and manage your professional profile!',
+                              'Tip: You can always access these pages from the navigation menu!',
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 color: Colors.blue.shade700,
@@ -304,33 +236,6 @@ class _CompletionStepState extends State<CompletionStep>
                         ],
                       ),
                     ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // Complete button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: widget.onComplete,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF7B3FE4),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 2,
-                        ),
-                        icon: const Icon(Icons.rocket_launch, size: 20),
-                        label: Text(
-                          'Start Using SolidCV',
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -339,6 +244,14 @@ class _CompletionStepState extends State<CompletionStep>
         ),
       ),
     );
+  }
+
+  void _navigateToPage(String route) {
+    // Call the original onComplete to finish setup
+    widget.onComplete();
+    
+    // Navigate to the specific page
+    Navigator.pushReplacementNamed(context, route);
   }
 
   @override

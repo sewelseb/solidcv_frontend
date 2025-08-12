@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solid_cv/Views/FirstConfigurationComponents/AISkillValidationStep.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Certificate.dart';
+import 'package:solid_cv/models/User.dart';
 import 'FirstConfigurationComponents/WelcomeMessage.dart';
 import 'FirstConfigurationComponents/WalletStep.dart';
 import 'FirstConfigurationComponents/CVUploadStep.dart';
@@ -23,8 +26,10 @@ class _FirstConfigurationState extends State<FirstConfiguration>
   final ScrollController _scrollController = ScrollController();
   
   int _currentStep = 0;
-  final int _totalSteps = 6;
-  
+  final int _totalSteps = 7; // Increased from 6 to 7
+  late Future<User> _user;
+  final UserBll _userBll = UserBll();
+
   // Configuration data
   bool? _hasWallet;
   String? _walletAddress;
@@ -35,18 +40,54 @@ class _FirstConfigurationState extends State<FirstConfiguration>
   List<Map<String, dynamic>>? _finalExperiences;
   List<Map<String, dynamic>>? _finalCertificates;
   List<Map<String, dynamic>>? _finalSkills;
+  List<Map<String, dynamic>>? _validatedSkills; // New field for validated skills
   
   final Color _primaryColor = const Color(0xFF7B3FE4);
   final Color _gradientStart = const Color(0xFF7B3FE4);
   final Color _gradientEnd = const Color(0xFFB57AED);
 
-  void _nextStep() {
-    if (_currentStep < _totalSteps - 1) {
+  @override
+  void initState() {
+    super.initState();
+    _checkWalletStatus();
+    _user = _userBll.getCurrentUser();
+  }
+
+  // Check if user already has a wallet and skip the wallet step if they do
+  void _checkWalletStatus() async {
+    // TODO: Replace this with actual wallet check logic
+    // You might want to check SharedPreferences, secure storage, or call your BLL
+    bool userHasWallet = await _checkIfUserHasWallet();
+    
+    if (userHasWallet) {
+      // Skip wallet step by setting it as completed
       setState(() {
-        _currentStep++;
+        _hasWallet = true;
+        _walletAddress = "existing_wallet_address"; // Get the actual address
       });
-      _scrollToBottom();
     }
+  }
+
+  // TODO: Implement this method to check if user has a wallet
+  Future<bool> _checkIfUserHasWallet() async {
+    var user = await _userBll.getCurrentUser();
+    return user.ethereumAddress != null;
+  }
+
+  void _nextStep() {
+    print('DEBUG: _nextStep called, current step: $_currentStep, total steps: $_totalSteps');
+    
+    setState(() {
+      _currentStep++;
+      
+      // Skip wallet step if user already has a wallet
+      if (_currentStep == 1 && _hasWallet == true) {
+        _currentStep = 2; // Skip directly to CV upload
+      }
+    });
+    
+    print('DEBUG: After _nextStep, current step: $_currentStep');
+    _scrollToBottom();
   }
 
   void _scrollToBottom() {
@@ -134,13 +175,31 @@ class _FirstConfigurationState extends State<FirstConfiguration>
       // Convert ManualSkill objects to Map format if needed for storage
       _finalSkills = skills.map((skill) => {
         'name': skill.name,
-        // Add other fields if your ManualSkill model has them
+        'id': skill.id,
+        'isValidated': false, // Add validation status
       }).toList();
       
       _extractedData = _extractedData ?? {};
       _extractedData!['skills'] = _finalSkills;
     });
     _nextStep();
+  }
+
+  // New method for skill validation completion
+  void _onSkillValidationComplete(List<Map<String, dynamic>> validatedSkills) {
+    print('DEBUG: _onSkillValidationComplete called');
+    print('DEBUG: Current step before: $_currentStep');
+    
+    setState(() {
+      _validatedSkills = validatedSkills;
+      _extractedData = _extractedData ?? {};
+      _extractedData!['validatedSkills'] = _validatedSkills;
+    });
+    
+    print('DEBUG: About to call _nextStep()');
+    _nextStep();
+    
+    print('DEBUG: Current step after _nextStep(): $_currentStep');
   }
 
   @override
@@ -219,16 +278,64 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                       // Welcome message
                       WelcomeMessage(
                         onStartSetup: () {
-                          _nextStep(); // This will move to the next step in your configuration flow
+                          _nextStep();
                         },
                       ),
                       const SizedBox(height: 20),
                       
-                      // Dynamic steps
-                      if (_currentStep >= 1) ...[
+                      // Dynamic steps - Only show wallet step if user doesn't have one
+                      if (_currentStep >= 1 && _hasWallet != true) ...[
                         WalletStep(
                           onComplete: _onWalletStepComplete,
                           isActive: _currentStep == 1,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                      
+                      // Show a message if wallet step was skipped
+                      if (_currentStep >= 1 && _hasWallet == true && _currentStep == 1) ...[
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.green.shade200),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Wallet Already Connected',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.green.shade700,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Your blockchain wallet is already set up. Proceeding to CV upload.',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        color: Colors.green.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -243,9 +350,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                       ],
                       
                       if (_currentStep >= 3 && _extractedData != null) ...[
-                        
                         ExperienceEditStep(
-                          //experiences: _extractedData!['experiences'] ?? [],
                           onComplete: _onExperienceEditComplete,
                           isActive: _currentStep == 3,
                         ),
@@ -254,7 +359,6 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                       
                       if (_currentStep >= 4 && _extractedData != null) ...[
                         CertificateEditStep(
-                          //certificates: _extractedData!['certificates'] ?? [],
                           onComplete: _onCertificateEditComplete,
                           isActive: _currentStep == 4,
                         ),
@@ -263,20 +367,30 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                       
                       if (_currentStep >= 5 && _extractedData != null) ...[
                         SkillsEditStep(
-                          //skills: _extractedData!['skills'] ?? [],
                           onComplete: _onSkillsEditComplete,
                           isActive: _currentStep == 5,
                         ),
                         const SizedBox(height: 20),
                       ],
                       
-                      if (_currentStep == _totalSteps - 1) ...[
+                      // AI Skill Validation Step
+                      if (_currentStep == 6 && _finalSkills != null && _finalSkills!.isNotEmpty) ...[
+                        AISkillValidationStep(
+                          skills: _finalSkills!,
+                          onComplete: _onSkillValidationComplete,
+                          isActive: _currentStep == 6,
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                      
+                      // Completion step - Changed condition to be more explicit
+                      if (_currentStep == 7) ...[  // Changed from >= _totalSteps to == 7
                         CompletionStep(
                           hasWallet: _hasWallet,
                           walletAddress: _walletAddress,
                           hasCVUploaded: _uploadedCVPath != null,
                           onComplete: _completeConfiguration,
-                          isActive: _currentStep == _totalSteps - 1,
+                          isActive: _currentStep == 7,  // Changed from >= _totalSteps
                         ),
                       ],
                       

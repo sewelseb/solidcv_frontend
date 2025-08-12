@@ -171,7 +171,15 @@ class _CVUploadStepState extends State<CVUploadStep>
   }
 
   void _skipUpload() {
-    widget.onComplete(null, null);
+    // Create empty data structure for manual entry
+    Map<String, dynamic> emptyData = {
+      'experiences': <Map<String, dynamic>>[],
+      'certificates': <Map<String, dynamic>>[],
+      'skills': <Map<String, dynamic>>[],
+    };
+    
+    // Call onComplete with null CV path and empty data structure
+    widget.onComplete(null, emptyData);
   }
 
   void _onCVUploadComplete(String? cvPath, Map<String, dynamic>? extractedData) {
