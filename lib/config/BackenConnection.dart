@@ -133,4 +133,6 @@ class BackenConnection {
 
   String get deleteSkillApi => "/api/protected/delete-skill/";
 
+  String get getMySkillTestQuestionCountApi => "/api/protected/get-my-skills-question-count";
+
 }

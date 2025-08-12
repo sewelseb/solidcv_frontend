@@ -662,5 +662,23 @@ class UserService extends IUserService {
       throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to delete skill');
     }
   }
+  
+  @override
+  Future<int> getMySkillTestQuestionCount() async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url + BackenConnection().getMySkillTestQuestionCountApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['count'] ?? 0;
+    } else {
+      throw Exception('Failed to fetch skill test question count');
+    }
+    
+  }
 
 }

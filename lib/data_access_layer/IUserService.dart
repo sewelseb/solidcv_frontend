@@ -68,5 +68,7 @@ abstract class IUserService {
 
   void deleteSkill(int id);
 
+  Future<int> getMySkillTestQuestionCount();
+
 
 }

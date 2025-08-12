@@ -168,4 +168,8 @@ class UserBll extends IUserBLL {
   void deleteSkill(int id) {
     _userService.deleteSkill(id);
   }
+
+  Future<int> getMySkillTestQuestionCount() {
+    return _userService.getMySkillTestQuestionCount();
+  }
 }

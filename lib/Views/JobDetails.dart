@@ -25,6 +25,8 @@ class _JobDetailsState extends State<JobDetails> {
   int? _jobOfferId;
   bool _isLoadingUser = true;
   bool _userLoadError = false;
+  int _userSkillTestCount = 0;
+  bool _isLoadingSkillTests = true;
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
   final Color _gradientStart = const Color(0xFF7B3FE4);
@@ -47,19 +49,49 @@ class _JobDetailsState extends State<JobDetails> {
         _isLoadingUser = false;
         _userLoadError = false;
       });
+      
+      // Load skill test count if user is connected
+      if (user != null) {
+        await _loadUserSkillTestCount();
+      }
     } catch (e) {
       // User is not connected or there's an authentication error
       setState(() {
         _currentUser = null;
         _isLoadingUser = false;
         _userLoadError = true;
+        _isLoadingSkillTests = false;
       });
     }
   }
 
+  Future<void> _loadUserSkillTestCount() async {
+    try {
+      
+      final count = await _userBll.getMySkillTestQuestionCount();      
+      setState(() {
+        _userSkillTestCount = count;
+        _isLoadingSkillTests = false;
+      });
+    } catch (e) {
+      setState(() {
+        _userSkillTestCount = 0;
+        _isLoadingSkillTests = false;
+      });
+    }
+  }
+
+  bool get _canApply => _currentUser != null && _userSkillTestCount >= 5;
+
   Future<void> _applyToJob(JobOffer jobOffer, User? currentUser) async {
     if (currentUser == null) {
       _showLoginDialog();
+      return;
+    }
+
+    // Check if user has completed enough skill tests
+    if (_userSkillTestCount < 5) {
+      _showSkillTestRequiredDialog();
       return;
     }
 
@@ -168,20 +200,20 @@ class _JobDetailsState extends State<JobDetails> {
               
               const SizedBox(height: 20),
               
-              // Recommendation section
+              // Skill validation status
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.blue.shade50,
-                      Colors.indigo.shade50,
+                      Colors.green.shade50,
+                      Colors.green.shade100,
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.shade200),
+                  border: Border.all(color: Colors.green.shade200),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -191,70 +223,28 @@ class _JobDetailsState extends State<JobDetails> {
                         Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
+                            color: Colors.green.shade100,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Icon(Icons.lightbulb, color: Colors.blue.shade700, size: 18),
+                          child: Icon(Icons.verified, color: Colors.green.shade700, size: 18),
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          'Maximize Your Chances!',
+                          'Skills Validated ✓',
                           style: GoogleFonts.inter(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue.shade800,
+                            color: Colors.green.shade800,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Before applying, we recommend:',
+                      'You have completed $_userSkillTestCount skill tests. This will help recruiters provide more accurate feedback.',
                       style: GoogleFonts.inter(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue.shade700,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    _buildRecommendationItem(
-                      icon: Icons.person,
-                      text: 'Complete your profile with personal information',
-                      color: Colors.blue.shade700,
-                    ),
-                    _buildRecommendationItem(
-                      icon: Icons.work_history,
-                      text: 'Add your work experiences and achievements',
-                      color: Colors.blue.shade700,
-                    ),
-                    _buildRecommendationItem(
-                      icon: Icons.psychology,
-                      text: 'Test and showcase your skills with AI validation',
-                      color: Colors.blue.shade700,
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.amber.shade50,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.amber.shade200),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.info, color: Colors.amber.shade700, size: 16),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Recruiters will use AI to analyze your profile against this job!',
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.amber.shade800,
-                              ),
-                            ),
-                          ),
-                        ],
+                        color: Colors.green.shade700,
                       ),
                     ),
                   ],
@@ -262,51 +252,6 @@ class _JobDetailsState extends State<JobDetails> {
               ),
               
               const SizedBox(height: 20),
-              
-              // Quick actions
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                        Navigator.pushNamed(context, '/my-cv');
-                      },
-                      icon: const Icon(Icons.edit, size: 16),
-                      label: const Text('Complete Profile'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: _primaryColor,
-                        side: BorderSide(color: _primaryColor),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                        Navigator.pushNamed(context, '/my-cv');
-                      },
-                      icon: const Icon(Icons.quiz, size: 16),
-                      label: const Text('Test Skills'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.orange.shade700,
-                        side: BorderSide(color: Colors.orange.shade700),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 16),
               
               Text(
                 'Are you ready to submit your application?',
@@ -396,6 +341,178 @@ class _JobDetailsState extends State<JobDetails> {
     }
   }
 
+  void _showSkillTestRequiredDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(Icons.quiz, color: Colors.orange.shade700, size: 24),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'More Skill Tests Required',
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.orange.shade200),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.info_outline, color: Colors.orange.shade600, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Skill Validation Required',
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'You have completed $_userSkillTestCount out of 5 required skill tests.',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: Colors.orange.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'To ensure accurate feedback from recruiters and improve your application quality, you need to complete at least 5 skill validation tests.',
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: Colors.orange.shade700,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+              
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.shade50,
+                      Colors.indigo.shade50,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(Icons.lightbulb, color: Colors.blue.shade700, size: 18),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Why Skill Tests Matter',
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade800,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _buildRecommendationItem(
+                      icon: Icons.analytics,
+                      text: 'AI analyzes your skills against job requirements',
+                      color: Colors.blue.shade700,
+                    ),
+                    _buildRecommendationItem(
+                      icon: Icons.feedback,
+                      text: 'Recruiters provide more accurate feedback',
+                      color: Colors.blue.shade700,
+                    ),
+                    _buildRecommendationItem(
+                      icon: Icons.trending_up,
+                      text: 'Higher chance of getting shortlisted',
+                      color: Colors.blue.shade700,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.inter(
+                color: Colors.grey.shade600,
+              ),
+            ),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/my-cv'); // Navigate to skill tests page
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade600,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            icon: const Icon(Icons.quiz, size: 16),
+            label: const Text('Take Skill Tests'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showLoginDialog() {
     showDialog(
       context: context,
@@ -428,7 +545,7 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   Widget _buildApplyButton(JobOffer jobOffer) {
-    if (_isLoadingUser) {
+    if (_isLoadingUser || _isLoadingSkillTests) {
       return SizedBox(
         width: double.infinity,
         height: 52,
@@ -455,13 +572,35 @@ class _JobDetailsState extends State<JobDetails> {
       );
     }
 
+    String buttonText;
+    IconData buttonIcon;
+    Color buttonColor;
+    bool isEnabled;
+
+    if (_currentUser == null) {
+      buttonText = 'Login to Apply';
+      buttonIcon = Icons.login;
+      buttonColor = Colors.grey.shade600;
+      isEnabled = true;
+    } else if (_userSkillTestCount < 5) {
+      buttonText = 'Complete Skill Tests in your CV (${_userSkillTestCount}/5)';
+      buttonIcon = Icons.quiz;
+      buttonColor = Colors.orange.shade600;
+      isEnabled = true;
+    } else {
+      buttonText = 'Apply Now';
+      buttonIcon = Icons.send;
+      buttonColor = _primaryColor;
+      isEnabled = true;
+    }
+
     return SizedBox(
       width: double.infinity,
       height: 52,
       child: ElevatedButton.icon(
-        onPressed: () => _applyToJob(jobOffer, _currentUser),
+        onPressed: isEnabled ? () => _applyToJob(jobOffer, _currentUser) : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: _currentUser != null ? _primaryColor : Colors.grey.shade600,
+          backgroundColor: buttonColor,
           foregroundColor: Colors.white,
           textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           shape: RoundedRectangleBorder(
@@ -469,14 +608,14 @@ class _JobDetailsState extends State<JobDetails> {
           ),
           elevation: 2,
         ),
-        icon: Icon(_currentUser != null ? Icons.send : Icons.login),
-        label: Text(_currentUser != null ? 'Apply Now' : 'Login to Apply'),
+        icon: Icon(buttonIcon),
+        label: Text(buttonText),
       ),
     );
   }
 
   Widget _buildUserStatusBanner() {
-    if (_isLoadingUser) {
+    if (_isLoadingUser || _isLoadingSkillTests) {
       return Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
@@ -493,50 +632,110 @@ class _JobDetailsState extends State<JobDetails> {
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
             SizedBox(width: 12),
-            Text('Checking login status...'),
+            Text('Checking profile status...'),
           ],
         ),
       );
     }
 
     if (_currentUser != null) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.green.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.green.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green.shade600),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Welcome back, ${_currentUser!.firstName ?? 'User'}! You can apply to this position.',
-                style: GoogleFonts.inter(
-                  color: Colors.green.shade700,
-                  fontWeight: FontWeight.w500,
+      if (_userSkillTestCount >= 5) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.green.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.green.shade200),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green.shade600),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ready to Apply! ✓',
+                      style: GoogleFonts.inter(
+                        color: Colors.green.shade700,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      'Profile complete with $_userSkillTestCount skill tests validated.',
+                      style: GoogleFonts.inter(
+                        color: Colors.green.shade600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      } else {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.warning_amber, color: Colors.orange.shade600),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Skill Tests Required',
+                      style: GoogleFonts.inter(
+                        color: Colors.orange.shade700,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Complete ${5 - _userSkillTestCount} more skill tests to apply ($_userSkillTestCount/5 done).',
+                      style: GoogleFonts.inter(
+                        color: Colors.orange.shade600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/my-cv'),
+                child: Text(
+                  'Take Tests',
+                  style: TextStyle(color: Colors.orange.shade700),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.orange.shade50,
+        color: Colors.red.shade50,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange.shade200),
+        border: Border.all(color: Colors.red.shade200),
       ),
       child: Row(
         children: [
-          Icon(Icons.info_outline, color: Colors.orange.shade600),
+          Icon(Icons.info_outline, color: Colors.red.shade600),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -545,15 +744,15 @@ class _JobDetailsState extends State<JobDetails> {
                 Text(
                   'Not logged in',
                   style: GoogleFonts.inter(
-                    color: Colors.orange.shade700,
+                    color: Colors.red.shade700,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'You need to login or register to apply for this position.',
+                  'You need to login and complete skill tests to apply.',
                   style: GoogleFonts.inter(
-                    color: Colors.orange.shade600,
+                    color: Colors.red.shade600,
                     fontSize: 13,
                   ),
                 ),
@@ -564,7 +763,7 @@ class _JobDetailsState extends State<JobDetails> {
             onPressed: _showLoginDialog,
             child: Text(
               'Login',
-              style: TextStyle(color: Colors.orange.shade700),
+              style: TextStyle(color: Colors.red.shade700),
             ),
           ),
         ],
@@ -716,7 +915,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     _buildInfoRow('Salary', jobOffer.salary!.toString(), Icons.attach_money),
                                   if (jobOffer.createdAt != null) const SizedBox(height: 12),
                                   if (jobOffer.createdAt != null)
-                                    _buildInfoRow('Posted', _formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt!)), Icons.calendar_today),
+                                    _buildInfoRow('Posted', _formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000)), Icons.calendar_today),
                                 ],
                               ),
                             ),
