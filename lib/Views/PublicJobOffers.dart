@@ -550,7 +550,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               slivers: [
                 // Collapsible Search and Filter Header
                 SliverAppBar(
-                  expandedHeight: isMobile ? 400 : 380,
+                  expandedHeight: isMobile ? 360 : 250,
                   floating: false,
                   pinned: true,
                   backgroundColor: _primaryColor,
@@ -1100,7 +1100,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               children: [
                 if (jobOffer.createdAt != null)
                   Text(
-                    'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt!))}',
+                    'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000))}',
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Colors.grey.shade600,
