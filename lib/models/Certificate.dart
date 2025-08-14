@@ -21,7 +21,7 @@ class Certificate {
   String? logoUrl;
   String? issuerBlockCahinWalletAddress;
 
-  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress});
+  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? this.teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress});
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();
@@ -35,6 +35,7 @@ class Certificate {
     fielPath = json['file'];
     ipfsHash = json['ipfsHash'];
     documentIPFSUrl = json['documentIPFSUrl'];
+    teachingInstitutionName = json['institution'];
   }
 
   Map<String, dynamic> toJson() {
