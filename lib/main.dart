@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
             elevation: 5),
       ),
       routes: {
-        '/': (context) => const HomeRoute(), // Removed PopScope
+        '/': (context) => const HomeRoute(),
         '/login': (context) => const HomeRoute(),
         '/register': (context) => const RegisterRoute(),
         '/loggedin/home': (context) => const AuthGuard(child: LoggedInHome()),
