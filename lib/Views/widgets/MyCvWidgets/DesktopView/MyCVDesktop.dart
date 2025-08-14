@@ -294,6 +294,23 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     style: const TextStyle(
                         fontSize: 28, fontWeight: FontWeight.bold)),
                 const Spacer(),
+                // First Configuration button
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/user/first-configuration');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF7B3FE4),
+                    foregroundColor: Colors.white,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  icon: const Icon(Icons.settings_outlined, size: 18),
+                  label: const Text('Setup Profile'),
+                ),
+                const SizedBox(width: 12),
                 ElevatedButton(
                   onPressed: () async {
                     final updated = await Navigator.pushNamed(
@@ -319,6 +336,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () async {
                 var documentName = await _userBLL.getMyExportedCv();

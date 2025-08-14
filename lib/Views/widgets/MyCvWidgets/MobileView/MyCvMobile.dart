@@ -50,7 +50,6 @@ class _MyCvMobileState extends State<MyCvMobile> {
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
-
     final user = await _userFuture;
 
     if (_cachedExperiences != null &&
@@ -66,8 +65,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
         Future.value(<CleanExperience>[]),
         _userBLL.getMyManuallyAddedExperiences(),
       ]);
-    }
-    else {
+    } else {
       results = await Future.wait([
         _blockchainWalletBll.getEventsForCurrentUser(),
         _userBLL.getMyManuallyAddedExperiences(),
@@ -159,29 +157,58 @@ class _MyCvMobileState extends State<MyCvMobile> {
                         style: const TextStyle(
                             fontSize: 14, color: Colors.white70),
                       ),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final updated = await Navigator.pushNamed(
-                            context,
-                            '/user/edit-profile',
-                            arguments: user,
-                          );
-                          if (updated == true) {
-                            setState(() {
-                              _userFuture = _userBLL.getCurrentUser();
-                            });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                      const SizedBox(height: 12),
+                      // Updated button section with row layout
+                      Row(
+                        children: [
+                          // First Configuration button
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/user/first-configuration');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white.withOpacity(0.15),
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                                ),
+                              ),
+                              icon: const Icon(Icons.settings_outlined, size: 18),
+                              label: const Text('Setup', style: TextStyle(fontSize: 13)),
+                            ),
                           ),
-                        ),
-                        child: const Text('Edit profile'),
+                          const SizedBox(width: 8),
+                          // Edit Profile button
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                final updated = await Navigator.pushNamed(
+                                  context,
+                                  '/user/edit-profile',
+                                  arguments: user,
+                                );
+                                if (updated == true) {
+                                  setState(() {
+                                    _userFuture = _userBLL.getCurrentUser();
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              icon: const Icon(Icons.edit_outlined, size: 18),
+                              label: const Text('Edit', style: TextStyle(fontSize: 13)),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       _infoTile(
@@ -196,25 +223,30 @@ class _MyCvMobileState extends State<MyCvMobile> {
                           text: user.biography ?? "",
                           expandable: true),
                       const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () async {
-                          var documentName = await _userBLL.getMyExportedCv();
-                          final Uri documentUrl = Uri.parse(
-                            BackenConnection().url +
-                                BackenConnection().getMyCvPlace +
-                                documentName,
-                          );
-                          launchUrl(documentUrl);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                      // Download CV button - full width
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () async {
+                            var documentName = await _userBLL.getMyExportedCv();
+                            final Uri documentUrl = Uri.parse(
+                              BackenConnection().url +
+                                  BackenConnection().getMyCvPlace +
+                                  documentName,
+                            );
+                            launchUrl(documentUrl);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
+                          icon: const Icon(Icons.download_outlined, size: 18),
+                          label: const Text('Download CV'),
                         ),
-                        child: const Text('Download CV'),
                       ),
                     ],
                   ),
