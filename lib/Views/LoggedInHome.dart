@@ -45,7 +45,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
       if (user.isFirstConfigurationDone == false || user.isFirstConfigurationDone == null) {
         // Navigate to first configuration and replace current route
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushReplacementNamed(context, '/user/first-configuration');
+          Navigator.pushNamed(context, '/user/first-configuration');
         });
       }
     } catch (e) {

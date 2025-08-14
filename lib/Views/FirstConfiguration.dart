@@ -133,7 +133,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
     print('Skills: ${_finalSkills?.length ?? 0}');
     
     // Navigate to main app
-    Navigator.pushReplacementNamed(context, '/loggedin/home');
+    Navigator.pushNamed(context, '/loggedin/home');
   }
 
   void _onExperienceEditComplete(List<ManualExperience> experiences) {

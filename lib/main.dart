@@ -56,27 +56,7 @@ class MyApp extends StatelessWidget {
             elevation: 5),
       ),
       routes: {
-        '/': (context) => PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) async {
-            if (didPop) return;
-            
-            // Check if there are previous routes in the navigation stack
-            if (Navigator.of(context).canPop()) {
-              // There are previous routes, so navigate back normally
-              Navigator.of(context).pop();
-            } else {
-              // This is the root route with no navigation history
-              // Show exit confirmation dialog
-              final shouldExit = await _showExitConfirmationDialog(context);
-              if (shouldExit == true) {
-                // Exit the app
-                Navigator.of(context).pop();
-              }
-            }
-          },
-          child: const HomeRoute(),
-        ),
+        '/': (context) => const HomeRoute(), // Removed PopScope
         '/login': (context) => const HomeRoute(),
         '/register': (context) => const RegisterRoute(),
         '/loggedin/home': (context) => const AuthGuard(child: LoggedInHome()),
@@ -207,44 +187,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-}
-
-// Helper function to show exit confirmation dialog
-Future<bool?> _showExitConfirmationDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      title: Row(
-        children: [
-          Icon(Icons.exit_to_app, color: Colors.red.shade600),
-          const SizedBox(width: 12),
-          const Text('Exit App'),
-        ],
-      ),
-      content: const Text('Are you sure you want to exit the app?'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(
-            'Cancel',
-            style: TextStyle(color: Colors.grey.shade600),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          child: const Text('Exit'),
-        ),
-      ],
-    ),
-  );
 }
