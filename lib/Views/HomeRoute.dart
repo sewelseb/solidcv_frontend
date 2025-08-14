@@ -19,6 +19,14 @@ class _HomeRouteState extends State<HomeRoute> {
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+  bool _isCheckingAuth = true;
+  bool _userAlreadyConnected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserAuthentication();
+  }
 
   @override
   void dispose() {
@@ -27,6 +35,39 @@ class _HomeRouteState extends State<HomeRoute> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkUserAuthentication() async {
+    try {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'jwt');
+      
+      if (token != null && token.isNotEmpty) {
+        // Try to get current user with the stored token
+        final user = await _userBll.getCurrentUser();
+        if (user != null) {
+          // User is authenticated, redirect to logged-in home
+          setState(() {
+            _userAlreadyConnected = true;
+          });
+          
+          // Use addPostFrameCallback to ensure navigation happens after build
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacementNamed(context, '/loggedin/home');
+          });
+          return;
+        }
+      }
+    } catch (e) {
+      // Token is invalid or user is not authenticated
+      // Clear the invalid token
+      const storage = FlutterSecureStorage();
+      await storage.delete(key: 'jwt');
+    }
+    
+    setState(() {
+      _isCheckingAuth = false;
+    });
   }
 
   Future<void> _handleLogin() async {
@@ -54,7 +95,7 @@ class _HomeRouteState extends State<HomeRoute> {
       const storage = FlutterSecureStorage();
       await storage.write(key: 'jwt', value: user.token);
 
-      Navigator.pushNamed(context, '/loggedin/home');
+      Navigator.pushReplacementNamed(context, '/loggedin/home');
     } catch (e) {
       String errorMessage = e.toString();
 
@@ -68,11 +109,67 @@ class _HomeRouteState extends State<HomeRoute> {
       } else if (errorMessage.contains('missing credentials')) {
         errorMessage = 'Account does not exist.';
       }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Show loading indicator while checking authentication
+    if (_isCheckingAuth) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Color(0xFF7B3FE4),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Checking authentication...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Show loading indicator while redirecting authenticated user
+    if (_userAlreadyConnected) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Color(0xFF7B3FE4),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Redirecting to home...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 

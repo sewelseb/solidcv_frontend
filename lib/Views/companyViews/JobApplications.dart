@@ -222,10 +222,7 @@ class _JobApplicationsState extends State<JobApplications> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          
-                          
-                          
-                          
+
                           // Description
                           Text(
                             'Review and manage candidates who applied for this position',
