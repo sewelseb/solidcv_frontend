@@ -223,66 +223,8 @@ class _JobApplicationsState extends State<JobApplications> {
                           ),
                           const SizedBox(height: 20),
                           
-                          // Job Details Row - Hidden on mobile
-                          if (!isMobile) ...[
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: _buildInfoChip(
-                                          icon: Icons.location_on,
-                                          label: jobOffer.location ?? 'Remote',
-                                          isMobile: isMobile,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: _buildInfoChip(
-                                          icon: Icons.schedule,
-                                          label: jobOffer.jobType ?? 'Full-time',
-                                          isMobile: isMobile,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: _buildInfoChip(
-                                          icon: Icons.trending_up,
-                                          label: jobOffer.experienceLevel ?? 'Any Level',
-                                          isMobile: isMobile,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: _buildInfoChip(
-                                          icon: Icons.calendar_today,
-                                          label: jobOffer.createdAt != null 
-                                              ? 'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt!))}'
-                                              : 'Recently posted',
-                                          isMobile: isMobile,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                          ],
+                          
+                          
                           
                           // Description
                           Text(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
@@ -42,6 +41,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -175,7 +175,7 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        return null;
+        return null; // Let `onUnknownRoute` handle this case.
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
