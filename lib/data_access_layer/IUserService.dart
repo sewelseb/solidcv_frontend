@@ -70,5 +70,7 @@ abstract class IUserService {
 
   Future<int> getMySkillTestQuestionCount();
 
+  void setFirstConfigurationDone();
+
 
 }

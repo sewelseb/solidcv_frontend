@@ -36,6 +36,22 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   void initState() {
     super.initState();
     _currentUserFuture = _userBll.getCurrentUser();
+    _checkFirstConfiguration();
+  }
+
+  Future<void> _checkFirstConfiguration() async {
+    try {
+      final user = await _userBll.getCurrentUser();
+      if (user.isFirstConfigurationDone == false || user.isFirstConfigurationDone == null) {
+        // Navigate to first configuration and replace current route
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, '/user/first-configuration');
+        });
+      }
+    } catch (e) {
+      // Handle error - user might not be logged in properly
+      print('Error checking first configuration: $e');
+    }
   }
 
   Future<void> _handleConnectWallet() async {
@@ -195,6 +211,22 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             }
 
             final user = snapshot.data!;
+            
+            // Check if first configuration is done
+            if (user.isFirstConfigurationDone == false) {
+              // Show loading while navigating
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('Redirecting to setup...'),
+                  ],
+                ),
+              );
+            }
+
             final bool hasWalletConnected = user.ethereumAddress != null && user.ethereumAddress!.isNotEmpty;
 
             if (hasWalletConnected && _createdWallet == null) {
@@ -293,122 +325,6 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       );
                     },
                   )
-                ],
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 30),
-
-        // First Configuration Section
-        LayoutBuilder(
-          builder: (context, constraints) {
-            double boxTargetWidth;
-            double maxBoxWidthOnDesktop = 550.0;
-
-            if (isMobile) {
-              boxTargetWidth = constraints.maxWidth;
-            } else {
-              boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
-                  ? constraints.maxWidth
-                  : maxBoxWidthOnDesktop;
-            }
-            return Container(
-              width: boxTargetWidth,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange.shade50, Colors.orange.shade100],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.orange.shade300, width: 1.1),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.orange.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [Colors.orange.shade400, Colors.orange.shade600],
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Icon(Icons.psychology, color: Colors.white, size: isMobile ? 24 : 28),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Complete Your Profile Setup',
-                    style: GoogleFonts.inter(
-                      fontSize: isMobile ? 18 : 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Our smart assistant will guide you through setting up your profile, uploading your CV, and optimizing your account for the best experience. You can start this process even without a wallet.',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: Colors.black54,
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/user/first-configuration');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange.shade600,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                          vertical: isMobile ? 16 : 18,
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                        textStyle: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      icon: const Icon(Icons.auto_fix_high, size: 20),
-                      label: const Text('Start Setup Assistant'),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.timer, size: 16, color: Colors.orange.shade600),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Takes just 3 minutes • No wallet required to start',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          color: Colors.orange.shade600,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             );

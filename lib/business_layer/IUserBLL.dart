@@ -62,4 +62,6 @@ abstract class IUserBLL {
 
   void deleteSkill(int id);
 
+  void setFirstConfigurationDone();
+
 }

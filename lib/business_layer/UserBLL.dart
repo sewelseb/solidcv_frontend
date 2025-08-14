@@ -172,4 +172,9 @@ class UserBll extends IUserBLL {
   Future<int> getMySkillTestQuestionCount() {
     return _userService.getMySkillTestQuestionCount();
   }
+  
+  @override
+  void setFirstConfigurationDone() {
+    _userService.setFirstConfigurationDone();
+  }
 }

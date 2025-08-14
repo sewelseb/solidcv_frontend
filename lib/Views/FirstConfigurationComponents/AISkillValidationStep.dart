@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/SkillBll.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Question.dart';
 
 class AISkillValidationStep extends StatefulWidget {
@@ -29,6 +31,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   late Animation<Offset> _slideAnimation;
   
   final ISkillBll _skillBll = SkillBll();
+  final IUserBLL _userBll = UserBll();
   int _currentSkillIndex = 0;
   List<Map<String, dynamic>> _skillsWithValidation = [];
   
@@ -627,6 +630,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   void _completeValidation() {
     // Call the onComplete callback to trigger the next step
     widget.onComplete(_skillsWithValidation);
+    _userBll.setFirstConfigurationDone();
   }
 
   @override

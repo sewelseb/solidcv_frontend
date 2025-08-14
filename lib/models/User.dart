@@ -15,6 +15,7 @@ class User {
   String? token;
   String? ethereumAddress;
   bool? isVerified;
+  bool? isFirstConfigurationDone;
 
   User({
     this.id,
@@ -31,6 +32,7 @@ class User {
     this.token,
     this.ethereumAddress,
     this.isVerified,
+    this.isFirstConfigurationDone,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class User {
       token: json['token'],
       ethereumAddress: json['ethereumAddress'],
       isVerified: json['isVerified'],
+      isFirstConfigurationDone: json['firstConfigurationDone'],
     );
   }
 

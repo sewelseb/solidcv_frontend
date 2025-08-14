@@ -135,4 +135,6 @@ class BackenConnection {
 
   String get getMySkillTestQuestionCountApi => "/api/protected/get-my-skills-question-count";
 
+  String get setFirstConfigurationDoneApi => "/api/protected/set-first-configuration-done";
+
 }

@@ -680,5 +680,20 @@ class UserService extends IUserService {
     }
     
   }
+  
+  @override
+  void setFirstConfigurationDone() async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().setFirstConfigurationDoneApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to set first configuration done');
+    }
+  }
 
 }
