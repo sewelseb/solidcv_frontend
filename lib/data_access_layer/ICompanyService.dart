@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:solid_cv/models/Company.dart';
+import 'package:solid_cv/models/User.dart';
 
 abstract class ICompanyService {
   Future<List<Company>> getCompanies();
@@ -17,4 +18,10 @@ abstract class ICompanyService {
   Future<List<Company>> getAllCompanies();
 
   Future<Company?> fetchCompanyByWallet(String ethereumAddress);
+
+  Future<List<User>> getCompanyAdministrators(int companyId);
+
+  addCompanyAdministrator(int companyId, int userId);
+
+  removeCompanyAdministrator(int companyId, int userId);
 }

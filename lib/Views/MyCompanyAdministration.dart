@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,11 @@ import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Company.dart';
+import 'package:solid_cv/models/SearchTherms.dart';
+import 'package:solid_cv/models/User.dart';
 
 class MyCompanyAdministration extends StatefulWidget {
   const MyCompanyAdministration({super.key});
@@ -18,6 +23,7 @@ class MyCompanyAdministration extends StatefulWidget {
 
 class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   final ICompanyBll _companyBll = CompanyBll();
+  final IUserBLL _userBll = UserBll();
   Future<Company>? _companyFuture;
   Company? _company;
 
@@ -34,12 +40,17 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   final _ethereumAddressController = TextEditingController();
   final _ethereumPrivateKeyController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _adminEmailController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
   Uint8List? _pickedImageBytes;
   String? _pickedImageExt;
 
   bool _isSubmitting = false;
+  bool _isAddingAdmin = false;
+  bool _isSearching = false;
+  List<User> _searchResults = [];
+  Timer? _searchTimer;
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
   final Color _gradientStart = const Color(0xFF7B3FE4);
@@ -82,7 +93,9 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
     _ethereumAddressController.dispose();
     _ethereumPrivateKeyController.dispose();
     _passwordController.dispose();
+    _adminEmailController.dispose();
     _scrollController.dispose();
+    _searchTimer?.cancel();
     super.dispose();
   }
 
@@ -137,6 +150,141 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
       );
     } finally {
       setState(() => _isSubmitting = false);
+    }
+  }
+
+  Future<void> _addAdministrator(Company company) async {
+    final email = _adminEmailController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter an email address')),
+      );
+      return;
+    }
+
+    // Basic email validation
+    final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w{2,}$");
+    if (!emailRegex.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid email address')),
+      );
+      return;
+    }
+
+    setState(() => _isAddingAdmin = true);
+
+    try {
+      //await _companyBll.addCompanyAdministrator(company.id!, );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Administrator $email added successfully')),
+      );
+
+      _adminEmailController.clear();
+
+      // Refresh the company data to update the administrators list
+      setState(() {
+        _companyFuture = _companyBll.getCompany(company.id!);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding administrator: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isAddingAdmin = false);
+      }
+    }
+  }
+
+  Future<void> _removeAdministrator(User admin, Company company) async {
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Remove Administrator'),
+        content: Text(
+          'Are you sure you want to remove ${admin.getEasyName() ?? admin.email} as an administrator?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await _companyBll.removeCompanyAdministrator(company.id!, admin.id!);
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${admin.getEasyName() ?? admin.email} removed as administrator')),
+      );
+
+      // Refresh the company data to update the administrators list
+      setState(() {
+        _companyFuture = _companyBll.getCompany(company.id!);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error removing administrator: $e')),
+      );
+    }
+  }
+
+  void _searchUsers(String query) {
+    // Cancel previous timer if it exists
+    _searchTimer?.cancel();
+    
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      return;
+    }
+
+    // Debounce search to avoid too many API calls
+    _searchTimer = Timer(const Duration(milliseconds: 500), () {
+      _performUserSearch(query.trim());
+    });
+  }
+
+  Future<void> _performUserSearch(String query) async {
+    setState(() => _isSearching = true);
+
+    try {
+      // Call your user search API - you'll need to implement this in your UserBLL
+      var searcTherm = SearchTherms();
+      searcTherm.term = query;
+      final results = await _userBll.searchUsers(searcTherm);
+      
+      if (!mounted) return;
+      setState(() {
+        _searchResults = results;
+        _isSearching = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error searching users: $e')),
+      );
     }
   }
 
@@ -395,6 +543,209 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
+                                title: "Company Administrators",
+                                icon: Icons.admin_panel_settings,
+                                content: Column(
+                                  children: [
+                                    // Current administrators list
+                                    FutureBuilder<List<User>>(
+                                      future: _companyBll.getCompanyAdministrators(company.id!),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Center(child: CircularProgressIndicator()),
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'Error loading administrators: ${snapshot.error}',
+                                              style: const TextStyle(color: Colors.redAccent),
+                                            ),
+                                          );
+                                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'No administrators found. Add the first administrator below.',
+                                              style: TextStyle(
+                                                color: Colors.orange,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        final administrators = snapshot.data!;
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Current Administrators (${administrators.length})',
+                                              style: GoogleFonts.inter(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 12),
+                                            ...administrators.map((admin) => _buildAdministratorTile(admin, company)).toList(),
+                                            const SizedBox(height: 16),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                    
+                                    // Add administrator section
+                                    Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: Colors.grey.shade200),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(Icons.person_add, color: _primaryColor, size: 20),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                'Add New Administrator',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 12),
+                                          
+                                          // Search bar
+                                          TextField(
+                                            controller: _adminEmailController,
+                                            decoration: InputDecoration(
+                                              hintText: 'Search users by name or email...',
+                                              prefixIcon: Icon(Icons.search, color: _primaryColor),
+                                              suffixIcon: _adminEmailController.text.isNotEmpty
+                                                  ? IconButton(
+                                                      icon: const Icon(Icons.clear),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _adminEmailController.clear();
+                                                          _searchResults = [];
+                                                          _isSearching = false;
+                                                        });
+                                                      },
+                                                    )
+                                                  : null,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: _primaryColor, width: 2),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              contentPadding: const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                                vertical: 14,
+                                              ),
+                                            ),
+                                            onChanged: (value) => _searchUsers(value),
+                                          ),
+                                          
+                                          // Search results
+                                          if (_isSearching)
+                                            const Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Center(
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            )
+                                          else if (_searchResults.isNotEmpty) ...[
+                                            const SizedBox(height: 12),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.grey.shade300),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(12.0),
+                                                    child: Text(
+                                                      'Search Results (${_searchResults.length})',
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.grey.shade700,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Divider(height: 1),
+                                                  ListView.separated(
+                                                    shrinkWrap: true,
+                                                    physics: const NeverScrollableScrollPhysics(),
+                                                    itemCount: _searchResults.length,
+                                                    separatorBuilder: (_, __) => const Divider(height: 1),
+                                                    itemBuilder: (context, index) {
+                                                      final user = _searchResults[index];
+                                                      return _buildUserSearchResult(user, company);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ] else if (_adminEmailController.text.isNotEmpty && !_isSearching) ...[
+                                            const SizedBox(height: 12),
+                                            Container(
+                                              padding: const EdgeInsets.all(12),
+                                              decoration: BoxDecoration(
+                                                color: Colors.orange.shade50,
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.orange.shade200),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.info_outline, color: Colors.orange.shade600, size: 20),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'No users found matching your search.',
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        color: Colors.orange.shade700,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                          
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Search for existing users to add as company administrators.',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 12,
+                                              color: Colors.grey.shade600,
+                                              height: 1.3,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              _buildSectionCard(
+                                isMobile: isMobile,
                                 title: "Employees",
                                 icon: Icons.people,
                                 content: (company.ethereumAddress == null ||
@@ -565,5 +916,181 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
         ],
       ),
     );
+  }
+
+  Widget _buildAdministratorTile(User admin, Company company) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: _primaryColor,
+            backgroundImage: admin.getProfilePicture().isNotEmpty
+                ? NetworkImage(admin.getProfilePicture())
+                : null,
+            child: admin.getProfilePicture().isEmpty
+                ? Text(
+                    (admin.getEasyName() ?? 'A').substring(0, 1).toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  admin.getEasyName() ?? 'Unknown',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  admin.email ?? '',
+                  style: GoogleFonts.inter(
+                    color: Colors.grey.shade600,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () => _removeAdministrator(admin, company),
+            icon: const Icon(Icons.remove_circle_outline),
+            color: Colors.redAccent,
+            tooltip: 'Remove Administrator',
+            constraints: const BoxConstraints(
+              minWidth: 32,
+              minHeight: 32,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserSearchResult(User user, Company company) {
+    final isCurrentAdmin = false;
+    
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      leading: CircleAvatar(
+        radius: 18,
+        backgroundColor: _primaryColor,
+        backgroundImage: user.getProfilePicture().isNotEmpty
+            ? NetworkImage(user.getProfilePicture())
+            : null,
+        child: user.getProfilePicture().isEmpty
+            ? Text(
+                (user.getEasyName() ?? 'U').substring(0, 1).toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              )
+            : null,
+      ),
+      title: Text(
+        user.getEasyName() ?? 'Unknown',
+        style: GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            user.email ?? '',
+            style: GoogleFonts.inter(
+              color: Colors.grey.shade600,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+      trailing: SizedBox(
+              width: 80,
+              height: 32,
+              child: ElevatedButton(
+                onPressed: _isAddingAdmin ? null : () => _addUserAsAdministrator(user, company),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                child: _isAddingAdmin
+                    ? const SizedBox(
+                        width: 12,
+                        height: 12,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text(
+                        'Add',
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+              ),
+            ),
+    );
+  }
+
+  Future<void> _addUserAsAdministrator(User user, Company company) async {
+    setState(() => _isAddingAdmin = true);
+
+    try {
+      await _companyBll.addCompanyAdministrator(company.id!, user.id!);
+      
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${user.getEasyName() ?? user.email} added as administrator')),
+      );
+      
+      // Clear search and refresh data
+      setState(() {
+        _adminEmailController.clear();
+        _searchResults = [];
+        _companyFuture = _companyBll.getCompany(company.id!);
+      });
+      
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding administrator: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isAddingAdmin = false);
+      }
+    }
   }
 }

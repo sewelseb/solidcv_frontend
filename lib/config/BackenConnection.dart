@@ -137,4 +137,10 @@ class BackenConnection {
 
   String get setFirstConfigurationDoneApi => "/api/protected/set-first-configuration-done";
 
+  String get getCompanyAdministratorsApi => "/api/protected/company/get-admins/";
+
+  String get addCompanyAdministratorApi => "/api/protected/company/add-admin";
+
+  String get removeCompanyAdministratorApi => '/api/protected/company/remove-admin';
+
 }

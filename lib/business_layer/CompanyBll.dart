@@ -92,4 +92,19 @@ class CompanyBll extends ICompanyBll {
   Future<Company?> fetchCompanyByWallet(String ethereumAddress) {
     return _companyService.fetchCompanyByWallet(ethereumAddress);
   }
+  
+  @override
+  Future<List<User>> getCompanyAdministrators(int companyId) {
+    return _companyService.getCompanyAdministrators(companyId);
+  }
+  
+  @override
+  addCompanyAdministrator(int companyId, int userId) {
+    return _companyService.addCompanyAdministrator(companyId, userId);
+  }
+  
+  @override
+  removeCompanyAdministrator(int companyId, int userId) {
+    return _companyService.removeCompanyAdministrator(companyId, userId);
+  }
 }

@@ -19,4 +19,10 @@ abstract class ICompanyBll {
   addEmployeeEvents(User user,WorkEvent event,int companyId,String password);
 
   Future<Company?> fetchCompanyByWallet(String ethereumAddress);
+
+  Future<List<User>> getCompanyAdministrators(int companyId);
+
+  addCompanyAdministrator(int companyId, int userId);
+
+  removeCompanyAdministrator(int companyId, int userId);
 }

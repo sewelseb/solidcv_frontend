@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/ICompanyService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/Company.dart';
 import 'package:http/http.dart' as http;
+import 'package:solid_cv/models/User.dart';
 
 class CompanyService extends ICompanyService {
 @override
@@ -179,6 +181,70 @@ Future<Company> createCompany(Company company, Uint8List? imageBytes, String? im
       return Company.fromJson(data);
     }
     return null;
+  }
+
+  @override
+  Future<List<User>> getCompanyAdministrators(int companyId) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getCompanyAdministratorsApi +
+          companyId.toString()),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((user) => User.fromJson(user)).toList();
+    } else {
+      return [];
+    }
+  }
+  
+  @override
+  addCompanyAdministrator(int companyId, int userId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addCompanyAdministratorApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'companyId': companyId,
+        'userId': userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to add company administrator');
+    }
+  }
+  
+  @override
+  removeCompanyAdministrator(int companyId, int userId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().removeCompanyAdministratorApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'companyId': companyId,
+        'userId': userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to remove company administrator');
+    }
   }
 
 }
