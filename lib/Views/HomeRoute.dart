@@ -43,22 +43,22 @@ class _HomeRouteState extends State<HomeRoute> {
       final token = await storage.read(key: 'jwt');
       final currentRoute = ModalRoute.of(context)?.settings.name;
       
-      if (token != null && token.isNotEmpty && currentRoute == '/') {
-        // Try to get current user with the stored token
-        final user = await _userBll.getCurrentUser();
-        if (user != null) {
-          // User is authenticated, redirect to logged-in home
-          setState(() {
-            _userAlreadyConnected = true;
-          });
+      // if (token != null && token.isNotEmpty && currentRoute == '/') {
+      //   // Try to get current user with the stored token
+      //   final user = await _userBll.getCurrentUser();
+      //   if (user != null) {
+      //     // User is authenticated, redirect to logged-in home
+      //     setState(() {
+      //       _userAlreadyConnected = true;
+      //     });
           
-          // Use addPostFrameCallback to ensure navigation happens after build
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushReplacementNamed(context, '/loggedin/home');
-          });
-          return;
-        }
-      }
+      //     // Use addPostFrameCallback to ensure navigation happens after build
+      //     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //       Navigator.pushReplacementNamed(context, '/loggedin/home');
+      //     });
+      //     return;
+      //   }
+      // }
     } catch (e) {
       // Token is invalid or user is not authenticated
       // Clear the invalid token
