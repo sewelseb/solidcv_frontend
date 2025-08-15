@@ -790,7 +790,7 @@ class _JobDetailsState extends State<JobDetails> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       // Conditionally show bottom navigation bar only for connected users
-      bottomNavigationBar: _currentUser != null ? const MainBottomNavigationBar() : null,
+      //bottomNavigationBar: _currentUser != null ? const MainBottomNavigationBar() : null,
       backgroundColor: Colors.grey.shade50,
       body: FutureBuilder<JobOffer>(
         future: _jobOfferFuture,
