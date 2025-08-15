@@ -6,6 +6,7 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/UserService.dart';
+import 'package:solid_cv/models/CareerAdvice.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
@@ -177,4 +178,16 @@ class UserBll extends IUserBLL {
   void setFirstConfigurationDone() {
     _userService.setFirstConfigurationDone();
   }
+  
+  @override
+  Future<bool> hasCompletedCV() {
+    return _userService.hasCompletedCV();
+  }
+
+  @override
+  Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData) {
+    return _userService.getCareerAdvice(requestData);
+  }
+  
+  
 }

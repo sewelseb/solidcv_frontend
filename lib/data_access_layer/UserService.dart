@@ -9,6 +9,7 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 import 'package:solid_cv/data_access_layer/IUserService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
+import 'package:solid_cv/models/CareerAdvice.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
@@ -693,6 +694,41 @@ class UserService extends IUserService {
 
     if (response.statusCode != 200) {
       throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to set first configuration done');
+    }
+  }
+  
+  @override
+  Future<bool> hasCompletedCV() async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().hasCompletedCvApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['hasCompletedCv'] ?? false;
+    } else {
+      throw Exception('Failed to check if CV is completed');
+    }
+  }
+
+  @override
+  Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().getCareerAdviceApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(requestData.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return CareerAdvice.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to fetch career advice');
     }
   }
 

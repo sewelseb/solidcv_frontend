@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:file_picker/src/platform_file.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
+import 'package:solid_cv/models/CareerAdvice.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/SearchTherms.dart';
 import 'package:solid_cv/models/Skill.dart';
@@ -71,6 +72,10 @@ abstract class IUserService {
   Future<int> getMySkillTestQuestionCount();
 
   void setFirstConfigurationDone();
+
+  hasCompletedCV();
+
+  Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData);
 
 
 }

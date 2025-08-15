@@ -143,4 +143,8 @@ class BackenConnection {
 
   String get removeCompanyAdministratorApi => '/api/protected/company/remove-admin';
 
+  String get hasCompletedCvApi => "/api/protected/user/has-completed-cv";
+
+  String get getCareerAdviceApi => "/api/protected/user/get-career-advice";
+
 }

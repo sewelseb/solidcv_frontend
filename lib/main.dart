@@ -18,6 +18,7 @@ import 'package:solid_cv/Views/admin-views/AdminCompaniesListPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminDashboardPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionListPage.dart';
 import 'package:solid_cv/Views/admin-views/AdminUserListPage.dart';
+import 'package:solid_cv/Views/career-advice/CareerAdviceMain.dart';
 import 'package:solid_cv/Views/companyViews/AddAnEmployee.dart';
 import 'package:solid_cv/Views/companyViews/ApplicantAIFeedbackView.dart';
 import 'package:solid_cv/Views/companyViews/CreateJobOffer.dart';
@@ -130,6 +131,7 @@ class MyApp extends StatelessWidget {
           );
         },
         '/jobs': (context) => const PublicJobOffers(),
+        '/career-advice': (context) => const AuthGuard(child: CareerAdviceMain()),
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
