@@ -9,7 +9,7 @@ import 'package:solid_cv/models/User.dart';
 
 class JobDetails extends StatefulWidget {
   final String jobOfferId;
-  
+
   const JobDetails({super.key, required this.jobOfferId});
 
   @override
@@ -19,7 +19,7 @@ class JobDetails extends StatefulWidget {
 class _JobDetailsState extends State<JobDetails> {
   final IJobOfferBll _jobOfferBll = JobOfferBll();
   final UserBll _userBll = UserBll();
-  
+
   Future<JobOffer>? _jobOfferFuture;
   User? _currentUser;
   int? _jobOfferId;
@@ -49,7 +49,7 @@ class _JobDetailsState extends State<JobDetails> {
         _isLoadingUser = false;
         _userLoadError = false;
       });
-      
+
       // Load skill test count if user is connected
       if (user != null) {
         await _loadUserSkillTestCount();
@@ -67,8 +67,7 @@ class _JobDetailsState extends State<JobDetails> {
 
   Future<void> _loadUserSkillTestCount() async {
     try {
-      
-      final count = await _userBll.getMySkillTestQuestionCount();      
+      final count = await _userBll.getMySkillTestQuestionCount();
       setState(() {
         _userSkillTestCount = count;
         _isLoadingSkillTests = false;
@@ -140,7 +139,8 @@ class _JobDetailsState extends State<JobDetails> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.business, size: 16, color: Colors.grey.shade600),
+                        Icon(Icons.business,
+                            size: 16, color: Colors.grey.shade600),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -157,7 +157,8 @@ class _JobDetailsState extends State<JobDetails> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 16, color: Colors.grey.shade600),
+                        Icon(Icons.location_on,
+                            size: 16, color: Colors.grey.shade600),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -174,10 +175,12 @@ class _JobDetailsState extends State<JobDetails> {
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
+                          Icon(Icons.schedule,
+                              size: 16, color: Colors.grey.shade600),
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
                               color: _primaryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
@@ -197,9 +200,9 @@ class _JobDetailsState extends State<JobDetails> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Skill validation status
               Container(
                 padding: const EdgeInsets.all(16),
@@ -226,7 +229,8 @@ class _JobDetailsState extends State<JobDetails> {
                             color: Colors.green.shade100,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Icon(Icons.verified, color: Colors.green.shade700, size: 18),
+                          child: Icon(Icons.verified,
+                              color: Colors.green.shade700, size: 18),
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -250,9 +254,9 @@ class _JobDetailsState extends State<JobDetails> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               Text(
                 'Are you ready to submit your application?',
                 style: GoogleFonts.inter(
@@ -295,14 +299,15 @@ class _JobDetailsState extends State<JobDetails> {
       try {
         await _jobOfferBll.applyToJobOffer(jobOffer.id!);
         if (!mounted) return;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: [
                 const Icon(Icons.check_circle, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                const Expanded(child: Text('Application submitted successfully!')),
+                const Expanded(
+                    child: Text('Application submitted successfully!')),
               ],
             ),
             backgroundColor: Colors.green,
@@ -387,7 +392,8 @@ class _JobDetailsState extends State<JobDetails> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.info_outline, color: Colors.orange.shade600, size: 20),
+                        Icon(Icons.info_outline,
+                            color: Colors.orange.shade600, size: 20),
                         const SizedBox(width: 8),
                         Text(
                           'Skill Validation Required',
@@ -419,9 +425,7 @@ class _JobDetailsState extends State<JobDetails> {
                   ],
                 ),
               ),
-              
               const SizedBox(height: 20),
-              
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -447,7 +451,8 @@ class _JobDetailsState extends State<JobDetails> {
                             color: Colors.blue.shade100,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Icon(Icons.lightbulb, color: Colors.blue.shade700, size: 18),
+                          child: Icon(Icons.lightbulb,
+                              color: Colors.blue.shade700, size: 18),
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -495,7 +500,8 @@ class _JobDetailsState extends State<JobDetails> {
           ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/my-cv'); // Navigate to skill tests page
+              Navigator.pushNamed(
+                  context, '/my-cv'); // Navigate to skill tests page
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade600,
@@ -518,7 +524,8 @@ class _JobDetailsState extends State<JobDetails> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Login Required'),
-        content: const Text('You need to be logged in to apply for jobs. Would you like to login or register?'),
+        content: const Text(
+            'You need to be logged in to apply for jobs. Would you like to login or register?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -554,7 +561,8 @@ class _JobDetailsState extends State<JobDetails> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey,
             foregroundColor: Colors.white,
-            textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            textStyle:
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -773,6 +781,18 @@ class _JobDetailsState extends State<JobDetails> {
 
   @override
   Widget build(BuildContext context) {
+    // Prevent automatic redirects
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentRoute = ModalRoute.of(context)?.settings.name;
+      if (currentRoute != '/job-details/${widget.jobOfferId}') {
+        print(
+            '🔴 Detected route change from ${currentRoute} - preventing redirect');
+        // You might need to navigate back to the correct route
+        Navigator.pushReplacementNamed(
+            context, '/job-details/${widget.jobOfferId}');
+      }
+    });
+
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
 
@@ -790,7 +810,8 @@ class _JobDetailsState extends State<JobDetails> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       // Conditionally show bottom navigation bar only for connected users
-      //bottomNavigationBar: _currentUser != null ? const MainBottomNavigationBar() : null,
+      bottomNavigationBar:
+          _currentUser != null ? const MainBottomNavigationBar() : null,
       backgroundColor: Colors.grey.shade50,
       body: FutureBuilder<JobOffer>(
         future: _jobOfferFuture,
@@ -802,7 +823,8 @@ class _JobDetailsState extends State<JobDetails> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
+                  Icon(Icons.error_outline,
+                      size: 64, color: Colors.red.shade300),
                   const SizedBox(height: 16),
                   Text('Error loading job details: ${snapshot.error}'),
                   const SizedBox(height: 16),
@@ -830,7 +852,7 @@ class _JobDetailsState extends State<JobDetails> {
                   children: [
                     // User Status Banner
                     _buildUserStatusBanner(),
-                    
+
                     // Main Job Card
                     Container(
                       decoration: BoxDecoration(
@@ -854,7 +876,8 @@ class _JobDetailsState extends State<JobDetails> {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         jobOffer.title ?? 'Untitled Position',
@@ -878,7 +901,8 @@ class _JobDetailsState extends State<JobDetails> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
                                     color: Colors.green.shade100,
                                     borderRadius: BorderRadius.circular(20),
@@ -905,36 +929,56 @@ class _JobDetailsState extends State<JobDetails> {
                               ),
                               child: Column(
                                 children: [
-                                  _buildInfoRow('Job Type', jobOffer.jobType, Icons.schedule),
+                                  _buildInfoRow('Job Type', jobOffer.jobType,
+                                      Icons.schedule),
                                   const SizedBox(height: 12),
-                                  _buildInfoRow('Experience Level', jobOffer.experienceLevel, Icons.trending_up),
+                                  _buildInfoRow(
+                                      'Experience Level',
+                                      jobOffer.experienceLevel,
+                                      Icons.trending_up),
                                   const SizedBox(height: 12),
-                                  _buildInfoRow('Location', jobOffer.location, Icons.location_on),
-                                  if (jobOffer.salary != null) const SizedBox(height: 12),
+                                  _buildInfoRow('Location', jobOffer.location,
+                                      Icons.location_on),
                                   if (jobOffer.salary != null)
-                                    _buildInfoRow('Salary', jobOffer.salary!.toString(), Icons.attach_money),
-                                  if (jobOffer.createdAt != null) const SizedBox(height: 12),
+                                    const SizedBox(height: 12),
+                                  if (jobOffer.salary != null)
+                                    _buildInfoRow(
+                                        'Salary',
+                                        jobOffer.salary!.toString(),
+                                        Icons.attach_money),
                                   if (jobOffer.createdAt != null)
-                                    _buildInfoRow('Posted', _formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000)), Icons.calendar_today),
+                                    const SizedBox(height: 12),
+                                  if (jobOffer.createdAt != null)
+                                    _buildInfoRow(
+                                        'Posted',
+                                        _formatDate(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                jobOffer.createdAt! * 1000)),
+                                        Icons.calendar_today),
                                 ],
                               ),
                             ),
                             const SizedBox(height: 24),
 
                             // Job Description
-                            if (jobOffer.description != null && jobOffer.description!.isNotEmpty) ...[
-                              _buildSection('Job Description', jobOffer.description!),
+                            if (jobOffer.description != null &&
+                                jobOffer.description!.isNotEmpty) ...[
+                              _buildSection(
+                                  'Job Description', jobOffer.description!),
                               const SizedBox(height: 24),
                             ],
 
                             // Requirements
-                            if (jobOffer.requirements != null && jobOffer.requirements!.isNotEmpty) ...[
-                              _buildSection('Requirements', jobOffer.requirements!),
+                            if (jobOffer.requirements != null &&
+                                jobOffer.requirements!.isNotEmpty) ...[
+                              _buildSection(
+                                  'Requirements', jobOffer.requirements!),
                               const SizedBox(height: 24),
                             ],
 
                             // Benefits
-                            if (jobOffer.benefits != null && jobOffer.benefits!.isNotEmpty) ...[
+                            if (jobOffer.benefits != null &&
+                                jobOffer.benefits!.isNotEmpty) ...[
                               _buildSection('Benefits', jobOffer.benefits!),
                               const SizedBox(height: 24),
                             ],
@@ -957,7 +1001,7 @@ class _JobDetailsState extends State<JobDetails> {
 
   Widget _buildInfoRow(String label, String? value, IconData icon) {
     if (value == null || value.isEmpty) return const SizedBox.shrink();
-    
+
     return Row(
       children: [
         Icon(icon, size: 18, color: _primaryColor),
