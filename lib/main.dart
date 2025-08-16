@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
+import 'package:solid_cv/Views/CompaniesLandingPage.dart';
 import 'package:solid_cv/Views/EducationInstitutionsLandingPage.dart';
 import 'package:solid_cv/Views/HomeRoute.dart';
 import 'package:solid_cv/Views/JobDetails.dart';
@@ -134,6 +135,7 @@ class MyApp extends StatelessWidget {
         '/jobs': (context) => const PublicJobOffers(),
         '/career-advice': (context) => const AuthGuard(child: CareerAdviceMain()),
         '/education-institutions': (context) => const EducationInstitutionsLandingPage(),
+        '/companies': (context) => const CompaniesLandingPage(),
       },
       onGenerateRoute: (settings) {
         if (settings.name != null && settings.name!.startsWith('/user/')) {

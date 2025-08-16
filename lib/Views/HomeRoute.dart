@@ -1121,6 +1121,7 @@ class _TargetCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
     final isEducationCard = title.contains("Educational Institutions");
+    final isCompanyCard = title.contains("For Companies");
     
     return Container(
       width: isMobile ? double.infinity : 280,
@@ -1155,6 +1156,31 @@ class _TargetCard extends StatelessWidget {
                 },
                 icon: const Icon(Icons.school, size: 16),
                 label: const Text('Learn More'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: const Color(0xFF7B3FE4),
+                  side: const BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (isCompanyCard) ...[
+            SizedBox(height: isMobile ? 16 : 20),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/companies');
+                },
+                icon: const Icon(Icons.business, size: 16),
+                label: const Text('Explore Solutions'),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: const Color(0xFF7B3FE4),
                   side: const BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
