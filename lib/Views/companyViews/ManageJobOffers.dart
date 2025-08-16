@@ -507,7 +507,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                   children: [
                     if (jobOffer.createdAt != null)
                       Text(
-                        'Created ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt as int))}',
+                        'Created ${_formatDate(DateTime.fromMillisecondsSinceEpoch((jobOffer.createdAt as int)*1000))}',
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.grey.shade600,
