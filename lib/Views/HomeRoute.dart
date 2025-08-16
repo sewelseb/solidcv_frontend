@@ -190,9 +190,10 @@ class _HomeRouteState extends State<HomeRoute> {
                   : _buildDesktopOrTabletLayout(
                       screenWidth, screenHeight, isTablet),
             ),
+            const AIFeaturesSection(), // New AI Features section
             const AboutUsSection(),
             const TargetAudienceSection(),
-            const PricingSection(),
+            //const PricingSection(),
             const ContactUsSection(),
           ],
         ),
@@ -332,7 +333,7 @@ class _LoginForm extends StatelessWidget {
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         SizedBox(height: isMobile ? 4 : 8), // Reduced spacing
-        Text("Sign in to manage your verified credentials.",
+        Text("Sign in to unlock AI-powered career tools and manage your verified credentials.",
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         SizedBox(height: isMobile ? 20 : 32), // Reduced spacing
@@ -455,7 +456,381 @@ class _LoginForm extends StatelessWidget {
   }
 }
 
-// --- SECTION TRANSLATIONS ---
+// NEW AI FEATURES SECTION
+class AIFeaturesSection extends StatelessWidget {
+  const AIFeaturesSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 768;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF7B3FE4).withOpacity(0.05),
+            const Color(0xFF9D50BB).withOpacity(0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 48 : 64,
+        horizontal: isMobile ? 16 : 24,
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF7B3FE4).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFF7B3FE4).withOpacity(0.3)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.auto_awesome,
+                  color: const Color(0xFF7B3FE4),
+                  size: isMobile ? 18 : 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'AI-Powered Features',
+                  style: TextStyle(
+                    fontSize: isMobile ? 12 : 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF7B3FE4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: isMobile ? 16 : 24),
+          Text(
+            "Supercharge Your Career with AI",
+            style: TextStyle(
+              fontSize: isMobile ? 26 : 36,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: isMobile ? 12 : 16),
+          Container(
+            constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
+            child: Text(
+              "Leverage cutting-edge artificial intelligence to validate your skills, get personalized career advice, and find the perfect job matches.",
+              style: TextStyle(
+                fontSize: isMobile ? 16 : 18,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: isMobile ? 40 : 56),
+          
+          // AI Features Grid
+          isMobile 
+            ? Column(
+                mainAxisSize: MainAxisSize.min, // Add this
+                children: [
+                  _AIFeatureCard(
+                    icon: Icons.verified_user,
+                    title: "AI Skill Validation",
+                    description: "Get your skills assessed and verified by AI algorithms that analyze your experience, projects, and achievements.",
+                    color: Colors.blue,
+                    isMobile: isMobile,
+                  ),
+                  const SizedBox(height: 24),
+                  _AIFeatureCard(
+                    icon: Icons.psychology,
+                    title: "AI Career Advisor",
+                    description: "Receive personalized career guidance based on your profile, goals, and market trends powered by advanced AI.",
+                    color: Colors.orange,
+                    isMobile: isMobile,
+                  ),
+                  const SizedBox(height: 24),
+                  _AIFeatureCard(
+                    icon: Icons.analytics,
+                    title: "AI Job Matching",
+                    description: "Recruiters get fast AI feedback on the match between you and the job offer.",
+                    color: Colors.green,
+                    isMobile: isMobile,
+                  ),
+                ],
+              )
+            : Wrap(
+                spacing: 24,
+                runSpacing: 32,
+                alignment: WrapAlignment.center,
+                children: [
+                  _AIFeatureCard(
+                    icon: Icons.verified_user,
+                    title: "AI Skill Validation",
+                    description: "Get your skills assessed and verified by AI algorithms that analyze your experience, projects, and achievements.",
+                    color: Colors.blue,
+                    isMobile: isMobile,
+                  ),
+                  _AIFeatureCard(
+                    icon: Icons.psychology,
+                    title: "AI Career Advisor",
+                    description: "Receive personalized career guidance based on your profile, goals, and market trends powered by advanced AI.",
+                    color: Colors.orange,
+                    isMobile: isMobile,
+                  ),
+                  _AIFeatureCard(
+                    icon: Icons.analytics,
+                    title: "AI Job Matching",
+                    description: "Recruiters get fast AI feedback on the match between you and the job offer based on your tested skills and CV credentials.",
+                    color: Colors.green,
+                    isMobile: isMobile,
+                  ),
+                ],
+              ),
+          
+          SizedBox(height: isMobile ? 40 : 56),
+          
+          // CTA Section
+          Container(
+            padding: EdgeInsets.all(isMobile ? 24 : 32),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF7B3FE4), Color(0xFF9D50BB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF7B3FE4).withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.rocket_launch,
+                  color: Colors.white,
+                  size: isMobile ? 40 : 48,
+                ),
+                SizedBox(height: isMobile ? 16 : 20),
+                Text(
+                  "Ready to Transform Your Career?",
+                  style: TextStyle(
+                    fontSize: isMobile ? 20 : 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: isMobile ? 8 : 12),
+                Text(
+                  "Join thousands of professionals who are already using AI to accelerate their career growth.",
+                  style: TextStyle(
+                    fontSize: isMobile ? 14 : 16,
+                    color: Colors.white.withOpacity(0.9),
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: isMobile ? 24 : 32),
+                isMobile
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: const Color(0xFF7B3FE4),
+                              minimumSize: const Size(double.infinity, 50),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            icon: const Icon(Icons.person_add),
+                            label: const Text("Get Started Free"),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/jobs');
+                            },
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(color: Colors.white, width: 2),
+                              minimumSize: const Size(double.infinity, 50),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            icon: const Icon(Icons.explore),
+                            label: const Text("Explore Job Opportunities"),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF7B3FE4),
+                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          icon: const Icon(Icons.person_add),
+                          label: const Text("Get Started Free"),
+                        ),
+                        const SizedBox(width: 16),
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/jobs');
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: const BorderSide(color: Colors.white, width: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          icon: const Icon(Icons.explore),
+                          label: const Text("Explore Jobs"),
+                        ),
+                      ],
+                    ),
+              ],
+            ),
+          ),
+          
+          SizedBox(height: isMobile ? 48 : 64),
+          const _SectionDivider(),
+        ],
+      ),
+    );
+  }
+}
+
+class _AIFeatureCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Color color;
+  final bool isMobile;
+
+  const _AIFeatureCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.color,
+    required this.isMobile,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: isMobile ? double.infinity : 320,
+      constraints: BoxConstraints(
+        maxWidth: isMobile ? MediaQuery.of(context).size.width - 32 : 320,
+        minHeight: isMobile ? 200 : 240,
+      ),
+      padding: EdgeInsets.all(isMobile ? 24 : 28),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.1),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // Add this to prevent unbounded height
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: isMobile ? 28 : 32,
+            ),
+          ),
+          SizedBox(height: isMobile ? 16 : 20),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: isMobile ? 18 : 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          SizedBox(height: isMobile ? 8 : 12),
+          Flexible( // Wrap Text with Flexible instead of using Spacer
+            child: Text(
+              description,
+              style: TextStyle(
+                fontSize: isMobile ? 14 : 15,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+            ),
+          ),
+          SizedBox(height: isMobile ? 16 : 20), // Fixed spacing instead of Spacer
+        ],
+      ),
+    );
+  }
+}
+
+// --- EXISTING SECTIONS (keeping the same) ---
 
 class AboutUsSection extends StatelessWidget {
   const AboutUsSection({super.key});
@@ -699,9 +1074,9 @@ class TargetAudienceSection extends StatelessWidget {
                 ],
               )
             : const Wrap(
+                alignment: WrapAlignment.center,
                 spacing: 24,
                 runSpacing: 32,
-                alignment: WrapAlignment.center,
                 children: [
                   _TargetCard(
                     title: "For All Professionals",
@@ -807,9 +1182,11 @@ class PricingSection extends StatelessWidget {
                   children: [
                     _UnifiedPricingCard(
                       title: "User",
-                      freeFeatures: ["Create and share your CV"],
+                      freeFeatures: ["Create and share your CV", "AI Career Advisor", "Basic job matching"],
                       paidFeatures: [
-                        "Statistics on your CV views and attention points",
+                        "Advanced AI skill validation",
+                        "Premium CV analytics and insights",
+                        "Priority AI career advice",
                         "Premium CV templates",
                       ],
                       price: "4,99€",
@@ -817,9 +1194,11 @@ class PricingSection extends StatelessWidget {
                     SizedBox(height: 24),
                     _UnifiedPricingCard(
                       title: "Institution",
-                      freeFeatures: ["Issue credentials to users"],
+                      freeFeatures: ["Issue credentials to users", "Basic verification tools"],
                       paidFeatures: [
+                        "AI-powered credential verification",
                         "Advanced statistics on certification usage",
+                        "Bulk credential management",
                       ],
                       price: "4,99€",
                     ),
@@ -829,8 +1208,9 @@ class PricingSection extends StatelessWidget {
                       freeFeatures: [
                         "Issue credentials to users",
                         "Verify CVs",
+                        "Basic candidate matching",
                       ],
-                      paidFeatures: [],
+                      paidFeatures: ["AI-enhanced recruitment analytics", "Advanced candidate compatibility scoring"],
                       price: "4,99€ / 49,99€",
                     ),
                   ],
@@ -842,18 +1222,22 @@ class PricingSection extends StatelessWidget {
                   children: [
                     _UnifiedPricingCard(
                       title: "User",
-                      freeFeatures: ["Create and share your CV"],
+                      freeFeatures: ["Create and share your CV", "AI Career Advisor", "Basic job matching"],
                       paidFeatures: [
-                        "Statistics on your CV views and attention points",
+                        "Advanced AI skill validation",
+                        "Premium CV analytics and insights",
+                        "Priority AI career advice",
                         "Premium CV templates",
                       ],
                       price: "4,99€",
                     ),
                     _UnifiedPricingCard(
                       title: "Institution",
-                      freeFeatures: ["Issue credentials to users"],
+                      freeFeatures: ["Issue credentials to users", "Basic verification tools"],
                       paidFeatures: [
+                        "AI-powered credential verification",
                         "Advanced statistics on certification usage",
+                        "Bulk credential management",
                       ],
                       price: "4,99€",
                     ),
@@ -862,8 +1246,9 @@ class PricingSection extends StatelessWidget {
                       freeFeatures: [
                         "Issue credentials to users",
                         "Verify CVs",
+                        "Basic candidate matching",
                       ],
-                      paidFeatures: [],
+                      paidFeatures: ["AI-enhanced recruitment analytics", "Advanced candidate compatibility scoring"],
                       price: "4,99€ / 49,99€",
                     ),
                   ],
@@ -950,14 +1335,15 @@ class _UnifiedPricingCard extends StatelessWidget {
                       style:
                           TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
                   SizedBox(height: isMobile ? 6 : 8),
-                  _featureRow("Advanced statistics on credential usage",
-                      isFree: false, isMobile: isMobile),
+                  ...paidFeatures.map((f) => _featureRow(f, isFree: false, isMobile: isMobile)),
                   SizedBox(height: isMobile ? 12 : 16),
-                  Text("Premium features – 49,99€",
+                  Text("Enterprise features – 49,99€",
                       style:
                           TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w600)),
                   SizedBox(height: isMobile ? 6 : 8),
                   _featureRow("AI-generated feedback on employee profiles",
+                      isFree: false, isMobile: isMobile),
+                  _featureRow("Custom AI model training",
                       isFree: false, isMobile: isMobile),
                 ],
               ),
@@ -1103,50 +1489,9 @@ class _ContactForm extends StatelessWidget {
           ),
         ),
         SizedBox(height: isMobile ? 16 : 24),
-
-        // _buildTextField(label: "Full Name"),
-        // const SizedBox(height: 16),
-        // _buildTextField(label: "Email Address"),
-        // const SizedBox(height: 16),
-        // _buildTextField(label: "Message", maxLines: 4),
-        // const SizedBox(height: 24),
-
-        // Align(
-        //   alignment: Alignment.centerRight,
-        //    child: ElevatedButton(
-        //     onPressed: () {},
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: const Color(0xFF7B3FE4),
-        //        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-        //       shape: RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(8),
-        //       ),
-        //     ),
-        //     child: const Text(
-        //        "Send",
-        //        style: TextStyle(fontSize: 16, color: Colors.white),
-        //     ),
-        //    ),
-        // ),
       ],
     );
   }
-
-  // Widget _buildTextField({required String label, int maxLines = 1}) {
-  //   return TextField(
-  //     maxLines: maxLines,
-  //     decoration: InputDecoration(
-  //       labelText: label,
-  //       filled: true,
-  //       fillColor: Colors.grey.shade100,
-  //       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-  //       focusedBorder: OutlineInputBorder(
-  //         borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
-  //         borderRadius: BorderRadius.circular(8),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
 class _BottomAngleClipper extends CustomClipper<Path> {
