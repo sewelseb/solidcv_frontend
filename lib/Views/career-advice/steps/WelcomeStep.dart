@@ -12,44 +12,50 @@ class WelcomeStep extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 600;
     final Color primaryColor = const Color(0xFF7B3FE4);
 
-    return Padding(
+    return SingleChildScrollView(
       padding: EdgeInsets.all(isMobile ? 16 : 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // Add some top spacing for mobile to center content better
+          SizedBox(height: isMobile ? 20 : 40),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(isMobile ? 16 : 20),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [primaryColor, primaryColor.withOpacity(0.8)],
               ),
             ),
-            child: const Icon(Icons.psychology, color: Colors.white, size: 48),
+            child: Icon(
+              Icons.psychology, 
+              color: Colors.white, 
+              size: isMobile ? 40 : 48,
+            ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: isMobile ? 24 : 32),
           Text(
             'Welcome to Your AI Career Advisor',
             style: GoogleFonts.inter(
-              fontSize: isMobile ? 24 : 28,
+              fontSize: isMobile ? 22 : 28,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: isMobile ? 16 : 24),
           Text(
             'I\'m here to help you navigate your career journey. Based on your CV and preferences, I\'ll provide personalized advice to help you achieve your professional goals.',
             style: GoogleFonts.inter(
-              fontSize: 16,
+              fontSize: isMobile ? 14 : 16,
               color: Colors.black54,
               height: 1.6,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: isMobile ? 24 : 32),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(isMobile ? 16 : 20),
             decoration: BoxDecoration(
               color: primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),
@@ -60,12 +66,12 @@ class WelcomeStep extends StatelessWidget {
                 Text(
                   'What you\'ll get:',
                   style: GoogleFonts.inter(
-                    fontSize: 18,
+                    fontSize: isMobile ? 16 : 18,
                     fontWeight: FontWeight.w600,
                     color: primaryColor,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: isMobile ? 12 : 16),
                 ...[
                   'Personalized career recommendations',
                   'Skills gap analysis and improvement tips',
@@ -75,13 +81,17 @@ class WelcomeStep extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
                     children: [
-                      Icon(Icons.check_circle, color: primaryColor, size: 20),
+                      Icon(
+                        Icons.check_circle, 
+                        color: primaryColor, 
+                        size: isMobile ? 18 : 20,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           benefit,
                           style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: isMobile ? 13 : 14,
                             color: Colors.black87,
                           ),
                         ),
@@ -92,7 +102,7 @@ class WelcomeStep extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 32 : 40),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -100,14 +110,24 @@ class WelcomeStep extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryColor,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(
+                  vertical: isMobile ? 14 : 16,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Let\'s Get Started!'),
+              child: Text(
+                'Let\'s Get Started!',
+                style: GoogleFonts.inter(
+                  fontSize: isMobile ? 16 : 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
+          // Add bottom spacing for mobile
+          SizedBox(height: isMobile ? 20 : 0),
         ],
       ),
     );
