@@ -171,6 +171,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
   }
 
   void _onSkillsEditComplete(List<Skill> skills) {
+    _userBll.setFirstConfigurationDone();
     setState(() {
       // Convert ManualSkill objects to Map format if needed for storage
       _finalSkills = skills.map((skill) => {
