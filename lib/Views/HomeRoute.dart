@@ -1120,6 +1120,7 @@ class _TargetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 768;
+    final isEducationCard = title.contains("Educational Institutions");
     
     return Container(
       width: isMobile ? double.infinity : 280,
@@ -1144,6 +1145,31 @@ class _TargetCard extends StatelessWidget {
                 height: 1.4
               ),
               textAlign: TextAlign.center),
+          if (isEducationCard) ...[
+            SizedBox(height: isMobile ? 16 : 20),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/education-institutions');
+                },
+                icon: const Icon(Icons.school, size: 16),
+                label: const Text('Learn More'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: const Color(0xFF7B3FE4),
+                  side: const BorderSide(color: Color(0xFF7B3FE4), width: 1.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
