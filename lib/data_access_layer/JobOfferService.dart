@@ -150,8 +150,9 @@ class JobOffreService implements IJobOfferService {
     if (response.statusCode == 200) {
       // Successfully applied to job offer
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
+      if(response.statusCode == 409) {
+        throw Exception('You have already applied to this job offer');
+      }
       throw Exception('Failed to apply to job offer');
     }
   }
