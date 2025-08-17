@@ -68,6 +68,17 @@ class _CertificateEditStepState extends State<CertificateEditStep>
     }
   }
 
+  @override
+  void didUpdateWidget(CertificateEditStep oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reset button visibility when step becomes active again
+    if (widget.isActive && !oldWidget.isActive) {
+      setState(() {
+        _buttonHidden = false;
+      });
+    }
+  }
+
   void _removeCertificate(String id) {
     _userBll.deleteManualyAddedCertificate(int.parse(id));
     setState(() {
@@ -438,7 +449,15 @@ class _CertificateEditStepState extends State<CertificateEditStep>
           return 'Issued: ${parsedDate.month}/${parsedDate.year}';
         }
       } catch (e) {
-        return 'Issued: $issueDate';
+        
+        try {
+          //date is with the format yyyy-mm-ddTHH:mm:ss
+          var dateAsTimeStamp = DateTime.parse(issueDate).millisecondsSinceEpoch;
+          return 'Issued: ${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).month}/${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).year}';
+        } catch (e) {
+          // Fallback if parsing fails
+          return 'Issued: ${issueDate}';
+        }
       }
     }
     return 'Issued: $issueDate';
@@ -764,6 +783,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
               },
             );
             if (picked != null) {
+              print('Date picker: Selected date: $picked');
               onDateSelected(picked);
             }
           },
@@ -782,7 +802,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    '${date.month}/${date.year}',
+                    '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: Colors.black87,
