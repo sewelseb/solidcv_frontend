@@ -515,7 +515,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: "Job Offres",
+                                title: "Job Offers",
                                 icon: Icons.work,
                                 content: Column(
                                   children: [

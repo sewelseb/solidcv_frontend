@@ -372,7 +372,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
   }
 
   String _formatDate(DateTime date) {
-    return '${date.month}/${date.year}';
+    return '${date.day}/${date.month}/${date.year}';
   }
 
   void _editExperience(int index) {
@@ -383,9 +383,13 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
       builder: (context) => _ExperienceEditDialog(
         experience: experience,
         onSave: (updatedExperience) {
+          print('Saving updated experience: ${updatedExperience.title}'); // Debug line
+          print('New start date: ${DateTime.fromMillisecondsSinceEpoch(updatedExperience.startDateAsTimestamp! * 1000)}'); // Debug line
+          print('New end date: ${updatedExperience.endDateAsTimestamp != null ? DateTime.fromMillisecondsSinceEpoch(updatedExperience.endDateAsTimestamp! * 1000) : 'Current job'}'); // Debug line
           setState(() {
             _experiences[index] = updatedExperience;
           });
+          print('Experience updated in list'); // Debug line
         },
       ),
     );
@@ -534,8 +538,10 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                             label: 'Start Date *',
                             date: _startDate,
                             onDateSelected: (date) {
+                              print('Start date selected: $date'); // Debug line
                               setState(() {
                                 _startDate = date;
+                                print('Start date updated to: $_startDate'); // Debug line
                               });
                             },
                           ),
@@ -572,8 +578,10 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                                   label: 'End Date *',
                                   date: _endDate,
                                   onDateSelected: (date) {
+                                    print('End date selected: $date'); // Debug line
                                     setState(() {
                                       _endDate = date;
+                                      print('End date updated to: $_endDate'); // Debug line
                                     });
                                   },
                                 ),
@@ -827,6 +835,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
               },
             );
             if (picked != null) {
+              print('Date picked: $picked'); // Debug line
               onDateSelected(picked);
             }
           },
@@ -844,7 +853,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    '${date.month}/${date.year}',
+                    '${date.day}/${date.month}/${date.year}',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: Colors.black87,
@@ -877,8 +886,8 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
       id: widget.experience.id,
       title: _titleController.text.trim(),
       company: _companyController.text.trim(),
-      startDateAsTimestamp: _startDate.millisecondsSinceEpoch,
-      endDateAsTimestamp: _isCurrentJob ? DateTime.now().millisecondsSinceEpoch : _endDate.millisecondsSinceEpoch,
+      startDateAsTimestamp: (_startDate.millisecondsSinceEpoch / 1000).round(),
+      endDateAsTimestamp: _isCurrentJob ? 0 : (_endDate.millisecondsSinceEpoch / 1000).round(),
       description: _descriptionController.text.trim(),
       promotions: widget.experience.promotions, // Keep existing promotions
     );
