@@ -164,7 +164,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                'AI Skill Validation',
+                'AI Skill Test',
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -188,6 +188,45 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 12),
+        
+        // Explanation about why we perform these tests
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.orange.shade50,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.orange.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.orange.shade600, size: 16),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Why do we test your skills?',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.orange.shade700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'We use this data to provide you with personalized feedback about your skills, help recruiters understand how well applicants match their job offers, and eventually provide you with tailored career advice to advance your professional growth. You can always do it or continue to answer questions on your CV page',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: Colors.orange.shade700,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 12),
         
