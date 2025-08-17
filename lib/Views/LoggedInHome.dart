@@ -514,461 +514,94 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         ),
         const SizedBox(height: 40),
 
-        // Enhanced Job Opportunities Section
+        // Three sections layout - responsive grid
         LayoutBuilder(
           builder: (context, constraints) {
-            double boxTargetWidth;
-            double maxBoxWidthOnDesktop = 550.0;
-
-            if (isMobile) {
-              boxTargetWidth = constraints.maxWidth;
-            } else {
-              boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
-                  ? constraints.maxWidth
-                  : maxBoxWidthOnDesktop;
-            }
-            return Container(
-              width: boxTargetWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: _primaryColor.withOpacity(0.15),
-                    blurRadius: 25,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 8),
+            final screenWidth = constraints.maxWidth;
+            final isLargeScreen = screenWidth >= 1200;
+            
+            if (isLargeScreen) {
+              // Side by side layout for large screens
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Job Opportunities Section
+                  Expanded(
+                    child: _buildJobOpportunitiesSection(isMobile),
+                  ),
+                  const SizedBox(width: 24),
+                  // AI Career Advisor Section
+                  Expanded(
+                    child: _buildAICareerAdvisorSection(isMobile),
+                  ),
+                  const SizedBox(width: 24),
+                  // Quick Actions Section
+                  Expanded(
+                    child: _buildQuickActionsSection(isMobile),
                   ),
                 ],
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      _cardBackground,
-                      _gradientStart.withOpacity(0.02),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: _primaryColor.withOpacity(0.15),
-                    width: 1.5,
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Icon with animated background
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [_gradientStart, _gradientEnd],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: _primaryColor.withOpacity(0.3),
-                                blurRadius: 20,
-                                spreadRadius: 0,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.work_outline,
-                          color: Colors.white,
-                          size: isMobile ? 32 : 36,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Find Job Opportunities',
-                      style: GoogleFonts.inter(
-                        fontSize: isMobile ? 22 : 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Discover amazing job opportunities from verified companies. Apply directly and showcase your blockchain-verified credentials and AI-tested skills.',
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: Colors.black54,
-                        height: 1.6,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 28),
-                    
-                    // Enhanced Button
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: _primaryColor.withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 0,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/jobs');
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                              vertical: isMobile ? 18 : 20,
-                              horizontal: 24,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [_gradientStart, _gradientEnd],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 22,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Browse Job Offers',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Feature badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: _primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: _primaryColor.withOpacity(0.2),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.verified, size: 16, color: _primaryColor),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Blockchain-verified applications',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: _primaryColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 40),
-
-        // Enhanced Career Advisor Section
-        LayoutBuilder(
-          builder: (context, constraints) {
-            double boxTargetWidth;
-            double maxBoxWidthOnDesktop = 550.0;
-
-            if (isMobile) {
-              boxTargetWidth = constraints.maxWidth;
+              );
             } else {
-              boxTargetWidth = constraints.maxWidth < maxBoxWidthOnDesktop
-                  ? constraints.maxWidth
-                  : maxBoxWidthOnDesktop;
-            }
-            return Container(
-              width: boxTargetWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.orange.withOpacity(0.2),
-                    blurRadius: 25,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 8),
-                  ),
+              // Stacked layout for smaller screens
+              return Column(
+                children: [
+                  _buildJobOpportunitiesSection(isMobile),
+                  const SizedBox(height: 40),
+                  _buildAICareerAdvisorSection(isMobile),
+                  const SizedBox(height: 40),
+                  _buildQuickActionsSection(isMobile),
                 ],
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.orange.shade50,
-                      Colors.orange.shade100.withOpacity(0.3),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.orange.shade200,
-                    width: 1.5,
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Enhanced AI Icon
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [Colors.orange.shade400, Colors.orange.shade600],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.orange.withOpacity(0.4),
-                                blurRadius: 20,
-                                spreadRadius: 0,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.psychology,
-                          color: Colors.white,
-                          size: isMobile ? 32 : 36,
-                        ),
-                        // AI spark effect
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              color: Colors.yellow.shade300,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.yellow.withOpacity(0.6),
-                                  blurRadius: 8,
-                                  spreadRadius: 0,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'AI Career Advisor',
-                          style: GoogleFonts.inter(
-                            fontSize: isMobile ? 22 : 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.shade600,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            'AI',
-                            style: GoogleFonts.inter(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Get personalized career advice powered by advanced AI. Discover your next career move, identify skill gaps, and receive actionable recommendations based on your CV and goals.',
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: Colors.black54,
-                        height: 1.6,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 28),
-                    
-                    // Enhanced Button
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.orange.withOpacity(0.4),
-                            blurRadius: 15,
-                            spreadRadius: 0,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(16),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/career-advice');
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                              vertical: isMobile ? 18 : 20,
-                              horizontal: 24,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.orange.shade500, Colors.orange.shade600],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.auto_fix_high,
-                                  color: Colors.white,
-                                  size: 22,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Get Career Advice',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Feature badges
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.shade600.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.orange.shade600.withOpacity(0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: Text(
-                            'AI-powered',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: Colors.orange.shade600,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.shade600.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.orange.shade600.withOpacity(0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: Text(
-                            'Personalized',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: Colors.orange.shade600,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.shade600.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.orange.shade600.withOpacity(0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: Text(
-                            'Free',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: Colors.orange.shade600,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
+              );
+            }
           },
         ),
+        
+
+        
+
+        const SizedBox(height: 20),
+        
+        // NEW: Three sections responsive layout (commented out old sections above)
+        // LayoutBuilder(
+        //   builder: (context, constraints) {
+        //     final screenWidth = constraints.maxWidth;
+        //     final isLargeScreen = screenWidth >= 1200;
+            
+        //     if (isLargeScreen) {
+        //       // Side by side layout for large screens
+        //       return Row(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           // Job Opportunities Section
+        //           Expanded(
+        //             child: _buildJobOpportunitiesSection(isMobile),
+        //           ),
+        //           const SizedBox(width: 24),
+        //           // AI Career Advisor Section
+        //           Expanded(
+        //             child: _buildAICareerAdvisorSection(isMobile),
+        //           ),
+        //           const SizedBox(width: 24),
+        //           // Quick Actions Section
+        //           Expanded(
+        //             child: _buildQuickActionsSection(isMobile),
+        //           ),
+        //         ],
+        //       );
+        //     } else {
+        //       // Stacked layout for smaller screens
+        //       return Column(
+        //         children: [
+        //           _buildJobOpportunitiesSection(isMobile),
+        //           const SizedBox(height: 40),
+        //           _buildAICareerAdvisorSection(isMobile),
+        //           const SizedBox(height: 40),
+        //           _buildQuickActionsSection(isMobile),
+        //         ],
+        //       );
+        //     }
+        //   },
+        // ),
       ],
     );
 
@@ -1671,6 +1304,598 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Helper method for Job Opportunities Section
+  Widget _buildJobOpportunitiesSection(bool isMobile) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: _primaryColor.withOpacity(0.15),
+            blurRadius: 25,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              _cardBackground,
+              _gradientStart.withOpacity(0.02),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: _primaryColor.withOpacity(0.15),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon with animated background
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [_gradientStart, _gradientEnd],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: _primaryColor.withOpacity(0.3),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.work_outline,
+                color: Colors.white,
+                size: isMobile ? 32 : 36,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Find Job Opportunities',
+              style: GoogleFonts.inter(
+                fontSize: isMobile ? 22 : 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Discover amazing job opportunities from verified companies. Apply directly and showcase your blockchain-verified credentials and AI-tested skills.',
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 28),
+            
+            // Enhanced Button
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: _primaryColor.withOpacity(0.3),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/jobs');
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: isMobile ? 18 : 20,
+                      horizontal: 24,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [_gradientStart, _gradientEnd],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Browse Jobs',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Feature badge
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: _primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: _primaryColor.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.verified, size: 16, color: _primaryColor),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Blockchain-verified applications',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: _primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Helper method for AI Career Advisor Section
+  Widget _buildAICareerAdvisorSection(bool isMobile) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.orange.withOpacity(0.2),
+            blurRadius: 25,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.orange.shade50,
+              Colors.orange.shade100.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.orange.shade200,
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Enhanced AI Icon
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [Colors.orange.shade400, Colors.orange.shade600],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.orange.withOpacity(0.4),
+                        blurRadius: 20,
+                        spreadRadius: 0,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.psychology,
+                  color: Colors.white,
+                  size: isMobile ? 32 : 36,
+                ),
+                // AI spark effect
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow.shade300,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.yellow.shade300.withOpacity(0.6),
+                          blurRadius: 8,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'AI Career Advisor',
+                  style: GoogleFonts.inter(
+                    fontSize: isMobile ? 22 : 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade600,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'AI',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Get personalized career advice powered by advanced AI. Discover your next career move, identify skill gaps, and receive actionable recommendations based on your CV and goals.',
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 28),
+            
+            // Enhanced Button
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange.withOpacity(0.4),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/career-advice');
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: isMobile ? 18 : 20,
+                      horizontal: 24,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.orange.shade500, Colors.orange.shade600],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.psychology,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'Get Career Advice',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Feature badges
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade600.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.orange.shade600.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'AI-powered',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: Colors.orange.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade600.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.orange.shade600.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'Personalized',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: Colors.orange.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade600.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.orange.shade600.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'Free',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: Colors.orange.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Helper method for Quick Actions Section (third column)
+  Widget _buildQuickActionsSection(bool isMobile) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.green.withOpacity(0.15),
+            blurRadius: 25,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.green.shade50,
+              Colors.green.shade100.withOpacity(0.3),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.green.shade200,
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Colors.green.shade400, Colors.green.shade600],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.withOpacity(0.4),
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.dashboard,
+                color: Colors.white,
+                size: isMobile ? 32 : 36,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Quick Actions',
+              style: GoogleFonts.inter(
+                fontSize: isMobile ? 22 : 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Access your CV, manage your profile, view your certificates, and explore more features to enhance your professional presence.',
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 28),
+            
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.withOpacity(0.4),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/my-cv');
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: isMobile ? 18 : 20,
+                      horizontal: 24,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade500, Colors.green.shade600],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.description,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'View My CV',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.green.shade600.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.green.shade600.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.bolt, size: 16, color: Colors.green.shade600),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Quick access to your profile',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: Colors.green.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
