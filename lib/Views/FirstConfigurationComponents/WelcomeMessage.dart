@@ -18,6 +18,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  bool _setupStarted = false;
 
   @override
   void initState() {
@@ -186,32 +187,36 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                     const SizedBox(height: 16),
                     
                     // Start Setup Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          // Handle start setup action
-                          widget.onStartSetup?.call();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF7B3FE4),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    if (!_setupStarted)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              _setupStarted = true;
+                            });
+                            // Handle start setup action
+                            widget.onStartSetup?.call();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF7B3FE4),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 2,
                           ),
-                          elevation: 2,
-                        ),
-                        icon: const Icon(Icons.rocket_launch, size: 18),
-                        label: Text(
-                          'Start Setup',
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                          icon: const Icon(Icons.rocket_launch, size: 18),
+                          label: Text(
+                            'Start Setup',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

@@ -30,6 +30,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
   // Use a regular list for editing
   List<ManualExperience> _experiences = [];
   bool _isInitialized = false; // Add this flag to prevent multiple initializations
+  bool _buttonHidden = false;
 
   @override
   void initState() {
@@ -86,6 +87,9 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
   }
 
   void _submitExperiences() {
+    setState(() {
+      _buttonHidden = true;
+    });
     widget.onComplete(_experiences);
   }
 
@@ -269,22 +273,23 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
         const SizedBox(height: 16),
         
         // Continue button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _submitExperiences,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B3FE4),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        if (!_buttonHidden)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _submitExperiences,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7B3FE4),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
+              icon: const Icon(Icons.arrow_forward, size: 16),
+              label: const Text('Continue to Certificates'),
             ),
-            icon: const Icon(Icons.arrow_forward, size: 16),
-            label: const Text('Continue to Certificates'),
           ),
-        ),
       ],
     );
   }

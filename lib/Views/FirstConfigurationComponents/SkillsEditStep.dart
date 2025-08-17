@@ -32,6 +32,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
   // Use a regular list for editing
   List<Skill> _skills = [];
   bool _isInitialized = false;
+  bool _buttonHidden = false;
 
   @override
   void initState() {
@@ -74,6 +75,9 @@ class _SkillsEditStepState extends State<SkillsEditStep>
   }
 
   void _submitSkills() {
+    setState(() {
+      _buttonHidden = true;
+    });
     widget.onComplete(_skills);
   }
 
@@ -326,22 +330,23 @@ class _SkillsEditStepState extends State<SkillsEditStep>
         ],
         
         // Continue button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _submitSkills,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B3FE4),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        if (!_buttonHidden)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _submitSkills,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7B3FE4),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
+              icon: const Icon(Icons.check_circle, size: 16),
+              label: const Text('Complete Profile Setup'),
             ),
-            icon: const Icon(Icons.check_circle, size: 16),
-            label: const Text('Complete Profile Setup'),
           ),
-        ),
       ],
     );
   }

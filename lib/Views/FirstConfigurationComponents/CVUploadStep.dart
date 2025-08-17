@@ -32,6 +32,7 @@ class _CVUploadStepState extends State<CVUploadStep>
   Map<String, dynamic>? _extractedData;
   bool _isUploading = false;
   bool _isExtracting = false;
+  bool _buttonsHidden = false;
 
   @override
   void initState() {
@@ -167,10 +168,16 @@ class _CVUploadStepState extends State<CVUploadStep>
   }
 
   void _submitCV() {
+    setState(() {
+      _buttonsHidden = true;
+    });
     widget.onComplete(_uploadedFilePath, _extractedData);
   }
 
   void _skipUpload() {
+    setState(() {
+      _buttonsHidden = true;
+    });
     // Create empty data structure for manual entry
     Map<String, dynamic> emptyData = {
       'experiences': <Map<String, dynamic>>[],
@@ -445,42 +452,43 @@ class _CVUploadStepState extends State<CVUploadStep>
                     const SizedBox(height: 16),
                     
                     // Action buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: _skipUpload,
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.grey.shade600,
-                              side: BorderSide(color: Colors.grey.shade300),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text('Skip for now'),
-                          ),
-                        ),
-                        if (_extractedData != null && !_isExtracting) ...[
-                          const SizedBox(width: 12),
+                    if (!_buttonsHidden)
+                      Row(
+                        children: [
                           Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: _submitCV,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF7B3FE4),
-                                foregroundColor: Colors.white,
+                            child: OutlinedButton(
+                              onPressed: _skipUpload,
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.grey.shade600,
+                                side: BorderSide(color: Colors.grey.shade300),
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              icon: const Icon(Icons.edit, size: 16),
-                              label: const Text('Review & Edit Data'),
+                              child: const Text('Skip for now'),
                             ),
                           ),
+                          if (_extractedData != null && !_isExtracting) ...[
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: _submitCV,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF7B3FE4),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.edit, size: 16),
+                                label: const Text('Review & Edit Data'),
+                              ),
+                            ),
+                          ],
                         ],
-                      ],
-                    ),
+                      ),
                   ],
                 ),
               ),

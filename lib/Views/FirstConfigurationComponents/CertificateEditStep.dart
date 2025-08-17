@@ -32,6 +32,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
   // Use a regular list for editing
   List<Certificate> _certificates = [];
   bool _isInitialized = false;
+  bool _buttonHidden = false;
 
   @override
   void initState() {
@@ -75,6 +76,9 @@ class _CertificateEditStepState extends State<CertificateEditStep>
   }
 
   void _submitCertificates() {
+    setState(() {
+      _buttonHidden = true;
+    });
     widget.onComplete(_certificates);
   }
 
@@ -266,22 +270,23 @@ class _CertificateEditStepState extends State<CertificateEditStep>
         const SizedBox(height: 16),
 
         // Continue button
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _submitCertificates,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF7B3FE4),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        if (!_buttonHidden)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _submitCertificates,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7B3FE4),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
+              icon: const Icon(Icons.arrow_forward, size: 16),
+              label: const Text('Continue to Skills'),
             ),
-            icon: const Icon(Icons.arrow_forward, size: 16),
-            label: const Text('Continue to Skills'),
           ),
-        ),
       ],
     );
   }
