@@ -304,6 +304,45 @@ class _WalletStepState extends State<WalletStep>
                             color: Colors.black87,
                           ),
                         ),
+                        const SizedBox(height: 12),
+                        
+                        // Reassuring explanation section
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.blue.shade200),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.info_outline, color: Colors.blue.shade600, size: 16),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'What is this for?',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blue.shade700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Your wallet serves only as a secure digital identifier to ensure the traceability and authenticity of your experiences, certificates, and diplomas. No cryptocurrencies are involved, and this is not a financial tool. Think of it as a secure digital signature that proves your achievements are genuine.',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  color: Colors.blue.shade700,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Text(
                           _showPasswordForm 

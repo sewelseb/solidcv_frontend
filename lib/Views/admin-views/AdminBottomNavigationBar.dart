@@ -16,15 +16,18 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
 
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/admin/dashboard');
+        Navigator.pushNamed(context, '/loggedin/home');
         break;
       case 1:
-        Navigator.pushNamed(context, '/admin/users');
+        Navigator.pushNamed(context, '/admin/dashboard');
         break;
       case 2:
-        Navigator.pushNamed(context, '/admin/companies');
+        Navigator.pushNamed(context, '/admin/users');
         break;
       case 3:
+        Navigator.pushNamed(context, '/admin/companies');
+        break;
+      case 4:
         Navigator.pushNamed(context, '/admin/institutions');
         break;
     }
@@ -38,18 +41,25 @@ class _AdminBottomNavigationBarState extends State<AdminBottomNavigationBar> {
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
-    if (currentRoute == '/admin/dashboard') {
+    if (currentRoute == '/loggedin/home') {
       _selectedIndex = 0;
-    } else if (currentRoute == '/admin/users') {
+    } else if (currentRoute == '/admin/dashboard') {
       _selectedIndex = 1;
-    } else if (currentRoute == '/admin/companies') {
+    } else if (currentRoute == '/admin/users') {
       _selectedIndex = 2;
-    } else if (currentRoute == '/admin/institutions') {
+    } else if (currentRoute == '/admin/companies') {
       _selectedIndex = 3;
+    } else if (currentRoute == '/admin/institutions') {
+      _selectedIndex = 4;
     }
 
     return BottomNavigationBar(
       items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home, color: Colors.grey),
+          activeIcon: Icon(Icons.home, color: Colors.amber),
+          label: 'Home',
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard, color: Colors.grey),
           activeIcon: Icon(Icons.dashboard, color: Colors.amber),
