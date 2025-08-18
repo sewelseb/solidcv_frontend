@@ -1,6 +1,7 @@
 // Create a new file: FirstConfigurationComponents/AISkillValidationStep.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -361,33 +362,62 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         // Input field (when test is active)
         if (_hasTestStarted && !_isLoadingQuestion && _questionsAnswered < _maxQuestions) ...[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  decoration: InputDecoration(
-                    hintText: 'Type your answer...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
+                child: CallbackShortcuts(
+                  bindings: <ShortcutActivator, VoidCallback>{
+                    const SingleActivator(LogicalKeyboardKey.enter, control: true): _submitAnswer,
+                  },
+                  child: Container(
+                    constraints: const BoxConstraints(maxHeight: 120),
+                    child: TextField(
+                      controller: _messageController,
+                      maxLines: null,
+                      minLines: 1,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
+                      decoration: InputDecoration(
+                        hintText: 'Type your answer...\nPress Ctrl+Enter to submit',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      ),
+                      onSubmitted: (_) {
+                        // Only submit on Ctrl+Enter, not just Enter
+                      },
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
-                  onSubmitted: (_) => _submitAnswer(),
                 ),
               ),
               const SizedBox(width: 8),
-              IconButton(
-                onPressed: _submitAnswer,
-                icon: const Icon(Icons.send),
-                style: IconButton.styleFrom(
-                  backgroundColor: const Color(0xFF7B3FE4),
-                  foregroundColor: Colors.white,
-                ),
+              Column(
+                children: [
+                  IconButton(
+                    onPressed: _submitAnswer,
+                    icon: const Icon(Icons.send),
+                    style: IconButton.styleFrom(
+                      backgroundColor: const Color(0xFF7B3FE4),
+                      foregroundColor: Colors.white,
+                    ),
+                    tooltip: 'Submit answer (Ctrl+Enter)',
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Ctrl+\nEnter',
+                    style: GoogleFonts.inter(
+                      fontSize: 9,
+                      color: Colors.grey.shade500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ],
           ),
