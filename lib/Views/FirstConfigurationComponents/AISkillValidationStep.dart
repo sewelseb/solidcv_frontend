@@ -44,6 +44,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   final int _maxQuestions = 3; // Limit questions per skill
   
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -272,11 +273,58 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         // Chat messages
         if (_messages.isNotEmpty) ...[
           Container(
-            constraints: const BoxConstraints(maxHeight: 300),
-            child: SingleChildScrollView(
-              child: Column(
-                children: _messages.map((message) => _buildChatMessage(message)).toList(),
-              ),
+            constraints: const BoxConstraints(maxHeight: 400),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade200),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                // Chat header showing conversation history
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.chat_bubble_outline, color: Colors.grey.shade600, size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Conversation History',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${_messages.length} messages',
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Chat content
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: _messages.map((message) => _buildChatMessage(message)).toList(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 12),
@@ -409,6 +457,33 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
 
   Widget _buildChatMessage(_ChatMessage message) {
     final isAI = message.sender == 'AI';
+    final isSystem = message.sender == 'System';
+    
+    // System messages (skill separators) get special styling
+    if (isSystem) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: Text(
+              message.text,
+              style: GoogleFonts.inter(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade600,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -580,6 +655,17 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         ));
         _isLoadingQuestion = false;
       });
+      
+      // Auto-scroll to bottom
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
     } catch (e) {
       setState(() {
         _isLoadingQuestion = false;
@@ -603,6 +689,17 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       _questionsAnswered++;
     });
     
+    // Auto-scroll to bottom after user message
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+    
     try {
       _currentQuestion!.answer = userAnswer;
       await _skillBll.sendAnswerToAI(_currentQuestion!);
@@ -618,6 +715,17 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             sender: 'AI',
           ));
           _isLoadingQuestion = false;
+        });
+        
+        // Auto-scroll to bottom after AI response
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
         });
       } else {
         setState(() {
@@ -658,11 +766,28 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   void _moveToNextSkill() {
     setState(() {
       _currentSkillIndex++;
-      _messages.clear();
+      // Add a separator message to distinguish between skills
+      if (_messages.isNotEmpty) {
+        _messages.add(_ChatMessage(
+          text: '--- Moving to next skill: ${_currentSkillIndex < widget.skills.length ? widget.skills[_currentSkillIndex]['name'] : 'Completed'} ---',
+          sender: 'System',
+        ));
+      }
       _currentQuestion = null;
       _hasTestStarted = false;
       _questionsAnswered = 0;
       _isLoadingQuestion = false;
+    });
+    
+    // Auto-scroll to bottom after separator
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
@@ -676,6 +801,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   void dispose() {
     _animationController.dispose();
     _messageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 }
