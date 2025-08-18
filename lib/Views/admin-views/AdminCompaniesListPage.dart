@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
+import 'package:solid_cv/Views/admin-views/AdminCompanyViewPage.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/models/Company.dart';
@@ -63,17 +65,140 @@ class CompanyTile extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 2,
       child: ListTile(
-        leading: const Icon(Icons.business, color: Colors.indigo),
-        title: Text(company.name ?? "No name",
-            style: const TextStyle(fontWeight: FontWeight.bold)),
+        leading: CircleAvatar(
+          backgroundColor: const Color(0xFF7B3FE4),
+          child: company.getProfilePicture().isNotEmpty
+              ? ClipOval(
+                  child: Image.network(
+                    company.getProfilePicture(),
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.business,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                )
+              : const Icon(
+                  Icons.business,
+                  color: Colors.white,
+                  size: 20,
+                ),
+        ),
+        title: Text(
+          company.name ?? "No name",
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(company.email ?? "-"),
-            if (company.addressCity != null)
-              Text("📍 ${company.addressCity!}", style: const TextStyle(fontSize: 12)),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                const Icon(Icons.email, size: 14, color: Colors.grey),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    company.email ?? "No email",
+                    style: GoogleFonts.inter(fontSize: 12),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            if (company.addressCity != null) ...[
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  const Icon(Icons.location_on, size: 14, color: Colors.grey),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      company.addressCity!,
+                      style: GoogleFonts.inter(fontSize: 12),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                const Icon(Icons.tag, size: 14, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  'ID: ${company.id}',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const Spacer(),
+                // Blockchain status indicator
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: (company.ethereumAddress != null && company.ethereumAddress!.isNotEmpty)
+                        ? Colors.green.shade100
+                        : Colors.orange.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    (company.ethereumAddress != null && company.ethereumAddress!.isNotEmpty)
+                        ? 'Blockchain ✓'
+                        : 'No Blockchain',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: (company.ethereumAddress != null && company.ethereumAddress!.isNotEmpty)
+                          ? Colors.green.shade700
+                          : Colors.orange.shade700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
+        trailing: SizedBox(
+          width: 80,
+          height: 32,
+          child: ElevatedButton(
+            onPressed: () => _viewCompanyDetails(context, company),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF7B3FE4),
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              'View',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+    );
+  }
+
+  void _viewCompanyDetails(BuildContext context, Company company) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AdminCompanyViewPage(companyId: company.id.toString()),
       ),
     );
   }
