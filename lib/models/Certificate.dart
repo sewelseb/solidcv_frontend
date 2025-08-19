@@ -20,8 +20,9 @@ class Certificate {
   String? fileExtention;
   String? logoUrl;
   String? issuerBlockCahinWalletAddress;
+  bool? isInstitutionVerified;
 
-  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? this.teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress});
+  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? this.teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress, this.isInstitutionVerified});
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

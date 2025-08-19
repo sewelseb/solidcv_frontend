@@ -85,6 +85,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
         final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
         experience.companyLogoUrl = company?.getProfilePicture();
         experience.location = '${company?.addressCity}, ${company?.addressCountry}';
+        experience.isCompanyVerified = company?.isVerified ?? false;
       }
     }
     unifiedList.sort((a, b) {

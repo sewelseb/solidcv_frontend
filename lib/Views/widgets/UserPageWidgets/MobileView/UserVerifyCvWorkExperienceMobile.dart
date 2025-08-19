@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
+import 'package:solid_cv/Views/components/VerificationBadge.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 
@@ -62,17 +63,31 @@ class UserVerifyCvWorkExperienceCardMobile extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade400,
-                      borderRadius: BorderRadius.circular(4),
-                      image: DecorationImage(
-                        image: NetworkImage(logoUrl),
-                        fit: BoxFit.cover,
+                  Stack(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(4),
+                          image: DecorationImage(
+                            image: NetworkImage(logoUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
+                      if (isVerified && (experience.isCompanyVerified ?? false))
+                        Positioned(
+                          right: -2,
+                          bottom: -2,
+                          child: VerificationBadge(
+                            isVerified: true,
+                            size: 16,
+                            entityType: 'company',
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(width: 12),
                   Expanded(

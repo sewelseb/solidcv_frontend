@@ -94,6 +94,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
         experience.companyLogoUrl = company?.getProfilePicture();
         experience.location =
             '${company?.addressCity}, ${company?.addressCountry}';
+        experience.isCompanyVerified = company?.isVerified ?? false;
       }
     }
 

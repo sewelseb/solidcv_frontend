@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
+import 'package:solid_cv/Views/components/VerificationBadge.dart';
+import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -66,20 +68,34 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
           const SizedBox(height: 8),
           Row(
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: Colors.grey.shade200,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      widget.certificate.logoUrl ??
-                          '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
+              Stack(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey.shade200,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          widget.certificate.logoUrl ??
+                              '${BackenConnection().url}${BackenConnection().imageAssetFolder}education-institution.png',
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  if (widget.isValidated && (widget.certificate.isInstitutionVerified ?? false))
+                    Positioned(
+                      right: -2,
+                      bottom: -2,
+                      child: VerificationBadge(
+                        isVerified: true,
+                        size: 16,
+                        entityType: 'institution',
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(width: 12),
               Expanded(

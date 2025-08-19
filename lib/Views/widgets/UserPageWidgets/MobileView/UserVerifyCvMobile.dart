@@ -73,6 +73,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
         experience.companyLogoUrl = company?.getProfilePicture();
         experience.location =
             '${company?.addressCity}, ${company?.addressCountry}';
+        experience.isCompanyVerified = company?.isVerified ?? false;
       }
     }
 

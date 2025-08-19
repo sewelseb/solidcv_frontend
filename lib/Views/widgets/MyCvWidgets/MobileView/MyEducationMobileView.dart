@@ -52,6 +52,7 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
             await _educationInstitutionBll.getEducationInstitutionByWallet(
                 cert.issuerBlockCahinWalletAddress!);
         cert.logoUrl = institution?.getProfilePicture();
+        cert.isInstitutionVerified = institution?.isVerified ?? false;
       }
     }
 

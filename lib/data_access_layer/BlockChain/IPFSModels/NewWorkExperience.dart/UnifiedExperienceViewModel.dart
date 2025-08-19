@@ -21,6 +21,7 @@ class UnifiedExperienceViewModel {
   final List<Promotion> promotions;
   final ExperienceOrigin origin;
   String? companyLogoUrl;
+  bool? isCompanyVerified;
 
   UnifiedExperienceViewModel({
     required this.title,
@@ -34,6 +35,7 @@ class UnifiedExperienceViewModel {
     this.promotions = const [],
     this.manualId,
     this.companyLogoUrl,
+    this.isCompanyVerified,
   });
 
   String get label => origin == ExperienceOrigin.blockchain ? 'Verified' : 'Manual';

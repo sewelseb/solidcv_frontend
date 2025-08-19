@@ -61,6 +61,7 @@ class _UserVerifyCvEducationMobileState
             await _educationInstitutionBll.getEducationInstitutionByWallet(
                 cert.issuerBlockCahinWalletAddress!);
         cert.logoUrl = institution?.getProfilePicture();
+        cert.isInstitutionVerified = institution?.isVerified ?? false;
       }
       allCertificates.add(CertificatWrapper(cert, true));
     }
