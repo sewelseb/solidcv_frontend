@@ -32,6 +32,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
   final ValueNotifier<bool> _isBioExpanded = ValueNotifier(false);
+  final ValueNotifier<bool> _isDownloadingCv = ValueNotifier(false);
 
   List<UnifiedExperienceViewModel>? _cachedExperiences;
   DateTime? _lastFetchTime;
@@ -51,6 +52,14 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     _cachedExperiences = null;
     _lastFetchTime = null;
     _refreshTrigger.value++;
+  }
+
+  @override
+  void dispose() {
+    _refreshTrigger.dispose();
+    _isBioExpanded.dispose();
+    _isDownloadingCv.dispose();
+    super.dispose();
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
@@ -338,25 +347,60 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
               ],
             ),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () async {
-                var documentName = await _userBLL.getMyExportedCv();
-                final Uri documentUrl = Uri.parse(
-                  BackenConnection().url +
-                      BackenConnection().getMyCvPlace +
-                      documentName,
+            ValueListenableBuilder<bool>(
+              valueListenable: _isDownloadingCv,
+              builder: (context, isLoading, child) {
+                return ElevatedButton(
+                  onPressed: isLoading ? null : () async {
+                    try {
+                      _isDownloadingCv.value = true;
+                      var documentName = await _userBLL.getMyExportedCv();
+                      final Uri documentUrl = Uri.parse(
+                        BackenConnection().url +
+                            BackenConnection().getMyCvPlace +
+                            documentName,
+                      );
+                      await launchUrl(documentUrl);
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error downloading CV: $e'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } finally {
+                      _isDownloadingCv.value = false;
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: isLoading
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF7B3FE4)),
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text('Generating...'),
+                          ],
+                        )
+                      : const Text('Export my CV in PDF'),
                 );
-                launchUrl(documentUrl);
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Download CV'),
             ),
             const SizedBox(height: 8),
             const LinearProgressIndicator(

@@ -29,6 +29,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
   late final IUserBLL _userBLL = UserBll();
   late Future<User> _userFuture;
   final ValueNotifier<bool> _isBioExpanded = ValueNotifier(false);
+  final ValueNotifier<bool> _isDownloadingCv = ValueNotifier(false);
   late final ICompanyBll _company = CompanyBll();
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
@@ -47,6 +48,14 @@ class _MyCvMobileState extends State<MyCvMobile> {
     _cachedExperiences = null;
     _lastFetchTime = null;
     _refreshTrigger.value++;
+  }
+
+  @override
+  void dispose() {
+    _refreshTrigger.dispose();
+    _isBioExpanded.dispose();
+    _isDownloadingCv.dispose();
+    super.dispose();
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
@@ -227,26 +236,54 @@ class _MyCvMobileState extends State<MyCvMobile> {
                       // Download CV button - full width
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            var documentName = await _userBLL.getMyExportedCv();
-                            final Uri documentUrl = Uri.parse(
-                              BackenConnection().url +
-                                  BackenConnection().getMyCvPlace +
-                                  documentName,
+                        child: ValueListenableBuilder<bool>(
+                          valueListenable: _isDownloadingCv,
+                          builder: (context, isLoading, child) {
+                            return ElevatedButton.icon(
+                              onPressed: isLoading ? null : () async {
+                                try {
+                                  _isDownloadingCv.value = true;
+                                  var documentName = await _userBLL.getMyExportedCv();
+                                  final Uri documentUrl = Uri.parse(
+                                    BackenConnection().url +
+                                        BackenConnection().getMyCvPlace +
+                                        documentName,
+                                  );
+                                  await launchUrl(documentUrl);
+                                } catch (e) {
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Error downloading CV: $e'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                } finally {
+                                  _isDownloadingCv.value = false;
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              icon: isLoading
+                                  ? const SizedBox(
+                                      height: 18,
+                                      width: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF7B3FE4)),
+                                      ),
+                                    )
+                                  : const Icon(Icons.download_outlined, size: 18),
+                              label: Text(isLoading ? 'Generating...' : 'Export my CV in PDF'),
                             );
-                            launchUrl(documentUrl);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
-                            elevation: 1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          icon: const Icon(Icons.download_outlined, size: 18),
-                          label: const Text('Download CV'),
                         ),
                       ),
                     ],
