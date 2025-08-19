@@ -734,7 +734,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
           ),
           
           // Quick actions for speech
-          if (_speechEnabled || (_isMobileBrowser && _speechInitialized))
+          if (_speechEnabled)
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: Row(
@@ -757,24 +757,6 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       foregroundColor: const Color(0xFF7B3FE4),
                     ),
                   ),
-                  if (_isMobileBrowser && _speechInitialized) ...[
-                    const SizedBox(width: 16),
-                    TextButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Tip: Speak clearly and pause briefly between words for better recognition.'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.help_outline, size: 16),
-                      label: const Text('Speech Tips'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.blue.shade600,
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
