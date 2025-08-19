@@ -106,47 +106,58 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         defaultTargetPlatform == TargetPlatform.iOS
       );
       
-      // For mobile browsers, check if speech is actually available
-      if (_isMobileBrowser) {
-        // Test if speech recognition is available in mobile browser
-        final isAvailable = await _speechToText.initialize(
-          onStatus: (status) {
-            if (mounted) {
-              setState(() {
-                _speechListening = status == 'listening';
-              });
-            }
-          },
-          onError: (error) {
-            if (mounted) {
-              setState(() {
-                _speechListening = false;
-                _speechUnavailableReason = error.errorMsg;
-              });
-            }
-            _showSpeechError('Mobile browser: ${error.errorMsg}');
-          },
-        );
-        
-        if (!isAvailable) {
+      // Check if we're on web platform
+      if (kIsWeb) {
+        // Web platform - check for browser speech support
+        try {
+          final isAvailable = await _speechToText.initialize(
+            onStatus: (status) {
+              if (mounted) {
+                setState(() {
+                  _speechListening = status == 'listening';
+                });
+              }
+            },
+            onError: (error) {
+              if (mounted) {
+                setState(() {
+                  _speechListening = false;
+                  _speechUnavailableReason = 'Web speech error: ${error.errorMsg}';
+                });
+              }
+              _showSpeechError('Web browser: ${error.errorMsg}');
+            },
+          );
+          
+          if (isAvailable) {
+            setState(() {
+              _speechEnabled = true;
+            });
+          } else {
+            setState(() {
+              _speechUnavailableReason = _isMobileBrowser 
+                ? 'Speech recognition not supported in this mobile browser. Please use a desktop browser or type your answers.'
+                : 'Speech recognition not supported in this browser. Please type your answers.';
+            });
+          }
+        } catch (webError) {
+          // Web speech-to-text not available or plugin error
           setState(() {
-            _speechUnavailableReason = 'Speech recognition not supported in this mobile browser. Please use the desktop version or type your answers.';
+            _speechUnavailableReason = 'Speech recognition not available in web browser. Please type your answers.';
+          });
+          print('Web speech initialization failed: $webError');
+        }
+      } else {
+        // Native platform (Android/iOS) - request microphone permission first
+        final status = await Permission.microphone.request();
+        if (status != PermissionStatus.granted) {
+          setState(() {
+            _speechUnavailableReason = 'Microphone permission denied. Please enable microphone access in settings.';
           });
           return;
         }
-      } else {
-        // Desktop or native app - request microphone permission first
-        if (!kIsWeb) {
-          final status = await Permission.microphone.request();
-          if (status != PermissionStatus.granted) {
-            setState(() {
-              _speechUnavailableReason = 'Microphone permission denied. Please enable microphone access in settings.';
-            });
-            return;
-          }
-        }
         
-        // Initialize speech-to-text for desktop/native
+        // Initialize speech-to-text for native platforms
         _speechEnabled = await _speechToText.initialize(
           onStatus: (status) {
             if (mounted) {
@@ -180,16 +191,16 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
   
   void _startListening() async {
-    if (!_speechEnabled && !_isMobileBrowser) return;
+    if (!_speechEnabled && !kIsWeb) return;
     
     try {
       setState(() {
         _speechResult = '';
       });
       
-      // Different configurations for mobile vs desktop
-      if (_isMobileBrowser) {
-        // Mobile browser - more conservative settings
+      // Different configurations for web vs native platforms
+      if (kIsWeb) {
+        // Web platform - use conservative settings
         await _speechToText.listen(
           onResult: (result) {
             if (mounted) {
@@ -200,17 +211,19 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               });
             }
           },
-          listenFor: const Duration(seconds: 15), // Shorter for mobile
-          pauseFor: const Duration(seconds: 2),   // Shorter pause
+          listenFor: _isMobileBrowser 
+            ? const Duration(seconds: 15)  // Shorter for mobile browsers
+            : const Duration(seconds: 20), // Slightly longer for desktop browsers
+          pauseFor: const Duration(seconds: 2),
           localeId: _selectedLocale,
           listenOptions: SpeechListenOptions(
-            partialResults: false,               // Disable for mobile stability
+            partialResults: !_isMobileBrowser, // Only enable for desktop browsers
             cancelOnError: true,
             listenMode: ListenMode.confirmation,
           ),
         );
       } else {
-        // Desktop/native - full features
+        // Native platform - full features
         await _speechToText.listen(
           onResult: (result) {
             if (mounted) {
@@ -652,7 +665,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // Speech button with glow effect
-              if (_speechEnabled || (_isMobileBrowser && _speechInitialized && _speechUnavailableReason == null))
+              if (_speechEnabled || (kIsWeb && _speechInitialized && _speechUnavailableReason == null))
                 AvatarGlow(
                   animate: _speechListening,
                   glowColor: Colors.red,
@@ -661,18 +674,18 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   child: FloatingActionButton(
                     mini: true,
                     onPressed: _speechListening ? _stopListening : _startListening,
-                    backgroundColor: _speechListening ? Colors.red : (_isMobileBrowser ? Colors.green : Colors.blue),
+                    backgroundColor: _speechListening ? Colors.red : (kIsWeb ? Colors.orange : Colors.blue),
                     child: Icon(
                       _speechListening ? Icons.mic : Icons.mic_none,
                       color: Colors.white,
                     ),
-                    tooltip: _isMobileBrowser 
-                      ? 'Tap to speak (Mobile browser - may be limited)'
+                    tooltip: kIsWeb 
+                      ? 'Tap to speak (Web browser - limited functionality)'
                       : 'Tap to speak',
                   ),
                 ),
               
-              if (_speechEnabled || (_isMobileBrowser && _speechInitialized && _speechUnavailableReason == null)) 
+              if (_speechEnabled || (kIsWeb && _speechInitialized && _speechUnavailableReason == null)) 
                 const SizedBox(width: 12),
               
               Expanded(
