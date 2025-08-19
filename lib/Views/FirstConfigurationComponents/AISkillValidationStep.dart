@@ -8,6 +8,9 @@ import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/SkillBll.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Question.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 
 class AISkillValidationStep extends StatefulWidget {
   final List<Map<String, dynamic>> skills;
@@ -44,6 +47,14 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   int _questionsAnswered = 0;
   final int _maxQuestions = 3; // Limit questions per skill
   
+  // Speech-to-text state
+  final SpeechToText _speechToText = SpeechToText();
+  bool _speechEnabled = false;
+  bool _speechListening = false;
+  String _speechResult = '';
+  double _speechConfidence = 0;
+  String _selectedLocale = 'en_US';
+  
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
@@ -78,6 +89,74 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         _animationController.forward();
       });
     }
+    
+    // Initialize speech-to-text
+    _initSpeech();
+  }
+
+  void _initSpeech() async {
+    // Request microphone permission
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      return;
+    }
+    
+    // Initialize speech-to-text
+    _speechEnabled = await _speechToText.initialize(
+      onStatus: (status) {
+        setState(() {
+          _speechListening = status == 'listening';
+        });
+      },
+      onError: (error) {
+        setState(() {
+          _speechListening = false;
+        });
+        _showSpeechError(error.errorMsg);
+      },
+    );
+    setState(() {});
+  }
+  
+  void _startListening() async {
+    if (!_speechEnabled) return;
+    
+    setState(() {
+      _speechResult = '';
+    });
+    
+    await _speechToText.listen(
+      onResult: (result) {
+        setState(() {
+          _speechResult = result.recognizedWords;
+          _speechConfidence = result.confidence;
+          // Auto-populate the text field
+          _messageController.text = _speechResult;
+        });
+      },
+      listenFor: const Duration(seconds: 30), // Max listening time
+      pauseFor: const Duration(seconds: 3),   // Auto-stop after pause
+      localeId: _selectedLocale,              // Set language
+      listenOptions: SpeechListenOptions(
+        partialResults: true,                 // Show real-time results
+        cancelOnError: true,
+        listenMode: ListenMode.confirmation,
+      ),
+    );
+  }
+  
+  void _stopListening() async {
+    await _speechToText.stop();
+  }
+  
+  void _showSpeechError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Speech recognition error: $error'),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   @override
@@ -123,7 +202,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -361,9 +440,83 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         
         // Input field (when test is active)
         if (_hasTestStarted && !_isLoadingQuestion && _questionsAnswered < _maxQuestions) ...[
+          // Speech status indicator
+          if (_speechListening)
+            Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.red.shade200),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.mic, color: Colors.red, size: 16),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Listening... (${(_speechConfidence * 100).toStringAsFixed(1)}% confidence)',
+                    style: TextStyle(
+                      color: Colors.red.shade700,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          
+          // Speech not available warning
+          if (!_speechEnabled)
+            Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.orange.shade200),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.warning, color: Colors.orange.shade700, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Speech recognition not available. Please type your answers.',
+                      style: TextStyle(
+                        color: Colors.orange.shade700,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              // Speech button with glow effect
+              if (_speechEnabled)
+                AvatarGlow(
+                  animate: _speechListening,
+                  glowColor: Colors.red,
+                  duration: const Duration(milliseconds: 2000),
+                  repeat: true,
+                  child: FloatingActionButton(
+                    mini: true,
+                    onPressed: _speechListening ? _stopListening : _startListening,
+                    backgroundColor: _speechListening ? Colors.red : Colors.blue,
+                    child: Icon(
+                      _speechListening ? Icons.mic : Icons.mic_none,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              
+              if (_speechEnabled) const SizedBox(width: 12),
+              
               Expanded(
                 child: CallbackShortcuts(
                   bindings: <ShortcutActivator, VoidCallback>{
@@ -378,7 +531,9 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
-                        hintText: 'Type your answer...\nPress Ctrl+Enter to submit',
+                        hintText: _speechEnabled 
+                          ? 'Type or tap mic to speak...\nPress Ctrl+Enter to submit'
+                          : 'Type your answer...\nPress Ctrl+Enter to submit',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(color: Colors.grey.shade300),
@@ -421,6 +576,34 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               ),
             ],
           ),
+          
+          // Quick actions for speech
+          if (_speechEnabled)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    onPressed: () => _messageController.clear(),
+                    icon: const Icon(Icons.clear, size: 16),
+                    label: const Text('Clear'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.grey.shade600,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  TextButton.icon(
+                    onPressed: _messageController.text.isNotEmpty ? _submitAnswer : null,
+                    icon: const Icon(Icons.send, size: 16),
+                    label: const Text('Submit'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF7B3FE4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           const SizedBox(height: 16),
         ],
         
