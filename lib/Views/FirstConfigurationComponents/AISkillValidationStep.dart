@@ -11,6 +11,7 @@ import 'package:solid_cv/models/Question.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter/foundation.dart';
 
 class AISkillValidationStep extends StatefulWidget {
   final List<Map<String, dynamic>> skills;
@@ -54,6 +55,9 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   String _speechResult = '';
   double _speechConfidence = 0;
   String _selectedLocale = 'en_US';
+  bool _isMobileBrowser = false;
+  bool _speechInitialized = false;
+  String? _speechUnavailableReason;
   
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -95,54 +99,144 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
 
   void _initSpeech() async {
-    // Request microphone permission
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      return;
+    try {
+      // Detect mobile browser
+      _isMobileBrowser = kIsWeb && (
+        defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS
+      );
+      
+      // For mobile browsers, check if speech is actually available
+      if (_isMobileBrowser) {
+        // Test if speech recognition is available in mobile browser
+        final isAvailable = await _speechToText.initialize(
+          onStatus: (status) {
+            if (mounted) {
+              setState(() {
+                _speechListening = status == 'listening';
+              });
+            }
+          },
+          onError: (error) {
+            if (mounted) {
+              setState(() {
+                _speechListening = false;
+                _speechUnavailableReason = error.errorMsg;
+              });
+            }
+            _showSpeechError('Mobile browser: ${error.errorMsg}');
+          },
+        );
+        
+        if (!isAvailable) {
+          setState(() {
+            _speechUnavailableReason = 'Speech recognition not supported in this mobile browser. Please use the desktop version or type your answers.';
+          });
+          return;
+        }
+      } else {
+        // Desktop or native app - request microphone permission first
+        if (!kIsWeb) {
+          final status = await Permission.microphone.request();
+          if (status != PermissionStatus.granted) {
+            setState(() {
+              _speechUnavailableReason = 'Microphone permission denied. Please enable microphone access in settings.';
+            });
+            return;
+          }
+        }
+        
+        // Initialize speech-to-text for desktop/native
+        _speechEnabled = await _speechToText.initialize(
+          onStatus: (status) {
+            if (mounted) {
+              setState(() {
+                _speechListening = status == 'listening';
+              });
+            }
+          },
+          onError: (error) {
+            if (mounted) {
+              setState(() {
+                _speechListening = false;
+                _speechUnavailableReason = error.errorMsg;
+              });
+            }
+            _showSpeechError(error.errorMsg);
+          },
+        );
+      }
+      
+      _speechInitialized = true;
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      setState(() {
+        _speechUnavailableReason = 'Speech recognition initialization failed: ${e.toString()}';
+      });
+      print('Speech initialization error: $e');
     }
-    
-    // Initialize speech-to-text
-    _speechEnabled = await _speechToText.initialize(
-      onStatus: (status) {
-        setState(() {
-          _speechListening = status == 'listening';
-        });
-      },
-      onError: (error) {
-        setState(() {
-          _speechListening = false;
-        });
-        _showSpeechError(error.errorMsg);
-      },
-    );
-    setState(() {});
   }
   
   void _startListening() async {
-    if (!_speechEnabled) return;
+    if (!_speechEnabled && !_isMobileBrowser) return;
     
-    setState(() {
-      _speechResult = '';
-    });
-    
-    await _speechToText.listen(
-      onResult: (result) {
-        setState(() {
-          _speechResult = result.recognizedWords;
-          _speechConfidence = result.confidence;
-          // Auto-populate the text field
-          _messageController.text = _speechResult;
-        });
-      },
-      listenFor: const Duration(seconds: 30), // Max listening time
-      pauseFor: const Duration(seconds: 3),   // Auto-stop after pause
-      localeId: _selectedLocale,              // Set language
-      listenOptions: SpeechListenOptions(
-        partialResults: true,                 // Show real-time results
-        cancelOnError: true,
-        listenMode: ListenMode.confirmation,
-      ),
-    );
+    try {
+      setState(() {
+        _speechResult = '';
+      });
+      
+      // Different configurations for mobile vs desktop
+      if (_isMobileBrowser) {
+        // Mobile browser - more conservative settings
+        await _speechToText.listen(
+          onResult: (result) {
+            if (mounted) {
+              setState(() {
+                _speechResult = result.recognizedWords;
+                _speechConfidence = result.confidence;
+                _messageController.text = _speechResult;
+              });
+            }
+          },
+          listenFor: const Duration(seconds: 15), // Shorter for mobile
+          pauseFor: const Duration(seconds: 2),   // Shorter pause
+          localeId: _selectedLocale,
+          listenOptions: SpeechListenOptions(
+            partialResults: false,               // Disable for mobile stability
+            cancelOnError: true,
+            listenMode: ListenMode.confirmation,
+          ),
+        );
+      } else {
+        // Desktop/native - full features
+        await _speechToText.listen(
+          onResult: (result) {
+            if (mounted) {
+              setState(() {
+                _speechResult = result.recognizedWords;
+                _speechConfidence = result.confidence;
+                _messageController.text = _speechResult;
+              });
+            }
+          },
+          listenFor: const Duration(seconds: 30),
+          pauseFor: const Duration(seconds: 3),
+          localeId: _selectedLocale,
+          listenOptions: SpeechListenOptions(
+            partialResults: true,
+            cancelOnError: true,
+            listenMode: ListenMode.confirmation,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _speechListening = false;
+      });
+      _showSpeechError('Failed to start listening: ${e.toString()}');
+    }
   }
   
   void _stopListening() async {
@@ -150,13 +244,48 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
   
   void _showSpeechError(String error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Speech recognition error: $error'),
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+    // Don't show redundant errors if we already have an unavailable reason
+    if (_speechUnavailableReason != null) return;
+    
+    String userFriendlyMessage = error;
+    
+    // Provide more helpful error messages
+    if (error.toLowerCase().contains('not supported')) {
+      userFriendlyMessage = _isMobileBrowser 
+        ? 'Speech recognition is not fully supported in mobile browsers. Please use a desktop browser or type your answer.'
+        : 'Speech recognition is not supported on this device.';
+    } else if (error.toLowerCase().contains('permission')) {
+      userFriendlyMessage = 'Microphone permission required. Please enable microphone access and try again.';
+    } else if (error.toLowerCase().contains('network')) {
+      userFriendlyMessage = 'Network error during speech recognition. Please check your connection.';
+    }
+    
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(userFriendlyMessage),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 4),
+          action: SnackBarAction(
+            label: 'Dismiss',
+            textColor: Colors.white,
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+          ),
+        ),
+      );
+    }
+  }
+  
+  String _getInputHintText() {
+    if (_isMobileBrowser && (_speechEnabled || _speechInitialized)) {
+      return 'Type your answer or try the mic button (limited on mobile)...\nPress Ctrl+Enter to submit';
+    } else if (_speechEnabled) {
+      return 'Type or tap mic to speak...\nPress Ctrl+Enter to submit';
+    } else {
+      return 'Type your answer...\nPress Ctrl+Enter to submit';
+    }
   }
 
   @override
@@ -468,26 +597,51 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             ),
           
           // Speech not available warning
-          if (!_speechEnabled)
+          if (!_speechEnabled || _speechUnavailableReason != null)
             Container(
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.orange.shade50,
+                color: _isMobileBrowser ? Colors.blue.shade50 : Colors.orange.shade50,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.orange.shade200),
+                border: Border.all(
+                  color: _isMobileBrowser ? Colors.blue.shade200 : Colors.orange.shade200
+                ),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.warning, color: Colors.orange.shade700, size: 20),
+                  Icon(
+                    _isMobileBrowser ? Icons.info : Icons.warning, 
+                    color: _isMobileBrowser ? Colors.blue.shade700 : Colors.orange.shade700, 
+                    size: 20
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      'Speech recognition not available. Please type your answers.',
-                      style: TextStyle(
-                        color: Colors.orange.shade700,
-                        fontSize: 14,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _speechUnavailableReason ?? 
+                          (_isMobileBrowser 
+                            ? 'Limited speech support on mobile browsers'
+                            : 'Speech recognition not available'),
+                          style: TextStyle(
+                            color: _isMobileBrowser ? Colors.blue.shade700 : Colors.orange.shade700,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        if (_isMobileBrowser) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            'For best speech experience, use a desktop browser or type your answers below.',
+                            style: TextStyle(
+                              color: Colors.blue.shade600,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ],
@@ -498,7 +652,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // Speech button with glow effect
-              if (_speechEnabled)
+              if (_speechEnabled || (_isMobileBrowser && _speechInitialized && _speechUnavailableReason == null))
                 AvatarGlow(
                   animate: _speechListening,
                   glowColor: Colors.red,
@@ -507,15 +661,19 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   child: FloatingActionButton(
                     mini: true,
                     onPressed: _speechListening ? _stopListening : _startListening,
-                    backgroundColor: _speechListening ? Colors.red : Colors.blue,
+                    backgroundColor: _speechListening ? Colors.red : (_isMobileBrowser ? Colors.green : Colors.blue),
                     child: Icon(
                       _speechListening ? Icons.mic : Icons.mic_none,
                       color: Colors.white,
                     ),
+                    tooltip: _isMobileBrowser 
+                      ? 'Tap to speak (Mobile browser - may be limited)'
+                      : 'Tap to speak',
                   ),
                 ),
               
-              if (_speechEnabled) const SizedBox(width: 12),
+              if (_speechEnabled || (_isMobileBrowser && _speechInitialized && _speechUnavailableReason == null)) 
+                const SizedBox(width: 12),
               
               Expanded(
                 child: CallbackShortcuts(
@@ -531,9 +689,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
-                        hintText: _speechEnabled 
-                          ? 'Type or tap mic to speak...\nPress Ctrl+Enter to submit'
-                          : 'Type your answer...\nPress Ctrl+Enter to submit',
+                        hintText: _getInputHintText(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(color: Colors.grey.shade300),
@@ -578,7 +734,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
           ),
           
           // Quick actions for speech
-          if (_speechEnabled)
+          if (_speechEnabled || (_isMobileBrowser && _speechInitialized))
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: Row(
@@ -601,6 +757,24 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       foregroundColor: const Color(0xFF7B3FE4),
                     ),
                   ),
+                  if (_isMobileBrowser && _speechInitialized) ...[
+                    const SizedBox(width: 16),
+                    TextButton.icon(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Tip: Speak clearly and pause briefly between words for better recognition.'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.help_outline, size: 16),
+                      label: const Text('Speech Tips'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.blue.shade600,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
