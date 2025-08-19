@@ -12,6 +12,7 @@ class Company {
   final String? email;
   final String? ethereumAddress;
   final String? profilePicture;
+  final bool? isVerified;
 
   Company({
     this.id,
@@ -25,6 +26,7 @@ class Company {
     required this.email,
     this.ethereumAddress,
     this.profilePicture,
+    this.isVerified,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class Company {
       email: json['email'],
       ethereumAddress: json['ethereumAddress'],
       profilePicture: json['profilePicture'],
+      isVerified: json['verified'] ?? false,
     );
   }
 
@@ -56,6 +59,7 @@ class Company {
       'email': email,
       'ethereumAddress': ethereumAddress,
       'profilePicture': profilePicture,
+      'isVerified': isVerified,
     };
   }
 

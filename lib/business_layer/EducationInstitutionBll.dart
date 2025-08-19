@@ -82,4 +82,14 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
     return _educationInstitutionService.updateEducationInstitution(
         educationInstitution, imageBytes,imageExt, id);
   }
+  
+  @override
+  Future<bool> verifyEducationInstitution(int institutionId) {
+    return _educationInstitutionService.verifyEducationInstitution(institutionId);
+  }
+  
+  @override
+  Future<bool> unverifyEducationInstitution(int institutionId) {
+    return _educationInstitutionService.unverifyEducationInstitution(institutionId);
+  }
 }

@@ -107,4 +107,14 @@ class CompanyBll extends ICompanyBll {
   removeCompanyAdministrator(int companyId, int userId) {
     return _companyService.removeCompanyAdministrator(companyId, userId);
   }
+  
+  @override
+  Future<bool> verifyCompany(int companyId) {
+    return _companyService.verifyCompany(companyId);
+  }
+  
+  @override
+  Future<bool> unverifyCompany(int companyId) {
+    return _companyService.unverifyCompany(companyId);
+  }
 }

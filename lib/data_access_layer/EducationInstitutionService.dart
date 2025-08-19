@@ -178,4 +178,46 @@ void addEducationInstitution(EducationInstitution educationInstitution, Uint8Lis
       throw Exception('Error updating education institution informations');
     }
   }
+  
+  @override
+  Future<bool> verifyEducationInstitution(int institutionId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().verifyEducationInstitutionApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'institutionId': institutionId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to verify education institution');
+    }
+  }
+  
+  @override
+  Future<bool> unverifyEducationInstitution(int institutionId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().unverifyEducationInstitutionApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'institutionId': institutionId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to unverify education institution');
+    }
+  }
 }

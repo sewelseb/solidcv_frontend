@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
+import 'package:solid_cv/Views/components/VerificationBadge.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
@@ -116,6 +117,8 @@ class _AdminEducationInstitutionViewPageState extends State<AdminEducationInstit
                   isMobile ? 
                     Column(
                       children: [
+                        _buildVerificationCard(institution, isMobile),
+                        const SizedBox(height: 24),
                         _buildInstitutionInfoCard(institution, isMobile),
                         const SizedBox(height: 24),
                         _buildContactInfoCard(institution, isMobile),
@@ -132,6 +135,8 @@ class _AdminEducationInstitutionViewPageState extends State<AdminEducationInstit
                           flex: 2,
                           child: Column(
                             children: [
+                              _buildVerificationCard(institution, isMobile),
+                              const SizedBox(height: 24),
                               _buildInstitutionInfoCard(institution, isMobile),
                               const SizedBox(height: 24),
                               _buildContactInfoCard(institution, isMobile),
@@ -204,15 +209,27 @@ class _AdminEducationInstitutionViewPageState extends State<AdminEducationInstit
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  institution.name ?? 'Unnamed Institution',
-                  style: GoogleFonts.inter(
-                    fontSize: isMobile ? 20 : 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        institution.name ?? 'Unnamed Institution',
+                        style: GoogleFonts.inter(
+                          fontSize: isMobile ? 20 : 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    VerificationBadgeInline(
+                      isVerified: institution.isVerified ?? false,
+                      iconSize: isMobile ? 20 : 24,
+                      entityName: institution.name,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -268,6 +285,142 @@ class _AdminEducationInstitutionViewPageState extends State<AdminEducationInstit
         size: isMobile ? 40 : 60,
         color: Colors.white.withOpacity(0.8),
       ),
+    );
+  }
+
+  Widget _buildVerificationCard(EducationInstitution institution, bool isMobile) {
+    final isVerified = institution.isVerified ?? false;
+    
+    return _buildSectionCard(
+      'Verification Status',
+      Icons.verified_user,
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Current Status
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isVerified ? Colors.green.shade50 : Colors.orange.shade50,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isVerified ? Colors.green.shade200 : Colors.orange.shade200,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  isVerified ? Icons.check_circle : Icons.pending,
+                  color: isVerified ? Colors.green.shade600 : Colors.orange.shade600,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isVerified ? 'Verified Institution' : 'Pending Verification',
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: isVerified ? Colors.green.shade700 : Colors.orange.shade700,
+                        ),
+                      ),
+                      Text(
+                        isVerified 
+                          ? 'This institution has been verified by administrators'
+                          : 'This institution is awaiting admin verification',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: isVerified ? Colors.green.shade600 : Colors.orange.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // Admin Actions
+          Text(
+            'Admin Actions',
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          
+          Row(
+            children: [
+              if (!isVerified) ...[
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => _verifyInstitution(institution),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade600,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    icon: const Icon(Icons.check_circle, size: 18),
+                    label: const Text('Verify Institution'),
+                  ),
+                ),
+              ] else ...[
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => _unverifyInstitution(institution),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red.shade600,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    icon: const Icon(Icons.cancel, size: 18),
+                    label: const Text('Remove Verification'),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          
+          // Info Box
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.blue.shade200),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.blue.shade600, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Verified institutions display a blue checkmark throughout the app to build trust with users.',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: Colors.blue.shade700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      isMobile,
     );
   }
 
@@ -581,5 +734,116 @@ class _AdminEducationInstitutionViewPageState extends State<AdminEducationInstit
     if (name.contains('academy')) return 'Academy';
     if (name.contains('institute')) return 'Institute';
     return 'Educational Institution';
+  }
+  
+  Future<void> _verifyInstitution(EducationInstitution institution) async {
+    try {
+      final success = await _institutionBll.verifyEducationInstitution(institution.id!);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 8),
+                Text('${institution.name} has been verified successfully!'),
+              ],
+            ),
+            backgroundColor: Colors.green.shade600,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        
+        // Refresh the institution data
+        setState(() {
+          _institutionFuture = _institutionBll.getEducationInstitution(institution.id!);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.error_outline, color: Colors.white),
+              const SizedBox(width: 8),
+              const Expanded(child: Text('Failed to verify institution')),
+            ],
+          ),
+          backgroundColor: Colors.red.shade600,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+  
+  Future<void> _unverifyInstitution(EducationInstitution institution) async {
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Remove Verification',
+          style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Are you sure you want to remove verification from ${institution.name}? This will remove the blue checkmark from all displays.',
+          style: GoogleFonts.inter(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade600,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+    
+    if (confirmed == true) {
+      try {
+        final success = await _institutionBll.unverifyEducationInstitution(institution.id!);
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.info, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Text('Verification removed from ${institution.name}'),
+                ],
+              ),
+              backgroundColor: Colors.orange.shade600,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          
+          // Refresh the institution data
+          setState(() {
+            _institutionFuture = _institutionBll.getEducationInstitution(institution.id!);
+          });
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                const Expanded(child: Text('Failed to remove verification')),
+              ],
+            ),
+            backgroundColor: Colors.red.shade600,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 }

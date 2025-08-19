@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
 import 'package:solid_cv/Views/admin-views/AdminEducationInstitutionViewPage.dart';
+import 'package:solid_cv/Views/components/VerificationBadge.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
@@ -87,12 +88,23 @@ class InstitutionTile extends StatelessWidget {
                   size: 20,
                 ),
         ),
-        title: Text(
-          institution.name ?? "No name",
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                institution.name ?? "No name",
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            VerificationBadgeInline(
+              isVerified: institution.isVerified ?? false,
+              iconSize: 16,
+              entityName: institution.name,
+            ),
+          ],
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,6 +153,27 @@ class InstitutionTile extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
+                // Verification status indicator
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: (institution.isVerified ?? false)
+                        ? Colors.blue.shade100
+                        : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    (institution.isVerified ?? false) ? 'Verified ✓' : 'Unverified',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: (institution.isVerified ?? false)
+                          ? Colors.blue.shade700
+                          : Colors.grey.shade600,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
                 // Institution type indicator
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -157,7 +190,7 @@ class InstitutionTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 6),
                 // Blockchain status indicator
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),

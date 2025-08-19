@@ -24,4 +24,8 @@ abstract class ICompanyService {
   addCompanyAdministrator(int companyId, int userId);
 
   removeCompanyAdministrator(int companyId, int userId);
+  
+  Future<bool> verifyCompany(int companyId);
+  
+  Future<bool> unverifyCompany(int companyId);
 }

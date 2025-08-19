@@ -16,4 +16,8 @@ abstract class IEducationInstitutionService {
   Future<EducationInstitution?> getEducationInstitutionByWallet(String ethereumAddress);
 
   Future<void> updateEducationInstitution(EducationInstitution educationInstitution, Uint8List? imageBytes, String? imageExt, int id);
+  
+  Future<bool> verifyEducationInstitution(int institutionId);
+  
+  Future<bool> unverifyEducationInstitution(int institutionId);
 }

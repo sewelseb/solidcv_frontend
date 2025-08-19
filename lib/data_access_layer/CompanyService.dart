@@ -246,5 +246,47 @@ Future<Company> createCompany(Company company, Uint8List? imageBytes, String? im
       throw Exception('Failed to remove company administrator');
     }
   }
+  
+  @override
+  Future<bool> verifyCompany(int companyId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().verifyCompanyApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'companyId': companyId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to verify company');
+    }
+  }
+  
+  @override
+  Future<bool> unverifyCompany(int companyId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().unverifyCompanyApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'companyId': companyId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to unverify company');
+    }
+  }
 
 }

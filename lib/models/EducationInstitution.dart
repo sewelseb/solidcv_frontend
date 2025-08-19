@@ -12,6 +12,7 @@ class EducationInstitution {
   final String? email;
   String? ethereumAddress;
   String? profilePicture;
+  final bool? isVerified;
 
 
   EducationInstitution({
@@ -26,6 +27,7 @@ class EducationInstitution {
     required this.email,
     this.profilePicture,
     this.ethereumAddress,
+    this.isVerified,
   });
 
   factory EducationInstitution.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class EducationInstitution {
       email: json['email'],
       ethereumAddress: json['ethereumAddress'],
       profilePicture: json['profilePicture'],
+      isVerified: json['verified'] ?? false,
     );
   }
 
@@ -57,6 +60,7 @@ class EducationInstitution {
       'email': email,
       'ethereumAddress': ethereumAddress,
       'profilePicture': profilePicture,
+      'isVerified': isVerified,
     };
   }
 

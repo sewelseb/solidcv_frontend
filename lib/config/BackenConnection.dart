@@ -146,5 +146,13 @@ class BackenConnection {
   String get hasCompletedCvApi => "/api/protected/user/has-completed-cv";
 
   String get getCareerAdviceApi => "/api/protected/user/get-career-advice";
+  
+  String get verifyCompanyApi => "/api/admin/verify-company";
+  
+  String get unverifyCompanyApi => "/api/admin/unverify-company";
+  
+  String get verifyEducationInstitutionApi => "/api/admin/verify-education-institution";
+  
+  String get unverifyEducationInstitutionApi => "/api/admin/unverify-education-institution";
 
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
 import 'package:solid_cv/Views/admin-views/AdminCompanyViewPage.dart';
+import 'package:solid_cv/Views/components/VerificationBadge.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/models/Company.dart';
@@ -87,12 +88,23 @@ class CompanyTile extends StatelessWidget {
                   size: 20,
                 ),
         ),
-        title: Text(
-          company.name ?? "No name",
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                company.name ?? "No name",
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            VerificationBadgeInline(
+              isVerified: company.isVerified ?? false,
+              iconSize: 16,
+              entityName: company.name,
+            ),
+          ],
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,6 +153,27 @@ class CompanyTile extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
+                // Verification status indicator
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: (company.isVerified ?? false)
+                        ? Colors.blue.shade100
+                        : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    (company.isVerified ?? false) ? 'Verified ✓' : 'Unverified',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: (company.isVerified ?? false)
+                          ? Colors.blue.shade700
+                          : Colors.grey.shade600,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
                 // Blockchain status indicator
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
