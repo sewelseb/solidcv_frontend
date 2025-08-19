@@ -14,6 +14,86 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final _confirmController = TextEditingController();
   bool _loading = false;
   bool _obscure = true;
+  bool _showPasswordRequirements = false;
+
+  String? _validatePassword(String password) {
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+    
+    if (!RegExp(r'[A-Z]').hasMatch(password)) {
+      return 'Password must contain at least one capital letter';
+    }
+    
+    if (!RegExp(r'[0-9]').hasMatch(password)) {
+      return 'Password must contain at least one number';
+    }
+    
+    if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password)) {
+      return 'Password must contain at least one special character';
+    }
+    
+    return null; // Password is valid
+  }
+
+  Widget _buildPasswordRequirements(String currentPassword) {
+    final hasLength = currentPassword.length >= 8;
+    final hasUppercase = RegExp(r'[A-Z]').hasMatch(currentPassword);
+    final hasNumber = RegExp(r'[0-9]').hasMatch(currentPassword);
+    final hasSpecialChar = RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(currentPassword);
+
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Password requirements:',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 6),
+          _buildRequirementItem('At least 8 characters', hasLength),
+          _buildRequirementItem('One capital letter', hasUppercase),
+          _buildRequirementItem('One number', hasNumber),
+          _buildRequirementItem('One special character', hasSpecialChar),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRequirementItem(String text, bool isMet) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Icon(
+            isMet ? Icons.check_circle : Icons.radio_button_unchecked,
+            size: 16,
+            color: isMet ? Colors.green : Colors.grey,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 11,
+              color: isMet ? Colors.green.shade700 : Colors.grey.shade600,
+              fontWeight: isMet ? FontWeight.w500 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +143,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     TextField(
                       controller: _pwController,
                       obscureText: _obscure,
+                      onChanged: (value) {
+                        setState(() {
+                          _showPasswordRequirements = value.isNotEmpty;
+                        });
+                      },
                       decoration: InputDecoration(
                         labelText: "New password",
                         labelStyle: const TextStyle(color: Color(0xFF7B3FE4)),
@@ -89,6 +174,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             horizontal: 14, vertical: 14),
                       ),
                     ),
+                    if (_showPasswordRequirements) 
+                      _buildPasswordRequirements(_pwController.text),
                     const SizedBox(height: 20),
                     TextField(
                       controller: _confirmController,
@@ -149,11 +236,24 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   }
 
   Future<void> _resetPassword() async {
-    if (_pwController.text != _confirmController.text) {
+    final password = _pwController.text;
+    final confirmPassword = _confirmController.text;
+
+    // Validate password requirements
+    final passwordError = _validatePassword(password);
+    if (passwordError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(passwordError)),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Passwords do not match.")));
       return;
     }
+    
     setState(() => _loading = true);
     try {
       await UserBll().resetPassword(widget.token, _pwController.text.trim());
