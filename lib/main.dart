@@ -143,6 +143,7 @@ class MyApp extends StatelessWidget {
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) => AuthGuard(child: UserPage(userId: id)),
           );
         }
@@ -151,6 +152,7 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/verify-email/')) {
           final token = settings.name!.substring('/verify-email/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) => EmailVerificationResultPage(token: token),
           );
         }
@@ -159,6 +161,7 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/reset-password/')) {
           final token = settings.name!.substring('/reset-password/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) => ResetPasswordPage(token: token),
           );
         }
@@ -168,6 +171,7 @@ class MyApp extends StatelessWidget {
           final id =
               settings.name!.substring('/check-my-skill-with-ai/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
                 AuthGuard(child: CheckMySkillsWithAIPage(id: id)),
           );
@@ -178,6 +182,7 @@ class MyApp extends StatelessWidget {
           final id =
               settings.name!.substring('/job-details/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
                 JobDetails(jobOfferId: id),
           );
@@ -188,6 +193,7 @@ class MyApp extends StatelessWidget {
           final companyId =
               settings.name!.substring('/company/jobs/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
                 PublicCompanyJobsPage(companyId: companyId),
           );
@@ -198,6 +204,7 @@ class MyApp extends StatelessWidget {
           final companyId =
               settings.name!.substring('/company/profile/'.length);
           return MaterialPageRoute(
+            settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
                 PublicCompanyProfilePage(companyId: companyId),
           );
