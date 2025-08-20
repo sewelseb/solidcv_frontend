@@ -8,7 +8,7 @@ class BackenConnection {
 
   String get getMyCompaniesApi => '/api/protected/get-my-companies';
 
-  String get getCompanyApi => '/api/protected/get-company/';
+  String get getCompanyApi => '/api/get-company/';
 
   String get getMyEducationInstitutionsApi => "/api/protected/get-my-education-institutions";
 
@@ -154,5 +154,7 @@ class BackenConnection {
   String get verifyEducationInstitutionApi => "/api/admin/verify-education-institution";
   
   String get unverifyEducationInstitutionApi => "/api/admin/unverify-education-institution";
+
+  String get getAllPublicJobOffersByCompanyApi => "/api/get-public-job-offers-by-company/";
 
 }

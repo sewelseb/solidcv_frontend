@@ -7,6 +7,7 @@ import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 
 class PublicJobOffers extends StatefulWidget {
   const PublicJobOffers({super.key});
@@ -21,6 +22,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
   
   Future<List<JobOffer>>? _jobOffersFuture;
   Future<User?>? _currentUserFuture;
+  bool _isUserAuthenticated = false;
   
   String _searchQuery = '';
   String _selectedLocation = 'All Locations';
@@ -56,6 +58,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
   void initState() {
     super.initState();
     _loadData();
+    _checkUserAuthentication();
   }
 
   void _loadData() {
@@ -67,6 +70,19 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
     setState(() {
       _loadData();
     });
+  }
+
+  Future<void> _checkUserAuthentication() async {
+    try {
+      final token = await APIConnectionHelper.getJwtToken();
+      setState(() {
+        _isUserAuthenticated = token.isNotEmpty;
+      });
+    } catch (e) {
+      setState(() {
+        _isUserAuthenticated = false;
+      });
+    }
   }
 
   List<JobOffer> _filterJobOffers(List<JobOffer> jobOffers) {
@@ -165,7 +181,29 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.business, size: 16, color: Colors.grey.shade600),
+                        // Company Logo in Dialog
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            border: Border.all(
+                              color: Colors.grey.shade400,
+                              width: 0.5,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(2),
+                            child: jobOffer.company != null
+                                ? Image.network(
+                                    jobOffer.company!.getProfilePicture(),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => 
+                                      Icon(Icons.business, size: 12, color: Colors.grey.shade600),
+                                  )
+                                : Icon(Icons.business, size: 12, color: Colors.grey.shade600),
+                          ),
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -807,17 +845,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
         },
       ),
       // Conditionally show bottom navigation bar only for connected users
-      bottomNavigationBar: FutureBuilder<User?>(
-        future: _currentUserFuture,
-        builder: (context, snapshot) {
-          final user = snapshot.data;
-          if (user != null) {
-            return const MainBottomNavigationBar();
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      ),
+      bottomNavigationBar: _isUserAuthenticated ? const MainBottomNavigationBar() : const SizedBox.shrink(),
     );
   }
 
@@ -1006,12 +1034,63 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                           ),
                           const SizedBox(height: 4),
                           if (jobOffer.company?.name != null)
-                            Text(
-                              jobOffer.company!.name!,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: _primaryColor,
+                            GestureDetector(
+                              onTap: () {
+                                if (jobOffer.company?.id != null) {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/company/profile/${jobOffer.company!.id}',
+                                  );
+                                }
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Company Logo
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        color: _primaryColor.withOpacity(0.3),
+                                        width: 0.5,
+                                      ),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: Image.network(
+                                        jobOffer.company!.getProfilePicture(),
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) => 
+                                          Container(
+                                            color: _primaryColor.withOpacity(0.1),
+                                            child: Icon(
+                                              Icons.business,
+                                              size: 12,
+                                              color: _primaryColor,
+                                            ),
+                                          ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    jobOffer.company!.name!,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: _primaryColor,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.open_in_new,
+                                    size: 14,
+                                    color: _primaryColor,
+                                  ),
+                                ],
                               ),
                             ),
                         ],
@@ -1096,37 +1175,120 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              children: [
-                if (jobOffer.createdAt != null)
-                  Text(
-                    'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000))}',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
+            child: isMobile
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (jobOffer.createdAt != null)
+                        Text(
+                          'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000))}',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          if (jobOffer.company?.id != null) ...[
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/company/profile/${jobOffer.company!.id}',
+                                  );
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: _primaryColor,
+                                  side: BorderSide(color: _primaryColor),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                icon: const Icon(Icons.business, size: 14),
+                                label: const Text('Company', style: TextStyle(fontSize: 12)),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/job-details/${jobOffer.id}',
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _primaryColor,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              icon: const Icon(Icons.visibility, size: 14),
+                              label: const Text('See More', style: TextStyle(fontSize: 12)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      if (jobOffer.createdAt != null)
+                        Text(
+                          'Posted ${_formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000))}',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      const Spacer(),
+                      if (jobOffer.company?.id != null) ...[
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/company/profile/${jobOffer.company!.id}',
+                            );
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: _primaryColor,
+                            side: BorderSide(color: _primaryColor),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          icon: const Icon(Icons.business, size: 16),
+                          label: const Text('Company'),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/job-details/${jobOffer.id}',
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        icon: const Icon(Icons.visibility, size: 16),
+                        label: const Text('See More'),
+                      ),
+                    ],
                   ),
-                const Spacer(),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/job-details/${jobOffer.id}',
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  icon: const Icon(Icons.visibility, size: 16),
-                  label: const Text('See More'),
-                ),
-              ],
-            ),
           ),
         ],
       ),

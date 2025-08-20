@@ -24,4 +24,6 @@ abstract class IJobOfferService {
   Future<ApplicantAIFeedback> generateAIFeedback(int userId, int jobOfferId);
 
   Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId);
+
+  Future<List<JobOffer>>? getAllPublicJobOffersByCompany(int companyIdInt);
 }

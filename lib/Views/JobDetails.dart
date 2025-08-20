@@ -867,12 +867,66 @@ class _JobDetailsState extends State<JobDetails> {
                                       ),
                                       const SizedBox(height: 8),
                                       if (jobOffer.company?.name != null)
-                                        Text(
-                                          jobOffer.company!.name!,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: _primaryColor,
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/company/profile/${jobOffer.company!.id}',
+                                            );
+                                          },
+                                          child: Row(
+                                            children: [
+                                              ClipOval(
+                                                child: jobOffer.company?.getProfilePicture() != null &&
+                                                        jobOffer.company!.getProfilePicture().isNotEmpty
+                                                    ? Image.network(
+                                                        jobOffer.company!.getProfilePicture(),
+                                                        width: 24,
+                                                        height: 24,
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder: (context, error, stackTrace) {
+                                                          return Container(
+                                                            width: 24,
+                                                            height: 24,
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.grey.shade300,
+                                                              shape: BoxShape.circle,
+                                                            ),
+                                                            child: Icon(
+                                                              Icons.business,
+                                                              size: 14,
+                                                              color: Colors.grey.shade600,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.grey.shade300,
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.business,
+                                                          size: 14,
+                                                          color: Colors.grey.shade600,
+                                                        ),
+                                                      ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Flexible(
+                                                child: Text(
+                                                  jobOffer.company!.name!,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: _primaryColor,
+                                                    decoration: TextDecoration.underline,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                     ],

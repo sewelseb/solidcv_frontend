@@ -62,4 +62,9 @@ class JobOfferBll extends IJobOfferBll {
   Future<ApplicantAIFeedback?> getAIFeedback(int userId, int jobOfferId) async {
     return await _jobOfferService.getAIFeedback(userId, jobOfferId);
   }
+  
+  @override
+  Future<List<JobOffer>>? getAllPublicJobOffersByCompany(int companyIdInt) {
+    return _jobOfferService.getAllPublicJobOffersByCompany(companyIdInt);
+  }
 }

@@ -61,7 +61,6 @@ Future<Company> createCompany(Company company, Uint8List? imageBytes, String? im
           id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
     );
 

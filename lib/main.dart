@@ -34,6 +34,8 @@ import 'package:solid_cv/Views/widgets/EmailWidgets/ForgotPasswordPage.dart';
 import 'package:solid_cv/Views/widgets/EmailWidgets/ResetPasswordPage.dart';
 import 'package:solid_cv/Views/widgets/EmailWidgets/VerifyEmailPage.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
+import 'package:solid_cv/Views/PublicCompanyJobsPage.dart';
+import 'package:solid_cv/Views/PublicCompanyProfilePage.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:solid_cv/Views/FirstConfiguration.dart';
 
@@ -178,6 +180,26 @@ class MyApp extends StatelessWidget {
           return MaterialPageRoute(
             builder: (context) =>
                 JobDetails(jobOfferId: id),
+          );
+        }
+
+        if (settings.name != null &&
+            settings.name!.startsWith('/company/jobs/')) {
+          final companyId =
+              settings.name!.substring('/company/jobs/'.length);
+          return MaterialPageRoute(
+            builder: (context) =>
+                PublicCompanyJobsPage(companyId: companyId),
+          );
+        }
+
+        if (settings.name != null &&
+            settings.name!.startsWith('/company/profile/')) {
+          final companyId =
+              settings.name!.substring('/company/profile/'.length);
+          return MaterialPageRoute(
+            builder: (context) =>
+                PublicCompanyProfilePage(companyId: companyId),
           );
         }
 
