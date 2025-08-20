@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
@@ -14,6 +15,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _showPasswordRequirements = false;
+  bool _agreeToTerms = false;
 
   final IUserBLL _userBll = UserBll();
   final TextEditingController _emailController = TextEditingController();
@@ -126,6 +128,13 @@ class _RegisterRouteState extends State<RegisterRoute> {
       return;
     }
 
+    if (!_agreeToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please agree to the Terms and Conditions to continue')),
+      );
+      return;
+    }
+
     // Validate password requirements
     final passwordError = _validatePassword(password);
     if (passwordError != null) {
@@ -230,6 +239,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
                   _showPasswordRequirements = value.isNotEmpty;
                 });
               },
+              agreeToTerms: _agreeToTerms,
+              onToggleTerms: () {
+                setState(() => _agreeToTerms = !_agreeToTerms);
+              },
               passwordRequirementsWidget: _showPasswordRequirements 
                 ? _buildPasswordRequirements(_passwordController.text)
                 : null,
@@ -280,6 +293,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
                       _showPasswordRequirements = value.isNotEmpty;
                     });
                   },
+                  agreeToTerms: _agreeToTerms,
+                  onToggleTerms: () {
+                    setState(() => _agreeToTerms = !_agreeToTerms);
+                  },
                   passwordRequirementsWidget: _showPasswordRequirements 
                     ? _buildPasswordRequirements(_passwordController.text)
                     : null,
@@ -322,6 +339,8 @@ class _RegisterForm extends StatelessWidget {
   final FocusNode passwordConfirmationFocusNode;
   final Function(String) onPasswordChanged;
   final Widget? passwordRequirementsWidget;
+  final bool agreeToTerms;
+  final VoidCallback onToggleTerms;
 
   const _RegisterForm({
     required this.isMobile,
@@ -337,6 +356,8 @@ class _RegisterForm extends StatelessWidget {
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
     required this.onPasswordChanged,
+    required this.agreeToTerms,
+    required this.onToggleTerms,
     this.passwordRequirementsWidget,
   });
 
@@ -429,9 +450,71 @@ class _RegisterForm extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 16),
+        
+        // Terms and Conditions Checkbox
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 24,
+              width: 24,
+              child: Checkbox(
+                value: agreeToTerms,
+                onChanged: (_) => onToggleTerms(),
+                activeColor: const Color(0xFF7B3FE4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    height: 1.4,
+                  ),
+                  children: [
+                    const TextSpan(text: 'I agree to the '),
+                    TextSpan(
+                      text: 'Terms and Conditions',
+                      style: const TextStyle(
+                        color: Color(0xFF7B3FE4),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigate to Terms and Conditions page
+                          Navigator.pushNamed(context, '/terms-and-conditions');
+                        },
+                    ),
+                    const TextSpan(text: ' and '),
+                    TextSpan(
+                      text: 'Privacy Policy',
+                      style: const TextStyle(
+                        color: Color(0xFF7B3FE4),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigate to Privacy Policy page
+                          Navigator.pushNamed(context, '/privacy-policy');
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: onRegisterPressed,
+          onPressed: agreeToTerms ? onRegisterPressed : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF7B3FE4),
             minimumSize: const Size(double.infinity, 50),
