@@ -77,18 +77,11 @@ class _WalletStepState extends State<WalletStep>
     setState(() {
       _hasWallet = hasWallet;
       _walletError = null;
-      _showPasswordForm = false;
+      _showPasswordForm = !hasWallet; // Automatically show password form if user doesn't have a wallet
       _showWalletKeys = false;
       _keysAcknowledged = false;
       _privateKey = null;
       _continueBtnClicked = false; // Reset the button state
-    });
-  }
-
-  void _showPasswordSetup() {
-    setState(() {
-      _showPasswordForm = true;
-      _passwordError = null;
     });
   }
 
@@ -682,32 +675,6 @@ class _WalletStepState extends State<WalletStep>
                         // Wallet creation flow
                         if (_hasWallet == false) ...[
                           const SizedBox(height: 16),
-                          if (!_isCreatingWallet && _walletController.text.isEmpty && !_showPasswordForm) ...[
-                            Text(
-                              'I\'ll create a new secure wallet for you:',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey.shade800,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton.icon(
-                                onPressed: _showPasswordSetup,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF7B3FE4),
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                icon: const Icon(Icons.auto_fix_high, color: Colors.white),
-                                label: const Text('Generate Wallet', style: TextStyle(color: Colors.white)),
-                              ),
-                            ),
-                          ],
                           
                           if (_isCreatingWallet) ...[
                             Container(
