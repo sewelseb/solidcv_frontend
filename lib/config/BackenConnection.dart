@@ -174,4 +174,8 @@ class BackenConnection {
 
   String get getAiGeneratedCourseApi => "/api/protected/get-ai-genereted-weekly-course/";
 
+  String get getCourseQuestionsApi => "/api/protected/get-course-questions-without-answers/";
+
+  String get submitCourseQuizApi => "/api/protected/submit-course-quiz/";
+
 }

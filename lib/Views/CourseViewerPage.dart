@@ -4,6 +4,7 @@ import 'package:markdown_widget/markdown_widget.dart';
 import 'package:solid_cv/business_layer/WeeklyRecommendationBll.dart';
 import '../models/WeeklyRecommendation.dart';
 import '../business_layer/IWeeklyRecommendationBll.dart';
+import 'CourseQuestionnairePage.dart';
 
 
 class CourseViewerPage extends StatefulWidget {
@@ -346,6 +347,12 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                   _buildMarkdownContent(course)
                 else
                   _buildPlaceholderContent(),
+
+                const SizedBox(height: 24),
+
+                // Knowledge Test Button
+                if (course.courseContent?.isNotEmpty == true)
+                  _buildKnowledgeTestButton(course),
               ],
             ),
           ),
@@ -477,6 +484,96 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
               backgroundColor: const Color(0xFF00BCD4),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKnowledgeTestButton(RecommendedCourse course) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF333333)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF00BCD4).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.quiz,
+                  color: Color(0xFF00BCD4),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Test Your Knowledge',
+                      style: GoogleFonts.nunito(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Take a quiz to test what you\'ve learned',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CourseQuestionnairePage(
+                      courseId: course.id!,
+                      courseTitle: course.title ?? 'Course Quiz',
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.play_arrow),
+              label: Text(
+                'Start Quiz',
+                style: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF00BCD4),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ),
         ],

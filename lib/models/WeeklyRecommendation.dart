@@ -49,7 +49,7 @@ class RecommendedCourse {
   String? url;
   String? imageUrl;
   bool? isCompleted;
-  DateTime? completedAt;
+  int? completedAt;
   String? iconName;
   String? courseContent;
 
@@ -87,7 +87,7 @@ class RecommendedCourse {
     data['description'] = description;
     data['level'] = difficulty;
     data['isCompleted'] = isCompleted;
-    data['completedAt'] = completedAt?.toIso8601String();
+    data['completedAt'] = completedAt;
     return data;
   }
 }

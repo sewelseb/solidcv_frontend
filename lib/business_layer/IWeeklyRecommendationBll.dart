@@ -1,4 +1,6 @@
 import 'package:solid_cv/models/WeeklyRecommendation.dart';
+import 'package:solid_cv/models/CourseQuestion.dart';
+import 'package:solid_cv/models/QuizSubmission.dart';
 
 abstract class IWeeklyRecommendationBll {
   Future<WeeklyRecommendation> getCurrentWeekRecommendations();
@@ -9,4 +11,6 @@ abstract class IWeeklyRecommendationBll {
   Future<List<WeeklyRecommendation>> getRecommendationHistory({int? limit});
   Future<WeeklyRecommendation> getRecommendationsForWeek(String weekStartDate);
   Future<RecommendedCourse> getAiGeneratedCourse(int courseId);
+  Future<List<CourseQuestion>> getCourseQuestions(int courseId);
+  Future<QuizResult> submitCourseQuiz(int courseId, Map<int, int> answers);
 }

@@ -632,27 +632,6 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
                   ),
-                  if (!isCompleted) ...[
-                    SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: _isLoading ? null : () => _markCourseAsCompleted(course.id ?? 0),
-                      child: _isLoading
-                          ? SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : Text('Mark Complete'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF00BCD4),
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ],

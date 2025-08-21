@@ -4,6 +4,8 @@ import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/IWeeklyRecommendationService.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 import 'package:solid_cv/models/WeeklyRecommendation.dart';
+import 'package:solid_cv/models/CourseQuestion.dart';
+import 'package:solid_cv/models/QuizSubmission.dart';
 
 class WeeklyRecommendationService extends IWeeklyRecommendationService {
   @override
@@ -59,7 +61,7 @@ class WeeklyRecommendationService extends IWeeklyRecommendationService {
       // Course already completed
       return true;
     } else {
-      throw Exception('Failed to mark course as completed');
+  throw Exception('Failed to mark course as completed');
     }
   }
 
@@ -157,6 +159,55 @@ class WeeklyRecommendationService extends IWeeklyRecommendationService {
       return RecommendedCourse.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load AI-generated course content');
+    }
+  }
+
+  @override
+  Future<List<CourseQuestion>> getCourseQuestions(int courseId) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url + BackenConnection().getCourseQuestionsApi + courseId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List<dynamic> jsonList = jsonDecode(response.body);
+      return jsonList.map((json) => CourseQuestion.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load course questions');
+    }
+  }
+  
+  @override
+  Future<QuizResult> submitCourseQuiz(int courseId, Map<int, int> answers) async {
+    // Convert answers map to list of QuizAnswer objects
+    List<QuizAnswer> answersList = answers.entries
+        .map((entry) => QuizAnswer(
+              questionId: entry.key,
+              selectedOptionId: entry.value,
+            ))
+        .toList();
+
+    QuizSubmission submission = QuizSubmission(
+      courseId: courseId,
+      answers: answersList,
+    );
+
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().submitCourseQuizApi + courseId.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode(submission.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return QuizResult.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to submit quiz');
     }
   }
 }

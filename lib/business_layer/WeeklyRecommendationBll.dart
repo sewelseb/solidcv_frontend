@@ -2,6 +2,8 @@ import 'package:solid_cv/business_layer/IWeeklyRecommendationBll.dart';
 import 'package:solid_cv/data_access_layer/IWeeklyRecommendationService.dart';
 import 'package:solid_cv/data_access_layer/WeeklyRecommendationService.dart';
 import 'package:solid_cv/models/WeeklyRecommendation.dart';
+import 'package:solid_cv/models/CourseQuestion.dart';
+import 'package:solid_cv/models/QuizSubmission.dart';
 
 class WeeklyRecommendationBll extends IWeeklyRecommendationBll {
   final IWeeklyRecommendationService _weeklyRecommendationService = WeeklyRecommendationService();
@@ -44,5 +46,15 @@ class WeeklyRecommendationBll extends IWeeklyRecommendationBll {
   @override
   Future<RecommendedCourse> getAiGeneratedCourse(int courseId) {
     return _weeklyRecommendationService.getAiGeneratedCourse(courseId);
+  }
+
+  @override
+  Future<List<CourseQuestion>> getCourseQuestions(int courseId) {
+    return _weeklyRecommendationService.getCourseQuestions(courseId);
+  }
+
+  @override
+  Future<QuizResult> submitCourseQuiz(int courseId, Map<int, int> answers) {
+    return _weeklyRecommendationService.submitCourseQuiz(courseId, answers);
   }
 }
