@@ -535,6 +535,11 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     child: _buildAICareerAdvisorSection(isMobile),
                   ),
                   const SizedBox(width: 24),
+                  // Weekly Recommendations Section
+                  Expanded(
+                    child: _buildWeeklyRecommendationsSection(isMobile),
+                  ),
+                  const SizedBox(width: 24),
                   // Quick Actions Section
                   Expanded(
                     child: _buildQuickActionsSection(isMobile),
@@ -548,6 +553,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                   _buildJobOpportunitiesSection(isMobile),
                   const SizedBox(height: 40),
                   _buildAICareerAdvisorSection(isMobile),
+                  const SizedBox(height: 40),
+                  _buildWeeklyRecommendationsSection(isMobile),
                   const SizedBox(height: 40),
                   _buildQuickActionsSection(isMobile),
                 ],
@@ -1720,6 +1727,259 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Colors.orange.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Helper method for Weekly Recommendations Section
+  Widget _buildWeeklyRecommendationsSection(bool isMobile) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: _accentColor.withOpacity(0.2),
+            blurRadius: 25,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              _accentColor.withOpacity(0.1),
+              _accentColor.withOpacity(0.05),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: _accentColor.withOpacity(0.3),
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Weekly Calendar Icon
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [_accentColor, _accentColor.withOpacity(0.8)],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: _accentColor.withOpacity(0.4),
+                        blurRadius: 20,
+                        spreadRadius: 0,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.calendar_view_week,
+                  color: Colors.white,
+                  size: isMobile ? 32 : 36,
+                ),
+                // Week indicator
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow.shade300,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.yellow.shade300.withOpacity(0.6),
+                          blurRadius: 8,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Weekly Recommendations',
+                  style: GoogleFonts.inter(
+                    fontSize: isMobile ? 20 : 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _accentColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'NEW',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Get personalized weekly tasks to advance your career. Follow 5 curated courses and attend 2 networking events selected just for you.',
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                color: Colors.black54,
+                height: 1.6,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 28),
+            
+            // Enhanced Button
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: _accentColor.withOpacity(0.4),
+                    blurRadius: 15,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/weekly-recommendations');
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      vertical: isMobile ? 18 : 20,
+                      horizontal: 24,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [_accentColor, _accentColor.withOpacity(0.8)],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.calendar_view_week,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          'View This Week',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Feature badges
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _accentColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    '5 Courses',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: _accentColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _accentColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    '2 Events',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: _accentColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _accentColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _accentColor.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'Weekly',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: _accentColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

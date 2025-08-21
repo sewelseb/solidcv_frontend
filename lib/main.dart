@@ -3,6 +3,7 @@ import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
 import 'package:solid_cv/Views/CompaniesLandingPage.dart';
+import 'package:solid_cv/Views/CourseViewerPage.dart';
 import 'package:solid_cv/Views/EducationInstitutionsLandingPage.dart';
 import 'package:solid_cv/Views/HomeRoute.dart';
 import 'package:solid_cv/Views/JobDetails.dart';
@@ -37,7 +38,9 @@ import 'package:solid_cv/Views/widgets/EmailWidgets/VerifyEmailPage.dart';
 import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
 import 'package:solid_cv/Views/PublicCompanyJobsPage.dart';
 import 'package:solid_cv/Views/PublicCompanyProfilePage.dart';
+import 'package:solid_cv/Views/WeeklyRecommendationsPage.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/models/WeeklyRecommendation.dart';
 import 'package:solid_cv/Views/FirstConfiguration.dart';
 
 void main() {
@@ -138,6 +141,7 @@ class MyApp extends StatelessWidget {
         },
         '/jobs': (context) => const PublicJobOffers(),
         '/career-advice': (context) => const AuthGuard(child: CareerAdviceMain()),
+        '/weekly-recommendations': (context) => AuthGuard(child: WeeklyRecommendationsPage()),
         '/education-institutions': (context) => const EducationInstitutionsLandingPage(),
         '/companies': (context) => const CompaniesLandingPage(),
       },
@@ -210,6 +214,16 @@ class MyApp extends StatelessWidget {
             builder: (context) =>
                 PublicCompanyProfilePage(companyId: companyId),
           );
+        }
+
+        if (settings.name == '/course-viewer') {
+          final course = settings.arguments as RecommendedCourse?;
+          if (course != null) {
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => AuthGuard(child: CourseViewerPage(course: course)),
+            );
+          }
         }
 
         return null; // Let `onUnknownRoute` handle this case.

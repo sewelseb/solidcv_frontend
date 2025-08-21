@@ -157,4 +157,21 @@ class BackenConnection {
 
   String get getAllPublicJobOffersByCompanyApi => "/api/get-public-job-offers-by-company/";
 
+  // Weekly Recommendations API endpoints
+  String get getCurrentWeekRecommendationsApi => "/api/protected/get-this-week-recommandation";
+
+  String get getWeeklyProgressApi => "/api/protected/weekly-recommendations/progress";
+
+  String get markCourseCompletedApi => "/api/protected/weekly-recommendations/course/complete";
+
+  String get registerForEventApi => "/api/protected/weekly-recommendations/event/register";
+
+  String get unregisterFromEventApi => "/api/protected/weekly-recommendations/event/unregister/";
+
+  String get getRecommendationHistoryApi => "/api/protected/weekly-recommendations/history";
+
+  String get getRecommendationsForWeekApi => "/api/protected/weekly-recommendations/week/";
+
+  String get getAiGeneratedCourseApi => "/api/protected/get-ai-genereted-weekly-course/";
+
 }
