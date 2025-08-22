@@ -43,24 +43,22 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final isWide = constraints.maxWidth > 600;
+                final statCards = [
+                  _buildStatCard("👤 Users", stats.users),
+                  _buildStatCard("🏢 Companies", stats.companies),
+                  _buildStatCard("🎓 Institutions", stats.institutions),
+                  _buildStatCard("💼 Job Offers", stats.jobOffers),
+                ];
                 return isWide
                     ? GridView.count(
-                        crossAxisCount: 3,
+                        crossAxisCount: 4,
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
                         childAspectRatio: 2.8,
-                        children: [
-                          _buildStatCard("👤 Users", stats.users),
-                          _buildStatCard("🏢 Companies", stats.companies),
-                          _buildStatCard("🎓 Institutions", stats.institutions),
-                        ],
+                        children: statCards,
                       )
                     : Column(
-                        children: [
-                          _buildStatCard("👤 Users", stats.users),
-                          _buildStatCard("🏢 Companies", stats.companies),
-                          _buildStatCard("🎓 Institutions", stats.institutions),
-                        ],
+                        children: statCards,
                       );
               },
             ),
