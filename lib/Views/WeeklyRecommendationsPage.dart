@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IWeeklyRecommendationBll.dart';
@@ -725,16 +726,28 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                 ),
             ],
           ),
-          if (event.description?.isNotEmpty == true) ...[
-            SizedBox(height: 8),
-            Text(
-              event.description!,
-              style: GoogleFonts.nunito(
-                fontSize: 14,
-                color: Colors.grey[300],
+            if (event.url?.isNotEmpty == true) ...[
+              SizedBox(height: 8),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  final url = event.url!;
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Could not open event URL')),
+                    );
+                  }
+                },
+                icon: Icon(Icons.link),
+                label: Text('Go to Event'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF00BCD4),
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                ),
               ),
-            ),
-          ],
+            ],
           SizedBox(height: 12),
           Row(
             children: [

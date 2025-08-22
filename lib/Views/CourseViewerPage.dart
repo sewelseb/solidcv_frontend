@@ -22,12 +22,36 @@ class CourseViewerPage extends StatefulWidget {
 class _CourseViewerPageState extends State<CourseViewerPage> {
   late IWeeklyRecommendationBll _weeklyRecommendationBll;
   Future<RecommendedCourse>? _courseFuture;
+  late ScrollController _scrollController;
+  double _scrollProgress = 0.0;
 
   @override
   void initState() {
     super.initState();
     _weeklyRecommendationBll = WeeklyRecommendationBll();
     _courseFuture = _loadCourseContent();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_updateScrollProgress);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_updateScrollProgress);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _updateScrollProgress() {
+    if (_scrollController.hasClients) {
+      final maxScrollExtent = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.offset;
+      
+      if (maxScrollExtent > 0) {
+        setState(() {
+          _scrollProgress = (currentScroll / maxScrollExtent).clamp(0.0, 1.0);
+        });
+      }
+    }
   }
 
   Future<RecommendedCourse> _loadCourseContent() async {
@@ -163,8 +187,51 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
   Widget _buildCourseContent(RecommendedCourse course) {
     return Column(
       children: [
+        // Progress Bar with Percentage
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF333333),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(3),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: _scrollProgress,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF00BCD4), Color(0xFF0097A7)],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '${(_scrollProgress * 100).round()}%',
+                style: GoogleFonts.nunito(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF00BCD4),
+                ),
+              ),
+            ],
+          ),
+        ),
         Expanded(
           child: SingleChildScrollView(
+            controller: _scrollController,
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,46 +320,6 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                             ),
                           ),
                         ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Course Progress Indicator
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E1E1E),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFF333333)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Course Progress',
-                        style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF00BCD4),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      LinearProgressIndicator(
-                        value: 0.0, // Start with 0% progress
-                        backgroundColor: const Color(0xFF333333),
-                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00BCD4)),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '0% Complete',
-                        style: GoogleFonts.nunito(
-                          fontSize: 14,
-                          color: Colors.white70,
-                        ),
                       ),
                     ],
                   ),
