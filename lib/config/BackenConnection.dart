@@ -164,7 +164,7 @@ class BackenConnection {
 
   String get markCourseCompletedApi => "/api/protected/weekly-recommendations/course/complete";
 
-  String get registerForEventApi => "/api/protected/weekly-recommendations/event/register";
+  String get registerForEventApi => "/api/protected/weekly-recommendations/event/register/";
 
   String get unregisterFromEventApi => "/api/protected/weekly-recommendations/event/unregister/";
 

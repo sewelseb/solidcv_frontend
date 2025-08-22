@@ -60,26 +60,25 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
     }
   }
 
-  Future<void> _registerForEvent(int eventId) async {
+  Future<void> _confirmEventRegistration(int eventId) async {
     setState(() {
       _isLoading = true;
     });
-
     try {
-      await _weeklyRecommendationBll.registerForEvent(eventId);
-      _refreshRecommendations();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Successfully registered for event!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      final success = await _weeklyRecommendationBll.registerForEvent(eventId);
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Your registration has been confirmed!'), backgroundColor: Colors.green),
+        );
+        _refreshRecommendations();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not confirm registration.'), backgroundColor: Colors.red),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error registering for event: $e'),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
       );
     } finally {
       setState(() {
@@ -643,7 +642,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
   }
 
   Widget _buildEventCard(RecommendedEvent event) {
-    final isRegistered = false;
+    final isRegistered = event.isRegistered ?? false;
     DateTime? eventDate;
     
     // Try to parse the date
@@ -740,7 +739,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                   }
                 },
                 icon: Icon(Icons.link),
-                label: Text('Go to Event'),
+                label: Text('Go to the event website'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF00BCD4),
                   foregroundColor: Colors.white,
@@ -751,33 +750,10 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
           SizedBox(height: 12),
           Row(
             children: [
-              Icon(Icons.calendar_today, color: Colors.grey[400], size: 16),
-              SizedBox(width: 4),
-              Text(
-                '${eventDate.day}/${eventDate.month}/${eventDate.year}',
-                style: GoogleFonts.nunito(
-                  fontSize: 12,
-                  color: Colors.grey[400],
-                ),
-              ),
-              if (event.location?.isNotEmpty == true) ...[
-                SizedBox(width: 16),
-                Icon(Icons.location_on, color: Colors.grey[400], size: 16),
-                SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    event.location!,
-                    style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      color: Colors.grey[400],
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+              Spacer(),
               if (!isRegistered && !isPastEvent)
                 ElevatedButton(
-                  onPressed: _isLoading ? null : () => _registerForEvent(event.id ?? 0),
+                  onPressed: _isLoading ? null : () => _confirmEventRegistration(event.id ?? 0),
                   child: _isLoading
                       ? SizedBox(
                           width: 16,
@@ -787,7 +763,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : Text('Register'),
+                      : Text('I have registered to the event'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF00BCD4),
                     foregroundColor: Colors.white,

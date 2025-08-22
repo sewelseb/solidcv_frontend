@@ -67,15 +67,12 @@ class WeeklyRecommendationService extends IWeeklyRecommendationService {
 
   @override
   Future<bool> registerForEvent(int eventId) async {
-    final response = await http.post(
-      Uri.parse(BackenConnection().url + BackenConnection().registerForEventApi),
+    final response = await http.get(
+      Uri.parse(BackenConnection().url + BackenConnection().registerForEventApi + eventId.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
       },
-      body: jsonEncode(<String, int>{
-        'eventId': eventId,
-      }),
     );
 
     if (response.statusCode == 200) {

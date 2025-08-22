@@ -101,6 +101,7 @@ class RecommendedEvent {
   String? location;
   String? eventType;
   String? url;
+  bool? isRegistered;
 
   RecommendedEvent({
     this.id,
@@ -122,6 +123,7 @@ class RecommendedEvent {
     location = json['location'];
     eventType = json['eventType'];
     url = json['url'];
+    isRegistered = json['isRegistered'];
   }
 
   Map<String, dynamic> toJson() {
