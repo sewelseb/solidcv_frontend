@@ -1,13 +1,16 @@
 {
-    "name": "Solid CV - Professional CV Validation",
-    "short_name": "Solid CV",
+    "name": "SolidCV - Blockchain-Powered Professional CV Platform",
+    "short_name": "SolidCV",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#7B3FE4",
     "theme_color": "#7B3FE4",
-    "description": "Professional CV validation and verification platform using blockchain technology.",
+    "description": "Create, verify, and showcase your professional credentials with blockchain technology. AI-powered career advice, NFT certificates, and secure CV management.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "categories": ["business", "productivity", "education"],
+    "lang": "en",
+    "scope": "/",
     "icons": [
         {
             "src": "icons/Icon-192.png",

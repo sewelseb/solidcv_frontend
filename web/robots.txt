@@ -1,0 +1,38 @@
+User-agent: *
+Allow: /
+
+# Allow important pages
+Allow: /jobs
+Allow: /companies  
+Allow: /education-institutions
+Allow: /career-advice
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /loggedin/
+Disallow: /my-*
+Disallow: /company/manage-*
+Disallow: /company/create-*
+Disallow: /company/edit-*
+Disallow: /user/edit-*
+Disallow: /user/first-configuration
+
+# Disallow authentication pages
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+
+# Allow public user profiles and company profiles
+Allow: /user/
+Allow: /company/profile/
+Allow: /job-details/
+
+# Sitemap location
+Sitemap: https://solidcv.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent overloading)
+Crawl-delay: 1

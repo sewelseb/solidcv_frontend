@@ -42,6 +42,8 @@ import 'package:solid_cv/Views/WeeklyRecommendationsPage.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:solid_cv/models/WeeklyRecommendation.dart';
 import 'package:solid_cv/Views/FirstConfiguration.dart';
+import 'package:solid_cv/business_layer/ISEOBll.dart';
+import 'package:solid_cv/business_layer/SEOBll.dart';
 
 void main() {
   runApp(const MyApp());
@@ -146,8 +148,16 @@ class MyApp extends StatelessWidget {
         '/companies': (context) => const CompaniesLandingPage(),
       },
       onGenerateRoute: (settings) {
+        final seoBll = SEOBll();
+        
         if (settings.name != null && settings.name!.startsWith('/user/')) {
           final id = settings.name!.substring('/user/'.length);
+          
+          // SEO optimization for user profiles
+          seoBll.updateCanonicalUrl('https://solidcv.com/user/$id');
+          seoBll.updatePageTitle('Professional CV Profile | SolidCV');
+          seoBll.updateMetaDescription('View blockchain-verified professional CV and credentials on SolidCV platform.');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) => AuthGuard(child: UserPage(userId: id)),
@@ -157,6 +167,11 @@ class MyApp extends StatelessWidget {
         if (settings.name != null &&
             settings.name!.startsWith('/verify-email/')) {
           final token = settings.name!.substring('/verify-email/'.length);
+          
+          // SEO optimization for email verification
+          seoBll.updatePageTitle('Email Verification | SolidCV');
+          seoBll.updateCanonicalUrl('https://solidcv.com/verify-email/$token');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) => EmailVerificationResultPage(token: token),
@@ -166,6 +181,11 @@ class MyApp extends StatelessWidget {
         if (settings.name != null &&
             settings.name!.startsWith('/reset-password/')) {
           final token = settings.name!.substring('/reset-password/'.length);
+          
+          // SEO optimization for password reset
+          seoBll.updatePageTitle('Reset Password | SolidCV');
+          seoBll.updateCanonicalUrl('https://solidcv.com/reset-password/$token');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) => ResetPasswordPage(token: token),
@@ -176,6 +196,12 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/check-my-skill-with-ai/')) {
           final id =
               settings.name!.substring('/check-my-skill-with-ai/'.length);
+              
+          // SEO optimization for AI skill check
+          seoBll.updatePageTitle('AI Skill Assessment | SolidCV');
+          seoBll.updateMetaDescription('Test and validate your professional skills with AI-powered assessments on SolidCV.');
+          seoBll.updateCanonicalUrl('https://solidcv.com/check-my-skill-with-ai/$id');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
@@ -187,6 +213,12 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/job-details/')) {
           final id =
               settings.name!.substring('/job-details/'.length);
+              
+          // SEO optimization for job details
+          seoBll.updatePageTitle('Job Opportunity Details | SolidCV');
+          seoBll.updateMetaDescription('Explore blockchain-verified job opportunities with detailed requirements and company information.');
+          seoBll.updateCanonicalUrl('https://solidcv.com/job-details/$id');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
@@ -198,6 +230,12 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/company/jobs/')) {
           final companyId =
               settings.name!.substring('/company/jobs/'.length);
+              
+          // SEO optimization for company jobs
+          seoBll.updatePageTitle('Company Job Listings | SolidCV');
+          seoBll.updateMetaDescription('Browse verified job opportunities from trusted companies on SolidCV platform.');
+          seoBll.updateCanonicalUrl('https://solidcv.com/company/jobs/$companyId');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
@@ -209,6 +247,12 @@ class MyApp extends StatelessWidget {
             settings.name!.startsWith('/company/profile/')) {
           final companyId =
               settings.name!.substring('/company/profile/'.length);
+              
+          // SEO optimization for company profiles
+          seoBll.updatePageTitle('Company Profile | SolidCV');
+          seoBll.updateMetaDescription('Discover verified company profiles and their blockchain-verified job opportunities.');
+          seoBll.updateCanonicalUrl('https://solidcv.com/company/profile/$companyId');
+          
           return MaterialPageRoute(
             settings: settings, // Pass the route settings to maintain URL
             builder: (context) =>
@@ -219,6 +263,10 @@ class MyApp extends StatelessWidget {
         if (settings.name == '/course-viewer') {
           final course = settings.arguments as RecommendedCourse?;
           if (course != null) {
+            // SEO optimization for course viewer
+            seoBll.updatePageTitle('${course.title ?? 'Course'} | SolidCV Learning');
+            seoBll.updateMetaDescription('Enhance your skills with ${course.title ?? 'this course'} recommended by SolidCV AI.');
+            
             return MaterialPageRoute(
               settings: settings,
               builder: (context) => AuthGuard(child: CourseViewerPage(course: course)),
