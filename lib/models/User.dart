@@ -16,6 +16,7 @@ class User {
   String? ethereumAddress;
   bool? isVerified;
   bool? isFirstConfigurationDone;
+  bool? receiveWeeklyRecommendationEmails;
 
   User({
     this.id,
@@ -33,6 +34,7 @@ class User {
     this.ethereumAddress,
     this.isVerified,
     this.isFirstConfigurationDone,
+    this.receiveWeeklyRecommendationEmails,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,8 @@ class User {
       ethereumAddress: json['ethereumAddress'],
       isVerified: json['isVerified'],
       isFirstConfigurationDone: json['firstConfigurationDone'],
+      receiveWeeklyRecommendationEmails:
+          json['recieveWeeklyRecommandationEmails'],
     );
   }
 
@@ -70,6 +74,9 @@ class User {
       'roles': roles,
       'token': token,
       'ethereumAddress': ethereumAddress,
+      'isVerified': isVerified,
+      'firstConfigurationDone': isFirstConfigurationDone,
+      'receiveWeeklyRecommendationEmails': receiveWeeklyRecommendationEmails,
     };
   }
 

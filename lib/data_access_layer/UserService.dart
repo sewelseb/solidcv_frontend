@@ -491,6 +491,7 @@ class UserService extends IUserService {
         'phoneNumber': user.phoneNumber,
         'biography': user.biography,
         'linkedin': user.linkedin,
+        'recieveWeeklyRecommandationEmails': user.receiveWeeklyRecommendationEmails,
         if (imageBase64 != null) 'profilePicture': imageBase64,
         if (imageBase64 != null) 'profilePictureExtention': imageExt,
       }),
