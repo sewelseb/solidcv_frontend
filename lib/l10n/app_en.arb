@@ -1,0 +1,347 @@
+{
+  "@@locale": "en",
+  "appTitle": "SolidCV",
+  "@appTitle": {
+    "description": "The application title"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home page navigation"
+  },
+  "jobs": "Jobs",
+  "@jobs": {
+    "description": "Jobs page navigation"
+  },
+  "companies": "Companies",
+  "@companies": {
+    "description": "Companies page navigation"
+  },
+  "educationInstitutions": "Education Institutions",
+  "@educationInstitutions": {
+    "description": "Education institutions page navigation"
+  },
+  "myCv": "My CV",
+  "@myCv": {
+    "description": "My CV page navigation"
+  },
+  "careerAdvice": "Career Advice",
+  "@careerAdvice": {
+    "description": "Career advice page navigation"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button text"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email input field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password input field label"
+  },
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "First name input field label"
+  },
+  "lastName": "Last Name",
+  "@lastName": {
+    "description": "Last name input field label"
+  },
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Full name display"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Add button text"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Search input placeholder"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error message prefix"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Success message prefix"
+  },
+  "welcome": "Welcome to SolidCV",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  "welcomeMessage": "The revolutionary blockchain-powered CV verification platform",
+  "@welcomeMessage": {
+    "description": "Welcome page subtitle"
+  },
+  "getStarted": "Get Started",
+  "@getStarted": {
+    "description": "Get started button text"
+  },
+  "learnMore": "Learn More",
+  "@learnMore": {
+    "description": "Learn more button text"
+  },
+  "verifyCredentials": "Verify Credentials",
+  "@verifyCredentials": {
+    "description": "Verify credentials feature"
+  },
+  "blockchainSecurity": "Blockchain Security",
+  "@blockchainSecurity": {
+    "description": "Blockchain security feature"
+  },
+  "nftCertificates": "NFT Certificates",
+  "@nftCertificates": {
+    "description": "NFT certificates feature"
+  },
+  "professionalProfile": "Professional Profile",
+  "@professionalProfile": {
+    "description": "Professional profile section"
+  },
+  "workExperience": "Work Experience",
+  "@workExperience": {
+    "description": "Work experience section"
+  },
+  "education": "Education",
+  "@education": {
+    "description": "Education section"
+  },
+  "skills": "Skills",
+  "@skills": {
+    "description": "Skills section"
+  },
+  "certificates": "Certificates",
+  "@certificates": {
+    "description": "Certificates section"
+  },
+  "portfolio": "Portfolio",
+  "@portfolio": {
+    "description": "Portfolio section"
+  },
+  "contactInformation": "Contact Information",
+  "@contactInformation": {
+    "description": "Contact information section"
+  },
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number field"
+  },
+  "address": "Address",
+  "@address": {
+    "description": "Address field"
+  },
+  "website": "Website",
+  "@website": {
+    "description": "Website field"
+  },
+  "linkedin": "LinkedIn",
+  "@linkedin": {
+    "description": "LinkedIn profile field"
+  },
+  "github": "GitHub",
+  "@github": {
+    "description": "GitHub profile field"
+  },
+  "jobTitle": "Job Title",
+  "@jobTitle": {
+    "description": "Job title field"
+  },
+  "company": "Company",
+  "@company": {
+    "description": "Company field"
+  },
+  "startDate": "Start Date",
+  "@startDate": {
+    "description": "Start date field"
+  },
+  "endDate": "End Date",
+  "@endDate": {
+    "description": "End date field"
+  },
+  "currentPosition": "Current Position",
+  "@currentPosition": {
+    "description": "Current position checkbox"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Description field"
+  },
+  "degree": "Degree",
+  "@degree": {
+    "description": "Academic degree field"
+  },
+  "institution": "Institution",
+  "@institution": {
+    "description": "Educational institution field"
+  },
+  "fieldOfStudy": "Field of Study",
+  "@fieldOfStudy": {
+    "description": "Field of study field"
+  },
+  "graduationYear": "Graduation Year",
+  "@graduationYear": {
+    "description": "Graduation year field"
+  },
+  "skillName": "Skill Name",
+  "@skillName": {
+    "description": "Skill name field"
+  },
+  "proficiencyLevel": "Proficiency Level",
+  "@proficiencyLevel": {
+    "description": "Skill proficiency level"
+  },
+  "beginner": "Beginner",
+  "@beginner": {
+    "description": "Beginner proficiency level"
+  },
+  "intermediate": "Intermediate",
+  "@intermediate": {
+    "description": "Intermediate proficiency level"
+  },
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced proficiency level"
+  },
+  "expert": "Expert",
+  "@expert": {
+    "description": "Expert proficiency level"
+  },
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply for job button"
+  },
+  "viewDetails": "View Details",
+  "@viewDetails": {
+    "description": "View details button"
+  },
+  "uploadDocument": "Upload Document",
+  "@uploadDocument": {
+    "description": "Upload document button"
+  },
+  "downloadCv": "Download CV",
+  "@downloadCv": {
+    "description": "Download CV button"
+  },
+  "shareCv": "Share CV",
+  "@shareCv": {
+    "description": "Share CV button"
+  },
+  "verifyCv": "Verify CV",
+  "@verifyCv": {
+    "description": "Verify CV button"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language selector label"
+  },
+  "changeLanguage": "Change Language",
+  "@changeLanguage": {
+    "description": "Change language button"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "spanish": "Spanish",
+  "@spanish": {
+    "description": "Spanish language option"
+  },
+  "french": "French",
+  "@french": {
+    "description": "French language option"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile page"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy page"
+  },
+  "termsAndConditions": "Terms and Conditions",
+  "@termsAndConditions": {
+    "description": "Terms and conditions page"
+  },
+  "aboutUs": "About Us",
+  "@aboutUs": {
+    "description": "About us page"
+  },
+  "contactUs": "Contact Us",
+  "@contactUs": {
+    "description": "Contact us page"
+  },
+  "helpCenter": "Help Center",
+  "@helpCenter": {
+    "description": "Help center page"
+  },
+  "faq": "FAQ",
+  "@faq": {
+    "description": "Frequently asked questions page"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications section"
+  },
+  "emailNotifications": "Email Notifications",
+  "@emailNotifications": {
+    "description": "Email notifications setting"
+  },
+  "weeklyRecommendations": "Weekly Recommendations",
+  "@weeklyRecommendations": {
+    "description": "Weekly recommendations feature"
+  },
+  "receiveWeeklyEmails": "Receive Weekly Recommendation Emails",
+  "@receiveWeeklyEmails": {
+    "description": "Weekly email preference setting"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes option"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No option"
+  },
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled status"
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled status"
+  }
+}

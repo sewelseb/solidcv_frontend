@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:solid_cv/Views/AddACompanyFormRoute.dart';
 import 'package:solid_cv/Views/AddAnEducationInstitutionFormRoute.dart';
 import 'package:solid_cv/Views/CheckMySkillsWithAIPage.dart';
@@ -39,24 +40,65 @@ import 'package:solid_cv/Views/widgets/userWidgets/EditUserProfile.dart';
 import 'package:solid_cv/Views/PublicCompanyJobsPage.dart';
 import 'package:solid_cv/Views/PublicCompanyProfilePage.dart';
 import 'package:solid_cv/Views/WeeklyRecommendationsPage.dart';
+import 'package:solid_cv/Views/MultilingualTestPage.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:solid_cv/models/WeeklyRecommendation.dart';
 import 'package:solid_cv/Views/FirstConfiguration.dart';
-import 'package:solid_cv/business_layer/ISEOBll.dart';
+import 'package:solid_cv/providers/LanguageProvider.dart';
 import 'package:solid_cv/business_layer/SEOBll.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final LanguageProvider _languageProvider = LanguageProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    _languageProvider.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    _languageProvider.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    setState(() {
+      // Rebuild when language changes
+    });
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solid CV',
+      // Internationalization configuration
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English (default)
+        Locale('es', ''), // Spanish
+        Locale('fr', ''), // French
+      ],
+      // Use the selected locale or system locale, fallback to English
+      locale: _languageProvider.locale,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -143,7 +185,9 @@ class MyApp extends StatelessWidget {
         },
         '/jobs': (context) => const PublicJobOffers(),
         '/career-advice': (context) => const AuthGuard(child: CareerAdviceMain()),
-        '/weekly-recommendations': (context) => AuthGuard(child: WeeklyRecommendationsPage()),
+        '/weekly-recommendations': (context) =>
+            AuthGuard(child: WeeklyRecommendationsPage()),
+        '/multilingual-test': (context) => const MultilingualTestPage(),
         '/education-institutions': (context) => const EducationInstitutionsLandingPage(),
         '/companies': (context) => const CompaniesLandingPage(),
       },

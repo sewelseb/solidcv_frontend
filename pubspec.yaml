@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -44,7 +46,7 @@ dependencies:
   web3dart: ^2.7.3
   minio: ^3.5.7
   ipfs_client_flutter: ^1.0.7
-  intl: ^0.20.2
+  intl: ^0.19.0
   file_picker: ^6.1.1
   flutter_file_downloader: ^1.2.0
   flutter_downloader: ^1.11.6
@@ -81,6 +83,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/hero_image.png
@@ -118,4 +121,13 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
+
+# Internationalization configuration
+flutter_gen:
+  output: lib/generated/ # Optional (default: lib/gen/)
+  line_length: 80 # Optional (default: 80)
+
+  integrations:
+    flutter_localizations: true
   # see https://flutter.dev/custom-fonts/#from-packages

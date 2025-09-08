@@ -2,10 +2,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/providers/LanguageProvider.dart';
 
 class EditProfileRoute extends StatefulWidget {
   final User user;
@@ -140,6 +142,85 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
         setState(() => _isSaving = false);
       }
     }
+  }
+
+  String _getLanguageDisplayName(BuildContext context) {
+    final languageProvider = LanguageProvider();
+    final currentLocale = languageProvider.locale ?? const Locale('en', '');
+    final localizations = AppLocalizations.of(context)!;
+    
+    switch (currentLocale.languageCode) {
+      case 'en':
+        return localizations.english;
+      case 'es':
+        return localizations.spanish;
+      case 'fr':
+        return localizations.french;
+      default:
+        return localizations.english;
+    }
+  }
+
+  void _showLanguageSelectionDialog(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final languageProvider = LanguageProvider();
+    final currentLocale = languageProvider.locale ?? const Locale('en', '');
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(localizations.changeLanguage),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Text('🇺🇸'),
+                title: Text(localizations.english),
+                trailing: currentLocale.languageCode == 'en'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  languageProvider.setLocale(const Locale('en', ''));
+                  Navigator.of(context).pop();
+                  setState(() {}); // Refresh to show new language
+                },
+              ),
+              ListTile(
+                leading: const Text('🇪🇸'),
+                title: Text(localizations.spanish),
+                trailing: currentLocale.languageCode == 'es'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  languageProvider.setLocale(const Locale('es', ''));
+                  Navigator.of(context).pop();
+                  setState(() {}); // Refresh to show new language
+                },
+              ),
+              ListTile(
+                leading: const Text('🇫🇷'),
+                title: Text(localizations.french),
+                trailing: currentLocale.languageCode == 'fr'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  languageProvider.setLocale(const Locale('fr', ''));
+                  Navigator.of(context).pop();
+                  setState(() {}); // Refresh to show new language
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(localizations.cancel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   InputDecoration _inputDecoration(String label, {IconData? icon}) {
@@ -277,7 +358,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Configuration",
+                          AppLocalizations.of(context)!.settings,
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -286,15 +367,17 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                         ),
                       ),
                       const SizedBox(height: 10),
+                      
+                      // Weekly recommendations email switch
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade300),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: SwitchListTile(
-                          title: const Text(
-                            "Receive weekly recommendation emails",
-                            style: TextStyle(fontSize: 16),
+                          title: Text(
+                            AppLocalizations.of(context)!.receiveWeeklyEmails,
+                            style: const TextStyle(fontSize: 16),
                           ),
                           subtitle: const Text(
                             "Get personalized career recommendations via email",
@@ -307,6 +390,28 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                             });
                           },
                           activeColor: const Color(0xFF7B3FE4),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      
+                      // Language selector
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.language, color: Color(0xFF7B3FE4)),
+                          title: Text(
+                            AppLocalizations.of(context)!.changeLanguage,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            _getLanguageDisplayName(context),
+                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                          onTap: () => _showLanguageSelectionDialog(context),
                         ),
                       ),
                       const SizedBox(height: 18),
