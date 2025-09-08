@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CompaniesLandingPage extends StatefulWidget {
@@ -109,7 +110,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'Request a Demo',
+                          AppLocalizations.of(context)!.requestDemo,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 24 : 28,
                             fontWeight: FontWeight.bold,
@@ -118,7 +119,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Ready to revolutionize your hiring process? Get in touch with our team!',
+                          AppLocalizations.of(context)!.readyToRevolutionizeHiring,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 14 : 16,
                             color: Colors.white.withOpacity(0.9),
@@ -147,7 +148,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                     child: Column(
                       children: [
                         Text(
-                          'Contact our sales specialist',
+                          AppLocalizations.of(context)!.contactSalesSpecialist,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 16 : 18,
                             fontWeight: FontWeight.w600,
@@ -203,7 +204,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                                             const SizedBox(width: 8),
                                             Expanded(
                                               child: Text(
-                                                'Email copied to clipboard!',
+                                                AppLocalizations.of(context)!.emailCopiedToClipboard,
                                                 style: GoogleFonts.inter(),
                                               ),
                                             ),
@@ -219,7 +220,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                                     );
                                   }
                                 },
-                                tooltip: 'Copy email',
+                                tooltip: AppLocalizations.of(context)!.copyEmail,
                                 icon: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
@@ -258,7 +259,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                               ),
                             ),
                             child: Text(
-                              'Close',
+                              AppLocalizations.of(context)!.close,
                               style: GoogleFonts.inter(
                                 fontSize: isMobile ? 14 : 16,
                                 fontWeight: FontWeight.w600,
@@ -287,7 +288,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            'Email copied! Contact us for your demo.',
+                                            AppLocalizations.of(context)!.emailCopiedContactDemo,
                                             style: GoogleFonts.inter(),
                                           ),
                                         ),
@@ -316,7 +317,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                             ),
                             icon: Icon(Icons.copy, size: isMobile ? 16 : 18),
                             label: Text(
-                              'Copy Email',
+                              AppLocalizations.of(context)!.copyEmailButton,
                               style: GoogleFonts.inter(
                                 fontSize: isMobile ? 14 : 16,
                                 fontWeight: FontWeight.w600,
@@ -515,7 +516,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'Speedup your Hiring Process',
+          AppLocalizations.of(context)!.speedupHiringProcess,
           style: GoogleFonts.inter(
             fontSize: isMobile ? 32 : 48,
             fontWeight: FontWeight.bold,
@@ -526,7 +527,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
         ),
         const SizedBox(height: 20),
         Text(
-          'Access verified professionals with blockchain-authenticated skills and experience. Make confident hiring decisions with AI-powered candidate matching.',
+          AppLocalizations.of(context)!.accessVerifiedProfessionals,
           style: GoogleFonts.inter(
             fontSize: isMobile ? 16 : 20,
             color: Colors.white.withOpacity(0.9),
@@ -556,7 +557,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
               ),
               icon: const Icon(Icons.rocket_launch),
               label: Text(
-                'Start Hiring',
+                AppLocalizations.of(context)!.startHiring,
                 style: TextStyle(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.w600,
@@ -578,7 +579,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
               ),
               icon: const Icon(Icons.video_call),
               label: Text(
-                'Request Demo',
+                AppLocalizations.of(context)!.requestDemo,
                 style: TextStyle(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.w600,
@@ -641,8 +642,8 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
         child: Column(
           children: [
             _buildSectionHeader(
-              'Powerful Tools for Modern Recruitment',
-              'Everything you need to find and hire the best talent efficiently',
+              AppLocalizations.of(context)!.powerfulToolsRecruitment,
+              AppLocalizations.of(context)!.everythingNeedFindHire,
               isMobile,
             ),
             const SizedBox(height: 60),
@@ -657,27 +658,24 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
     final features = [
       FeatureData(
         icon: Icons.verified_user,
-        title: 'Verified Credentials',
-        description:
-            'Access candidates with blockchain-verified certificates and work experience that cannot be faked.',
+        title: AppLocalizations.of(context)!.verifiedCredentials,
+        description: AppLocalizations.of(context)!.verifiedCredentialsDesc,
         gradient: const LinearGradient(
           colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
         ),
       ),
       FeatureData(
         icon: Icons.psychology,
-        title: 'AI-Powered Matching',
-        description:
-            'Find the perfect candidates using AI that analyzes skills, experience, and career trajectories.',
+        title: AppLocalizations.of(context)!.aiPoweredMatching,
+        description: AppLocalizations.of(context)!.aiPoweredMatchingDesc,
         gradient: const LinearGradient(
           colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
         ),
       ),
       FeatureData(
         icon: Icons.speed,
-        title: 'Instant Verification',
-        description:
-            'Verify candidate credentials instantly without waiting for manual verification processes.',
+        title: AppLocalizations.of(context)!.instantVerification,
+        description: AppLocalizations.of(context)!.instantVerificationDesc,
         gradient: const LinearGradient(
           colors: [Color(0xFFFF9800), Color(0xFFFFB74D)],
         ),
@@ -1244,7 +1242,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                   ),
                   icon: const Icon(Icons.rocket_launch),
                   label: Text(
-                    'Start Hiring',
+                    AppLocalizations.of(context)!.startHiring,
                     style: TextStyle(
                       fontSize: isMobile ? 16 : 18,
                       fontWeight: FontWeight.w600,
@@ -1266,7 +1264,7 @@ class _CompaniesLandingPageState extends State<CompaniesLandingPage>
                   ),
                   icon: const Icon(Icons.video_call),
                   label: Text(
-                    'Request Demo',
+                    AppLocalizations.of(context)!.requestDemo,
                     style: TextStyle(
                       fontSize: isMobile ? 16 : 18,
                       fontWeight: FontWeight.w600,

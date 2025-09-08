@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
@@ -136,7 +137,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Company updated!')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.companyUpdated)),
       );
       setState(() {
         _companyFuture = _companyBll.getCompany(updatedCompany.id!);
@@ -146,7 +147,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
       );
     } finally {
       setState(() => _isSubmitting = false);
@@ -313,7 +314,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Company Administration',
+          AppLocalizations.of(context)!.companyAdministration,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -331,9 +332,9 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
-            return const Center(child: Text('No data available'));
+            return Center(child: Text(AppLocalizations.of(context)!.noDataAvailable));
           }
 
           final company = snapshot.data!;
@@ -380,9 +381,9 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                     )),
                               ),
                               const SizedBox(height: 12),
-                              const Text(
-                                "Change company logo/image",
-                                style: TextStyle(
+                              Text(
+                                AppLocalizations.of(context)!.changeCompanyLogo,
+                                style: const TextStyle(
                                     color: Colors.black54, fontSize: 15),
                               ),
                               const SizedBox(height: 30),
@@ -433,31 +434,31 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 6.0),
                                     child: Text(_isSubmitting
-                                        ? "Submitting..."
-                                        : "Update Company"),
+                                        ? AppLocalizations.of(context)!.submitting
+                                        : AppLocalizations.of(context)!.updateCompany),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 36),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: "Base Blochchain Wallet",
+                                title: AppLocalizations.of(context)!.baseBlockchainWallet,
                                 icon: Icons.account_balance_wallet,
                                 content: Column(
                                   children: [
                                     _buildTextField(
                                         _ethereumAddressController,
-                                        "Base Blochchain Address",
+                                        AppLocalizations.of(context)!.baseBlockchainAddress,
                                         Icons.account_balance_wallet),
                                     const SizedBox(height: 16),
                                     _buildTextField(
                                         _ethereumPrivateKeyController,
-                                        "Base Blochchain Private key",
+                                        AppLocalizations.of(context)!.baseBlockchainPrivateKey,
                                         Icons.lock,
                                         obscure: true),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'This is the Base Blochchain address that will be used to mint tokens for your employees.\nWe don\'t store your private key on our server, it is stored on your device so make sure to keep it safe.',
+                                      AppLocalizations.of(context)!.blockchainWalletDescription,
                                       style: GoogleFonts.inter(
                                           color: Colors.black54,
                                           fontSize: 13,
@@ -466,12 +467,12 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                     const SizedBox(height: 10),
                                     _buildTextField(
                                         _passwordController,
-                                        "Password (encrypts private key)",
+                                        AppLocalizations.of(context)!.passwordEncryptsPrivateKey,
                                         Icons.password,
                                         obscure: true),
                                     const SizedBox(height: 8),
                                     Text(
-                                      'This password will be used to encrypt your private key. Make sure to remember it. (There is no way to recover it)',
+                                      AppLocalizations.of(context)!.passwordRecoveryWarning,
                                       style: GoogleFonts.inter(
                                           color: Colors.black54, fontSize: 12),
                                     ),
@@ -489,9 +490,9 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                           if (!mounted) return;
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content: Text(
-                                                    'Base Blochchain address saved!')),
+                                                    AppLocalizations.of(context)!.baseBlockchainAddressSaved)),
                                           );
                                           setState(() {
                                             _companyFuture = _companyBll
@@ -499,7 +500,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                           });
                                         },
                                         icon: const Icon(Icons.save),
-                                        label: const Text('Save Ethereum'),
+                                        label: Text(AppLocalizations.of(context)!.saveEthereum),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: _primaryColor,
                                           foregroundColor: Colors.white,
@@ -515,7 +516,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: "Job Offers",
+                                title: AppLocalizations.of(context)!.jobOffers,
                                 icon: Icons.work,
                                 content: Column(
                                   children: [
@@ -528,7 +529,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                                               arguments: company.id!.toString());
                                         },
                                         icon: const Icon(Icons.business_center),
-                                        label: const Text('Manage Job Offers'),
+                                        label: Text(AppLocalizations.of(context)!.manageJobOffers),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: _primaryColor,
                                           foregroundColor: Colors.white,
@@ -543,7 +544,7 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: "Company Administrators",
+                                title: AppLocalizations.of(context)!.companyAdministrators,
                                 icon: Icons.admin_panel_settings,
                                 content: Column(
                                   children: [
@@ -802,16 +803,16 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
   Widget _buildMainFields() {
     return Column(
       children: [
-        _buildTextField(_nameController, "Company Name", Icons.business,
+        _buildTextField(_nameController, AppLocalizations.of(context)!.companyName, Icons.business,
             required: true),
         const SizedBox(height: 18),
         _buildTextField(
-            _addressNumberController, "Address number", Icons.location_on),
+            _addressNumberController, AppLocalizations.of(context)!.addressNumber, Icons.location_on),
         const SizedBox(height: 18),
         _buildTextField(
-            _addressStreetController, "Address street", Icons.location_on),
+            _addressStreetController, AppLocalizations.of(context)!.addressStreet, Icons.location_on),
         const SizedBox(height: 18),
-        _buildTextField(_cityController, "City", Icons.location_city),
+        _buildTextField(_cityController, AppLocalizations.of(context)!.city, Icons.location_city),
       ],
     );
   }
@@ -820,13 +821,13 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
     return Column(
       children: [
         _buildTextField(
-            _zipCodeController, "Zip code", Icons.local_post_office),
+            _zipCodeController, AppLocalizations.of(context)!.zipCode, Icons.local_post_office),
         const SizedBox(height: 18),
-        _buildTextField(_countryController, "Country", Icons.flag),
+        _buildTextField(_countryController, AppLocalizations.of(context)!.country, Icons.flag),
         const SizedBox(height: 18),
-        _buildTextField(_phoneNumberController, "Phone Number", Icons.phone),
+        _buildTextField(_phoneNumberController, AppLocalizations.of(context)!.phoneNumber, Icons.phone),
         const SizedBox(height: 18),
-        _buildTextField(_emailController, "Email", Icons.email, isEmail: true),
+        _buildTextField(_emailController, AppLocalizations.of(context)!.email, Icons.email, isEmail: true),
       ],
     );
   }
@@ -846,12 +847,12 @@ class _MyCompanyAdministrationState extends State<MyCompanyAdministration> {
       decoration: _inputDecoration(label, icon: icon),
       validator: (value) {
         if (required && (value == null || value.trim().isEmpty)) {
-          return 'Required';
+          return AppLocalizations.of(context)!.required;
         }
         if (isEmail && value != null && value.trim().isNotEmpty) {
           final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w{2,}$");
           if (!emailRegex.hasMatch(value.trim())) {
-            return 'Invalid email';
+            return AppLocalizations.of(context)!.invalidEmail;
           }
         }
         return null;

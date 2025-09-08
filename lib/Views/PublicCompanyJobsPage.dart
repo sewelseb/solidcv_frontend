@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
@@ -116,11 +117,11 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                     }
                     
                     if (companySnapshot.hasError) {
-                      return _buildErrorWidget('Company not found or error loading company data');
+                      return _buildErrorWidget(AppLocalizations.of(context)!.companyNotFoundOrError);
                     }
 
                     if (!companySnapshot.hasData) {
-                      return _buildErrorWidget('Company not found');
+                      return _buildErrorWidget(AppLocalizations.of(context)!.companyNotFound);
                     }
 
                     final company = companySnapshot.data!;
@@ -162,7 +163,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
           ),
           const SizedBox(width: 16),
           Text(
-            'Company Profile',
+            AppLocalizations.of(context)!.companyProfile,
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 20 : 24,
               fontWeight: FontWeight.bold,
@@ -231,7 +232,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Go Back'),
+              child: Text(AppLocalizations.of(context)!.goBack),
             ),
           ],
         ),
@@ -308,7 +309,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                       children: [
                         Expanded(
                           child: Text(
-                            company.name ?? 'Unknown Company',
+                            company.name ?? AppLocalizations.of(context)!.unknownCompanyFallback,
                             style: GoogleFonts.poppins(
                               fontSize: isMobile ? 24 : 32,
                               fontWeight: FontWeight.bold,
@@ -427,7 +428,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                     );
                   },
                   icon: const Icon(Icons.business, size: 18),
-                  label: const Text('View Full Profile'),
+                  label: Text(AppLocalizations.of(context)!.viewFullProfile),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: _primaryColor,
@@ -511,7 +512,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Company Overview',
+            AppLocalizations.of(context)!.companyOverview,
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.bold,
@@ -523,7 +524,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
             children: [
               Expanded(
                 child: _buildOverviewCard(
-                  'Active Positions',
+                  AppLocalizations.of(context)!.activePositions,
                   activeJobs.toString(),
                   Icons.work,
                   Colors.green,
@@ -533,7 +534,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
               const SizedBox(width: 12),
               Expanded(
                 child: _buildOverviewCard(
-                  'Total Job Offers',
+                  AppLocalizations.of(context)!.totalJobOffers,
                   totalJobs.toString(),
                   Icons.business_center,
                   Colors.blue,
@@ -543,8 +544,8 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
               const SizedBox(width: 12),
               Expanded(
                 child: _buildOverviewCard(
-                  'Company Status',
-                  company.isVerified == true ? 'Verified' : 'Standard',
+                  AppLocalizations.of(context)!.companyStatus,
+                  company.isVerified == true ? AppLocalizations.of(context)!.verifiedCompany : AppLocalizations.of(context)!.standardCompany,
                   company.isVerified == true ? Icons.verified : Icons.business,
                   company.isVerified == true ? Colors.green : Colors.orange,
                   isMobile,
@@ -624,7 +625,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
               ),
               const SizedBox(width: 8),
               Text(
-                'Company Details',
+                AppLocalizations.of(context)!.companyDetails,
                 style: GoogleFonts.poppins(
                   fontSize: isMobile ? 20 : 24,
                   fontWeight: FontWeight.bold,
@@ -645,7 +646,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                 if (company.getFullAddress().trim().isNotEmpty) ...[
                   _buildDetailRow(
                     Icons.home,
-                    'Full Address',
+                    AppLocalizations.of(context)!.fullAddress,
                     company.getFullAddress(),
                     isMobile,
                   ),
@@ -654,7 +655,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                 if (company.phoneNumber != null && company.phoneNumber!.isNotEmpty) ...[
                   _buildDetailRow(
                     Icons.phone,
-                    'Phone Number',
+                    AppLocalizations.of(context)!.phoneNumber,
                     company.phoneNumber!,
                     isMobile,
                   ),
@@ -663,7 +664,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                 if (company.email != null && company.email!.isNotEmpty) ...[
                   _buildDetailRow(
                     Icons.email,
-                    'Email Address',
+                    AppLocalizations.of(context)!.emailAddress,
                     company.email!,
                     isMobile,
                   ),
@@ -672,7 +673,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                 if (company.ethereumAddress != null && company.ethereumAddress!.isNotEmpty) ...[
                   _buildDetailRow(
                     Icons.account_balance_wallet,
-                    'Blockchain Address',
+                    AppLocalizations.of(context)!.blockchainAddress,
                     '${company.ethereumAddress!.substring(0, 6)}...${company.ethereumAddress!.substring(company.ethereumAddress!.length - 4)}',
                     isMobile,
                   ),
@@ -691,7 +692,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Verification Status',
+                            AppLocalizations.of(context)!.verificationStatus,
                             style: GoogleFonts.poppins(
                               fontSize: isMobile ? 14 : 16,
                               fontWeight: FontWeight.w600,
@@ -724,7 +725,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      company.isVerified == true ? 'Verified Company' : 'Standard Company',
+                                      company.isVerified == true ? AppLocalizations.of(context)!.verifiedCompany : AppLocalizations.of(context)!.standardCompany,
                                       style: GoogleFonts.poppins(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
@@ -807,7 +808,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
             children: [
               Expanded(
                 child: Text(
-                  'Current Job Offers',
+                  AppLocalizations.of(context)!.currentJobOffers,
                   style: GoogleFonts.poppins(
                     fontSize: isMobile ? 20 : 24,
                     fontWeight: FontWeight.bold,
@@ -859,7 +860,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
           ),
           const SizedBox(height: 16),
           Text(
-            'No Job Offers Available',
+            AppLocalizations.of(context)!.noJobOffersAvailableCompany,
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.w600,
@@ -868,7 +869,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
           ),
           const SizedBox(height: 8),
           Text(
-            'This company currently has no open positions.',
+            AppLocalizations.of(context)!.companyNoOpenPositions,
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 14 : 16,
               color: Colors.grey.withOpacity(0.6),
@@ -903,7 +904,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
             children: [
               Expanded(
                 child: Text(
-                  jobOffer.title ?? 'Untitled Position',
+                  jobOffer.title ?? AppLocalizations.of(context)!.untitledPosition,
                   style: GoogleFonts.poppins(
                     fontSize: isMobile ? 18 : 20,
                     fontWeight: FontWeight.bold,
@@ -970,7 +971,7 @@ class _PublicCompanyJobsPageState extends State<PublicCompanyJobsPage>
                     }
                   },
                   icon: const Icon(Icons.visibility, size: 18),
-                  label: const Text('View Details'),
+                  label: Text(AppLocalizations.of(context)!.viewDetails),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _primaryColor,
                     foregroundColor: Colors.white,

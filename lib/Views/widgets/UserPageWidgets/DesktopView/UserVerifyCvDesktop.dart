@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvSkillsDesktop.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvWorkExperienceDesktopCard.dart';
@@ -102,7 +103,7 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify CV'),
+        title: Text(AppLocalizations.of(context)!.verifyCv),
         elevation: 1,
         backgroundColor: const Color(0xFF7B3FE4),
       ),
@@ -283,10 +284,10 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
-            Text('Work Experience',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)!.workExperience,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ],
         ),
         const SizedBox(height: 12),
@@ -299,7 +300,7 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else if (snapshot.hasError) {
-              return Text("Error: {$snapshot.error}");
+              return Text("${AppLocalizations.of(context)!.error}: ${snapshot.error}");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return Column(
                 children: snapshot.data!
@@ -309,9 +310,9 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
                     .toList(),
               );
             } else {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 32),
-                child: Center(child: Text("No work experiences yet.")),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet)),
               );
             }
           },

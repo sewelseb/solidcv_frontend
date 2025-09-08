@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/FirstConfigurationComponents/AISkillValidationStep.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -214,7 +215,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
         backgroundColor: _primaryColor,
         elevation: 0,
         title: Text(
-          'Account Setup',
+          AppLocalizations.of(context)!.accountSetup,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -318,7 +319,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Wallet Already Connected',
+                                      AppLocalizations.of(context)!.walletAlreadyConnected,
                                       style: GoogleFonts.inter(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -326,7 +327,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
                                       ),
                                     ),
                                     Text(
-                                      'Your blockchain wallet is already set up. Proceeding to CV upload.',
+                                      AppLocalizations.of(context)!.walletConnectedDescription,
                                       style: GoogleFonts.inter(
                                         fontSize: 12,
                                         color: Colors.green.shade600,
@@ -410,7 +411,7 @@ class _FirstConfigurationState extends State<FirstConfiguration>
               backgroundColor: _primaryColor,
               icon: const Icon(Icons.chat, color: Colors.white),
               label: Text(
-                'Start Setup',
+                AppLocalizations.of(context)!.startSetup,
                 style: GoogleFonts.inter(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

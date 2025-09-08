@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -37,7 +38,7 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
     final bool isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify a CV')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.verifyACv)),
       bottomNavigationBar: const MainBottomNavigationBar(),
       backgroundColor: const Color(0xFFF7F8FC),
       body: Scrollbar(
@@ -65,10 +66,10 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Center(
+                        Center(
                           child: Text(
-                            "Search for a user and verify their CV",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.searchForUserVerifyCV,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 21,
                               color: Color(0xFF7B3FE4),
@@ -79,7 +80,7 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
                         const SizedBox(height: 22),
                         TextField(
                           decoration: InputDecoration(
-                            labelText: 'Search User',
+                            labelText: AppLocalizations.of(context)!.searchUser,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -108,15 +109,15 @@ class _VerifyACvRouteState extends State<VerifyACvRoute> {
                               ));
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text('Error: ${snapshot.error}'));
+                                  child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 30),
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 30),
                                 child: Center(
                                     child: Text(
-                                  'No user found.',
-                                  style: TextStyle(
+                                  AppLocalizations.of(context)!.noUserFound,
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.black45,
                                       fontStyle: FontStyle.italic),

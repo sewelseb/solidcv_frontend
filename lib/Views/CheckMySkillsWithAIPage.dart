@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/FeedbackDialog.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
@@ -39,7 +40,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Check My Skills with AI'),
+        title: Text(AppLocalizations.of(context)!.checkMySkillsWithAI),
       ),
       bottomNavigationBar: const MainBottomNavigationBar(),
       body: FutureBuilder<Skill>(
@@ -48,11 +49,11 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             return _buildSkillCheckUI(snapshot.data!);
           } else {
-            return const Center(child: Text('No data found'));
+            return Center(child: Text(AppLocalizations.of(context)!.noDataFound));
           }
         },
       ),
@@ -69,7 +70,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
               children: [
                 Center(
                   child: Text(
-                    'Answer the questions to check your skills in ${skill.name!}',
+                    AppLocalizations.of(context)!.answerQuestionsToCheckSkills(skill.name!),
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Get Feedbacks On My Skills'),
+                  child: Text(AppLocalizations.of(context)!.getFeedbacksOnMySkills),
                 ),
                 const SizedBox(height: 20),
                 Container(
@@ -106,14 +107,14 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                   ),
                   child: Column(
                     children: [
-                      const ListTile(
-                        leading: CircleAvatar(
+                      ListTile(
+                        leading: const CircleAvatar(
                           backgroundColor: Colors.blueAccent,
                           child: Icon(Icons.android, color: Colors.white),
                         ),
                         title: Text(
-                          'AI: I will ask you some questions to test your skill',
-                          style: TextStyle(fontSize: 16),
+                          AppLocalizations.of(context)!.aiWillAskQuestionsToTest,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                       const Divider(),
@@ -144,8 +145,8 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                             onPressed: () => _getNewAiQuestion(skill),
                             icon: const Icon(Icons.play_arrow,
                                 color: Colors.white),
-                            label: const Text('Start Test',
-                                style: TextStyle(
+                            label: Text(AppLocalizations.of(context)!.startTest,
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.white)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent,
@@ -175,7 +176,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                       focusNode: _userMessageFocusNode,
                       onSubmitted: (_) => _handleSend(skill),
                       decoration: InputDecoration(
-                        hintText: 'Type your message...',
+                        hintText: AppLocalizations.of(context)!.typeYourMessage,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -185,7 +186,7 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
                   const SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: () => _handleSend(skill),
-                    child: const Text('Send'),
+                    child: Text(AppLocalizations.of(context)!.send),
                   ),
                 ],
               ),
