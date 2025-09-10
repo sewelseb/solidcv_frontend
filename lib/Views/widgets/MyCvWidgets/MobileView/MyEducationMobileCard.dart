@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
-import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -29,7 +29,9 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
   @override
   Widget build(BuildContext context) {
     final Color badgeColor = widget.isValidated ? Colors.green : Colors.deepPurple;
-    final String badgeLabel = widget.isValidated ? 'Verified by the Blockchain' : 'Manually added';
+    final String badgeLabel = widget.isValidated 
+        ? AppLocalizations.of(context)!.verifiedByBlockchain 
+        : AppLocalizations.of(context)!.manuallyAdded;
 
     return Container(
       width: double.infinity,
@@ -103,20 +105,20 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.certificate.title ?? 'Untitled',
+                      widget.certificate.title ?? AppLocalizations.of(context)!.untitled,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      widget.certificate.type ?? 'Certificate',
+                      widget.certificate.type ?? AppLocalizations.of(context)!.certificate,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
                     if (widget.certificate.publicationDate != null)
                       Text(
-                        'Date: ${FormatDate().formatDateForCertificate(widget.certificate.publicationDate!)}',
+                        '${AppLocalizations.of(context)!.date}: ${FormatDate().formatDateForCertificate(context, widget.certificate.publicationDate!)}',
                         style:
                             const TextStyle(fontSize: 13, color: Colors.grey),
                       ),
@@ -154,14 +156,14 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
               widget.certificate.curriculum!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
-              'Curriculum: ${widget.certificate.curriculum!}',
+              '${AppLocalizations.of(context)!.curriculum}: ${widget.certificate.curriculum!}',
               style: const TextStyle(fontSize: 13.5, color: Colors.black87),
             ),
           ],
           if (widget.certificate.grade != null && widget.certificate.grade!.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              'Grade: ${widget.certificate.grade!}',
+              '${AppLocalizations.of(context)!.grade}: ${widget.certificate.grade!}',
               style: const TextStyle(
                 fontSize: 13,
                 fontStyle: FontStyle.italic,
@@ -179,7 +181,7 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
                     onPressed: () =>
                         _showDeleteConfirmationDialog(context, int.parse(widget.certificate.id!)),
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: const Text('Delete'),
+                    child: Text(AppLocalizations.of(context)!.delete),
                   ),
                 ],
               ),
@@ -194,12 +196,12 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this certificate? This action is irreversible.'),
+          title: Text(AppLocalizations.of(context)!.confirmDeletion),
+          content: Text(AppLocalizations.of(context)!.deleteCertificateConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -213,12 +215,12 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
                   Navigator.of(context).pop();
                   // Show error message
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error deleting certificate: $e')),
+                    SnackBar(content: Text('${AppLocalizations.of(context)!.errorDeletingCertificate}: $e')),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );

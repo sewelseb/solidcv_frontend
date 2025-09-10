@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -16,27 +17,27 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   bool _obscure = true;
   bool _showPasswordRequirements = false;
 
-  String? _validatePassword(String password) {
+  String? _validatePassword(String password, BuildContext context) {
     if (password.length < 8) {
-      return 'Password must be at least 8 characters long';
+      return AppLocalizations.of(context)!.passwordMinLength;
     }
     
     if (!RegExp(r'[A-Z]').hasMatch(password)) {
-      return 'Password must contain at least one capital letter';
+      return AppLocalizations.of(context)!.passwordNeedsCapital;
     }
     
     if (!RegExp(r'[0-9]').hasMatch(password)) {
-      return 'Password must contain at least one number';
+      return AppLocalizations.of(context)!.passwordNeedsNumber;
     }
     
     if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password)) {
-      return 'Password must contain at least one special character';
+      return AppLocalizations.of(context)!.passwordNeedsSpecial;
     }
     
     return null; // Password is valid
   }
 
-  Widget _buildPasswordRequirements(String currentPassword) {
+  Widget _buildPasswordRequirements(String currentPassword, BuildContext context) {
     final hasLength = currentPassword.length >= 8;
     final hasUppercase = RegExp(r'[A-Z]').hasMatch(currentPassword);
     final hasNumber = RegExp(r'[0-9]').hasMatch(currentPassword);
@@ -53,19 +54,19 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Password requirements:',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.passwordRequirements,
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
           ),
           const SizedBox(height: 6),
-          _buildRequirementItem('At least 8 characters', hasLength),
-          _buildRequirementItem('One capital letter', hasUppercase),
-          _buildRequirementItem('One number', hasNumber),
-          _buildRequirementItem('One special character', hasSpecialChar),
+          _buildRequirementItem(AppLocalizations.of(context)!.atLeast8Characters, hasLength),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneCapitalLetter, hasUppercase),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneNumber, hasNumber),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneSpecialCharacter, hasSpecialChar),
         ],
       ),
     );
@@ -101,8 +102,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FC),
       appBar: AppBar(
-        title: const Text("Reset password",
-            style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(AppLocalizations.of(context)!.resetPassword,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: const Color(0xFF7B3FE4),
         centerTitle: true,
         elevation: 1,
@@ -127,17 +128,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     const Icon(Icons.lock_rounded,
                         size: 46, color: Color(0xFF7B3FE4)),
                     const SizedBox(height: 14),
-                    const Text(
-                      "Set a new password",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.setNewPassword,
+                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      "Choose a strong password you haven't used before.",
+                    Text(
+                      AppLocalizations.of(context)!.chooseStrongPassword,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black87, fontSize: 15),
+                      style: const TextStyle(color: Colors.black87, fontSize: 15),
                     ),
                     const SizedBox(height: 26),
                     TextField(
@@ -149,7 +149,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         });
                       },
                       decoration: InputDecoration(
-                        labelText: "New password",
+                        labelText: AppLocalizations.of(context)!.newPassword,
                         labelStyle: const TextStyle(color: Color(0xFF7B3FE4)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -175,13 +175,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       ),
                     ),
                     if (_showPasswordRequirements) 
-                      _buildPasswordRequirements(_pwController.text),
+                      _buildPasswordRequirements(_pwController.text, context),
                     const SizedBox(height: 20),
                     TextField(
                       controller: _confirmController,
                       obscureText: _obscure,
                       decoration: InputDecoration(
-                        labelText: "Confirm password",
+                        labelText: AppLocalizations.of(context)!.confirmPassword,
                         labelStyle: const TextStyle(color: Color(0xFF7B3FE4)),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -210,9 +210,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2.2, color: Colors.white))
                             : const Icon(Icons.check_circle_outline, size: 22),
-                        label: const Text(
-                          "Reset password",
-                          style: TextStyle(
+                        label: Text(
+                          AppLocalizations.of(context)!.resetPassword,
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                         style: ElevatedButton.styleFrom(
@@ -240,7 +240,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     final confirmPassword = _confirmController.text;
 
     // Validate password requirements
-    final passwordError = _validatePassword(password);
+    final passwordError = _validatePassword(password, context);
     if (passwordError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(passwordError)),
@@ -250,7 +250,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Passwords do not match.")));
+          SnackBar(content: Text(AppLocalizations.of(context)!.passwordsDoNotMatch)));
       return;
     }
     
@@ -262,10 +262,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         builder: (_) => AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-          title: const Text("Password Changed",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          content: const Text(
-              "Your password has been updated. You can now log in.",
+          title: Text(AppLocalizations.of(context)!.passwordChanged,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          content: Text(
+              AppLocalizations.of(context)!.passwordUpdatedMessage,
               textAlign: TextAlign.center),
           actions: [
             TextButton(
@@ -273,8 +273,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/');
               },
-              child: const Text("OK",
-                  style: TextStyle(
+              child: Text(AppLocalizations.of(context)!.ok,
+                  style: const TextStyle(
                       color: Color(0xFF7B3FE4), fontWeight: FontWeight.w600)),
             )
           ],
@@ -282,7 +282,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed: $e')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.failedWithError(e.toString()))),
       );
     } finally {
       setState(() => _loading = false);

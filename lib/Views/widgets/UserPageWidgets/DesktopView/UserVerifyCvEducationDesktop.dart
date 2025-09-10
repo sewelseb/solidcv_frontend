@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/UserVerifyCvEducationCardDesktop.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
@@ -96,10 +97,10 @@ class _UserVerifyCvEducationDesktopState extends State<UserVerifyCvEducationDesk
             } else if (snapshot.hasError) {
               return Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text('Error: ${snapshot.error}'),
+                child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-             return const Center(child: Text("No education certificate yet."));
+             return Center(child: Text(AppLocalizations.of(context)!.educationNoCertificates));
             }
 
             final certs = snapshot.data ?? [];
@@ -119,16 +120,16 @@ class _UserVerifyCvEducationDesktopState extends State<UserVerifyCvEducationDesk
   }
 
   Widget _buildHeader(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
         Text(
-          'Education',
-          style: TextStyle(
+          AppLocalizations.of(context)!.education,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        Spacer(),
+        const Spacer(),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/models/Skill.dart';
 
@@ -37,7 +38,7 @@ class SkillCard extends StatelessWidget {
                     ElevatedButton(
                       onPressed: onCheckWithAI,
                       style: _buttonStyle(),
-                      child: const Text('Check with AI'),
+                      child: Text(AppLocalizations.of(context)!.checkWithAI),
                     ),
                   ],
                 )
@@ -56,7 +57,7 @@ class SkillCard extends StatelessWidget {
                     ElevatedButton(
                       onPressed: onCheckWithAI,
                       style: _buttonStyle(),
-                      child: const Text('Check with AI'),
+                      child: Text(AppLocalizations.of(context)!.checkWithAI),
                     ),
                   ],
                 );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 
@@ -57,7 +58,7 @@ class _AddedManuallyWorkExperienceFormState
                       const SizedBox(width: 10),
                       Flexible(
                         child: Text(
-                          'Add Work Experience',
+                          AppLocalizations.of(context)!.addWorkExperienceTitle,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize:
@@ -72,26 +73,26 @@ class _AddedManuallyWorkExperienceFormState
                     ],
                   ),
                   const SizedBox(height: 28),
-                  _buildTextField('Title', (v) => _title = v),
+                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceJobTitle, (v) => _title = v),
                   const SizedBox(height: 14),
-                  _buildTextField('Company', (v) => _company = v),
+                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceCompany, (v) => _company = v),
                   const SizedBox(height: 14),
-                  _buildTextField('Location', (v) => _location = v),
+                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceLocation, (v) => _location = v),
                   const SizedBox(height: 14),
-                  _buildTextField('Description', (v) => _description = v,
+                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceDescription, (v) => _description = v,
                       multiline: true),
                   const SizedBox(height: 18),
                   Row(
                     children: [
                       Expanded(
-                        child: _buildDateField('Start', _startDateController,
+                        child: _buildDateField(AppLocalizations.of(context)!.addWorkExperienceStartDate, _startDateController,
                             (picked) {
                           setState(() => _startDate = picked);
                         }),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: _buildDateField('End', _endDateController,
+                        child: _buildDateField(AppLocalizations.of(context)!.addWorkExperienceEndDate, _endDateController,
                             (picked) {
                           setState(() => _endDate = picked);
                         }),
@@ -113,8 +114,8 @@ class _AddedManuallyWorkExperienceFormState
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: const Text('Cancel',
-                              style: TextStyle(fontWeight: FontWeight.w600)),
+                          child: Text(AppLocalizations.of(context)!.addWorkExperienceCancel,
+                              style: const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -155,9 +156,9 @@ class _AddedManuallyWorkExperienceFormState
                                 borderRadius: BorderRadius.circular(12)),
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: const Text(
-                            'Save',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          child: Text(
+                            AppLocalizations.of(context)!.addWorkExperienceSave,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -187,7 +188,7 @@ class _AddedManuallyWorkExperienceFormState
       ),
       maxLines: multiline ? 3 : 1,
       validator: (value) =>
-          value == null || value.isEmpty ? 'Enter $label' : null,
+          value == null || value.isEmpty ? AppLocalizations.of(context)!.addWorkExperienceFieldRequired(label) : null,
       onSaved: onSaved,
     );
   }
@@ -222,8 +223,8 @@ class _AddedManuallyWorkExperienceFormState
         }
       },
       validator: (value) =>
-          (label == 'Start' && (value == null || value.isEmpty))
-              ? 'Enter $label date'
+          (label == AppLocalizations.of(context)!.addWorkExperienceStartDate && (value == null || value.isEmpty))
+              ? AppLocalizations.of(context)!.addWorkExperienceDateRequired(label)
               : null,
     );
   }

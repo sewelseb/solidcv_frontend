@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 Future<bool> showLogoutDialog(BuildContext context) async {
@@ -17,18 +18,18 @@ Future<bool> showLogoutDialog(BuildContext context) async {
               children: [
                 const Icon(Icons.logout, size: 54, color: Color(0xFF7B3FE4)),
                 const SizedBox(height: 18),
-                const Text(
-                  'Log out',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.logoutDialogTitle,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
                     color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Are you sure you want to log out?',
-                  style: TextStyle(fontSize: 16, color: Colors.black54),
+                Text(
+                  AppLocalizations.of(context)!.logoutDialogMessage,
+                  style: const TextStyle(fontSize: 16, color: Colors.black54),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 26),
@@ -44,8 +45,8 @@ Future<bool> showLogoutDialog(BuildContext context) async {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: const Text('Cancel',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                        child: Text(AppLocalizations.of(context)!.logoutDialogCancel,
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                         onPressed: () => Navigator.of(context).pop(false),
                       ),
                     ),
@@ -61,8 +62,8 @@ Future<bool> showLogoutDialog(BuildContext context) async {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: const Text('Log out',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                        child: Text(AppLocalizations.of(context)!.logoutDialogConfirm,
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                         onPressed: () => Navigator.of(context).pop(true),
                       ),
                     ),

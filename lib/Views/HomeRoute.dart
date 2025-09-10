@@ -5,6 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/Views/widgets/LanguageSelector.dart';
+import 'package:solid_cv/providers/LanguageProvider.dart';
 
 class HomeRoute extends StatefulWidget {
   const HomeRoute({super.key});
@@ -22,11 +24,13 @@ class _HomeRouteState extends State<HomeRoute> {
   final FocusNode _passwordFocusNode = FocusNode();
   bool _isCheckingAuth = true;
   bool _userAlreadyConnected = false;
+  final LanguageProvider _languageProvider = LanguageProvider();
 
   @override
   void initState() {
     super.initState();
     _checkUserAuthentication();
+    _languageProvider.addListener(_onLanguageChanged);
   }
 
   @override
@@ -35,7 +39,18 @@ class _HomeRouteState extends State<HomeRoute> {
     _passwordController.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _languageProvider.removeListener(_onLanguageChanged);
     super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    setState(() {
+      // Rebuild when language changes
+    });
+  }
+
+  void _changeLanguage(Locale locale) {
+    _languageProvider.setLocale(locale);
   }
 
   Future<void> _checkUserAuthentication() async {
@@ -183,24 +198,50 @@ class _HomeRouteState extends State<HomeRoute> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-                height: isMobile ? null : (screenHeight < 700 ? 700 : screenHeight),
-              width: double.infinity,
-              child: isMobile
-                  ? _buildMobileLayout(screenWidth, screenHeight)
-                  : _buildDesktopOrTabletLayout(
-                      screenWidth, screenHeight, isTablet),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                    height: isMobile ? null : (screenHeight < 700 ? 700 : screenHeight),
+                  width: double.infinity,
+                  child: isMobile
+                      ? _buildMobileLayout(screenWidth, screenHeight)
+                      : _buildDesktopOrTabletLayout(
+                          screenWidth, screenHeight, isTablet),
+                ),
+                const AIFeaturesSection(), // New AI Features section
+                const AboutUsSection(),
+                const TargetAudienceSection(),
+                //const PricingSection(),
+                const ContactUsSection(),
+              ],
             ),
-            const AIFeaturesSection(), // New AI Features section
-            const AboutUsSection(),
-            const TargetAudienceSection(),
-            //const PricingSection(),
-            const ContactUsSection(),
-          ],
-        ),
+          ),
+          // Language selector positioned in top right
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: LanguageSelector(
+                onLanguageChanged: _changeLanguage,
+                currentLocale: _languageProvider.locale,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

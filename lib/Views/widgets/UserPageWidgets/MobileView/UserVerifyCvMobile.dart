@@ -143,11 +143,11 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                       ),
                       const SizedBox(height: 8),
                       _infoTile(
-                          icon: Icons.phone, text: user.phoneNumber ?? "-"),
+                          icon: Icons.phone, text: user.phoneNumber ?? AppLocalizations.of(context)!.userProfileNotAvailable),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "-"),
+                          text: user.linkedin ?? AppLocalizations.of(context)!.userProfileNotAvailable),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
@@ -254,7 +254,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text("${AppLocalizations.of(context)!.error}: {$snapshot.error}");
+                  return Text("${AppLocalizations.of(context)!.error}: ${snapshot.error}");
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Column(
                     children: snapshot.data!

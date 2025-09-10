@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/CareerAdvice.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdviceResultsStep extends StatefulWidget {
   final Map<String, dynamic> careerData;
@@ -315,7 +316,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
           ),
           const SizedBox(height: 32),
           Text(
-            'Analyzing Your Profile...',
+            AppLocalizations.of(context)!.analyzingYourProfile,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 26,
               fontWeight: FontWeight.bold,
@@ -325,7 +326,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Our AI is crafting personalized career advice based on your responses and CV analysis.',
+            AppLocalizations.of(context)!.aiCraftingAdvice,
             style: GoogleFonts.inter(
               fontSize: 16,
               color: Colors.black54,
@@ -337,7 +338,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
           CircularProgressIndicator(color: _primaryColor),
           const SizedBox(height: 16),
           Text(
-            'This may take a few moments...',
+            AppLocalizations.of(context)!.thisMayTakeMoments,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Colors.black38,
@@ -359,7 +360,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
             Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 64),
             const SizedBox(height: 24),
             Text(
-              'Connection Issue',
+              AppLocalizations.of(context)!.connectionIssue,
               style: GoogleFonts.inter(
                 fontSize: isMobile ? 22 : 26,
                 fontWeight: FontWeight.bold,
@@ -369,7 +370,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
             ),
             const SizedBox(height: 16),
             Text(
-              'We couldn\'t connect to our AI service, but we\'ve generated advice based on your responses using our backup system.',
+              AppLocalizations.of(context)!.backupSystemAdvice,
               style: GoogleFonts.inter(
                 fontSize: 16,
                 color: Colors.black54,
@@ -392,7 +393,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                     ),
                   ),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Try Again'),
+                  label: Text(AppLocalizations.of(context)!.tryAgain),
                 ),
                 const SizedBox(width: 16),
                 OutlinedButton(
@@ -410,7 +411,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text('Continue'),
+                  child: Text(AppLocalizations.of(context)!.continueButton),
                 ),
               ],
             ),
@@ -430,7 +431,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
             Icon(Icons.error_outline, color: Colors.red, size: 64),
             const SizedBox(height: 24),
             Text(
-              'No Advice Available',
+              AppLocalizations.of(context)!.noAdviceAvailable,
               style: GoogleFonts.inter(
                 fontSize: isMobile ? 22 : 26,
                 fontWeight: FontWeight.bold,
@@ -440,7 +441,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
             ),
             const SizedBox(height: 16),
             Text(
-              'We couldn\'t generate career advice at this time. Please try again later.',
+              AppLocalizations.of(context)!.noAdviceGenerated,
               style: GoogleFonts.inter(
                 fontSize: 16,
                 color: Colors.black54,
@@ -460,7 +461,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                 ),
               ),
               icon: const Icon(Icons.refresh),
-              label: const Text('Try Again'),
+              label: Text(AppLocalizations.of(context)!.tryAgain),
             ),
           ],
         ),
@@ -487,7 +488,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your Personalized Career Advice',
+                    AppLocalizations.of(context)!.personalizedCareerAdvice,
                     style: GoogleFonts.inter(
                       fontSize: isMobile ? 20 : 24,
                       fontWeight: FontWeight.bold,
@@ -496,8 +497,8 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                   ),
                   Text(
                     _errorMessage != null 
-                        ? 'Generated with backup system'
-                        : 'AI-generated insights based on your profile',
+                        ? AppLocalizations.of(context)!.generatedWithBackup
+                        : AppLocalizations.of(context)!.aiGeneratedInsights,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: _errorMessage != null ? Colors.orange : Colors.black54,
@@ -523,7 +524,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Note: This advice was generated using our backup system due to connectivity issues.',
+                    AppLocalizations.of(context)!.backupSystemNote,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Colors.orange.shade700,
@@ -540,10 +541,10 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
 
   Widget _buildSummaryCard(bool isMobile) {
     return _buildAdviceCard(
-      'Career Summary',
+      AppLocalizations.of(context)!.careerSummary,
       Icons.summarize,
       Colors.blue,
-      [_advice?.summary ?? 'No summary available'],
+      [_advice?.summary ?? AppLocalizations.of(context)!.noItemsAvailable],
       isMobile,
     );
   }
@@ -551,7 +552,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
   Widget _buildRecommendationsCard(bool isMobile) {
     final recommendations = _advice?.recommendations ?? [];
     return _buildAdviceCard(
-      'Key Recommendations',
+      AppLocalizations.of(context)!.keyRecommendations,
       Icons.lightbulb_outline,
       Colors.orange,
       recommendations,
@@ -562,7 +563,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
   Widget _buildSkillDevelopmentCard(bool isMobile) {
     final skills = _advice?.skillDevelopment ?? [];
     return _buildAdviceCard(
-      'Skill Development',
+      AppLocalizations.of(context)!.skillDevelopment,
       Icons.trending_up,
       Colors.green,
       skills,
@@ -573,7 +574,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
   Widget _buildNextStepsCard(bool isMobile) {
     final steps = _advice?.nextSteps ?? [];
     return _buildAdviceCard(
-      'Next Steps',
+      AppLocalizations.of(context)!.nextSteps,
       Icons.checklist,
       _primaryColor,
       steps,
@@ -623,7 +624,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
           const SizedBox(height: 16),
           if (items.isEmpty)
             Text(
-              'No items available',
+              AppLocalizations.of(context)!.noItemsAvailable,
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: Colors.grey.shade600,
@@ -696,7 +697,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
               ),
               const SizedBox(width: 12),
               Text(
-                'Recommended Resources',
+                AppLocalizations.of(context)!.recommendedResources,
                 style: GoogleFonts.inter(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.bold,
@@ -708,7 +709,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
           const SizedBox(height: 16),
           if (resources.isEmpty)
             Text(
-              'No resources available',
+              AppLocalizations.of(context)!.noResourcesAvailable,
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: Colors.grey.shade600,
@@ -731,7 +732,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
                     children: [
                       Expanded(
                         child: Text(
-                          resource.title ?? 'Untitled Resource',
+                          resource.title ?? AppLocalizations.of(context)!.untitledResource,
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -836,7 +837,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'URL copied to clipboard!',
+                  AppLocalizations.of(context)!.urlCopiedToClipboard,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.white,
@@ -875,7 +876,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
               ),
             ),
             icon: const Icon(Icons.edit_document),
-            label: const Text('Update My CV'),
+            label: Text(AppLocalizations.of(context)!.updateMyCv),
           ),
         ),
         const SizedBox(height: 12),
@@ -892,7 +893,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
               ),
             ),
             icon: const Icon(Icons.refresh),
-            label: const Text('Get New Advice'),
+            label: Text(AppLocalizations.of(context)!.getNewAdvice),
           ),
         ),
         const SizedBox(height: 12),
@@ -901,7 +902,7 @@ class _AdviceResultsStepState extends State<AdviceResultsStep> {
             Navigator.pushNamed(context, '/jobs');
           },
           child: Text(
-            'Browse Job Opportunities',
+            AppLocalizations.of(context)!.browseJobOpportunities,
             style: TextStyle(color: _primaryColor),
           ),
         ),

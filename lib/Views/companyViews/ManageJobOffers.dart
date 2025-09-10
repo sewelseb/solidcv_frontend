@@ -5,6 +5,7 @@ import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ManageJobOffers extends StatefulWidget {
   const ManageJobOffers({super.key});
@@ -49,7 +50,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
           children: [
             Icon(Icons.share, color: _primaryColor),
             const SizedBox(width: 8),
-            const Text('Share Job Offer'),
+            Text(AppLocalizations.of(context)!.shareJobOffer),
           ],
         ),
         content: Column(
@@ -57,7 +58,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Share "${jobOffer.title}" with others:',
+              AppLocalizations.of(context)!.shareJobDescription,
               style: GoogleFonts.inter(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
@@ -85,7 +86,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                       Navigator.of(context).pop('copied');
                     },
                     icon: Icon(Icons.copy, color: _primaryColor),
-                    tooltip: 'Copy URL',
+                    tooltip: AppLocalizations.of(context)!.copyLink,
                   ),
                 ],
               ),
@@ -95,7 +96,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
           ElevatedButton(
             onPressed: () {
@@ -103,7 +104,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
               Navigator.of(context).pop('copied');
             },
             style: ElevatedButton.styleFrom(backgroundColor: _primaryColor),
-            child: const Text('Copy Link', style: TextStyle(color: Colors.white)),
+            child: Text(AppLocalizations.of(context)!.copyLink, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -113,7 +114,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Job offer URL copied to clipboard!'),
+          content: Text(AppLocalizations.of(context)!.linkCopied),
           backgroundColor: Colors.green,
           action: SnackBarAction(
             label: 'View',
@@ -143,17 +144,17 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Job Offer'),
-        content: const Text('Are you sure you want to delete this job offer? This action cannot be undone.'),
+        title: Text(AppLocalizations.of(context)!.deleteJobOffer),
+        content: Text(AppLocalizations.of(context)!.deleteJobConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Delete', style: TextStyle(color: Colors.white)),
+            child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -164,13 +165,13 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
         await _jobOfferBll.deleteJobOffer(jobOfferId);
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Job offer deleted successfully')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.jobOfferDeleted)),
         );
         _refreshJobOffers();
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error deleting job offer: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.deletionError)),
         );
       }
     }
@@ -184,7 +185,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Manage Job Offers',
+          AppLocalizations.of(context)!.manageJobOffersTitle,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -203,7 +204,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                 arguments: _companyId.toString(),
               ).then((_) => _refreshJobOffers());
             },
-            tooltip: 'Create Job Offer',
+            tooltip: AppLocalizations.of(context)!.createJobOffer,
           ),
         ],
       ),
@@ -222,13 +223,13 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
         foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: Text(
-          isMobile ? 'Create' : 'Create Job Offer',
+          isMobile ? AppLocalizations.of(context)!.createJobOffer.split(' ').first : AppLocalizations.of(context)!.createJobOffer,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.w600,
           ),
         ),
         elevation: 4,
-        tooltip: 'Create a new job offer',
+        tooltip: AppLocalizations.of(context)!.createJobOffer,
       ),
       body: RefreshIndicator(
         onRefresh: _refreshJobOffers,
@@ -272,7 +273,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'No job offers yet',
+                      AppLocalizations.of(context)!.noJobOffersTitle,
                       style: GoogleFonts.inter(
                         fontSize: 24,
                         color: Colors.grey.shade700,
@@ -283,7 +284,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                     Container(
                       constraints: const BoxConstraints(maxWidth: 300),
                       child: Text(
-                        'Create your first job offer to start attracting talented candidates',
+                        AppLocalizations.of(context)!.noJobOffersSubtitle,
                         style: GoogleFonts.inter(
                           fontSize: 16,
                           color: Colors.grey.shade600,
@@ -302,7 +303,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         ).then((_) => _refreshJobOffers());
                       },
                       icon: const Icon(Icons.add, size: 20),
-                      label: const Text('Create Your First Job Offer'),
+                      label: Text(AppLocalizations.of(context)!.createJobOffer),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _primaryColor,
                         foregroundColor: Colors.white,
@@ -331,7 +332,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                           Icon(Icons.lightbulb_outline, size: 16, color: Colors.blue.shade600),
                           const SizedBox(width: 6),
                           Text(
-                            'Tip: Use detailed descriptions to attract better candidates',
+                            AppLocalizations.of(context)!.createFirstJobTip,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.blue.shade700,
@@ -358,7 +359,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                     children: [
                       Expanded(
                         child: Text(
-                          '${jobOffers.length} Job Offer${jobOffers.length != 1 ? 's' : ''}',
+                          AppLocalizations.of(context)!.jobOffersCount(jobOffers.length),
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -452,7 +453,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        jobOffer.isActive == true ? 'Active' : 'Inactive',
+                        jobOffer.isActive == true ? AppLocalizations.of(context)!.active : AppLocalizations.of(context)!.inactive,
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -518,7 +519,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                     IconButton(
                       onPressed: () => _shareJobOffer(jobOffer),
                       icon: const Icon(Icons.share, size: 18),
-                      tooltip: 'Share Job Offer',
+                      tooltip: AppLocalizations.of(context)!.share,
                       style: IconButton.styleFrom(
                         foregroundColor: _primaryColor,
                         padding: const EdgeInsets.all(8),
@@ -536,7 +537,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         child: OutlinedButton.icon(
                           onPressed: () => _viewJobOffer(jobOffer),
                           icon: const Icon(Icons.visibility, size: 16),
-                          label: const Text('View Job Offer'),
+                          label: const Text('View'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: _primaryColor,
                             side: BorderSide(color: _primaryColor),
@@ -553,7 +554,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         child: ElevatedButton.icon(
                           onPressed: () => _viewApplications(jobOffer),
                           icon: const Icon(Icons.people, size: 16),
-                          label: const Text('View Applications'),
+                          label: Text(AppLocalizations.of(context)!.viewApplications),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade600,
                             foregroundColor: Colors.white,
@@ -576,7 +577,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                             ).then((_) => _refreshJobOffers());
                           },
                           icon: const Icon(Icons.edit, size: 16),
-                          label: const Text('Edit Job Offer'),
+                          label: Text(AppLocalizations.of(context)!.edit),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
                             foregroundColor: Colors.white,
@@ -593,7 +594,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         child: OutlinedButton.icon(
                           onPressed: () => _deleteJobOffer(jobOffer.id!),
                           icon: const Icon(Icons.delete, size: 16),
-                          label: const Text('Delete Job Offer'),
+                          label: Text(AppLocalizations.of(context)!.delete),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.red,
                             side: const BorderSide(color: Colors.red),
@@ -629,7 +630,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         child: ElevatedButton.icon(
                           onPressed: () => _viewApplications(jobOffer),
                           icon: const Icon(Icons.people, size: 16),
-                          label: const Text('Apps'),
+                          label: Text(AppLocalizations.of(context)!.applications),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade600,
                             foregroundColor: Colors.white,
@@ -651,7 +652,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                             ).then((_) => _refreshJobOffers());
                           },
                           icon: const Icon(Icons.edit, size: 16),
-                          label: const Text('Edit'),
+                          label: Text(AppLocalizations.of(context)!.edit),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
                             foregroundColor: Colors.white,
@@ -667,7 +668,7 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
                         child: OutlinedButton.icon(
                           onPressed: () => _deleteJobOffer(jobOffer.id!),
                           icon: const Icon(Icons.delete, size: 16),
-                          label: const Text('Delete'),
+                          label: Text(AppLocalizations.of(context)!.delete),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.red,
                             side: const BorderSide(color: Colors.red),
@@ -693,11 +694,11 @@ class _ManageJobOffersState extends State<ManageJobOffers> {
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'today';
+      return AppLocalizations.of(context)!.today;
     } else if (difference.inDays == 1) {
-      return 'yesterday';
+      return AppLocalizations.of(context)!.yesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return AppLocalizations.of(context)!.daysAgo(difference.inDays);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

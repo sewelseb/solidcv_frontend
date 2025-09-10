@@ -1,6 +1,7 @@
 import 'package:cryptography/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
 import 'package:solid_cv/models/User.dart';
@@ -80,7 +81,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
 
     return filtered.map<DropdownMenuItem<String>>((e) {
       final label =
-          "${e.title ?? 'Title'} (${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(e.startDate!))})";
+          "${e.title ?? AppLocalizations.of(context)!.title} (${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(e.startDate!))})";
       return DropdownMenuItem<String>(
         value: e.experienceStreamId!,
         child: Text(label),
@@ -93,7 +94,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
     final isMobile = MediaQuery.of(context).size.width < 600;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add or Update Experience'),
+        title: Text(AppLocalizations.of(context)!.addOrUpdateExperience),
       ),
       backgroundColor: const Color(0xFFF7F8FC),
       body: Scrollbar(
@@ -122,11 +123,11 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                       vertical: isMobile ? 24 : 38),
                   child: (widget.user.ethereumAddress == null ||
                           widget.user.ethereumAddress!.isEmpty)
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 40),
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40),
                           child: Center(
                             child: Text(
-                              "This user does not have a valid Base Blochchain address. ",
+                              AppLocalizations.of(context)!.blockchainAddressError,
                               style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   color: Colors.redAccent),
@@ -147,8 +148,8 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                       child: CircularProgressIndicator());
                                 }
                                 if (snapshot.hasError || companySnap.hasError) {
-                                  return const Center(
-                                    child: Text('Error'),
+                                  return Center(
+                                    child: Text(AppLocalizations.of(context)!.error),
                                   );
                                 }
 
@@ -166,7 +167,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        'Add or Update Experience for "${widget.user.getEasyName() ?? '-'}"',
+                                        AppLocalizations.of(context)!.addOrUpdateExperienceFor(widget.user.getEasyName() ?? '-'),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 21,
@@ -191,20 +192,19 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Text(
-                                                "▶️ Create Work Experience",
+                                              Text(
+                                                AppLocalizations.of(context)!.createWorkExperience,
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
                                               const SizedBox(height: 14),
-                                              _field(roleController, "Role"),
-                                              _field(descriptionController,
-                                                  "Description"),
+                                              _field(roleController, AppLocalizations.of(context)!.role),
+                                              _field(descriptionController, AppLocalizations.of(context)!.description),
                                               _dateField(
                                                 context,
                                                 startDateController,
-                                                "Start Date",
+                                                AppLocalizations.of(context)!.startDate,
                                                 _startDate,
                                                 (date) {
                                                   setState(() {
@@ -217,7 +217,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                               ),
                                               _passwordField(
                                                   createPasswordController,
-                                                  "Wallet Password"),
+                                                  AppLocalizations.of(context)!.walletPassword),
                                               const SizedBox(height: 18),
                                               SizedBox(
                                                 width: double.infinity,
@@ -278,7 +278,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                                   .text);
                                                       isSuccess = true;
                                                       message =
-                                                          "Work experience created!";
+                                                          AppLocalizations.of(context)!.workExperienceCreated;
                                                     } catch (e) {
                                                       isSuccess = false;
                                                       message = "Error: $e";
@@ -330,14 +330,14 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Row(
+                                              Row(
                                                 children: [
-                                                  Icon(Icons.stop_circle,
+                                                  const Icon(Icons.stop_circle,
                                                       color: Colors.red,
                                                       size: 22),
-                                                  SizedBox(width: 6),
-                                                  Text("End Experience",
-                                                      style: TextStyle(
+                                                  const SizedBox(width: 6),
+                                                  Text(AppLocalizations.of(context)!.endExperience,
+                                                      style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600)),
                                                 ],
@@ -348,10 +348,10 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                     _selectedStreamEndEventId,
                                                 isExpanded: true,
                                                 decoration:
-                                                    const InputDecoration(
+                                                    InputDecoration(
                                                   labelText:
-                                                      "Select Experience to End",
-                                                  border: OutlineInputBorder(),
+                                                      AppLocalizations.of(context)!.selectExperienceToEnd,
+                                                  border: const OutlineInputBorder(),
                                                 ),
                                                 items: dropdownItems.cast<
                                                     DropdownMenuItem<String>>(),
@@ -365,7 +365,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                               _dateField(
                                                 context,
                                                 endDateController,
-                                                "End Date",
+                                                AppLocalizations.of(context)!.endDate,
                                                 _endDate,
                                                 (date) {
                                                   setState(() {
@@ -378,7 +378,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                               ),
                                               _passwordField(
                                                   endPasswordController,
-                                                  "Wallet Password"),
+                                                  AppLocalizations.of(context)!.walletPassword),
                                               const SizedBox(height: 18),
                                               SizedBox(
                                                 width: double.infinity,
@@ -436,7 +436,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                       );
                                                       isSuccess = true;
                                                       message =
-                                                          "Experience ended!";
+                                                          AppLocalizations.of(context)!.experienceEnded;
                                                     } catch (e) {
                                                       isSuccess = false;
                                                       message = "Error: $e";
@@ -458,7 +458,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                           .pop();
                                                     }
                                                   },
-                                                  label: const Text('End',
+                                                  label: Text(AppLocalizations.of(context)!.end,
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
@@ -486,14 +486,14 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const Row(
+                                              Row(
                                                 children: [
-                                                  Icon(Icons.trending_up,
+                                                  const Icon(Icons.trending_up,
                                                       color: Colors.blue,
                                                       size: 22),
-                                                  SizedBox(width: 6),
-                                                  Text("Promote",
-                                                      style: TextStyle(
+                                                  const SizedBox(width: 6),
+                                                  Text(AppLocalizations.of(context)!.promote,
+                                                      style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600)),
                                                 ],
@@ -504,10 +504,10 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                     _selectedStreamPromoteEventId,
                                                 isExpanded: true,
                                                 decoration:
-                                                    const InputDecoration(
+                                                    InputDecoration(
                                                   labelText:
-                                                      "Select Experience to Promote",
-                                                  border: OutlineInputBorder(),
+                                                      AppLocalizations.of(context)!.selectExperienceToPromote,
+                                                  border: const OutlineInputBorder(),
                                                 ),
                                                 items: dropdownItems.cast<
                                                     DropdownMenuItem<String>>(),
@@ -519,7 +519,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                 },
                                               ),
                                               _field(newTitleController,
-                                                  "New Title"),
+                                                  AppLocalizations.of(context)!.newTitle),
                                               _dateField(
                                                 context,
                                                 promotionDateController,
@@ -599,7 +599,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                       );
                                                       isSuccess = true;
                                                       message =
-                                                          "Promotion validated!";
+                                                          AppLocalizations.of(context)!.employeePromoted;
                                                     } catch (e) {
                                                       isSuccess = false;
                                                       message = "Error: $e";
@@ -621,7 +621,7 @@ class _AddEmployeeExperiencePageState extends State<AddEmployeeExperiencePage> {
                                                           .pop();
                                                     }
                                                   },
-                                                  label: const Text('Promote',
+                                                  label: Text(AppLocalizations.of(context)!.promote,
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:

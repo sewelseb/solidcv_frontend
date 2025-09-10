@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CareerGoalsStep extends StatefulWidget {
   final Function({Map<String, dynamic>? data}) onNext;
@@ -16,16 +17,18 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
   final TextEditingController _customGoalController = TextEditingController();
   final FocusNode _customGoalFocus = FocusNode();
   
-  final List<String> _careerGoals = [
-    'Get promoted in current role',
-    'Switch to a new industry',
-    'Find a better work-life balance',
-    'Increase salary significantly',
-    'Develop new skills',
-    'Start my own business',
-    'Find remote work opportunities',
-    'Other',
-  ];
+  List<String> _getCareerGoals(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.getPromotedCurrentRole,
+      AppLocalizations.of(context)!.switchToNewIndustry,
+      AppLocalizations.of(context)!.findBetterWorkLifeBalance,
+      AppLocalizations.of(context)!.increaseSalarySignificantly,
+      AppLocalizations.of(context)!.developNewSkills,
+      AppLocalizations.of(context)!.startMyOwnBusiness,
+      AppLocalizations.of(context)!.findRemoteWorkOpportunities,
+      AppLocalizations.of(context)!.other,
+    ];
+  }
 
   @override
   void dispose() {
@@ -34,28 +37,28 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
     super.dispose();
   }
 
-  bool get _canContinue {
+  bool _canContinue(BuildContext context) {
     if (_selectedGoal == null) return false;
-    if (_selectedGoal == 'Other') {
+    if (_selectedGoal == AppLocalizations.of(context)!.other) {
       return _customGoalController.text.trim().isNotEmpty;
     }
     return true;
   }
 
-  String get _finalGoal {
-    if (_selectedGoal == 'Other') {
+  String _getFinalGoal(BuildContext context) {
+    if (_selectedGoal == AppLocalizations.of(context)!.other) {
       return _customGoalController.text.trim();
     }
     return _selectedGoal ?? '';
   }
 
-  void _onGoalSelected(String goal) {
+  void _onGoalSelected(String goal, BuildContext context) {
     setState(() {
       _selectedGoal = goal;
     });
     
     // If "Other" is selected, focus on the text field
-    if (goal == 'Other') {
+    if (goal == AppLocalizations.of(context)!.other) {
       Future.delayed(const Duration(milliseconds: 300), () {
         _customGoalFocus.requestFocus();
       });
@@ -73,7 +76,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'What\'s your main career goal?',
+            AppLocalizations.of(context)!.whatsYourMainCareerGoal,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 26,
               fontWeight: FontWeight.bold,
@@ -82,7 +85,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Select your primary objective so I can tailor advice to your needs.',
+            AppLocalizations.of(context)!.selectPrimaryObjective,
             style: GoogleFonts.inter(
               fontSize: 16,
               color: Colors.black54,
@@ -94,9 +97,9 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: _careerGoals.length,
+                    itemCount: _getCareerGoals(context).length,
                     itemBuilder: (context, index) {
-                      final goal = _careerGoals[index];
+                      final goal = _getCareerGoals(context)[index];
                       final isSelected = _selectedGoal == goal;
                       
                       return Container(
@@ -105,7 +108,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                           color: Colors.transparent,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
-                            onTap: () => _onGoalSelected(goal),
+                            onTap: () => _onGoalSelected(goal, context),
                             child: Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -146,11 +149,11 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                 // Custom goal input field - shows only when "Other" is selected
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  height: _selectedGoal == 'Other' ? null : 0,
+                  height: _selectedGoal == AppLocalizations.of(context)!.other ? null : 0,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 300),
-                    opacity: _selectedGoal == 'Other' ? 1.0 : 0.0,
-                    child: _selectedGoal == 'Other' 
+                    opacity: _selectedGoal == AppLocalizations.of(context)!.other ? 1.0 : 0.0,
+                    child: _selectedGoal == AppLocalizations.of(context)!.other 
                         ? Container(
                             margin: const EdgeInsets.only(top: 16),
                             padding: const EdgeInsets.all(20),
@@ -174,7 +177,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'Describe your career goal',
+                                      AppLocalizations.of(context)!.describeYourCareerGoal,
                                       style: GoogleFonts.inter(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -191,7 +194,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                                   maxLength: 200,
                                   onChanged: (value) => setState(() {}), // Trigger rebuild for button state
                                   decoration: InputDecoration(
-                                    hintText: 'e.g., Transition into product management, become a data scientist, start a consulting practice...',
+                                    hintText: AppLocalizations.of(context)!.careerGoalHintText,
                                     hintStyle: GoogleFonts.inter(
                                       fontSize: 14,
                                       color: Colors.grey.shade500,
@@ -223,7 +226,7 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Be specific about what you want to achieve in your career.',
+                                  AppLocalizations.of(context)!.beSpecificCareerGoal,
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     color: Colors.grey.shade600,
@@ -263,8 +266,8 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
               Expanded(
                 flex: 2,
                 child: ElevatedButton(
-                  onPressed: _canContinue
-                      ? () => widget.onNext(data: {'careerGoal': _finalGoal})
+                  onPressed: _canContinue(context)
+                      ? () => widget.onNext(data: {'careerGoal': _getFinalGoal(context)})
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
@@ -274,9 +277,9 @@ class _CareerGoalsStepState extends State<CareerGoalsStep> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(_selectedGoal == 'Other' && _customGoalController.text.trim().isEmpty
-                      ? 'Enter your goal above'
-                      : 'Continue'),
+                  child: Text(_selectedGoal == AppLocalizations.of(context)!.other && _customGoalController.text.trim().isEmpty
+                      ? AppLocalizations.of(context)!.enterYourGoalAbove
+                      : AppLocalizations.of(context)!.continueButton),
                 ),
               ),
             ],

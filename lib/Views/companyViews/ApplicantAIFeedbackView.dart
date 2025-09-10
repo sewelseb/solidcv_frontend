@@ -8,6 +8,7 @@ import 'package:solid_cv/models/ApplicantAIFeedback.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ApplicantAIFeedbackView extends StatefulWidget {
@@ -65,11 +66,11 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white, size: 20),
-              SizedBox(width: 8),
-              Text('AI analysis generated successfully!'),
+              const Icon(Icons.check_circle, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Text(AppLocalizations.of(context)!.aiAnalysisGeneratedSuccess),
             ],
           ),
           backgroundColor: Colors.green,
@@ -88,7 +89,7 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
             children: [
               const Icon(Icons.error, color: Colors.white, size: 20),
               const SizedBox(width: 8),
-              Expanded(child: Text('Error generating analysis: $e')),
+              Expanded(child: Text(AppLocalizations.of(context)!.errorGeneratingAnalysis(e.toString()))),
             ],
           ),
           backgroundColor: Colors.red,
@@ -114,11 +115,11 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
   }
 
   String _getScoreText(double? score) {
-    if (score == null) return 'Not rated';
-    if (score >= 80) return 'Excellent fit';
-    if (score >= 60) return 'Good fit';
-    if (score >= 40) return 'Fair fit';
-    return 'Poor fit';
+    if (score == null) return AppLocalizations.of(context)!.notRated;
+    if (score >= 80) return AppLocalizations.of(context)!.excellentFit;
+    if (score >= 60) return AppLocalizations.of(context)!.goodFit;
+    if (score >= 40) return AppLocalizations.of(context)!.fairFit;
+    return AppLocalizations.of(context)!.poorFit;
   }
 
   void _contactCandidate(User user) {
@@ -557,7 +558,7 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'AI Candidate Analysis',
+          AppLocalizations.of(context)!.aiCandidateAnalysis,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -579,7 +580,7 @@ class _ApplicantAIFeedbackViewState extends State<ApplicantAIFeedbackView> {
                   )
                 : const Icon(Icons.refresh),
             onPressed: _isLoading ? null : _generateNewFeedback,
-            tooltip: 'Generate New Feedback',
+            tooltip: AppLocalizations.of(context)!.generateNewFeedback,
           ),
         ],
       ),

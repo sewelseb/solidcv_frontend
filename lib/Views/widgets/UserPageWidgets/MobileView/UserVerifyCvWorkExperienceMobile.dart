@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -16,8 +17,8 @@ class UserVerifyCvWorkExperienceCardMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isVerified = experience.isVerified;
-    final start = FormatDate().formatDateForExperience(experience.startDate);
-    final end = FormatDate().formatDateForExperience(experience.endDate);
+    final start = FormatDate().formatDateForExperience(context, experience.startDate);
+    final end = FormatDate().formatDateForExperience(context, experience.endDate);
     final hasPromotions = experience.promotions.isNotEmpty;
     final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
         ? experience.companyLogoUrl!
@@ -49,7 +50,7 @@ class UserVerifyCvWorkExperienceCardMobile extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      isVerified ? 'Verified' : 'Manually',
+                      isVerified ? AppLocalizations.of(context)!.workExperienceVerified : AppLocalizations.of(context)!.workExperienceManually,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -107,7 +108,7 @@ class UserVerifyCvWorkExperienceCardMobile extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '$start - $end',
+                          AppLocalizations.of(context)!.workExperienceDateRange(start, end),
                           style:
                               const TextStyle(fontSize: 13, color: Colors.grey),
                         ),
@@ -138,8 +139,9 @@ class UserVerifyCvWorkExperienceCardMobile extends StatelessWidget {
             const SizedBox(height: 16),
             ...experience.promotions.map((p) {
               final date = DateTime.fromMillisecondsSinceEpoch(p.date);
+              final formattedDate = '${date.day}/${date.month}/${date.year}';
               return Text(
-                '• ${p.newTitle} – ${date.day}/${date.month}/${date.year}',
+                AppLocalizations.of(context)!.workExperiencePromotion(p.newTitle, formattedDate),
                 style: const TextStyle(fontSize: 14),
               );
             }),

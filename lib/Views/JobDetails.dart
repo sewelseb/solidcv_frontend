@@ -1085,8 +1085,7 @@ class _JobDetailsState extends State<JobDetails> {
       return localizations.daysAgo(difference.inDays);
     } else if (difference.inDays < 30) {
       final weeks = (difference.inDays / 7).floor();
-      final plural = weeks != 1 ? 's' : '';
-      return localizations.weeksAgo(weeks, plural);
+      return localizations.weeksAgo(weeks);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

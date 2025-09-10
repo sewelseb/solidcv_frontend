@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/RateLimitHelper.dart';
 import 'package:solid_cv/Views/widgets/EmailWidgets/WidgetDesignElement/StyledDialog.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -33,8 +34,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF7B3FE4),
         elevation: 1,
-        title: const Text("Verify email",
-            style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(AppLocalizations.of(context)!.verifyEmail,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
       body: Center(
@@ -60,7 +61,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           size: 66, color: Color(0xFF7B3FE4)),
                       const SizedBox(height: 26),
                       Text(
-                        "An email has been sent to:",
+                        AppLocalizations.of(context)!.emailSentTo,
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.w500,
@@ -80,7 +81,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        "Click the link in the email to verify your account.",
+                        AppLocalizations.of(context)!.clickLinkToVerify,
                         style: TextStyle(
                           color: Colors.grey.shade700,
                           fontSize: 15.3,
@@ -116,10 +117,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 4.0),
                             child: _isLoading
-                                ? const Text("Sending...")
+                                ? Text(AppLocalizations.of(context)!.sending)
                                 : (_cooldown.isCooldown
-                                    ? Text("Wait ${_cooldown.remaining}s")
-                                    : const Text("Resend verification email")),
+                                    ? Text(AppLocalizations.of(context)!.waitSeconds('${_cooldown.remaining}'))
+                                    : Text(AppLocalizations.of(context)!.resendVerificationEmail)),
                           ),
                         ),
                       ),
@@ -141,7 +142,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                                 fontWeight: FontWeight.w600, fontSize: 15.5),
                           ),
                           icon: const Icon(Icons.login, size: 20),
-                          label: const Text("Back to login"),
+                          label: Text(AppLocalizations.of(context)!.backToLogin),
                         ),
                       ),
                     ],
@@ -168,7 +169,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       showDialog(
         context: context,
         builder: (_) => StyledDialog(
-          title: "Verify Email",
+          title: AppLocalizations.of(context)!.verifyEmail,
           content: message,
         ),
       );
@@ -177,8 +178,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       showDialog(
         context: context,
         builder: (_) => StyledDialog(
-          title: "Error",
-          content: "Impossible to send email : $e",
+          title: AppLocalizations.of(context)!.error,
+          content: AppLocalizations.of(context)!.impossibleToSendEmail(e.toString()),
         ),
       );
     } finally {

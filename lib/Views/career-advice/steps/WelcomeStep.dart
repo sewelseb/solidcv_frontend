@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeStep extends StatelessWidget {
@@ -6,6 +7,15 @@ class WelcomeStep extends StatelessWidget {
   final VoidCallback onPrevious;
 
   const WelcomeStep({super.key, required this.onNext, required this.onPrevious});
+
+  List<String> _getBenefits(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.personalizedCareerRecommendations,
+      AppLocalizations.of(context)!.skillsGapAnalysis,
+      AppLocalizations.of(context)!.industryInsights,
+      AppLocalizations.of(context)!.nextStepsCareerGrowth,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +45,7 @@ class WelcomeStep extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 24 : 32),
           Text(
-            'Welcome to Your AI Career Advisor',
+            AppLocalizations.of(context)!.welcomeToAICareerAdvisor,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 28,
               fontWeight: FontWeight.bold,
@@ -45,7 +55,7 @@ class WelcomeStep extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 16 : 24),
           Text(
-            'I\'m here to help you navigate your career journey. Based on your CV and preferences, I\'ll provide personalized advice to help you achieve your professional goals.',
+            AppLocalizations.of(context)!.careerJourneyDescription,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 14 : 16,
               color: Colors.black54,
@@ -64,7 +74,7 @@ class WelcomeStep extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'What you\'ll get:',
+                  AppLocalizations.of(context)!.whatYoullGet,
                   style: GoogleFonts.inter(
                     fontSize: isMobile ? 16 : 18,
                     fontWeight: FontWeight.w600,
@@ -72,12 +82,7 @@ class WelcomeStep extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: isMobile ? 12 : 16),
-                ...[
-                  'Personalized career recommendations',
-                  'Skills gap analysis and improvement tips',
-                  'Industry insights and trends',
-                  'Next steps for your career growth',
-                ].map((benefit) => Padding(
+                ..._getBenefits(context).map((benefit) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
                     children: [
@@ -118,7 +123,7 @@ class WelcomeStep extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Let\'s Get Started!',
+                AppLocalizations.of(context)!.letsGetStarted,
                 style: GoogleFonts.inter(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.w600,

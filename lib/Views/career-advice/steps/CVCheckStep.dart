@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CVCheckStep extends StatefulWidget {
   final Function({Map<String, dynamic>? data}) onNext;
@@ -65,7 +66,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
             CircularProgressIndicator(color: _primaryColor),
             const SizedBox(height: 24),
             Text(
-              'Checking your CV status...',
+              AppLocalizations.of(context)!.checkingCvStatus,
               style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -77,7 +78,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
             Icon(Icons.error_outline, color: Colors.red, size: 64),
             const SizedBox(height: 24),
             Text(
-              'Oops! Something went wrong',
+              AppLocalizations.of(context)!.oopsSomethingWentWrong,
               style: GoogleFonts.inter(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -111,13 +112,13 @@ class _CVCheckStepState extends State<CVCheckStep> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Try Again'),
+              child: Text(AppLocalizations.of(context)!.tryAgain),
             ),
           ] else if (_hasCv) ...[
             Icon(Icons.check_circle, color: Colors.green, size: 64),
             const SizedBox(height: 24),
             Text(
-              'Great! Your CV is ready',
+              AppLocalizations.of(context)!.greatCvReady,
               style: GoogleFonts.inter(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -127,7 +128,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
             ),
             const SizedBox(height: 16),
             Text(
-              'We found your completed CV. Let\'s continue with personalized career advice.',
+              AppLocalizations.of(context)!.cvFoundContinueAdvice,
               style: GoogleFonts.inter(
                 fontSize: 16,
                 color: Colors.black54,
@@ -139,7 +140,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
             Icon(Icons.description_outlined, color: Colors.orange, size: 64),
             const SizedBox(height: 24),
             Text(
-              'Complete Your CV First',
+              AppLocalizations.of(context)!.completeCvFirst,
               style: GoogleFonts.inter(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -149,7 +150,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
             ),
             const SizedBox(height: 16),
             Text(
-              'To provide you with the best career advice, we need to analyze your CV first. Please complete your CV and then return to the career advisor.',
+              AppLocalizations.of(context)!.cvNeededForAdvice,
               style: GoogleFonts.inter(
                 fontSize: 16,
                 color: Colors.black54,
@@ -173,7 +174,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
                   ),
                 ),
                 icon: const Icon(Icons.edit_document),
-                label: const Text('Complete My CV'),
+                label: Text(AppLocalizations.of(context)!.completeMyCv),
               ),
             ),
             const SizedBox(height: 16),
@@ -185,7 +186,7 @@ class _CVCheckStepState extends State<CVCheckStep> {
                 _checkCvStatus();
               },
               child: Text(
-                'I\'ve completed my CV - Check again',
+                AppLocalizations.of(context)!.completedCvCheckAgain,
                 style: TextStyle(color: _primaryColor),
               ),
             ),

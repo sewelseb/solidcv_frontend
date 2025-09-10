@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -18,8 +19,9 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color badgeColor = isValidated ? Colors.green : Colors.deepPurple;
-    final String badgeLabel =
-        isValidated ? 'Verified by the blockchain' : 'Manually added';
+    final String badgeLabel = isValidated 
+        ? AppLocalizations.of(context)!.verifiedByBlockchain 
+        : AppLocalizations.of(context)!.manuallyAdded;
 
     return Container(
       width: double.infinity,
@@ -79,7 +81,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    certificate.title ?? 'Untitled',
+                                    certificate.title ?? AppLocalizations.of(context)!.untitled,
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
@@ -87,7 +89,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    certificate.type ?? 'Certificate',
+                                    certificate.type ?? AppLocalizations.of(context)!.certificateType,
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -96,7 +98,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
                                   const SizedBox(height: 4),
                                   if (certificate.publicationDate != null)
                                     Text(
-                                      'Date: ${FormatDate().formatDateForCertificate(certificate.publicationDate!)}',
+                                      '${AppLocalizations.of(context)!.date}: ${FormatDate().formatDateForCertificate(context, certificate.publicationDate!)}',
                                       style: const TextStyle(
                                           fontSize: 13, color: Colors.grey),
                                     ),
@@ -147,7 +149,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
                   certificate.curriculum!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'Curriculum: ${certificate.curriculum!}',
+                  '${AppLocalizations.of(context)!.curriculum}: ${certificate.curriculum!}',
                   style:
                       const TextStyle(fontSize: 13.5, color: Colors.black87),
                 ),
@@ -155,7 +157,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
               if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
                 const SizedBox(height: 6),
                 Text(
-                  'Grade: ${certificate.grade!}',
+                  '${AppLocalizations.of(context)!.grade}: ${certificate.grade!}',
                   style: const TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
@@ -182,7 +184,7 @@ class UserVerifyCvEducationCardDesktop extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            label.contains('Verified') ? Icons.verified : Icons.edit,
+            color == Colors.green ? Icons.verified : Icons.edit,
             size: 14,
             color: Colors.white,
           ),

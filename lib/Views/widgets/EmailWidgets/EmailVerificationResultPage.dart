@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 
@@ -32,8 +33,8 @@ class _EmailVerificationResultPageState
       appBar: AppBar(
         backgroundColor: const Color(0xFF7B3FE4),
         elevation: 1,
-        title: const Text("Email verification",
-            style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(AppLocalizations.of(context)!.emailVerification,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
       body: Center(
@@ -67,8 +68,8 @@ class _EmailVerificationResultPageState
                           const SizedBox(height: 22),
                           Text(
                             success == true
-                                ? "Email verified!"
-                                : "Verification failed",
+                                ? AppLocalizations.of(context)!.emailVerified
+                                : AppLocalizations.of(context)!.verificationFailed,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -94,9 +95,9 @@ class _EmailVerificationResultPageState
                                 Navigator.pushReplacementNamed(context, '/');
                               },
                               icon: const Icon(Icons.login, size: 21),
-                              label: const Text(
-                                "Go to login",
-                                style: TextStyle(
+                              label: Text(
+                                AppLocalizations.of(context)!.goToLogin,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                 ),
@@ -124,7 +125,7 @@ class _EmailVerificationResultPageState
   Future<void> _verifyEmail() async {
     if (widget.token.isEmpty) {
       setState(() {
-        message = "Missing verification token in URL.";
+        message = AppLocalizations.of(context)!.missingVerificationToken;
         success = false;
       });
       return;

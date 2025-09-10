@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/WorkExperienceCard.dart';
@@ -261,11 +262,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         const SizedBox(height: 10),
                         _infoTile(
                             icon: Icons.phone,
-                            text: user.phoneNumber ?? "Add your phone number"),
+                            text: user.phoneNumber ?? AppLocalizations.of(context)!.addPhoneNumber),
                         const SizedBox(height: 6),
                         _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "Add your LinkedIn",
+                          text: user.linkedin ?? AppLocalizations.of(context)!.addLinkedIn,
                         ),
                         const SizedBox(height: 6),
                         _infoTile(
@@ -318,7 +319,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     ),
                   ),
                   icon: const Icon(Icons.settings_outlined, size: 18),
-                  label: const Text('Setup Profile'),
+                  label: Text(AppLocalizations.of(context)!.setupProfile),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton(
@@ -342,7 +343,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text('Edit profile'),
+                  child: Text(AppLocalizations.of(context)!.editProfile),
                 ),
               ],
             ),
@@ -385,8 +386,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                   child: isLoading
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               height: 16,
                               width: 16,
                               child: CircularProgressIndicator(
@@ -394,11 +395,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                                 valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF7B3FE4)),
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Text('Generating...'),
+                            const SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!.generating),
                           ],
                         )
-                      : const Text('Export my CV in PDF'),
+                      : Text(AppLocalizations.of(context)!.exportCvPdf),
                 );
               },
             ),

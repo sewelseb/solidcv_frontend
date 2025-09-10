@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -28,8 +29,8 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
   @override
   Widget build(BuildContext context) {
     final isVerified = widget.experience.isVerified;
-    final start = FormatDate().formatDateForExperience(widget.experience.startDate);
-    final end = FormatDate().formatDateForExperience(widget.experience.endDate);
+    final start = FormatDate().formatDateForExperience(context, widget.experience.startDate);
+    final end = FormatDate().formatDateForExperience(context, widget.experience.endDate);
     final hasPromotions = widget.experience.promotions.isNotEmpty;
     final logoUrl = (widget.experience.companyLogoUrl?.isNotEmpty ?? false)
         ? widget.experience.companyLogoUrl!
@@ -161,13 +162,13 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                     onPressed: () =>
                         _showDeleteConfirmationDialog(context, widget.experience.manualId!),
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: const Text('Delete'),
+                    child: Text(AppLocalizations.of(context)!.delete),
                   ),
                   TextButton(
                     onPressed: () =>
                         _showAddPromotionDialog(context, widget.experience.manualId!),
                     style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                    child: const Text('Add a promotion'),
+                    child: Text(AppLocalizations.of(context)!.addPromotion),
                   ),
                 ],
               ),
@@ -197,7 +198,7 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
           ),
           const SizedBox(width: 4),
           Text(
-            isVerified ? 'Verified by the blockchain' : 'Manually added',
+            isVerified ? AppLocalizations.of(context)!.verifiedByBlockchain : AppLocalizations.of(context)!.manuallyAdded,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
@@ -218,19 +219,19 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Ajouter une promotion'),
+          title: Text(AppLocalizations.of(context)!.addPromotionDialogTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
                 decoration:
-                    const InputDecoration(labelText: 'Titre de promotion'),
+                    InputDecoration(labelText: AppLocalizations.of(context)!.promotionTitle),
               ),
               TextField(
                 controller: dateController,
                 readOnly: true,
-                decoration: const InputDecoration(labelText: 'Date'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.date),
                 onTap: () async {
                   final picked = await showDatePicker(
                     context: context,
@@ -250,7 +251,7 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -266,7 +267,7 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                   if (widget.onPromotionAdded != null) widget.onPromotionAdded!();
                 }
               },
-              child: const Text('Ajouter'),
+              child: Text(AppLocalizations.of(context)!.add),
             ),
           ],
         );
@@ -279,12 +280,12 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this experience? This action is irreversible.'),
+          title: Text(AppLocalizations.of(context)!.confirmDeletion),
+          content: Text(AppLocalizations.of(context)!.deleteExperienceConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -294,7 +295,7 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                 if (widget.onPromotionAdded != null) widget.onPromotionAdded!();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );

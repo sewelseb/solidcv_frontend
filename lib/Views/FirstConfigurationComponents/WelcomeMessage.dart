@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeMessage extends StatefulWidget {
@@ -109,7 +110,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                     Row(
                       children: [
                         Text(
-                          'SolidCV Assistant',
+                          AppLocalizations.of(context)!.solidCVAssistant,
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -129,7 +130,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                               Icon(Icons.circle, size: 6, color: Colors.green.shade600),
                               const SizedBox(width: 4),
                               Text(
-                                'Online',
+                                AppLocalizations.of(context)!.online,
                                 style: GoogleFonts.inter(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w500,
@@ -143,7 +144,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      '👋 Welcome to SolidCV!',
+                      AppLocalizations.of(context)!.welcomeMessage,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -152,7 +153,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'I\'m here to help you set up your account and get the most out of our platform. This will only take a few minutes.',
+                      AppLocalizations.of(context)!.setupIntroduction,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade700,
@@ -173,7 +174,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'We\'ll configure your blockchain wallet and help you upload your CV to get started.',
+                              AppLocalizations.of(context)!.walletSetupInfo,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 color: Colors.blue.shade700,
@@ -209,7 +210,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                           ),
                           icon: const Icon(Icons.rocket_launch, size: 18),
                           label: Text(
-                            'Start Setup',
+                            AppLocalizations.of(context)!.startSetup,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,

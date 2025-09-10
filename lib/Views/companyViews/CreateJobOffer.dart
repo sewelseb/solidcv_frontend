@@ -4,6 +4,7 @@ import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateJobOffer extends StatefulWidget {
   const CreateJobOffer({super.key});
@@ -30,6 +31,8 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
   bool _isActive = true;
   String _jobType = 'Full-time';
   String _experienceLevel = 'Mid-level';
+  String _localizedJobType = '';
+  String _localizedExperienceLevel = '';
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
   final Color _gradientStart = const Color(0xFF7B3FE4);
@@ -51,12 +54,93 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
     'Executive'
   ];
 
+  // Helper methods to get localized dropdown items
+  List<String> _getLocalizedJobTypes(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.fullTime,
+      AppLocalizations.of(context)!.partTime,
+      AppLocalizations.of(context)!.contract,
+      AppLocalizations.of(context)!.internship,
+      AppLocalizations.of(context)!.freelance,
+    ];
+  }
+
+  List<String> _getLocalizedExperienceLevels(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.entryLevel,
+      AppLocalizations.of(context)!.midLevel,
+      AppLocalizations.of(context)!.senior,
+      AppLocalizations.of(context)!.lead,
+      AppLocalizations.of(context)!.executive,
+    ];
+  }
+
+  String _getLocalizedJobType(BuildContext context, String jobType) {
+    switch (jobType) {
+      case 'Full-time':
+        return AppLocalizations.of(context)!.fullTime;
+      case 'Part-time':
+        return AppLocalizations.of(context)!.partTime;
+      case 'Contract':
+        return AppLocalizations.of(context)!.contract;
+      case 'Internship':
+        return AppLocalizations.of(context)!.internship;
+      case 'Freelance':
+        return AppLocalizations.of(context)!.freelance;
+      default:
+        return jobType;
+    }
+  }
+
+  String _getLocalizedExperienceLevel(BuildContext context, String experienceLevel) {
+    switch (experienceLevel) {
+      case 'Entry-level':
+        return AppLocalizations.of(context)!.entryLevel;
+      case 'Mid-level':
+        return AppLocalizations.of(context)!.midLevel;
+      case 'Senior':
+        return AppLocalizations.of(context)!.senior;
+      case 'Lead':
+        return AppLocalizations.of(context)!.lead;
+      case 'Executive':
+        return AppLocalizations.of(context)!.executive;
+      default:
+        return experienceLevel;
+    }
+  }
+
+  String _getEnglishJobType(BuildContext context, String localizedJobType) {
+    if (localizedJobType == AppLocalizations.of(context)!.fullTime) return 'Full-time';
+    if (localizedJobType == AppLocalizations.of(context)!.partTime) return 'Part-time';
+    if (localizedJobType == AppLocalizations.of(context)!.contract) return 'Contract';
+    if (localizedJobType == AppLocalizations.of(context)!.internship) return 'Internship';
+    if (localizedJobType == AppLocalizations.of(context)!.freelance) return 'Freelance';
+    return localizedJobType;
+  }
+
+  String _getEnglishExperienceLevel(BuildContext context, String localizedExperienceLevel) {
+    if (localizedExperienceLevel == AppLocalizations.of(context)!.entryLevel) return 'Entry-level';
+    if (localizedExperienceLevel == AppLocalizations.of(context)!.midLevel) return 'Mid-level';
+    if (localizedExperienceLevel == AppLocalizations.of(context)!.senior) return 'Senior';
+    if (localizedExperienceLevel == AppLocalizations.of(context)!.lead) return 'Lead';
+    if (localizedExperienceLevel == AppLocalizations.of(context)!.executive) return 'Executive';
+    return localizedExperienceLevel;
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_companyId == null) {
       final String companyIdStr = ModalRoute.of(context)!.settings.arguments as String;
       _companyId = int.parse(companyIdStr);
+    }
+    
+    // Initialize localized values
+    if (_localizedJobType.isEmpty) {
+      _localizedJobType = _getLocalizedJobType(context, _jobType);
+    }
+    if (_localizedExperienceLevel.isEmpty) {
+      _localizedExperienceLevel = _getLocalizedExperienceLevel(context, _experienceLevel);
     }
   }
 
@@ -102,8 +186,8 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Job offer created successfully!'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.jobOfferCreatedSuccess),
           backgroundColor: Colors.green,
         ),
       );
@@ -114,7 +198,7 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error creating job offer: $e'),
+          content: Text(AppLocalizations.of(context)!.errorCreatingJobOffer(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -135,7 +219,7 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Create Job Offer',
+          AppLocalizations.of(context)!.createJobOfferTitle,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -165,7 +249,7 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Job Details',
+                        AppLocalizations.of(context)!.jobDetails,
                         style: GoogleFonts.inter(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -177,20 +261,20 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                       // Job Title
                       _buildTextField(
                         controller: _titleController,
-                        label: 'Job Title',
+                        label: AppLocalizations.of(context)!.jobTitle,
                         icon: Icons.work,
                         required: true,
-                        hint: 'e.g. Senior Flutter Developer',
+                        hint: AppLocalizations.of(context)!.jobTitleHint,
                       ),
                       const SizedBox(height: 20),
 
                       // Location
                       _buildTextField(
                         controller: _locationController,
-                        label: 'Location',
+                        label: AppLocalizations.of(context)!.location,
                         icon: Icons.location_on,
                         required: true,
-                        hint: 'e.g. New York, NY or Remote',
+                        hint: AppLocalizations.of(context)!.locationHint,
                       ),
                       const SizedBox(height: 20),
 
@@ -199,18 +283,28 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                           ? Column(
                               children: [
                                 _buildDropdownField(
-                                  label: 'Job Type',
-                                  value: _jobType,
-                                  items: _jobTypes,
-                                  onChanged: (value) => setState(() => _jobType = value!),
+                                  label: AppLocalizations.of(context)!.jobType,
+                                  value: _localizedJobType,
+                                  items: _getLocalizedJobTypes(context),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _localizedJobType = value!;
+                                      _jobType = _getEnglishJobType(context, value);
+                                    });
+                                  },
                                   icon: Icons.schedule,
                                 ),
                                 const SizedBox(height: 20),
                                 _buildDropdownField(
-                                  label: 'Experience Level',
-                                  value: _experienceLevel,
-                                  items: _experienceLevels,
-                                  onChanged: (value) => setState(() => _experienceLevel = value!),
+                                  label: AppLocalizations.of(context)!.experienceLevel,
+                                  value: _localizedExperienceLevel,
+                                  items: _getLocalizedExperienceLevels(context),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _localizedExperienceLevel = value!;
+                                      _experienceLevel = _getEnglishExperienceLevel(context, value);
+                                    });
+                                  },
                                   icon: Icons.trending_up,
                                 ),
                               ],
@@ -219,20 +313,30 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                               children: [
                                 Expanded(
                                   child: _buildDropdownField(
-                                    label: 'Job Type',
-                                    value: _jobType,
-                                    items: _jobTypes,
-                                    onChanged: (value) => setState(() => _jobType = value!),
+                                    label: AppLocalizations.of(context)!.jobType,
+                                    value: _localizedJobType,
+                                    items: _getLocalizedJobTypes(context),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _localizedJobType = value!;
+                                        _jobType = _getEnglishJobType(context, value);
+                                      });
+                                    },
                                     icon: Icons.schedule,
                                   ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: _buildDropdownField(
-                                    label: 'Experience Level',
-                                    value: _experienceLevel,
-                                    items: _experienceLevels,
-                                    onChanged: (value) => setState(() => _experienceLevel = value!),
+                                    label: AppLocalizations.of(context)!.experienceLevel,
+                                    value: _localizedExperienceLevel,
+                                    items: _getLocalizedExperienceLevels(context),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _localizedExperienceLevel = value!;
+                                        _experienceLevel = _getEnglishExperienceLevel(context, value);
+                                      });
+                                    },
                                     icon: Icons.trending_up,
                                   ),
                                 ),
@@ -243,40 +347,40 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                       // Salary (Optional)
                       _buildTextField(
                         controller: _salaryController,
-                        label: 'Salary (Optional)',
+                        label: AppLocalizations.of(context)!.salaryOptional,
                         icon: Icons.attach_money,
-                        hint: 'e.g. \$80,000 - \$120,000 per year',
+                        hint: AppLocalizations.of(context)!.salaryHint,
                       ),
                       const SizedBox(height: 20),
 
                       // Description
                       _buildTextField(
                         controller: _descriptionController,
-                        label: 'Job Description',
+                        label: AppLocalizations.of(context)!.jobDescription,
                         icon: Icons.description,
                         required: true,
                         maxLines: 6,
-                        hint: 'Describe the role, responsibilities, and what you\'re looking for...',
+                        hint: AppLocalizations.of(context)!.jobDescriptionHint,
                       ),
                       const SizedBox(height: 20),
 
                       // Requirements
                       _buildTextField(
                         controller: _requirementsController,
-                        label: 'Requirements (Optional)',
+                        label: AppLocalizations.of(context)!.requirementsOptional,
                         icon: Icons.checklist,
                         maxLines: 4,
-                        hint: 'List the skills, qualifications, and experience required...',
+                        hint: AppLocalizations.of(context)!.requirementsHint,
                       ),
                       const SizedBox(height: 20),
 
                       // Benefits
                       _buildTextField(
                         controller: _benefitsController,
-                        label: 'Benefits (Optional)',
+                        label: AppLocalizations.of(context)!.benefitsOptional,
                         icon: Icons.star,
                         maxLines: 3,
-                        hint: 'Health insurance, flexible hours, remote work options...',
+                        hint: AppLocalizations.of(context)!.benefitsHint,
                       ),
                       const SizedBox(height: 24),
 
@@ -297,14 +401,14 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Job Status',
+                                    AppLocalizations.of(context)!.jobStatus,
                                     style: GoogleFonts.inter(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black87,
                                     ),
                                   ),
                                   Text(
-                                    'Active jobs will be visible to job seekers',
+                                    AppLocalizations.of(context)!.activeJobsVisible,
                                     style: GoogleFonts.inter(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
@@ -350,7 +454,7 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
                               : const Icon(Icons.publish),
                           label: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                            child: Text(_isSubmitting ? 'Creating...' : 'Create Job Offer'),
+                            child: Text(_isSubmitting ? AppLocalizations.of(context)!.creating : AppLocalizations.of(context)!.createJobOffer),
                           ),
                         ),
                       ),
@@ -419,7 +523,7 @@ class _CreateJobOfferState extends State<CreateJobOffer> {
           validator: required
               ? (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '$label is required';
+                    return AppLocalizations.of(context)!.fieldRequired(label);
                   }
                   return null;
                 }

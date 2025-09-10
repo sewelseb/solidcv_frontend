@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/DesktopView/SkillCard.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -40,17 +41,17 @@ class _MySkillsState extends State<MySkills> {
             } else if (snapshot.hasError) {
               return Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text('Error: ${snapshot.error}'),
+                child: Text(AppLocalizations.of(context)!.mySkillsError(snapshot.error.toString())),
               );
             }
 
             final skills = snapshot.data ?? [];
             if (skills.isEmpty) {
-              return const Padding(
-                padding: EdgeInsets.all(16),
+              return Padding(
+                padding: const EdgeInsets.all(16),
                 child: Text(
-                  'No skills found. Add your first skill!',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.mySkillsNoSkillsFound,
+                  style: const TextStyle(
                     fontSize: 15,
                     fontStyle: FontStyle.italic,
                     color: Colors.black54,
@@ -84,15 +85,15 @@ class _MySkillsState extends State<MySkills> {
   Widget _buildHeader() {
     return Row(
       children: [
-        const Text(
-          'Skills',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.mySkillsTitle,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const Spacer(),
         IconButton(
           onPressed: _showAddSkillDialog,
           icon: const Icon(Icons.add_circle_outline),
-          tooltip: 'Add skill',
+          tooltip: AppLocalizations.of(context)!.mySkillsAddTooltip,
         ),
       ],
     );
@@ -120,14 +121,14 @@ class _MySkillsState extends State<MySkills> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.add_circle_outline,
+                      const Icon(Icons.add_circle_outline,
                           color: Color(0xFF7B3FE4), size: 28),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
-                        'Add a Skill',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.mySkillsDialogTitle,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                           color: Color(0xFF7B3FE4),
@@ -140,8 +141,8 @@ class _MySkillsState extends State<MySkills> {
                     controller: controller,
                     autofocus: true,
                     decoration: InputDecoration(
-                      labelText: 'Skill name',
-                      hintText: 'E.g. Flutter, Project Management...',
+                      labelText: AppLocalizations.of(context)!.mySkillsSkillNameLabel,
+                      hintText: AppLocalizations.of(context)!.mySkillsSkillNameHint,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -150,7 +151,7 @@ class _MySkillsState extends State<MySkills> {
                             color: Color(0xFF7B3FE4), width: 1.5),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      errorText: error ? 'Please enter a skill name' : null,
+                      errorText: error ? AppLocalizations.of(context)!.mySkillsSkillNameError : null,
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 12),
                     ),
@@ -172,8 +173,8 @@ class _MySkillsState extends State<MySkills> {
                                 borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: const Text('Cancel',
-                              style: TextStyle(fontWeight: FontWeight.w600)),
+                          child: Text(AppLocalizations.of(context)!.mySkillsCancel,
+                              style: const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -189,9 +190,9 @@ class _MySkillsState extends State<MySkills> {
                                 borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: const Text(
-                            '+ Add',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          child: Text(
+                            AppLocalizations.of(context)!.mySkillsAdd,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -227,7 +228,7 @@ class _MySkillsState extends State<MySkills> {
         Navigator.of(dialogContext).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Skill added!'),
+            content: Text(AppLocalizations.of(context)!.mySkillsSkillAdded),
             backgroundColor: const Color(0xFF7B3FE4),
             behavior: SnackBarBehavior.floating,
             shape:
@@ -242,7 +243,7 @@ class _MySkillsState extends State<MySkills> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: $e'),
+          content: Text(AppLocalizations.of(context)!.mySkillsError(e.toString())),
           backgroundColor: Colors.red,
         ),
       );

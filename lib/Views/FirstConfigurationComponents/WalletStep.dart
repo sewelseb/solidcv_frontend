@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/BlockchainWalletBll.dart';
 import 'package:solid_cv/business_layer/IBlockchainWalletBll.dart';
@@ -290,7 +291,7 @@ class _WalletStepState extends State<WalletStep>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Blockchain Wallet Setup',
+                          AppLocalizations.of(context)!.blockchainWalletSetup,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -315,7 +316,7 @@ class _WalletStepState extends State<WalletStep>
                                   Icon(Icons.info_outline, color: Colors.blue.shade600, size: 16),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'What is this for?',
+                                    AppLocalizations.of(context)!.whatIsThisFor,
                                     style: GoogleFonts.inter(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
@@ -326,7 +327,7 @@ class _WalletStepState extends State<WalletStep>
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Your wallet serves only as a secure digital identifier to ensure the traceability and authenticity of your experiences, certificates, and diplomas. No cryptocurrencies are involved, and this is not a financial tool. Think of it as a secure digital signature that proves your achievements are genuine.',
+                                AppLocalizations.of(context)!.walletPurposeExplanation,
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   color: Colors.blue.shade700,
@@ -339,8 +340,8 @@ class _WalletStepState extends State<WalletStep>
                         const SizedBox(height: 8),
                         Text(
                           _showPasswordForm 
-                              ? 'Please set a secure password to encrypt your wallet:'
-                              : 'Do you already have a blockchain wallet address?',
+                              ? AppLocalizations.of(context)!.setSecurePassword
+                              : AppLocalizations.of(context)!.doYouHaveWallet,
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.grey.shade700,
@@ -420,7 +421,7 @@ class _WalletStepState extends State<WalletStep>
                                     ),
                                   ),
                                   icon: const Icon(Icons.check, size: 18),
-                                  label: const Text('Yes, I have one'),
+                                  label: Text(AppLocalizations.of(context)!.yesIHaveOne),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -435,7 +436,7 @@ class _WalletStepState extends State<WalletStep>
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  label: const Text('No, I don\'t'),
+                                  label: Text(AppLocalizations.of(context)!.noIDont),
                                 ),
                               ),
                             ],
@@ -567,7 +568,7 @@ class _WalletStepState extends State<WalletStep>
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text('Back'),
+                                        child: Text(AppLocalizations.of(context)!.back),
                                       ),
                                     ),
                                     const SizedBox(width: 12),
@@ -582,7 +583,7 @@ class _WalletStepState extends State<WalletStep>
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text('Create Wallet'),
+                                        child: Text(AppLocalizations.of(context)!.createWallet),
                                       ),
                                     ),
                                   ],
@@ -667,7 +668,7 @@ class _WalletStepState extends State<WalletStep>
                                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                         ),
                                       )
-                                    : const Text('Continue', style: TextStyle(color: Colors.white)),
+                                    : Text(AppLocalizations.of(context)!.continueText, style: const TextStyle(color: Colors.white)),
                               ),
                             ),
                         ],

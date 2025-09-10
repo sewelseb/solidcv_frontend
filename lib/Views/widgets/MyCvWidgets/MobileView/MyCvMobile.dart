@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileView.dart';
@@ -187,7 +188,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                                 ),
                               ),
                               icon: const Icon(Icons.settings_outlined, size: 18),
-                              label: const Text('Setup', style: TextStyle(fontSize: 13)),
+                              label: Text(AppLocalizations.of(context)!.setup, style: const TextStyle(fontSize: 13)),
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -215,7 +216,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                                 ),
                               ),
                               icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: const Text('Edit', style: TextStyle(fontSize: 13)),
+                              label: Text(AppLocalizations.of(context)!.edit, style: const TextStyle(fontSize: 13)),
                             ),
                           ),
                         ],
@@ -226,7 +227,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "Add your LinkedIn",),
+                          text: user.linkedin ?? AppLocalizations.of(context)!.addYourLinkedin,),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
@@ -254,7 +255,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                                   if (mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('Error downloading CV: $e'),
+                                        content: Text('${AppLocalizations.of(context)!.errorDownloadingCv}: $e'),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -281,7 +282,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                                       ),
                                     )
                                   : const Icon(Icons.download_outlined, size: 18),
-                              label: Text(isLoading ? 'Generating...' : 'Export my CV in PDF'),
+                              label: Text(isLoading ? AppLocalizations.of(context)!.generating : AppLocalizations.of(context)!.exportMyCvPdf),
                             );
                           },
                         ),
@@ -374,14 +375,14 @@ class _MyCvMobileState extends State<MyCvMobile> {
           children: [
             Row(
               children: [
-                const Text('Work Experience',
+                Text(AppLocalizations.of(context)!.workExperience,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 IconButton(
                   onPressed: _showAddWorkExperienceModal,
                   icon: const Icon(Icons.add_circle_outline),
-                  tooltip: 'Add experience',
+                  tooltip: AppLocalizations.of(context)!.addExperience,
                 ),
               ],
             ),
@@ -402,7 +403,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
                         .toList(),
                   );
                 } else {
-                  return const Center(child: Text("No work experiences yet."));
+                  return Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet));
                 }
               },
             ),

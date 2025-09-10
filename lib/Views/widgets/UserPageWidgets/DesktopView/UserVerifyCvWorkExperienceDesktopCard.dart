@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -16,8 +17,8 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isVerified = experience.isVerified;
-    final start = FormatDate().formatDateForExperience(experience.startDate);
-    final end = FormatDate().formatDateForExperience(experience.endDate);
+    final start = FormatDate().formatDateForExperience(context, experience.startDate);
+    final end = FormatDate().formatDateForExperience(context, experience.endDate);
     final hasPromotions = experience.promotions.isNotEmpty;
     final logoUrl = (experience.companyLogoUrl?.isNotEmpty ?? false)
         ? experience.companyLogoUrl!
@@ -35,7 +36,7 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isNarrow) _buildBadge(isVerified),
+              if (isNarrow) _buildBadge(isVerified, context),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -89,7 +90,7 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
                                         fontSize: 15, fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text('$start - $end',
+                                  Text(AppLocalizations.of(context)!.workExperienceDateRange(start, end),
                                       style: const TextStyle(
                                           fontSize: 13, color: Colors.grey)),
                                   const SizedBox(height: 4),
@@ -114,7 +115,7 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
                             if (!isNarrow)
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-                                child: _buildBadge(isVerified),
+                                child: _buildBadge(isVerified, context),
                               ),
                           ],
                         ),
@@ -127,8 +128,9 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 ...experience.promotions.map((p) {
                   final date = DateTime.fromMillisecondsSinceEpoch(p.date);
+                  final formattedDate = '${date.day}/${date.month}/${date.year}';
                   return Text(
-                      '• ${p.newTitle} – ${date.day}/${date.month}/${date.year}',
+                      AppLocalizations.of(context)!.workExperiencePromotion(p.newTitle, formattedDate),
                       style: const TextStyle(fontSize: 14));
                 }),
               ],
@@ -146,7 +148,7 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(bool isVerified) {
+  Widget _buildBadge(bool isVerified, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -164,7 +166,7 @@ class UserVerifyCvWorkExperienceDesktopCard extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           Text(
-            isVerified ? 'Verified by the blockchain' : 'Manually added',
+            isVerified ? AppLocalizations.of(context)!.workExperienceVerifiedBlockchain : AppLocalizations.of(context)!.workExperienceManuallyAdded,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,

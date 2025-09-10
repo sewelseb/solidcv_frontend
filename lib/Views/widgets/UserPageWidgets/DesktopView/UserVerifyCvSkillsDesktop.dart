@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/FeedbackDialog.dart';
 import 'package:solid_cv/business_layer/ISkillBll.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
@@ -37,10 +38,10 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text('Skills',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(AppLocalizations.of(context)!.skillsTitle,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         ),
         const SizedBox(height: 16),
         FutureBuilder<List<Skill>>(
@@ -51,7 +52,7 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
-                  'Error: ${snapshot.error}',
+                  AppLocalizations.of(context)!.skillsError(snapshot.error.toString()),
                   style: const TextStyle(color: Colors.red, fontSize: 16),
                 ),
               );
@@ -91,7 +92,7 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                               IconButton(
                                 icon: const Icon(Icons.feedback,
                                     color: Colors.blueAccent),
-                                tooltip: 'Get AI Feedback',
+                                tooltip: AppLocalizations.of(context)!.skillsGetAIFeedback,
                                 onPressed: () async {
                                   final feedbacks = await _skillBll
                                       .getFeedbacksOnSkills(skill.id!);
@@ -103,18 +104,18 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                         );
                       },
                     )
-                  : const Center(
+                  : Center(
                       child: Text(
-                        'No skills found',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.skillsNoSkillsFound,
+                        style: const TextStyle(
                             fontStyle: FontStyle.italic, fontSize: 16),
                       ),
                     );
             } else {
-              return const Center(
+              return Center(
                 child: Text(
-                  'No skills found',
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+                  AppLocalizations.of(context)!.skillsNoSkillsFound,
+                  style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
                 ),
               );
             }
@@ -149,9 +150,9 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Job Description',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.skillsJobDescription,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -166,7 +167,7 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                             color: Colors.deepPurple.shade100,
                           ),
                         ),
-                        hintText: 'Enter the job description here...',
+                        hintText: AppLocalizations.of(context)!.skillsJobDescriptionHint,
                         contentPadding: const EdgeInsets.all(14.0),
                         filled: true,
                         fillColor: Colors.grey.shade50,
@@ -194,9 +195,9 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                               horizontal: 22, vertical: 12),
                         ),
                         icon: const Icon(Icons.send_rounded, size: 20),
-                        label: const Text(
-                          'Submit',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                        label: Text(
+                          AppLocalizations.of(context)!.skillsSubmit,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),
@@ -221,8 +222,8 @@ class _UserVerifyCvSkillsDesktopState extends State<UserVerifyCvSkillsDesktop> {
                 icon: const Icon(Icons.description, size: 23),
                 label: Text(
                   showFormToGetFeedbackOnProfile
-                      ? 'Hide form'
-                      : 'Describe your job to see if it is a good fit for you',
+                      ? AppLocalizations.of(context)!.skillsHideForm
+                      : AppLocalizations.of(context)!.skillsDescribeJob,
                   style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

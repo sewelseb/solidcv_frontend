@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/Certificate.dart';
@@ -42,12 +43,13 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final isMobile = MediaQuery.of(context).size.width < 600;
     final ScrollController outerScrollController = ScrollController();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Certificate'),
+        title: Text(localizations.addCertificateTitle),
         elevation: 1,
         backgroundColor: const Color(0xFF7B3FE4),
       ),
@@ -80,10 +82,10 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Center(
+                        Center(
                           child: Text(
-                            "Create a Certificate",
-                            style: TextStyle(
+                            localizations.createCertificate,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 23,
                               color: Color(0xFF7B3FE4),
@@ -96,43 +98,43 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
                         // Title
                         _styledField(
                           controller: titleController,
-                          label: "Title",
+                          label: localizations.certificateTitle,
                           validator: (v) => v == null || v.isEmpty
-                              ? "Please enter a certificate title"
+                              ? localizations.certificateTitleRequired
                               : null,
                         ),
 
                         _styledField(
                           controller: typeController,
-                          label: "Type (e.g. Diploma, Certificate, etc.)",
+                          label: localizations.certificateType,
                           validator: (v) => v == null || v.isEmpty
-                              ? "Please enter a certificate type"
+                              ? localizations.certificateTypeRequired
                               : null,
                         ),
 
                         _styledField(
                           controller: gradeController,
-                          label: "Grade",
+                          label: localizations.certificateGrade,
                           validator: (v) => v == null || v.isEmpty
-                              ? "Please enter a grade"
+                              ? localizations.certificateGradeRequired
                               : null,
                         ),
 
                         _styledField(
                           controller: curiculumController,
-                          label: "Curriculum",
+                          label: localizations.certificateCurriculum,
                           maxLines: 3,
                           validator: (v) => v == null || v.isEmpty
-                              ? "Please enter a curriculum"
+                              ? localizations.certificateCurriculumRequired
                               : null,
                         ),
 
                         _styledField(
                           controller: descriptionController,
-                          label: "Description",
+                          label: localizations.certificateDescription,
                           maxLines: 3,
                           validator: (v) => v == null || v.isEmpty
-                              ? "Please enter a description"
+                              ? localizations.certificateDescriptionRequired
                               : null,
                         ),
 
@@ -140,7 +142,7 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
                         _styledDateField(
                           context: context,
                           controller: publicationDateController,
-                          label: "Publication Date",
+                          label: localizations.publicationDate,
                           date: _publicationDate,
                           onPick: (d) {
                             setState(() {
@@ -153,7 +155,7 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
 
                         _styledField(
                           controller: passwordController,
-                          label: "Password to open your Blockchain Wallet",
+                          label: localizations.walletPassword,
                           obscureText: true,
                         ),
 
@@ -167,9 +169,9 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
                                 ElevatedButton.icon(
                                   icon: const Icon(Icons.attach_file,
                                       size: 20, color: Colors.white),
-                                  label: const Text(
-                                    "Select a file",
-                                    style: TextStyle(
+                                  label: Text(
+                                    localizations.selectFile,
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600),
                                   ),
@@ -211,9 +213,9 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12)),
                             ),
-                            child: const Text(
-                              "+ Add Certificate",
-                              style: TextStyle(
+                            child: Text(
+                              localizations.addCertificateButton,
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16),
@@ -269,6 +271,8 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
     required DateTime? date,
     required Function(DateTime) onPick,
   }) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
       child: TextFormField(
@@ -300,7 +304,7 @@ class _AddCertificatePageState extends State<AddCertificatePage> {
           }
         },
         validator: (value) {
-          if (date == null) return "Please pick a publication date";
+          if (date == null) return localizations.publicationDateRequired;
           return null;
         },
       ),

@@ -12,6 +12,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AISkillValidationStep extends StatefulWidget {
   final List<Map<String, dynamic>> skills;
@@ -292,12 +293,13 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
   
   String _getInputHintText() {
+    final localizations = AppLocalizations.of(context)!;
     if (_isMobileBrowser && (_speechEnabled || _speechInitialized)) {
-      return 'Type your answer or try the mic button (limited on mobile)...\nPress Ctrl+Enter to submit';
+      return localizations.inputHintMobile;
     } else if (_speechEnabled) {
-      return 'Type or tap mic to speak...\nPress Ctrl+Enter to submit';
+      return localizations.inputHintSpeech;
     } else {
-      return 'Type your answer...\nPress Ctrl+Enter to submit';
+      return localizations.inputHintDefault;
     }
   }
 
@@ -360,6 +362,8 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
 
   Widget _buildValidationContent() {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_currentSkillIndex >= widget.skills.length) {
       return _buildCompletionSummary();
     }
@@ -387,7 +391,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                'AI Skill Test',
+                localizations.aiSkillTest,
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -402,7 +406,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                '${_currentSkillIndex + 1}/${widget.skills.length}',
+                localizations.skillTestProgress(_currentSkillIndex + 1, widget.skills.length),
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -430,7 +434,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   Icon(Icons.info_outline, color: Colors.orange.shade600, size: 16),
                   const SizedBox(width: 8),
                   Text(
-                    'Why do we test your skills?',
+                    localizations.whyTestSkillsTitle,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -441,7 +445,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               ),
               const SizedBox(height: 8),
               Text(
-                'We use this data to provide you with personalized feedback about your skills, help recruiters understand how well applicants match their job offers, and eventually provide you with tailored career advice to advance your professional growth. You can always do it or continue to answer questions on your CV page',
+                localizations.whyTestSkillsExplanation,
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   color: Colors.orange.shade700,
@@ -470,7 +474,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Testing: ${currentSkill['name']}',
+                      localizations.testingSkill(currentSkill['name']),
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -478,7 +482,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       ),
                     ),
                     Text(
-                      'Answer questions to validate your skill level',
+                      localizations.answerQuestionsPrompt,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: Colors.blue.shade600,
@@ -518,7 +522,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Conversation History',
+                          localizations.conversationHistory,
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -527,7 +531,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         ),
                       ),
                       Text(
-                        '${_messages.length} messages',
+                        localizations.messagesCount(_messages.length),
                         style: GoogleFonts.inter(
                           fontSize: 11,
                           color: Colors.grey.shade600,
@@ -568,7 +572,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'AI is preparing a question...',
+                  localizations.aiPreparingQuestion,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.grey.shade600,
@@ -598,7 +602,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   const Icon(Icons.mic, color: Colors.red, size: 16),
                   const SizedBox(width: 8),
                   Text(
-                    'Listening... (${(_speechConfidence * 100).toStringAsFixed(1)}% confidence)',
+                    localizations.speechListening((_speechConfidence * 100).toStringAsFixed(1)),
                     style: TextStyle(
                       color: Colors.red.shade700,
                       fontSize: 12,
@@ -636,8 +640,8 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         Text(
                           _speechUnavailableReason ?? 
                           (_isMobileBrowser 
-                            ? 'Limited speech support on mobile browsers'
-                            : 'Speech recognition not available'),
+                            ? localizations.limitedSpeechSupport
+                            : localizations.speechNotAvailable),
                           style: TextStyle(
                             color: _isMobileBrowser ? Colors.blue.shade700 : Colors.orange.shade700,
                             fontSize: 14,
@@ -647,7 +651,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         if (_isMobileBrowser) ...[
                           const SizedBox(height: 4),
                           Text(
-                            'For best speech experience, use a desktop browser or type your answers below.',
+                            localizations.speechMobileBrowserTip,
                             style: TextStyle(
                               color: Colors.blue.shade600,
                               fontSize: 12,
@@ -680,8 +684,8 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       color: Colors.white,
                     ),
                     tooltip: kIsWeb 
-                      ? 'Tap to speak (Web browser - limited functionality)'
-                      : 'Tap to speak',
+                      ? localizations.tapToSpeakWeb
+                      : localizations.tapToSpeak,
                   ),
                 ),
               
@@ -730,11 +734,11 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       backgroundColor: const Color(0xFF7B3FE4),
                       foregroundColor: Colors.white,
                     ),
-                    tooltip: 'Submit answer (Ctrl+Enter)',
+                    tooltip: localizations.submitAnswerTooltip,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Ctrl+\nEnter',
+                    localizations.ctrlEnterShortcut,
                     style: GoogleFonts.inter(
                       fontSize: 9,
                       color: Colors.grey.shade500,
@@ -756,7 +760,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   TextButton.icon(
                     onPressed: () => _messageController.clear(),
                     icon: const Icon(Icons.clear, size: 16),
-                    label: const Text('Clear'),
+                    label: Text(localizations.clear),
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.grey.shade600,
                     ),
@@ -765,7 +769,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   TextButton.icon(
                     onPressed: _messageController.text.isNotEmpty ? _submitAnswer : null,
                     icon: const Icon(Icons.send, size: 16),
-                    label: const Text('Submit'),
+                    label: Text(localizations.submit),
                     style: TextButton.styleFrom(
                       foregroundColor: const Color(0xFF7B3FE4),
                     ),
@@ -792,7 +796,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                     ),
                   ),
                   icon: const Icon(Icons.play_arrow, size: 16),
-                  label: const Text('Start AI Test'),
+                  label: Text(localizations.startAiTest),
                 ),
               ),
               const SizedBox(width: 8),
@@ -811,7 +815,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                     ),
                   ),
                   icon: const Icon(Icons.check, size: 16),
-                  label: const Text('Complete Test'),
+                  label: Text(localizations.completeTest),
                 ),
               ),
               const SizedBox(width: 8),
@@ -829,7 +833,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                 ),
               ),
               icon: const Icon(Icons.skip_next, size: 16),
-              label: const Text('Skip'),
+              label: Text(localizations.skip),
             ),
           ],
         ),
@@ -911,6 +915,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
   }
 
   Widget _buildCompletionSummary() {
+    final localizations = AppLocalizations.of(context)!;
     final validatedCount = _skillsWithValidation.where((s) => s['isValidated'] == true).length;
     final skippedCount = _skillsWithValidation.where((s) => s['isValidated'] == false).length;
     
@@ -918,7 +923,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Skill Validation Complete! 🎉',
+          localizations.skillValidationComplete,
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -941,7 +946,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                   Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'Validation Summary',
+                    localizations.validationSummary,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -965,7 +970,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         ),
                       ),
                       Text(
-                        'Validated',
+                        localizations.validated,
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.green.shade600,
@@ -984,7 +989,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         ),
                       ),
                       Text(
-                        'Skipped',
+                        localizations.skipped,
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.grey.shade500,
@@ -1012,7 +1017,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               ),
             ),
             icon: const Icon(Icons.arrow_forward, size: 16),
-            label: const Text('Complete Setup'),
+            label: Text(localizations.completeSetup),
           ),
         ),
       ],
@@ -1032,7 +1037,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       setState(() {
         _currentQuestion = question;
         _messages.add(_ChatMessage(
-          text: question.question ?? 'No question available',
+          text: question.question ?? AppLocalizations.of(context)!.noQuestionAvailable,
           sender: 'AI',
         ));
         _isLoadingQuestion = false;
@@ -1052,7 +1057,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       setState(() {
         _isLoadingQuestion = false;
         _messages.add(_ChatMessage(
-          text: 'Sorry, I couldn\'t generate a question for this skill. Let\'s move to the next one.',
+          text: AppLocalizations.of(context)!.questionGenerationError,
           sender: 'AI',
         ));
       });
@@ -1093,7 +1098,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         setState(() {
           _currentQuestion = nextQuestion;
           _messages.add(_ChatMessage(
-            text: nextQuestion.question ?? 'No question available',
+            text: nextQuestion.question ?? AppLocalizations.of(context)!.noQuestionAvailable,
             sender: 'AI',
           ));
           _isLoadingQuestion = false;
@@ -1113,7 +1118,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
         setState(() {
           _isLoadingQuestion = false;
           _messages.add(_ChatMessage(
-            text: 'Great! You\'ve completed the test for this skill. You can continue to the next skill or review your answers.',
+            text: AppLocalizations.of(context)!.skillTestComplete,
             sender: 'AI',
           ));
         });
@@ -1122,7 +1127,7 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       setState(() {
         _isLoadingQuestion = false;
         _messages.add(_ChatMessage(
-          text: 'There was an issue processing your answer. Let\'s continue.',
+          text: AppLocalizations.of(context)!.answerProcessingError,
           sender: 'AI',
         ));
       });
@@ -1150,8 +1155,12 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
       _currentSkillIndex++;
       // Add a separator message to distinguish between skills
       if (_messages.isNotEmpty) {
+        final nextSkillName = _currentSkillIndex < widget.skills.length 
+          ? widget.skills[_currentSkillIndex]['name'] 
+          : AppLocalizations.of(context)!.skillTestCompleted;
+        
         _messages.add(_ChatMessage(
-          text: '--- Moving to next skill: ${_currentSkillIndex < widget.skills.length ? widget.skills[_currentSkillIndex]['name'] : 'Completed'} ---',
+          text: AppLocalizations.of(context)!.movingToNextSkill(nextSkillName),
           sender: 'System',
         ));
       }

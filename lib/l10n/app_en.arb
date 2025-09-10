@@ -2575,5 +2575,2464 @@
   "companyCreated": "Company created!",
   "@companyCreated": {
     "description": "Success message when company is created"
+  },
+  "searchUser": "Search User",
+  "@searchUser": {
+    "description": "Default hint text for user search field"
+  },
+  "noUserFound": "No user found.",
+  "@noUserFound": {
+    "description": "Message when no users are found in search"
+  },
+  "errorWhileSearching": "Error while searching.",
+  "@errorWhileSearching": {
+    "description": "Error message during user search"
+  },
+  "searchForAUser": "Search for a user",
+  "@searchForAUser": {
+    "description": "Default title for user search card"
+  },
+  "mySkillsTitle": "Skills",
+  "@mySkillsTitle": {
+    "description": "Title for the skills section"
+  },
+  "mySkillsAddTooltip": "Add skill",
+  "@mySkillsAddTooltip": {
+    "description": "Tooltip for add skill button"
+  },
+  "mySkillsNoSkillsFound": "No skills found. Add your first skill!",
+  "@mySkillsNoSkillsFound": {
+    "description": "Message when user has no skills"
+  },
+  "mySkillsDialogTitle": "Add a Skill",
+  "@mySkillsDialogTitle": {
+    "description": "Title for add skill dialog"
+  },
+  "mySkillsSkillNameLabel": "Skill name",
+  "@mySkillsSkillNameLabel": {
+    "description": "Label for skill name input field"
+  },
+  "mySkillsSkillNameHint": "E.g. Flutter, Project Management...",
+  "@mySkillsSkillNameHint": {
+    "description": "Hint text for skill name input field"
+  },
+  "mySkillsSkillNameError": "Please enter a skill name",
+  "@mySkillsSkillNameError": {
+    "description": "Error message for empty skill name"
+  },
+  "mySkillsCancel": "Cancel",
+  "@mySkillsCancel": {
+    "description": "Cancel button text in add skill dialog"
+  },
+  "mySkillsAdd": "+ Add",
+  "@mySkillsAdd": {
+    "description": "Add button text in add skill dialog"
+  },
+  "mySkillsSkillAdded": "Skill added!",
+  "@mySkillsSkillAdded": {
+    "description": "Success message when skill is added"
+  },
+  "mySkillsError": "Error: {error}",
+  "@mySkillsError": {
+    "description": "Error message template",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  "myEducationInstitutionsError": "Error: {error}",
+  "@myEducationInstitutionsError": {
+    "description": "Error message when loading education institutions fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  "myEducationInstitutionsNoInstitutions": "No education institutions found.",
+  "@myEducationInstitutionsNoInstitutions": {
+    "description": "Message when user has no education institutions"
+  },
+  "myEducationInstitutionsUnnamedInstitution": "Unnamed Institution",
+  "@myEducationInstitutionsUnnamedInstitution": {
+    "description": "Default name for institutions without a name"
+  },
+  "myCompaniesError": "Error: {error}",
+  "@myCompaniesError": {
+    "description": "Error message when loading companies fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  "myCompaniesNoCompanies": "No companies found.",
+  "@myCompaniesNoCompanies": {
+    "description": "Message when user has no companies"
+  },
+  "myCompaniesUnnamedCompany": "Unnamed Company",
+  "@myCompaniesUnnamedCompany": {
+    "description": "Default name for companies without a name"
+  },
+  "logoutDialogTitle": "Log out",
+  "@logoutDialogTitle": {
+    "description": "Title for logout confirmation dialog"
+  },
+  "logoutDialogMessage": "Are you sure you want to log out?",
+  "@logoutDialogMessage": {
+    "description": "Confirmation message in logout dialog"
+  },
+  "logoutDialogCancel": "Cancel",
+  "@logoutDialogCancel": {
+    "description": "Cancel button text in logout dialog"
+  },
+  "logoutDialogConfirm": "Log out",
+  "@logoutDialogConfirm": {
+    "description": "Confirm button text in logout dialog"
+  },
+  "addCertificateDialogTitle": "Add Certificate",
+  "@addCertificateDialogTitle": {
+    "description": "Short title for add certificate dialog on mobile"
+  },
+  "addCertificateDialogTitleFull": "Add New Certificate",
+  "@addCertificateDialogTitleFull": {
+    "description": "Full title for add certificate dialog on desktop"
+  },
+  "addCertificateTitle": "Title",
+  "@addCertificateTitle": {
+    "description": "Label for certificate title field"
+  },
+  "addCertificateCertificateType": "Certificate Type",
+  "@addCertificateCertificateType": {
+    "description": "Label for certificate type field"
+  },
+  "addCertificateGrade": "Grade",
+  "@addCertificateGrade": {
+    "description": "Label for certificate grade field"
+  },
+  "addCertificateTeachingInstitution": "Teaching Institution",
+  "@addCertificateTeachingInstitution": {
+    "description": "Label for teaching institution field"
+  },
+  "addCertificateDescription": "Description",
+  "@addCertificateDescription": {
+    "description": "Label for certificate description field"
+  },
+  "addCertificateCurriculum": "Curriculum",
+  "@addCertificateCurriculum": {
+    "description": "Label for certificate curriculum field"
+  },
+  "addCertificatePublicationDate": "Publication Date",
+  "@addCertificatePublicationDate": {
+    "description": "Label for certificate publication date field"
+  },
+  "addCertificateSelectFile": "Select a file",
+  "@addCertificateSelectFile": {
+    "description": "Button text for file selection"
+  },
+  "addCertificateCancel": "Cancel",
+  "@addCertificateCancel": {
+    "description": "Cancel button text in add certificate dialog"
+  },
+  "addCertificateAdd": "Add",
+  "@addCertificateAdd": {
+    "description": "Add button text in add certificate dialog"
+  },
+  "addCertificateDateRequired": "Please select a date",
+  "@addCertificateDateRequired": {
+    "description": "Validation message for required date field"
+  },
+  "addCertificateFieldRequired": "Please enter {field}",
+  "@addCertificateFieldRequired": {
+    "description": "Validation message for required fields",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "The field name"
+      }
+    }
+  },
+  "addWorkExperienceTitle": "Add Work Experience",
+  "@addWorkExperienceTitle": {
+    "description": "Title for add work experience dialog"
+  },
+  "addWorkExperienceJobTitle": "Title",
+  "@addWorkExperienceJobTitle": {
+    "description": "Label for job title field"
+  },
+  "addWorkExperienceCompany": "Company",
+  "@addWorkExperienceCompany": {
+    "description": "Label for company field"
+  },
+  "addWorkExperienceLocation": "Location",
+  "@addWorkExperienceLocation": {
+    "description": "Label for location field"
+  },
+  "addWorkExperienceDescription": "Description",
+  "@addWorkExperienceDescription": {
+    "description": "Label for description field"
+  },
+  "addWorkExperienceStartDate": "Start",
+  "@addWorkExperienceStartDate": {
+    "description": "Label for start date field"
+  },
+  "addWorkExperienceEndDate": "End",
+  "@addWorkExperienceEndDate": {
+    "description": "Label for end date field"
+  },
+  "addWorkExperienceCancel": "Cancel",
+  "@addWorkExperienceCancel": {
+    "description": "Cancel button text in add work experience dialog"
+  },
+  "addWorkExperienceSave": "Save",
+  "@addWorkExperienceSave": {
+    "description": "Save button text in add work experience dialog"
+  },
+  "addWorkExperienceFieldRequired": "Enter {field}",
+  "@addWorkExperienceFieldRequired": {
+    "description": "Validation message for required work experience fields",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "The field name"
+      }
+    }
+  },
+  "addWorkExperienceDateRequired": "Enter {field} date",
+  "@addWorkExperienceDateRequired": {
+    "description": "Validation message for required date fields",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "The field name"
+      }
+    }
+  },
+  "editProfileTitle": "Edit Profile",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page"
+  },
+  "editProfileUpdated": "Profile updated!",
+  "@editProfileUpdated": {
+    "description": "Success message when profile is updated"
+  },
+  "editProfileError": "Error: {error}",
+  "@editProfileError": {
+    "description": "Error message template for profile operations",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  "editProfileErrorLoading": "Error loading user data: {error}",
+  "@editProfileErrorLoading": {
+    "description": "Error message when loading user data fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "The error message"
+      }
+    }
+  },
+  "editProfileRetry": "Retry",
+  "@editProfileRetry": {
+    "description": "Retry button text"
+  },
+  "editProfileUserNotFound": "User not found",
+  "@editProfileUserNotFound": {
+    "description": "Message when user data is not found"
+  },
+  "editProfileChangePhoto": "Change profile photo",
+  "@editProfileChangePhoto": {
+    "description": "Instruction text for changing profile photo"
+  },
+  "editProfileFirstName": "First Name",
+  "@editProfileFirstName": {
+    "description": "Label for first name field"
+  },
+  "editProfileLastName": "Last Name",
+  "@editProfileLastName": {
+    "description": "Label for last name field"
+  },
+  "editProfilePhoneNumber": "Phone Number",
+  "@editProfilePhoneNumber": {
+    "description": "Label for phone number field"
+  },
+  "editProfileLinkedIn": "LinkedIn",
+  "@editProfileLinkedIn": {
+    "description": "Label for LinkedIn field"
+  },
+  "editProfileBiography": "Biography",
+  "@editProfileBiography": {
+    "description": "Label for biography field"
+  },
+  "editProfileEmailSubtitle": "Get personalized career recommendations via email",
+  "@editProfileEmailSubtitle": {
+    "description": "Subtitle for weekly email recommendations setting"
+  },
+  "editProfileSaving": "Saving...",
+  "@editProfileSaving": {
+    "description": "Text shown while saving profile"
+  },
+  "editProfileSave": "Save Profile",
+  "@editProfileSave": {
+    "description": "Save button text"
+  },
+  "editProfileRequired": "Required",
+  "@editProfileRequired": {
+    "description": "Validation message for required fields"
+  },
+  "workExperienceVerified": "Verified",
+  "@workExperienceVerified": {
+    "description": "Label for verified work experience"
+  },
+  "workExperienceManually": "Manually",
+  "@workExperienceManually": {
+    "description": "Label for manually added work experience"
+  },
+  "workExperienceDateRange": "{startDate} - {endDate}",
+  "@workExperienceDateRange": {
+    "description": "Date range format for work experience",
+    "placeholders": {
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "workExperiencePromotion": "• {title} – {date}",
+  "@workExperiencePromotion": {
+    "description": "Format for promotion entries",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsTitle": "Skills",
+  "@skillsTitle": {
+    "description": "Title for skills section"
+  },
+  "skillsError": "Error: {error}",
+  "@skillsError": {
+    "description": "Error message for skills loading",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsNoSkillsFound": "No skills found",
+  "@skillsNoSkillsFound": {
+    "description": "Message when no skills are available"
+  },
+  "skillsGetAIFeedback": "Get AI Feedback",
+  "@skillsGetAIFeedback": {
+    "description": "Tooltip for AI feedback button"
+  },
+  "skillsJobDescription": "Job Description",
+  "@skillsJobDescription": {
+    "description": "Title for job description form"
+  },
+  "skillsJobDescriptionHint": "Enter the job description here...",
+  "@skillsJobDescriptionHint": {
+    "description": "Hint text for job description input"
+  },
+  "skillsSubmit": "Submit",
+  "@skillsSubmit": {
+    "description": "Submit button text"
+  },
+  "skillsHideForm": "Hide form",
+  "@skillsHideForm": {
+    "description": "Text to hide the job description form"
+  },
+  "skillsDescribeJob": "Describe your job to see if it is a good fit for you",
+  "@skillsDescribeJob": {
+    "description": "Text to show the job description form"
+  },
+  "userProfileNotAvailable": "Not available",
+  "@userProfileNotAvailable": {
+    "description": "Text shown when user profile information is not available"
+  },
+  "educationVerified": "Verified",
+  "@educationVerified": {
+    "description": "Label for verified education certificates"
+  },
+  "educationManually": "Manually",
+  "@educationManually": {
+    "description": "Label for manually added education certificates"
+  },
+  "educationUntitled": "Untitled",
+  "@educationUntitled": {
+    "description": "Fallback text for certificate without title"
+  },
+  "educationCertificate": "Certificate",
+  "@educationCertificate": {
+    "description": "Fallback text for certificate type"
+  },
+  "educationDate": "Date: {date}",
+  "@educationDate": {
+    "description": "Date label for education certificate",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "educationCurriculum": "Curriculum: {curriculum}",
+  "@educationCurriculum": {
+    "description": "Curriculum label for education certificate",
+    "placeholders": {
+      "curriculum": {
+        "type": "String"
+      }
+    }
+  },
+  "setupProfile": "Setup Profile",
+  "@setupProfile": {
+    "description": "Setup profile button text"
+  },
+  "generating": "Generating...",
+  "@generating": {
+    "description": "Generating progress text"
+  },
+  "exportCvPdf": "Export my CV in PDF",
+  "@exportCvPdf": {
+    "description": "Export CV in PDF button text"
+  },
+  "addPhoneNumber": "Add your phone number",
+  "@addPhoneNumber": {
+    "description": "Placeholder text for missing phone number"
+  },
+  "addLinkedIn": "Add your LinkedIn",
+  "@addLinkedIn": {
+    "description": "Placeholder text for missing LinkedIn"
+  },
+  "educationGrade": "Grade: {grade}",
+  "@educationGrade": {
+    "description": "Grade label for education certificate",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "educationTitle": "Education",
+  "@educationTitle": {
+    "description": "Title for education section"
+  },
+  "educationError": "Error: {error}",
+  "@educationError": {
+    "description": "Error message for education loading",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "educationNoCertificates": "No education certificate yet.",
+  "@educationNoCertificates": {
+    "description": "Message when no education certificates are available"
+  },
+  "workExperienceVerifiedBlockchain": "Verified by the blockchain",
+  "@workExperienceVerifiedBlockchain": {
+    "description": "Label for blockchain-verified work experience (desktop version)"
+  },
+  "workExperienceManuallyAdded": "Manually added",
+  "@workExperienceManuallyAdded": {
+    "description": "Label for manually added work experience (desktop version)"
+  },
+  "verifiedByBlockchain": "Verified by the blockchain",
+  "@verifiedByBlockchain": {
+    "description": "Badge label for blockchain-verified certificates"
+  },
+  "manuallyAdded": "Manually added",
+  "@manuallyAdded": {
+    "description": "Badge label for manually added certificates"
+  },
+  "untitled": "Untitled",
+  "@untitled": {
+    "description": "Default title when certificate title is empty"
+  },
+  "certificateType": "Certificate",
+  "@certificateType": {
+    "description": "Default certificate type"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Date label prefix"
+  },
+  "curriculum": "Curriculum",
+  "@curriculum": {
+    "description": "Curriculum label"
+  },
+  "grade": "Grade",
+  "@grade": {
+    "description": "Grade label"
+  },
+  "feedbacks": "Feedbacks",
+  "@feedbacks": {
+    "description": "Dialog title for feedbacks"
+  },
+  "addPromotion": "Add a promotion",
+  "@addPromotion": {
+    "description": "Button text to add a promotion"
+  },
+  "addPromotionDialogTitle": "Add a promotion",
+  "@addPromotionDialogTitle": {
+    "description": "Dialog title for adding a promotion"
+  },
+  "promotionTitle": "Promotion title",
+  "@promotionTitle": {
+    "description": "Field label for promotion title"
+  },
+  "confirmDeletion": "Confirm Deletion",
+  "@confirmDeletion": {
+    "description": "Delete confirmation dialog title"
+  },
+  "deleteExperienceConfirmation": "Are you sure you want to delete this experience? This action is irreversible.",
+  "@deleteExperienceConfirmation": {
+    "description": "Delete experience confirmation message"
+  },
+  "untitled": "Untitled",
+  "@untitled": {
+    "description": "Default title for untitled items"
+  },
+  "certificate": "Certificate",
+  "@certificate": {
+    "description": "Default certificate type"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Date label"
+  },
+  "curriculum": "Curriculum",
+  "@curriculum": {
+    "description": "Curriculum label"
+  },
+  "grade": "Grade",
+  "@grade": {
+    "description": "Grade label"
+  },
+  "deleteCertificateConfirmation": "Are you sure you want to delete this certificate? This action is irreversible.",
+  "@deleteCertificateConfirmation": {
+    "description": "Delete certificate confirmation message"
+  },
+  "errorDeletingCertificate": "Error deleting certificate",
+  "@errorDeletingCertificate": {
+    "description": "Error message when deleting certificate fails"
+  },
+  "setup": "Setup",
+  "@setup": {
+    "description": "Setup button text"
+  },
+  "addYourLinkedin": "Add your LinkedIn",
+  "@addYourLinkedin": {
+    "description": "LinkedIn profile placeholder text"
+  },
+  "exportMyCvPdf": "Export my CV in PDF",
+  "@exportMyCvPdf": {
+    "description": "Export CV button text"
+  },
+  "generating": "Generating...",
+  "@generating": {
+    "description": "Loading text for generating process"
+  },
+  "errorDownloadingCv": "Error downloading CV",
+  "@errorDownloadingCv": {
+    "description": "Error message when CV download fails"
+  },
+  "addExperience": "Add experience",
+  "@addExperience": {
+    "description": "Add experience tooltip text"
+  },
+  "checkWithAI": "Check with AI",
+  "@checkWithAI": {
+    "description": "Check skill with AI button text"
+  },
+  "verifyEmail": "Verify email",
+  "@verifyEmail": {
+    "description": "Title for email verification page"
+  },
+  "emailSentTo": "An email has been sent to:",
+  "@emailSentTo": {
+    "description": "Text indicating email has been sent"
+  },
+  "clickLinkToVerify": "Click the link in the email to verify your account.",
+  "@clickLinkToVerify": {
+    "description": "Instructions for email verification"
+  },
+  "sending": "Sending...",
+  "@sending": {
+    "description": "Loading text when sending email"
+  },
+  "waitSeconds": "Wait {seconds}s",
+  "@waitSeconds": {
+    "description": "Cooldown message with seconds",
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "resendVerificationEmail": "Resend verification email",
+  "@resendVerificationEmail": {
+    "description": "Button text to resend verification email"
+  },
+  "backToLogin": "Back to login",
+  "@backToLogin": {
+    "description": "Button text to return to login page"
+  },
+  "impossibleToSendEmail": "Impossible to send email : {error}",
+  "@impossibleToSendEmail": {
+    "description": "Error message when email sending fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "resetPassword": "Reset password",
+  "@resetPassword": {
+    "description": "Title for reset password page"
+  },
+  "setNewPassword": "Set a new password",
+  "@setNewPassword": {
+    "description": "Heading for setting new password"
+  },
+  "chooseStrongPassword": "Choose a strong password you haven't used before.",
+  "@chooseStrongPassword": {
+    "description": "Instructions for choosing new password"
+  },
+  "newPassword": "New password",
+  "@newPassword": {
+    "description": "Label for new password input field"
+  },
+  "confirmPassword": "Confirm password",
+  "@confirmPassword": {
+    "description": "Label for confirm password input field"
+  },
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "@passwordsDoNotMatch": {
+    "description": "Error message when passwords don't match"
+  },
+  "passwordChanged": "Password Changed",
+  "@passwordChanged": {
+    "description": "Title for password change success dialog"
+  },
+  "passwordUpdatedMessage": "Your password has been updated. You can now log in.",
+  "@passwordUpdatedMessage": {
+    "description": "Message for password change success"
+  },
+  "failedWithError": "Failed: {error}",
+  "@failedWithError": {
+    "description": "Generic failure message with error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotPassword": "Forgot password",
+  "@forgotPassword": {
+    "description": "Title for forgot password page"
+  },
+  "resetYourPassword": "Reset your password",
+  "@resetYourPassword": {
+    "description": "Heading for forgot password page"
+  },
+  "enterEmailForReset": "Enter your email address and we'll send you a link to reset your password.",
+  "@enterEmailForReset": {
+    "description": "Instructions for password reset"
+  },
+  "sendResetEmail": "Send reset email",
+  "@sendResetEmail": {
+    "description": "Button text to send reset email"
+  },
+  "passwordResetTitle": "Password Reset",
+  "@passwordResetTitle": {
+    "description": "Title for password reset confirmation dialog"
+  },
+  "passwordResetMessage": "If this email exists, you will receive a password reset link.",
+  "@passwordResetMessage": {
+    "description": "Message for password reset confirmation"
+  },
+  "emailVerification": "Email Verification",
+  "@emailVerification": {
+    "description": "Title for email verification page"
+  },
+  "emailVerified": "Email verified!",
+  "@emailVerified": {
+    "description": "Success message when email is verified"
+  },
+  "verificationFailed": "Verification failed",
+  "@verificationFailed": {
+    "description": "Error message when email verification fails"
+  },
+  "missingVerificationToken": "Missing verification token in URL.",
+  "@missingVerificationToken": {
+    "description": "Error message when verification token is missing"
+  },
+  "dateUnknown": "Date unknown",
+  "@dateUnknown": {
+    "description": "Text displayed when date is unknown or invalid"
+  },
+  "ongoing": "Ongoing",
+  "@ongoing": {
+    "description": "Text displayed for current/ongoing experiences or activities"
+  },
+  "solidCVAssistant": "SolidCV Assistant",
+  "@solidCVAssistant": {
+    "description": "Name of the SolidCV chat assistant"
+  },
+  "online": "Online",
+  "@online": {
+    "description": "Status indicator showing assistant is online"
+  },
+  "welcomeMessage": "👋 Welcome to SolidCV!",
+  "@welcomeMessage": {
+    "description": "Welcome greeting message with emoji"
+  },
+  "setupIntroduction": "I'm here to help you set up your account and get the most out of our platform. This will only take a few minutes.",
+  "@setupIntroduction": {
+    "description": "Introduction message explaining the setup process"
+  },
+  "walletSetupInfo": "We'll configure your blockchain wallet and help you upload your CV to get started.",
+  "@walletSetupInfo": {
+    "description": "Information about wallet configuration and CV upload"
+  },
+  "blockchainWalletSetup": "Blockchain Wallet Setup",
+  "@blockchainWalletSetup": {
+    "description": "Title for blockchain wallet setup page"
+  },
+  "whatIsThisFor": "What is this for?",
+  "@whatIsThisFor": {
+    "description": "Question about wallet purpose"
+  },
+  "walletPurposeExplanation": "Your wallet serves only as a secure digital identifier to ensure the traceability and authenticity of your experiences, certificates, and diplomas. No cryptocurrencies are involved, and this is not a financial tool. Think of it as a secure digital signature that proves your achievements are genuine.",
+  "@walletPurposeExplanation": {
+    "description": "Explanation of wallet purpose"
+  },
+  "doYouHaveWallet": "Do you already have a blockchain wallet address?",
+  "@doYouHaveWallet": {
+    "description": "Question asking if user has existing wallet"
+  },
+  "setSecurePassword": "Please set a secure password to encrypt your wallet:",
+  "@setSecurePassword": {
+    "description": "Instructions to set wallet password"
+  },
+  "yesIHaveOne": "Yes, I have one",
+  "@yesIHaveOne": {
+    "description": "Button text for users who have a wallet"
+  },
+  "noIDont": "No, I don't",
+  "@noIDont": {
+    "description": "Button text for users who don't have a wallet"
+  },
+  "continueText": "Continue",
+  "@continueText": {
+    "description": "Continue button text"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button text"
+  },
+  "createWallet": "Create Wallet",
+  "@createWallet": {
+    "description": "Create wallet button text"
+  },
+  "loadingYourSkills": "Loading your skills...",
+  "@loadingYourSkills": {
+    "description": "Loading message for skills"
+  },
+  "errorLoadingSkills": "Error loading skills",
+  "@errorLoadingSkills": {
+    "description": "Error message when skills fail to load"
+  },
+  "continueWithoutSkills": "Continue without skills for now",
+  "@continueWithoutSkills": {
+    "description": "Message to continue without skills"
+  },
+  "reviewYourSkills": "Review Your Skills",
+  "@reviewYourSkills": {
+    "description": "Title for skills review section"
+  },
+  "skillsCountMessage": "You have {count} skill{plural}. You can remove any that aren't relevant.",
+  "@skillsCountMessage": {
+    "description": "Message showing number of skills",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "noSkillsFound": "No skills found",
+  "@noSkillsFound": {
+    "description": "Message when no skills are found"
+  },
+  "continueCompleteProfile": "Continue to complete your profile setup",
+  "@continueCompleteProfile": {
+    "description": "Message to continue profile setup"
+  },
+  "tapToRemoveSkills": "Tap × to remove skills you don't want to include",
+  "@tapToRemoveSkills": {
+    "description": "Instructions for removing skills"
+  },
+  "skillsIncluded": "{count} skills will be included in your profile",
+  "@skillsIncluded": {
+    "description": "Summary of skills to be included",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "completeProfileSetupButton": "Complete Profile Setup",
+  "@completeProfileSetupButton": {
+    "description": "Button text to complete profile setup"
+  },
+  "loadingYourExperiences": "Loading your experiences...",
+  "@loadingYourExperiences": {
+    "description": "Loading message while fetching user experiences"
+  },
+  "errorLoadingExperiences": "Error loading experiences",
+  "@errorLoadingExperiences": {
+    "description": "Error message when experiences fail to load"
+  },
+  "canStillAddExperiencesManually": "You can still add experiences manually",
+  "@canStillAddExperiencesManually": {
+    "description": "Message encouraging manual experience addition after error"
+  },
+  "reviewYourExperience": "Review Your Experience",
+  "@reviewYourExperience": {
+    "description": "Title for experience review section"
+  },
+  "noExperienceFound": "No experience found",
+  "@noExperienceFound": {
+    "description": "Message when no work experiences are found"
+  },
+  "continueToCertificates": "Continue to Certificates",
+  "@continueToCertificates": {
+    "description": "Button to proceed to certificates section"
+  },
+  "editExperience": "Edit Experience",
+  "@editExperience": {
+    "description": "Dialog title for editing work experience"
+  },
+  "updateWorkExperienceDetails": "Update your work experience details",
+  "@updateWorkExperienceDetails": {
+    "description": "Subtitle for experience edit dialog"
+  },
+  "jobTitleRequired": "Job Title *",
+  "@jobTitleRequired": {
+    "description": "Label for required job title field"
+  },
+  "jobTitleHint": "e.g., Senior Software Engineer",
+  "@jobTitleHint": {
+    "description": "Placeholder text for job title input"
+  },
+  "companyRequired": "Company *",
+  "@companyRequired": {
+    "description": "Label for required company field"
+  },
+  "companyHint": "e.g., Google, Microsoft, Apple",
+  "@companyHint": {
+    "description": "Placeholder text for company input"
+  },
+  "startDateRequired": "Start Date *",
+  "@startDateRequired": {
+    "description": "Label for required start date field"
+  },
+  "endDateRequired": "End Date *",
+  "@endDateRequired": {
+    "description": "Label for required end date field"
+  },
+  "currentPosition": "Current Position",
+  "@currentPosition": {
+    "description": "Text shown for current job position"
+  },
+  "currentlyWorkHere": "I currently work here",
+  "@currentlyWorkHere": {
+    "description": "Checkbox text for current job"
+  },
+  "currentPositionHint": "Check this if this is your current position",
+  "@currentPositionHint": {
+    "description": "Help text for current position checkbox"
+  },
+  "jobDescription": "Job Description",
+  "@jobDescription": {
+    "description": "Label for job description field"
+  },
+  "jobDescriptionHint": "Describe your responsibilities, achievements, and key projects...",
+  "@jobDescriptionHint": {
+    "description": "Placeholder text for job description"
+  },
+  "writingTips": "Writing Tips",
+  "@writingTips": {
+    "description": "Title for writing tips section"
+  },
+  "experienceTipsContent": "• Use action verbs (developed, managed, implemented)\n• Include quantifiable achievements\n• Focus on results and impact",
+  "@experienceTipsContent": {
+    "description": "Content for experience writing tips"
+  },
+  "editDetails": "Edit Details",
+  "@editDetails": {
+    "description": "Button text to edit experience details"
+  },
+  "present": "Present",
+  "@present": {
+    "description": "Text shown for current job end date"
+  },
+  "positionTitle": "Position Title",
+  "@positionTitle": {
+    "description": "Default text when job title is empty"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "saveChanges": "Save Changes",
+  "@saveChanges": {
+    "description": "Save button text for experience edit"
+  },
+  "fillAllRequiredFields": "Please fill in all required fields",
+  "@fillAllRequiredFields": {
+    "description": "Validation message for required fields"
+  },
+  "experienceCountSingular": "You have 1 work experience. Please review and edit it as needed.",
+  "@experienceCountSingular": {
+    "description": "Message when user has exactly one work experience"
+  },
+  "experienceCountPlural": "You have {count} work experiences. Please review and edit them as needed.",
+  "@experienceCountPlural": {
+    "description": "Message when user has multiple work experiences",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cvUploadOptional": "CV Upload (Optional)",
+  "@cvUploadOptional": {
+    "description": "Title for CV upload section"
+  },
+  "cvUploadDescription": "Upload your CV and I'll extract your experience, certificates, and skills automatically!",
+  "@cvUploadDescription": {
+    "description": "Description explaining CV upload benefits"
+  },
+  "clickToUploadCV": "Click to upload your CV",
+  "@clickToUploadCV": {
+    "description": "Text encouraging user to click upload area"
+  },
+  "pdfOnlyAutoExtract": "PDF files only • We'll extract your data automatically",
+  "@pdfOnlyAutoExtract": {
+    "description": "Information about file format and auto extraction"
+  },
+  "uploadingYourCV": "Uploading your CV...",
+  "@uploadingYourCV": {
+    "description": "Loading message during CV upload"
+  },
+  "extractingCVData": "Extracting your experience, certificates, and skills...",
+  "@extractingCVData": {
+    "description": "Loading message during data extraction"
+  },
+  "extractionMayTakeMoments": "This may take a few moments",
+  "@extractionMayTakeMoments": {
+    "description": "Additional info about extraction time"
+  },
+  "cvProcessedSuccessfully": "CV Processed Successfully!",
+  "@cvProcessedSuccessfully": {
+    "description": "Success message after CV processing"
+  },
+  "skipForNow": "Skip for now",
+  "@skipForNow": {
+    "description": "Button to skip CV upload"
+  },
+  "reviewEditData": "Review & Edit Data",
+  "@reviewEditData": {
+    "description": "Button to proceed to data review"
+  },
+  "errorUploadingCV": "Error uploading CV:",
+  "@errorUploadingCV": {
+    "description": "Error message prefix for CV upload failure"
+  },
+  "cvDataExtractedSuccessfully": "CV data extracted successfully!",
+  "@cvDataExtractedSuccessfully": {
+    "description": "Success message for data extraction"
+  },
+  "errorExtractingCVData": "Error extracting CV data:",
+  "@errorExtractingCVData": {
+    "description": "Error message prefix for data extraction failure"
+  },
+  "welcomeToSolidCV": "🎉 Welcome to SolidCV!",
+  "@welcomeToSolidCV": {
+    "description": "Welcome title after account setup completion"
+  },
+  "accountSetupComplete": "Your account is now set up and ready to use. Choose where you'd like to start your journey:",
+  "@accountSetupComplete": {
+    "description": "Description after successful account setup"
+  },
+  "goToHomePage": "Go to Home Page",
+  "@goToHomePage": {
+    "description": "Button text to navigate to home page"
+  },
+  "viewMyCV": "View My CV",
+  "@viewMyCV": {
+    "description": "Button text to view user's CV"
+  },
+  "createAnOrganization": "Create an organization",
+  "@createAnOrganization": {
+    "description": "Button text to create an organization"
+  },
+  "navigationMenuTip": "Tip: You can always access these pages from the navigation menu!",
+  "@navigationMenuTip": {
+    "description": "Helpful tip about navigation menu access"
+  },
+  "loadingYourCertificates": "Loading your certificates...",
+  "@loadingYourCertificates": {
+    "description": "Loading message while fetching user certificates"
+  },
+  "errorLoadingCertificates": "Error loading certificates",
+  "@errorLoadingCertificates": {
+    "description": "Error message when certificates fail to load"
+  },
+  "canStillAddCertificatesManually": "You can still add certificates manually",
+  "@canStillAddCertificatesManually": {
+    "description": "Message encouraging manual certificate addition after error"
+  },
+  "reviewYourCertificates": "Review Your Certificates",
+  "@reviewYourCertificates": {
+    "description": "Title for certificate review section"
+  },
+  "noCertificatesFound": "No certificates found",
+  "@noCertificatesFound": {
+    "description": "Message when no certificates are found"
+  },
+  "addCertificationsManually": "Add your professional certifications manually",
+  "@addCertificationsManually": {
+    "description": "Instruction to add certificates manually"
+  },
+  "continueToSkills": "Continue to Skills",
+  "@continueToSkills": {
+    "description": "Button to proceed to skills section"
+  },
+  "certificateTitle": "Certificate title",
+  "@certificateTitle": {
+    "description": "Default text when certificate title is empty"
+  },
+  "issuedBy": "Issued by {issuer}",
+  "@issuedBy": {
+    "description": "Text showing certificate issuer",
+    "placeholders": {
+      "issuer": {
+        "type": "String"
+      }
+    }
+  },
+  "issued": "Issued:",
+  "@issued": {
+    "description": "Label for certificate issue date"
+  },
+  "editCertificate": "Edit Certificate",
+  "@editCertificate": {
+    "description": "Dialog title for editing certificate"
+  },
+  "updateCertificationDetails": "Update your certification details",
+  "@updateCertificationDetails": {
+    "description": "Subtitle for certificate edit dialog"
+  },
+  "certificateNameRequired": "Certificate Name *",
+  "@certificateNameRequired": {
+    "description": "Label for required certificate name field"
+  },
+  "certificateNameHint": "e.g., AWS Certified Developer",
+  "@certificateNameHint": {
+    "description": "Placeholder text for certificate name input"
+  },
+  "issuingOrganizationRequired": "Issuing Organization *",
+  "@issuingOrganizationRequired": {
+    "description": "Label for required issuing organization field"
+  },
+  "issuingOrganizationHint": "e.g., Amazon Web Services",
+  "@issuingOrganizationHint": {
+    "description": "Placeholder text for issuing organization input"
+  },
+  "issueDateRequired": "Issue Date *",
+  "@issueDateRequired": {
+    "description": "Label for required issue date field"
+  },
+  "certificateDescription": "Description",
+  "@certificateDescription": {
+    "description": "Label for certificate description field"
+  },
+  "certificateDescriptionHint": "Brief description of skills and knowledge covered...",
+  "@certificateDescriptionHint": {
+    "description": "Placeholder text for certificate description"
+  },
+  "certificateCountSingular": "You have 1 certificate. Please review and edit it as needed.",
+  "@certificateCountSingular": {
+    "description": "Message when user has exactly one certificate"
+  },
+  "certificateCountPlural": "You have {count} certificates. Please review and edit them as needed.",
+  "@certificateCountPlural": {
+    "description": "Message when user has multiple certificates",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "aiSkillTest": "AI Skill Test",
+  "@aiSkillTest": {
+    "description": "Title for AI skill test section"
+  },
+  "skillTestProgress": "{current}/{total}",
+  "@skillTestProgress": {
+    "description": "Progress indicator for skill tests",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "whyTestSkillsTitle": "Why do we test your skills?",
+  "@whyTestSkillsTitle": {
+    "description": "Title for skill testing explanation"
+  },
+  "whyTestSkillsExplanation": "We use this data to provide you with personalized feedback about your skills, help recruiters understand how well applicants match their job offers, and eventually provide you with tailored career advice to advance your professional growth. You can always do it or continue to answer questions on your CV page",
+  "@whyTestSkillsExplanation": {
+    "description": "Explanation of why skill testing is performed"
+  },
+  "testingSkill": "Testing: {skillName}",
+  "@testingSkill": {
+    "description": "Label showing which skill is being tested",
+    "placeholders": {
+      "skillName": {
+        "type": "String"
+      }
+    }
+  },
+  "answerQuestionsPrompt": "Answer questions to validate your skill level",
+  "@answerQuestionsPrompt": {
+    "description": "Prompt to answer questions for skill validation"
+  },
+  "conversationHistory": "Conversation History",
+  "@conversationHistory": {
+    "description": "Header for conversation history section"
+  },
+  "messagesCount": "{count} messages",
+  "@messagesCount": {
+    "description": "Count of messages in conversation",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "aiPreparingQuestion": "AI is preparing a question...",
+  "@aiPreparingQuestion": {
+    "description": "Loading message while AI prepares a question"
+  },
+  "speechListening": "Listening... ({confidence}% confidence)",
+  "@speechListening": {
+    "description": "Speech recognition status with confidence",
+    "placeholders": {
+      "confidence": {
+        "type": "String"
+      }
+    }
+  },
+  "limitedSpeechSupport": "Limited speech support on mobile browsers",
+  "@limitedSpeechSupport": {
+    "description": "Warning about limited speech support on mobile"
+  },
+  "speechNotAvailable": "Speech recognition not available",
+  "@speechNotAvailable": {
+    "description": "Message when speech recognition is not available"
+  },
+  "speechMobileBrowserTip": "For best speech experience, use a desktop browser or type your answers below.",
+  "@speechMobileBrowserTip": {
+    "description": "Tip for better speech experience on mobile"
+  },
+  "tapToSpeakWeb": "Tap to speak (Web browser - limited functionality)",
+  "@tapToSpeakWeb": {
+    "description": "Tooltip for speech button on web"
+  },
+  "tapToSpeak": "Tap to speak",
+  "@tapToSpeak": {
+    "description": "Tooltip for speech button"
+  },
+  "inputHintMobile": "Type your answer or try the mic button (limited on mobile)...\nPress Ctrl+Enter to submit",
+  "@inputHintMobile": {
+    "description": "Input hint text for mobile browsers with speech"
+  },
+  "inputHintSpeech": "Type or tap mic to speak...\nPress Ctrl+Enter to submit",
+  "@inputHintSpeech": {
+    "description": "Input hint text when speech is available"
+  },
+  "inputHintDefault": "Type your answer...\nPress Ctrl+Enter to submit",
+  "@inputHintDefault": {
+    "description": "Default input hint text"
+  },
+  "submitAnswerTooltip": "Submit answer (Ctrl+Enter)",
+  "@submitAnswerTooltip": {
+    "description": "Tooltip for submit answer button"
+  },
+  "ctrlEnterShortcut": "Ctrl+\nEnter",
+  "@ctrlEnterShortcut": {
+    "description": "Keyboard shortcut display"
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button text"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button text"
+  },
+  "startAiTest": "Start AI Test",
+  "@startAiTest": {
+    "description": "Button to start AI skill test"
+  },
+  "completeTest": "Complete Test",
+  "@completeTest": {
+    "description": "Button to complete skill test"
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  "skillValidationComplete": "Skill Validation Complete! 🎉",
+  "@skillValidationComplete": {
+    "description": "Title for completion summary"
+  },
+  "validationSummary": "Validation Summary",
+  "@validationSummary": {
+    "description": "Header for validation summary section"
+  },
+  "validated": "Validated",
+  "@validated": {
+    "description": "Label for validated skills count"
+  },
+  "skipped": "Skipped",
+  "@skipped": {
+    "description": "Label for skipped skills count"
+  },
+  "completeSetup": "Complete Setup",
+  "@completeSetup": {
+    "description": "Button to complete the setup process"
+  },
+  "noQuestionAvailable": "No question available",
+  "@noQuestionAvailable": {
+    "description": "Message when no question is available"
+  },
+  "questionGenerationError": "Sorry, I couldn't generate a question for this skill. Let's move to the next one.",
+  "@questionGenerationError": {
+    "description": "Error message when question generation fails"
+  },
+  "skillTestComplete": "Great! You've completed the test for this skill. You can continue to the next skill or review your answers.",
+  "@skillTestComplete": {
+    "description": "Message when skill test is completed"
+  },
+  "answerProcessingError": "There was an issue processing your answer. Let's continue.",
+  "@answerProcessingError": {
+    "description": "Error message when answer processing fails"
+  },
+  "movingToNextSkill": "--- Moving to next skill: {skillName} ---",
+  "@movingToNextSkill": {
+    "description": "System message when moving to next skill",
+    "placeholders": {
+      "skillName": {
+        "type": "String"
+      }
+    }
+  },
+  "skillTestCompleted": "Completed",
+  "@skillTestCompleted": {
+    "description": "Status when all skills are completed"
+  },
+  "createCertificateTitle": "Create a Certificate",
+  "@createCertificateTitle": {
+    "description": "Title for create certificate page"
+  },
+  "searchUser": "Search User",
+  "@searchUser": {
+    "description": "Hint text for user search input"
+  },
+  "searchUserCardTitle": "Search for a user to assign a certificate",
+  "@searchUserCardTitle": {
+    "description": "Title text for user search card"
+  },
+  "searchUserCardSubtitle": "Start typing a name or email.",
+  "@searchUserCardSubtitle": {
+    "description": "Subtitle text for user search card"
+  },
+  "noUserFound": "No user found.",
+  "@noUserFound": {
+    "description": "Message when no users are found in search"
+  },
+  "errorWhileSearching": "Error while searching.",
+  "@errorWhileSearching": {
+    "description": "Error message when user search fails"
+  },
+  "addCertificateTitle": "Add Certificate",
+  "@addCertificateTitle": {
+    "description": "Title for add certificate page in app bar"
+  },
+  "createCertificate": "Create a Certificate",
+  "@createCertificate": {
+    "description": "Main title in the certificate creation form"
+  },
+  "certificateTitle": "Title",
+  "@certificateTitle": {
+    "description": "Label for certificate title field"
+  },
+  "certificateTitleRequired": "Please enter a certificate title",
+  "@certificateTitleRequired": {
+    "description": "Validation message for certificate title field"
+  },
+  "certificateType": "Type (e.g. Diploma, Certificate, etc.)",
+  "@certificateType": {
+    "description": "Label for certificate type field"
+  },
+  "certificateTypeRequired": "Please enter a certificate type",
+  "@certificateTypeRequired": {
+    "description": "Validation message for certificate type field"
+  },
+  "certificateGrade": "Grade",
+  "@certificateGrade": {
+    "description": "Label for certificate grade field"
+  },
+  "certificateGradeRequired": "Please enter a grade",
+  "@certificateGradeRequired": {
+    "description": "Validation message for certificate grade field"
+  },
+  "certificateCurriculum": "Curriculum",
+  "@certificateCurriculum": {
+    "description": "Label for certificate curriculum field"
+  },
+  "certificateCurriculumRequired": "Please enter a curriculum",
+  "@certificateCurriculumRequired": {
+    "description": "Validation message for certificate curriculum field"
+  },
+  "certificateDescription": "Description",
+  "@certificateDescription": {
+    "description": "Label for certificate description field"
+  },
+  "certificateDescriptionRequired": "Please enter a description",
+  "@certificateDescriptionRequired": {
+    "description": "Validation message for certificate description field"
+  },
+  "publicationDate": "Publication Date",
+  "@publicationDate": {
+    "description": "Label for publication date field"
+  },
+  "publicationDateRequired": "Please pick a publication date",
+  "@publicationDateRequired": {
+    "description": "Validation message for publication date field"
+  },
+  "walletPassword": "Password to open your Blockchain Wallet",
+  "@walletPassword": {
+    "description": "Label for wallet password field"
+  },
+  "selectFile": "Select a file",
+  "@selectFile": {
+    "description": "Button text for file selection"
+  },
+  "addCertificateButton": "+ Add Certificate",
+  "@addCertificateButton": {
+    "description": "Button text for submitting the certificate form"
+  },
+  "manageJobOffersTitle": "Manage Job Offers",
+  "@manageJobOffersTitle": {
+    "description": "Title for the manage job offers page"
+  },
+  "shareJobOffer": "Share Job Offer",
+  "@shareJobOffer": {
+    "description": "Title for share job offer dialog"
+  },
+  "shareJobDescription": "Share this job offer with potential candidates using the link below:",
+  "@shareJobDescription": {
+    "description": "Description text for sharing a job offer"
+  },
+  "copyLink": "Copy Link",
+  "@copyLink": {
+    "description": "Button text to copy the job offer link"
+  },
+  "linkCopied": "Link copied to clipboard!",
+  "@linkCopied": {
+    "description": "Success message when link is copied"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Button text to close dialog"
+  },
+  "viewApplications": "View Applications",
+  "@viewApplications": {
+    "description": "Button text to view job applications"
+  },
+  "deleteJobOffer": "Delete Job Offer",
+  "@deleteJobOffer": {
+    "description": "Title for delete job offer confirmation"
+  },
+  "deleteJobConfirmation": "Are you sure you want to delete this job offer? This action cannot be undone.",
+  "@deleteJobConfirmation": {
+    "description": "Confirmation message for deleting a job offer"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button text to cancel an action"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Button text to confirm deletion"
+  },
+  "jobOfferDeleted": "Job offer deleted successfully",
+  "@jobOfferDeleted": {
+    "description": "Success message when job offer is deleted"
+  },
+  "deletionError": "Error deleting job offer",
+  "@deletionError": {
+    "description": "Error message when job deletion fails"
+  },
+  "noJobOffersTitle": "You haven't created any job offers yet",
+  "@noJobOffersTitle": {
+    "description": "Title when no job offers exist"
+  },
+  "noJobOffersSubtitle": "Start attracting the best talent by creating your first job posting!",
+  "@noJobOffersSubtitle": {
+    "description": "Subtitle encouraging first job creation"
+  },
+  "createFirstJobTip": "💡 Tip: A well-written job description attracts quality candidates",
+  "@createFirstJobTip": {
+    "description": "Tip about creating good job descriptions"
+  },
+  "detailedRequirementsTip": "📝 Include detailed requirements and company benefits",
+  "@detailedRequirementsTip": {
+    "description": "Tip about including detailed requirements"
+  },
+  "responseTimeTip": "⚡ Quick response to applications improves your company image",
+  "@responseTimeTip": {
+    "description": "Tip about quick response times"
+  },
+  "createJobOffer": "Create Job Offer",
+  "@createJobOffer": {
+    "description": "Button text to create a new job offer"
+  },
+  "jobOffersCount": "{count, plural, =0{No job offers} =1{1 job offer} other{{count} job offers}}",
+  "@jobOffersCount": {
+    "description": "Count of job offers with pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Status label for active job offers"
+  },
+  "inactive": "Inactive",
+  "@inactive": {
+    "description": "Status label for inactive job offers"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Button text to share a job offer"
+  },
+  "applications": "Applications",
+  "@applications": {
+    "description": "Button text to view applications"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Button text to edit a job offer"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Label for today's date"
+  },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Label for yesterday's date"
+  },
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "description": "Label for date X days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "jobApplicationsTitle": "Job Applications",
+  "@jobApplicationsTitle": {
+    "description": "Title for the job applications page"
+  },
+  "contactUser": "Contact {firstName} {lastName}",
+  "@contactUser": {
+    "description": "Title for contact user dialog",
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      }
+    }
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label for email field"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Label for phone field"
+  },
+  "applicationsLabel": "Applications",
+  "@applicationsLabel": {
+    "description": "Label for applications section"
+  },
+  "reviewCandidatesDescription": "Review and manage candidates who applied for this position",
+  "@reviewCandidatesDescription": {
+    "description": "Description text for reviewing candidates"
+  },
+  "errorLoadingApplications": "Error loading applications: {error}",
+  "@errorLoadingApplications": {
+    "description": "Error message when applications fail to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Button text to retry an action"
+  },
+  "noApplicationsYet": "No applications yet",
+  "@noApplicationsYet": {
+    "description": "Title when no applications exist"
+  },
+  "applicationsWillAppear": "Applications will appear here when users apply",
+  "@applicationsWillAppear": {
+    "description": "Description when no applications exist"
+  },
+  "applicantsCount": "{count, plural, =0{No applicants} =1{1 Applicant} other{{count} Applicants}}",
+  "@applicantsCount": {
+    "description": "Count of applicants with pluralization",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "verified": "Verified",
+  "@verified": {
+    "description": "Label for verified users"
+  },
+  "viewProfile": "View Profile",
+  "@viewProfile": {
+    "description": "Button text to view user profile"
+  },
+  "aiAnalysis": "AI Analysis",
+  "@aiAnalysis": {
+    "description": "Button text for AI analysis"
+  },
+  "contact": "Contact",
+  "@contact": {
+    "description": "Button text to contact user"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Short button text for profile"
+  },
+  "unknownUser": "Unknown User",
+  "@unknownUser": {
+    "description": "Fallback text for unknown user name"
+  },
+  "weeksAgo": "{weeks} weeks ago",
+  "@weeksAgo": {
+    "description": "Label for date X weeks ago",
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "errorText": "Error",
+  "loadingText": "Loading...",
+  "retryText": "Retry",
+  
+  "editJobOfferTitle": "Edit Job Offer",
+  "@editJobOfferTitle": {
+    "description": "Title for the edit job offer page"
+  },
+  "deleteJobOfferTooltip": "Delete Job Offer",
+  "@deleteJobOfferTooltip": {
+    "description": "Tooltip for delete job offer button"
+  },
+  "deleteJobOfferDialog": "Delete Job Offer",
+  "@deleteJobOfferDialog": {
+    "description": "Title for delete job offer confirmation dialog"
+  },
+  "deleteJobOfferConfirmation": "Are you sure you want to delete this job offer? This action cannot be undone.",
+  "@deleteJobOfferConfirmation": {
+    "description": "Confirmation message for deleting job offer"
+  },
+  "jobOfferUpdatedSuccess": "Job offer updated successfully!",
+  "@jobOfferUpdatedSuccess": {
+    "description": "Success message when job offer is updated"
+  },
+  "errorUpdatingJobOffer": "Error updating job offer: {error}",
+  "@errorUpdatingJobOffer": {
+    "description": "Error message when job offer update fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "jobOfferDeletedSuccess": "Job offer deleted successfully",
+  "@jobOfferDeletedSuccess": {
+    "description": "Success message when job offer is deleted"
+  },
+  "errorDeletingJobOffer": "Error deleting job offer: {error}",
+  "@errorDeletingJobOffer": {
+    "description": "Error message when job offer deletion fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "jobOfferNotFound": "Job offer not found",
+  "@jobOfferNotFound": {
+    "description": "Message when job offer is not found"
+  },
+  "jobTitle": "Job Title",
+  "@jobTitle": {
+    "description": "Label for job title field"
+  },
+  "jobTitleHint": "e.g. Senior Flutter Developer",
+  "@jobTitleHint": {
+    "description": "Hint text for job title field"
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Label for location field"
+  },
+  "locationHint": "e.g. New York, NY or Remote",
+  "@locationHint": {
+    "description": "Hint text for location field"
+  },
+  "jobType": "Job Type",
+  "@jobType": {
+    "description": "Label for job type field"
+  },
+  "experienceLevel": "Experience Level",
+  "@experienceLevel": {
+    "description": "Label for experience level field"
+  },
+  "salaryOptional": "Salary (Optional)",
+  "@salaryOptional": {
+    "description": "Label for salary field"
+  },
+  "salaryHint": "e.g. $80,000 - $120,000 per year",
+  "@salaryHint": {
+    "description": "Hint text for salary field"
+  },
+  "jobDescription": "Job Description",
+  "@jobDescription": {
+    "description": "Label for job description field"
+  },
+  "jobDescriptionHint": "Describe the role, responsibilities, and what you're looking for...",
+  "@jobDescriptionHint": {
+    "description": "Hint text for job description field"
+  },
+  "requirementsOptional": "Requirements (Optional)",
+  "@requirementsOptional": {
+    "description": "Label for requirements field"
+  },
+  "requirementsHint": "List the skills, qualifications, and experience required...",
+  "@requirementsHint": {
+    "description": "Hint text for requirements field"
+  },
+  "benefitsOptional": "Benefits (Optional)",
+  "@benefitsOptional": {
+    "description": "Label for benefits field"
+  },
+  "benefitsHint": "Health insurance, flexible hours, remote work options...",
+  "@benefitsHint": {
+    "description": "Hint text for benefits field"
+  },
+  "jobStatus": "Job Status",
+  "@jobStatus": {
+    "description": "Label for job status section"
+  },
+  "activeJobsVisible": "Active jobs will be visible to job seekers",
+  "@activeJobsVisible": {
+    "description": "Description for job status toggle"
+  },
+  "updating": "Updating...",
+  "@updating": {
+    "description": "Text shown while updating job offer"
+  },
+  "updateJobOffer": "Update Job Offer",
+  "@updateJobOffer": {
+    "description": "Button text to update job offer"
+  },
+  "fieldRequired": "{field} is required",
+  "@fieldRequired": {
+    "description": "Validation message for required fields",
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "fullTime": "Full-time",
+  "@fullTime": {
+    "description": "Job type: Full-time"
+  },
+  "partTime": "Part-time",
+  "@partTime": {
+    "description": "Job type: Part-time"
+  },
+  "contract": "Contract",
+  "@contract": {
+    "description": "Job type: Contract"
+  },
+  "internship": "Internship",
+  "@internship": {
+    "description": "Job type: Internship"
+  },
+  "freelance": "Freelance",
+  "@freelance": {
+    "description": "Job type: Freelance"
+  },
+  "entryLevel": "Entry-level",
+  "@entryLevel": {
+    "description": "Experience level: Entry-level"
+  },
+  "midLevel": "Mid-level",
+  "@midLevel": {
+    "description": "Experience level: Mid-level"
+  },
+  "senior": "Senior",
+  "@senior": {
+    "description": "Experience level: Senior"
+  },
+  "lead": "Lead",
+  "@lead": {
+    "description": "Experience level: Lead"
+  },
+  "executive": "Executive",
+  "@executive": {
+    "description": "Experience level: Executive"
+  },
+  
+  "createJobOfferTitle": "Create Job Offer",
+  "@createJobOfferTitle": {
+    "description": "Title for create job offer page"
+  },
+  "jobDetails": "Job Details",
+  "@jobDetails": {
+    "description": "Section title for job details"
+  },
+  "jobOfferCreatedSuccess": "Job offer created successfully!",
+  "@jobOfferCreatedSuccess": {
+    "description": "Success message when job offer is created"
+  },
+  "errorCreatingJobOffer": "Error creating job offer: {error}",
+  "@errorCreatingJobOffer": {
+    "description": "Error message when creating job offer fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "creating": "Creating...",
+  "@creating": {
+    "description": "Text shown while creating job offer"
+  },
+  "createJobOffer": "Create Job Offer",
+  "@createJobOffer": {
+    "description": "Button text to create job offer"
+  },
+  
+  "aiCandidateAnalysis": "AI Candidate Analysis",
+  "@aiCandidateAnalysis": {
+    "description": "Title for AI candidate analysis page"
+  },
+  "generateNewFeedback": "Generate New Feedback",
+  "@generateNewFeedback": {
+    "description": "Tooltip for refresh button"
+  },
+  "aiAnalysisGeneratedSuccess": "AI analysis generated successfully!",
+  "@aiAnalysisGeneratedSuccess": {
+    "description": "Success message for AI analysis generation"
+  },
+  "errorGeneratingAnalysis": "Error generating analysis: {error}",
+  "@errorGeneratingAnalysis": {
+    "description": "Error message for AI analysis generation",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notRated": "Not rated",
+  "@notRated": {
+    "description": "Text when score is null"
+  },
+  "excellentFit": "Excellent fit",
+  "@excellentFit": {
+    "description": "Score text for scores >= 80"
+  },
+  "goodFit": "Good fit",
+  "@goodFit": {
+    "description": "Score text for scores >= 60"
+  },
+  "fairFit": "Fair fit",
+  "@fairFit": {
+    "description": "Score text for scores >= 40"
+  },
+  "poorFit": "Poor fit",
+  "@poorFit": {
+    "description": "Score text for scores < 40"
+  },
+  "contactCandidate": "Contact {name}",
+  "@contactCandidate": {
+    "description": "Contact dialog title",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "candidateContactInfo": "Candidate Contact Information",
+  "@candidateContactInfo": {
+    "description": "Subtitle for contact dialog"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Phone label"
+  },
+  "emailCopiedToClipboard": "Email copied to clipboard",
+  "@emailCopiedToClipboard": {
+    "description": "Toast message when email is copied"
+  },
+  "phoneCopiedToClipboard": "Phone number copied to clipboard",
+  "@phoneCopiedToClipboard": {
+    "description": "Toast message when phone is copied"
+  },
+  "noContactInfoAvailable": "No contact information available for this candidate.",
+  "@noContactInfoAvailable": {
+    "description": "Message when no contact info is available"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "jobPosition": "Job Position",
+  "@jobPosition": {
+    "description": "Default text when job title is null"
+  },
+  "aiAnalysisDescription": "Comprehensive AI-powered analysis of candidate fit based on skills, experience, and job requirements",
+  "@aiAnalysisDescription": {
+    "description": "Description of AI analysis feature"
+  },
+  "contact": "Contact",
+  "@contact": {
+    "description": "Short contact button text for mobile"
+  },
+  "contactCandidateFull": "Contact Candidate",
+  "@contactCandidateFull": {
+    "description": "Full contact button text for desktop"
+  },
+  "analyzingCandidateProfile": "Analyzing candidate profile...",
+  "@analyzingCandidateProfile": {
+    "description": "Loading text for AI analysis"
+  },
+  "generating": "Generating...",
+  "@generating": {
+    "description": "Text shown while generating AI analysis"
+  },
+  "regenerateAIAnalysis": "Regenerate AI Analysis",
+  "@regenerateAIAnalysis": {
+    "description": "Button text to regenerate AI analysis"
+  },
+  "addOrUpdateExperience": "Add or Update Experience",
+  "@addOrUpdateExperience": {
+    "description": "AppBar title for employee experience management"
+  },
+  "blockchainAddressError": "This user does not have a valid Base Blockchain address.",
+  "@blockchainAddressError": {
+    "description": "Error message when user lacks blockchain address"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error label"
+  },
+  "addOrUpdateExperienceFor": "Add or Update Experience for \"{name}\"",
+  "@addOrUpdateExperienceFor": {
+    "description": "Header text for experience management with user name",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The user's name"
+      }
+    }
+  },
+  "createWorkExperience": "▶️ Create Work Experience",
+  "@createWorkExperience": {
+    "description": "Button text to create new work experience"
+  },
+  "role": "Role",
+  "@role": {
+    "description": "Job role field label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Job description field label"
+  },
+  "startDate": "Start Date",
+  "@startDate": {
+    "description": "Work experience start date field label"
+  },
+  "walletPassword": "Wallet Password",
+  "@walletPassword": {
+    "description": "Blockchain wallet password field label"
+  },
+  "workExperienceCreated": "Work experience created!",
+  "@workExperienceCreated": {
+    "description": "Success message when work experience is created"
+  },
+  "endExperience": "End Experience",
+  "@endExperience": {
+    "description": "Button text to end work experience"
+  },
+  "selectExperienceToEnd": "Select Experience to End",
+  "@selectExperienceToEnd": {
+    "description": "Dropdown label for selecting experience to end"
+  },
+  "endDate": "End Date",
+  "@endDate": {
+    "description": "Work experience end date field label"
+  },
+  "end": "End",
+  "@end": {
+    "description": "Button text to confirm ending experience"
+  },
+  "experienceEnded": "Experience ended!",
+  "@experienceEnded": {
+    "description": "Success message when experience is ended"
+  },
+  "promote": "Promote",
+  "@promote": {
+    "description": "Button text to promote employee"
+  },
+  "selectExperienceToPromote": "Select Experience to Promote",
+  "@selectExperienceToPromote": {
+    "description": "Dropdown label for selecting experience to promote"
+  },
+  "newTitle": "New Title",
+  "@newTitle": {
+    "description": "Field label for new job title in promotion"
+  },
+  "employeePromoted": "Employee promoted!",
+  "@employeePromoted": {
+    "description": "Success message when employee is promoted"
+  },
+  "title": "Title",
+  "@title": {
+    "description": "Default title text for experience items"
+  },
+  "addAnEmployee": "Add an Employee",
+  "@addAnEmployee": {
+    "description": "AppBar title for adding an employee"
+  },
+  "searchUserToAddAsEmployee": "Search a user to add as employee",
+  "@searchUserToAddAsEmployee": {
+    "description": "Card title for employee search"
+  },
+  "clickUserToAddToCompany": "Click on a user to add to your company",
+  "@clickUserToAddToCompany": {
+    "description": "Card subtitle instruction for adding employees"
+  },
+  "careerAdvisor": "Career Advisor",
+  "@careerAdvisor": {
+    "description": "AppBar title for career advice feature"
+  },
+  "restartProcess": "Restart Process",
+  "@restartProcess": {
+    "description": "Tooltip for restart button"
+  },
+  "cvCheck": "CV Check",
+  "@cvCheck": {
+    "description": "Step title for CV check"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Step title for welcome"
+  },
+  "careerGoals": "Career Goals",
+  "@careerGoals": {
+    "description": "Step title for career goals"
+  },
+  "skillsAssessment": "Skills Assessment",
+  "@skillsAssessment": {
+    "description": "Step title for skills assessment"
+  },
+  "industryPreferences": "Industry Preferences",
+  "@industryPreferences": {
+    "description": "Step title for industry preferences"
+  },
+  "yourCareerAdvice": "Your Career Advice",
+  "@yourCareerAdvice": {
+    "description": "Step title for career advice results"
+  },
+  "restartCareerAdvisor": "Restart Career Advisor",
+  "@restartCareerAdvisor": {
+    "description": "Dialog title for restart confirmation"
+  },
+  "restartConfirmationMessage": "Are you sure you want to restart the process? All your progress will be lost.",
+  "@restartConfirmationMessage": {
+    "description": "Dialog content for restart confirmation"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Restart button text"
+  },
+  "welcomeToAICareerAdvisor": "Welcome to Your AI Career Advisor",
+  "@welcomeToAICareerAdvisor": {
+    "description": "Welcome step main title"
+  },
+  "careerJourneyDescription": "I'm here to help you navigate your career journey. Based on your CV and preferences, I'll provide personalized advice to help you achieve your professional goals.",
+  "@careerJourneyDescription": {
+    "description": "Career advisor description text"
+  },
+  "whatYoullGet": "What you'll get:",
+  "@whatYoullGet": {
+    "description": "Benefits section header"
+  },
+  "personalizedCareerRecommendations": "Personalized career recommendations",
+  "@personalizedCareerRecommendations": {
+    "description": "First benefit item"
+  },
+  "skillsGapAnalysis": "Skills gap analysis and improvement tips",
+  "@skillsGapAnalysis": {
+    "description": "Second benefit item"
+  },
+  "industryInsights": "Industry insights and trends",
+  "@industryInsights": {
+    "description": "Third benefit item"
+  },
+  "nextStepsCareerGrowth": "Next steps for your career growth",
+  "@nextStepsCareerGrowth": {
+    "description": "Fourth benefit item"
+  },
+  "letsGetStarted": "Let's Get Started!",
+  "@letsGetStarted": {
+    "description": "Welcome step button text"
+  },
+  "checkingCvStatus": "Checking your CV status...",
+  "@checkingCvStatus": {
+    "description": "CV check loading message"
+  },
+  "oopsSomethingWentWrong": "Oops! Something went wrong",
+  "@oopsSomethingWentWrong": {
+    "description": "CV check error title"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "CV check retry button"
+  },
+  "greatCvReady": "Great! Your CV is ready",
+  "@greatCvReady": {
+    "description": "CV check success title"
+  },
+  "cvFoundContinueAdvice": "We found your completed CV. Let's continue with personalized career advice.",
+  "@cvFoundContinueAdvice": {
+    "description": "CV check success description"
+  },
+  "completeCvFirst": "Complete Your CV First",
+  "@completeCvFirst": {
+    "description": "CV incomplete title"
+  },
+  "cvNeededForAdvice": "To provide you with the best career advice, we need to analyze your CV first. Please complete your CV and then return to the career advisor.",
+  "@cvNeededForAdvice": {
+    "description": "CV incomplete description"
+  },
+  "completeMyCv": "Complete My CV",
+  "@completeMyCv": {
+    "description": "Button to complete CV"
+  },
+  "completedCvCheckAgain": "I've completed my CV - Check again",
+  "@completedCvCheckAgain": {
+    "description": "Recheck CV button text"
+  },
+  "rateYourSkills": "Rate Your Skills",
+  "@rateYourSkills": {
+    "description": "Skills assessment main title"
+  },
+  "skillsRatingDescription": "Rate yourself from 1 (beginner) to 5 (expert) in each skill category.",
+  "@skillsRatingDescription": {
+    "description": "Skills assessment description"
+  },
+  "leadershipManagement": "Leadership & Management",
+  "@leadershipManagement": {
+    "description": "Skill category"
+  },
+  "communicationInterpersonal": "Communication & Interpersonal",
+  "@communicationInterpersonal": {
+    "description": "Skill category"
+  },
+  "technicalDigital": "Technical & Digital",
+  "@technicalDigital": {
+    "description": "Skill category"
+  },
+  "problemSolvingAnalytics": "Problem Solving & Analytics",
+  "@problemSolvingAnalytics": {
+    "description": "Skill category"
+  },
+  "creativityInnovation": "Creativity & Innovation",
+  "@creativityInnovation": {
+    "description": "Skill category"
+  },
+  "projectManagement": "Project Management",
+  "@projectManagement": {
+    "description": "Skill category"
+  },
+  "salesMarketing": "Sales & Marketing",
+  "@salesMarketing": {
+    "description": "Skill category"
+  },
+  "financialManagement": "Financial Management",
+  "@financialManagement": {
+    "description": "Skill category"
+  },
+  "beginner": "Beginner",
+  "@beginner": {
+    "description": "Skill level label"
+  },
+  "expert": "Expert",
+  "@expert": {
+    "description": "Skill level label"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button text"
+  },
+  "rateAtLeast3Skills": "Rate at least 3 skills",
+  "@rateAtLeast3Skills": {
+    "description": "Skills assessment requirement message"
+  },
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+  "industryWorkPreferences": "Industry & Work Preferences",
+  "@industryWorkPreferences": {
+    "description": "Industry preferences main title"
+  },
+  "selectIndustriesDescription": "Select industries you're interested in and your work preferences.",
+  "@selectIndustriesDescription": {
+    "description": "Industry preferences description"
+  },
+  "industriesOfInterest": "Industries of Interest (Select up to 3)",
+  "@industriesOfInterest": {
+    "description": "Industries section title"
+  },
+  "technologySoftware": "Technology & Software",
+  "@technologySoftware": {
+    "description": "Industry name"
+  },
+  "healthcareMedicine": "Healthcare & Medicine",
+  "@healthcareMedicine": {
+    "description": "Industry name"
+  },
+  "financeBanking": "Finance & Banking",
+  "@financeBanking": {
+    "description": "Industry name"
+  },
+  "educationTraining": "Education & Training",
+  "@educationTraining": {
+    "description": "Industry name"
+  },
+  "marketingAdvertising": "Marketing & Advertising",
+  "@marketingAdvertising": {
+    "description": "Industry name"
+  },
+  "consulting": "Consulting",
+  "@consulting": {
+    "description": "Industry name"
+  },
+  "manufacturing": "Manufacturing",
+  "@manufacturing": {
+    "description": "Industry name"
+  },
+  "retailEcommerce": "Retail & E-commerce",
+  "@retailEcommerce": {
+    "description": "Industry name"
+  },
+  "mediaEntertainment": "Media & Entertainment",
+  "@mediaEntertainment": {
+    "description": "Industry name"
+  },
+  "nonprofitNgo": "Non-profit & NGO",
+  "@nonprofitNgo": {
+    "description": "Industry name"
+  },
+  "governmentPublicSector": "Government & Public Sector",
+  "@governmentPublicSector": {
+    "description": "Industry name"
+  },
+  "energyEnvironment": "Energy & Environment",
+  "@energyEnvironment": {
+    "description": "Industry name"
+  },
+  "workPreferences": "Work Preferences",
+  "@workPreferences": {
+    "description": "Work preferences section title"
+  },
+  "workLocation": "Work Location",
+  "@workLocation": {
+    "description": "Work preference category"
+  },
+  "companySize": "Company Size",
+  "@companySize": {
+    "description": "Work preference category"
+  },
+  "workSchedule": "Work Schedule",
+  "@workSchedule": {
+    "description": "Work preference category"
+  },
+  "remote": "Remote",
+  "@remote": {
+    "description": "Work location option"
+  },
+  "hybrid": "Hybrid",
+  "@hybrid": {
+    "description": "Work location option"
+  },
+  "onsite": "On-site",
+  "@onsite": {
+    "description": "Work location option"
+  },
+  "noPreference": "No preference",
+  "@noPreference": {
+    "description": "Preference option"
+  },
+  "startup1to50": "Startup (1-50)",
+  "@startup1to50": {
+    "description": "Company size option"
+  },
+  "medium51to500": "Medium (51-500)",
+  "@medium51to500": {
+    "description": "Company size option"
+  },
+  "large500plus": "Large (500+)",
+  "@large500plus": {
+    "description": "Company size option"
+  },
+  "fullTime": "Full-time",
+  "@fullTime": {
+    "description": "Work schedule option"
+  },
+  "partTime": "Part-time",
+  "@partTime": {
+    "description": "Work schedule option"
+  },
+  "freelanceContract": "Freelance/Contract",
+  "@freelanceContract": {
+    "description": "Work schedule option"
+  },
+  "flexible": "Flexible",
+  "@flexible": {
+    "description": "Work schedule option"
+  },
+  "generateAdvice": "Generate Advice",
+  "@generateAdvice": {
+    "description": "Generate advice button text"
+  },
+  "whatsYourMainCareerGoal": "What's your main career goal?",
+  "@whatsYourMainCareerGoal": {
+    "description": "Career goals main title"
+  },
+  "selectPrimaryObjective": "Select your primary objective so I can tailor advice to your needs.",
+  "@selectPrimaryObjective": {
+    "description": "Career goals description"
+  },
+  "getPromotedCurrentRole": "Get promoted in current role",
+  "@getPromotedCurrentRole": {
+    "description": "Career goal option"
+  },
+  "switchToNewIndustry": "Switch to a new industry",
+  "@switchToNewIndustry": {
+    "description": "Career goal option"
+  },
+  "findBetterWorkLifeBalance": "Find a better work-life balance",
+  "@findBetterWorkLifeBalance": {
+    "description": "Career goal option"
+  },
+  "increaseSalarySignificantly": "Increase salary significantly",
+  "@increaseSalarySignificantly": {
+    "description": "Career goal option"
+  },
+  "developNewSkills": "Develop new skills",
+  "@developNewSkills": {
+    "description": "Career goal option"
+  },
+  "startMyOwnBusiness": "Start my own business",
+  "@startMyOwnBusiness": {
+    "description": "Career goal option"
+  },
+  "findRemoteWorkOpportunities": "Find remote work opportunities",
+  "@findRemoteWorkOpportunities": {
+    "description": "Career goal option"
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Other option"
+  },
+  "describeYourCareerGoal": "Describe your career goal",
+  "@describeYourCareerGoal": {
+    "description": "Custom goal section title"
+  },
+  "careerGoalHintText": "e.g., Transition into product management, become a data scientist, start a consulting practice...",
+  "@careerGoalHintText": {
+    "description": "Career goal input hint text"
+  },
+  "beSpecificCareerGoal": "Be specific about what you want to achieve in your career.",
+  "@beSpecificCareerGoal": {
+    "description": "Career goal helper text"
+  },
+  "enterYourGoalAbove": "Enter your goal above",
+  "@enterYourGoalAbove": {
+    "description": "Disabled continue button text"
+  },
+  "analyzingYourProfile": "Analyzing Your Profile...",
+  "@analyzingYourProfile": {
+    "description": "Loading screen title"
+  },
+  "aiCraftingAdvice": "Our AI is crafting personalized career advice based on your responses and CV analysis.",
+  "@aiCraftingAdvice": {
+    "description": "Loading screen description"
+  },
+  "thisMayTakeMoments": "This may take a few moments...",
+  "@thisMayTakeMoments": {
+    "description": "Loading screen wait message"
+  },
+  "connectionIssue": "Connection Issue",
+  "@connectionIssue": {
+    "description": "Error screen title"
+  },
+  "backupSystemAdvice": "We couldn't connect to our AI service, but we've generated advice based on your responses using our backup system.",
+  "@backupSystemAdvice": {
+    "description": "Error screen description"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Try again button text"
+  },
+  "noAdviceAvailable": "No Advice Available",
+  "@noAdviceAvailable": {
+    "description": "No advice error title"
+  },
+  "noAdviceGenerated": "We couldn't generate career advice at this time. Please try again later.",
+  "@noAdviceGenerated": {
+    "description": "No advice error description"
+  },
+  "personalizedCareerAdvice": "Your Personalized Career Advice",
+  "@personalizedCareerAdvice": {
+    "description": "Main results header title"
+  },
+  "generatedWithBackup": "Generated with backup system",
+  "@generatedWithBackup": {
+    "description": "Backup system subtitle"
+  },
+  "aiGeneratedInsights": "AI-generated insights based on your profile",
+  "@aiGeneratedInsights": {
+    "description": "AI-generated subtitle"
+  },
+  "backupSystemNote": "Note: This advice was generated using our backup system due to connectivity issues.",
+  "@backupSystemNote": {
+    "description": "Backup system warning note"
+  },
+  "careerSummary": "Career Summary",
+  "@careerSummary": {
+    "description": "Career summary section title"
+  },
+  "keyRecommendations": "Key Recommendations",
+  "@keyRecommendations": {
+    "description": "Recommendations section title"
+  },
+  "skillDevelopment": "Skill Development",
+  "@skillDevelopment": {
+    "description": "Skill development section title"
+  },
+  "nextSteps": "Next Steps",
+  "@nextSteps": {
+    "description": "Next steps section title"
+  },
+  "recommendedResources": "Recommended Resources",
+  "@recommendedResources": {
+    "description": "Resources section title"
+  },
+  "noItemsAvailable": "No items available",
+  "@noItemsAvailable": {
+    "description": "Empty list message"
+  },
+  "noResourcesAvailable": "No resources available",
+  "@noResourcesAvailable": {
+    "description": "Empty resources message"
+  },
+  "untitledResource": "Untitled Resource",
+  "@untitledResource": {
+    "description": "Default resource title"
+  },
+  "urlCopiedToClipboard": "URL copied to clipboard!",
+  "@urlCopiedToClipboard": {
+    "description": "Copy URL success message"
+  },
+  "updateMyCv": "Update My CV",
+  "@updateMyCv": {
+    "description": "Update CV button text"
+  },
+  "getNewAdvice": "Get New Advice",
+  "@getNewAdvice": {
+    "description": "Get new advice button text"
+  },
+  "browseJobOpportunities": "Browse Job Opportunities",
+  "@browseJobOpportunities": {
+    "description": "Browse jobs link text"
   }
 }

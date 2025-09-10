@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 
 class CVUploadStep extends StatefulWidget {
@@ -107,7 +107,7 @@ class _CVUploadStepState extends State<CVUploadStep>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error uploading CV: ${e.toString()}'),
+            content: Text('${AppLocalizations.of(context)!.errorUploadingCV} ${e.toString()}'),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),
@@ -135,7 +135,7 @@ class _CVUploadStepState extends State<CVUploadStep>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('CV data extracted successfully!'),
+            content: Text(AppLocalizations.of(context)!.cvDataExtractedSuccessfully),
             backgroundColor: Colors.green.shade600,
             duration: const Duration(seconds: 2),
           ),
@@ -149,7 +149,7 @@ class _CVUploadStepState extends State<CVUploadStep>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error extracting CV data: ${e.toString()}'),
+            content: Text('${AppLocalizations.of(context)!.errorExtractingCVData} ${e.toString()}'),
             backgroundColor: Colors.orange.shade600,
             duration: const Duration(seconds: 3),
           ),
@@ -187,25 +187,6 @@ class _CVUploadStepState extends State<CVUploadStep>
     
     // Call onComplete with null CV path and empty data structure
     widget.onComplete(null, emptyData);
-  }
-
-  void _onCVUploadComplete(String? cvPath, Map<String, dynamic>? extractedData) {
-    setState(() {
-      var _uploadedCVPath = cvPath;
-      
-      // If no data was extracted (CV not uploaded or extraction failed),
-      // initialize empty data structures for manual entry
-      if (extractedData != null) {
-        _extractedData = extractedData;
-      } else {
-        _extractedData = {
-          'experiences': <Map<String, dynamic>>[],
-          'certificates': <Map<String, dynamic>>[],
-          'skills': <Map<String, dynamic>>[],
-        };
-      }
-    });
-    widget.onComplete(cvPath, _extractedData);
   }
 
   @override
@@ -261,7 +242,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CV Upload (Optional)',
+                      AppLocalizations.of(context)!.cvUploadOptional,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -270,7 +251,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Upload your CV and I\'ll extract your experience, certificates, and skills automatically!',
+                      AppLocalizations.of(context)!.cvUploadDescription,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade700,
@@ -310,7 +291,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                'Click to upload your CV',
+                                AppLocalizations.of(context)!.clickToUploadCV,
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -319,7 +300,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'PDF files only • We\'ll extract your data automatically',
+                                AppLocalizations.of(context)!.pdfOnlyAutoExtract,
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   color: Colors.grey.shade500,
@@ -346,7 +327,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                             const CircularProgressIndicator(),
                             const SizedBox(height: 12),
                             Text(
-                              'Uploading your CV...',
+                              AppLocalizations.of(context)!.uploadingYourCV,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.blue.shade700,
@@ -372,7 +353,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                             const CircularProgressIndicator(),
                             const SizedBox(height: 12),
                             Text(
-                              'Extracting your experience, certificates, and skills...',
+                              AppLocalizations.of(context)!.extractingCVData,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.purple.shade700,
@@ -381,7 +362,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'This may take a few moments',
+                              AppLocalizations.of(context)!.extractionMayTakeMoments,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 color: Colors.purple.shade600,
@@ -425,7 +406,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'CV Processed Successfully!',
+                                        AppLocalizations.of(context)!.cvProcessedSuccessfully,
                                         style: GoogleFonts.inter(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -466,7 +447,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: const Text('Skip for now'),
+                              child: Text(AppLocalizations.of(context)!.skipForNow),
                             ),
                           ),
                           if (_extractedData != null && !_isExtracting) ...[
@@ -483,7 +464,7 @@ class _CVUploadStepState extends State<CVUploadStep>
                                   ),
                                 ),
                                 icon: const Icon(Icons.edit, size: 16),
-                                label: const Text('Review & Edit Data'),
+                                label: Text(AppLocalizations.of(context)!.reviewEditData),
                               ),
                             ),
                           ],
@@ -496,37 +477,6 @@ class _CVUploadStepState extends State<CVUploadStep>
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDataCount(IconData icon, String label, int count, Color color) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Icon(icon, color: color, size: 16),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          count.toString(),
-          style: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 10,
-            color: Colors.grey.shade600,
-          ),
-        ),
-      ],
     );
   }
 

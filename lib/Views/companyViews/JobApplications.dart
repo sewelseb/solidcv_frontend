@@ -5,6 +5,7 @@ import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/models/JobOffer.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JobApplications extends StatefulWidget {
   const JobApplications({super.key});
@@ -56,14 +57,14 @@ class _JobApplicationsState extends State<JobApplications> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Contact ${user.firstName} ${user.lastName}'),
+          title: Text(AppLocalizations.of(context)!.contactUser(user.firstName ?? '', user.lastName ?? '')),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Email: ${user.email}'),
+              Text('${AppLocalizations.of(context)!.email}: ${user.email}'),
               if (user.phoneNumber != null)
-                Text('Phone: ${user.phoneNumber}'),
+                Text('${AppLocalizations.of(context)!.phone}: ${user.phoneNumber}'),
             ],
           ),
           actions: [
@@ -96,7 +97,7 @@ class _JobApplicationsState extends State<JobApplications> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Job Applications',
+          AppLocalizations.of(context)!.jobApplicationsTitle,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -209,7 +210,7 @@ class _JobApplicationsState extends State<JobApplications> {
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
-                                      'Applications',
+                                      AppLocalizations.of(context)!.applicationsLabel,
                                       style: GoogleFonts.inter(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w600,
@@ -225,7 +226,7 @@ class _JobApplicationsState extends State<JobApplications> {
 
                           // Description
                           Text(
-                            'Review and manage candidates who applied for this position',
+                            AppLocalizations.of(context)!.reviewCandidatesDescription,
                             style: GoogleFonts.inter(
                               fontSize: isMobile ? 14 : 16,
                               color: Colors.white.withOpacity(0.9),
@@ -263,11 +264,11 @@ class _JobApplicationsState extends State<JobApplications> {
                         children: [
                           Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
                           const SizedBox(height: 16),
-                          Text('Error loading applications: ${snapshot.error}'),
+                          Text(AppLocalizations.of(context)!.errorLoadingApplications(snapshot.error.toString())),
                           const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: _refreshApplications,
-                            child: const Text('Retry'),
+                            child: Text(AppLocalizations.of(context)!.retry),
                           ),
                         ],
                       ),
@@ -280,7 +281,7 @@ class _JobApplicationsState extends State<JobApplications> {
                           Icon(Icons.inbox, size: 64, color: Colors.grey.shade400),
                           const SizedBox(height: 16),
                           Text(
-                            'No applications yet',
+                            AppLocalizations.of(context)!.noApplicationsYet,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               color: Colors.grey.shade600,
@@ -289,7 +290,7 @@ class _JobApplicationsState extends State<JobApplications> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Applications will appear here when users apply',
+                            AppLocalizations.of(context)!.applicationsWillAppear,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.grey.shade500,
@@ -308,7 +309,7 @@ class _JobApplicationsState extends State<JobApplications> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${applicants.length} Applicant${applicants.length != 1 ? 's' : ''}',
+                          AppLocalizations.of(context)!.applicantsCount(applicants.length),
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -413,7 +414,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${user.firstName ?? 'Unknown'} ${user.lastName ?? 'User'}',
+                            '${user.firstName ?? AppLocalizations.of(context)!.unknownUser.split(' ').first} ${user.lastName ?? AppLocalizations.of(context)!.unknownUser.split(' ').last}',
                             style: GoogleFonts.inter(
                               fontSize: isMobile ? 18 : 20,
                               fontWeight: FontWeight.bold,
@@ -445,7 +446,7 @@ class _JobApplicationsState extends State<JobApplications> {
                             Icon(Icons.verified, size: 16, color: Colors.green.shade700),
                             const SizedBox(width: 4),
                             Text(
-                              'Verified',
+                              AppLocalizations.of(context)!.verified,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -507,7 +508,7 @@ class _JobApplicationsState extends State<JobApplications> {
                             Icon(Icons.phone, size: 12, color: Colors.blue.shade700),
                             const SizedBox(width: 4),
                             Text(
-                              'Phone',
+                              AppLocalizations.of(context)!.phone,
                               style: GoogleFonts.inter(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
@@ -529,7 +530,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: ElevatedButton.icon(
                           onPressed: () => _showUserProfile(user),
                           icon: const Icon(Icons.person, size: 16),
-                          label: const Text('View Profile'),
+                          label: Text(AppLocalizations.of(context)!.viewProfile),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
                             foregroundColor: Colors.white,
@@ -546,7 +547,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: ElevatedButton.icon(
                           onPressed: () => _showAIFeedback(user),
                           icon: const Icon(Icons.psychology, size: 16),
-                          label: const Text('AI Analysis'),
+                          label: Text(AppLocalizations.of(context)!.aiAnalysis),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple.shade600,
                             foregroundColor: Colors.white,
@@ -563,7 +564,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: OutlinedButton.icon(
                           onPressed: () => _contactUser(user),
                           icon: const Icon(Icons.email, size: 16),
-                          label: const Text('Contact'),
+                          label: Text(AppLocalizations.of(context)!.contact),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.blue.shade600,
                             side: BorderSide(color: Colors.blue.shade600),
@@ -583,7 +584,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: ElevatedButton.icon(
                           onPressed: () => _showUserProfile(user),
                           icon: const Icon(Icons.person, size: 16),
-                          label: const Text('Profile'),
+                          label: Text(AppLocalizations.of(context)!.profile),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _primaryColor,
                             foregroundColor: Colors.white,
@@ -599,7 +600,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: ElevatedButton.icon(
                           onPressed: () => _showAIFeedback(user),
                           icon: const Icon(Icons.psychology, size: 16),
-                          label: const Text('AI Analysis'),
+                          label: Text(AppLocalizations.of(context)!.aiAnalysis),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple.shade600,
                             foregroundColor: Colors.white,
@@ -615,7 +616,7 @@ class _JobApplicationsState extends State<JobApplications> {
                         child: OutlinedButton.icon(
                           onPressed: () => _contactUser(user),
                           icon: const Icon(Icons.email, size: 16),
-                          label: const Text('Contact'),
+                          label: Text(AppLocalizations.of(context)!.contact),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.blue.shade600,
                             side: BorderSide(color: Colors.blue.shade600),
@@ -642,11 +643,11 @@ class _JobApplicationsState extends State<JobApplications> {
 
     if (difference.inDays < 30) {
       if (difference.inDays == 0) {
-        return 'today';
+        return AppLocalizations.of(context)!.today;
       } else if (difference.inDays < 7) {
-        return '${difference.inDays} days ago';
+        return AppLocalizations.of(context)!.daysAgo(difference.inDays);
       } else {
-        return '${(difference.inDays / 7).floor()} weeks ago';
+        return AppLocalizations.of(context)!.weeksAgo((difference.inDays / 7).floor());
       }
     } else {
       return '${date.month}/${date.year}';

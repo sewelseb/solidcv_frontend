@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/Parameters/EducationInstitutionParameter.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
@@ -35,9 +36,9 @@ class _MyEducationInstitutionsState extends State<MyEducationInstitutions> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return const Center(child: Text('Error: \${snapshot.error}'));
+          return Center(child: Text(AppLocalizations.of(context)!.myEducationInstitutionsError(snapshot.error.toString())));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No education institutions found.'));
+          return Center(child: Text(AppLocalizations.of(context)!.myEducationInstitutionsNoInstitutions));
         } else {
           return ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -118,7 +119,7 @@ class _InstitutionCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      institution.name ?? "Unnamed Institution",
+                      institution.name ?? AppLocalizations.of(context)!.myEducationInstitutionsUnnamedInstitution,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,

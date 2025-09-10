@@ -4,6 +4,7 @@ import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
 import 'package:solid_cv/models/JobOffer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditJobOffer extends StatefulWidget {
   const EditJobOffer({super.key});
@@ -202,7 +203,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Job Offer',
+          AppLocalizations.of(context)!.editJobOfferTitle,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -215,7 +216,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: _deleteJobOffer,
-            tooltip: 'Delete Job Offer',
+            tooltip: AppLocalizations.of(context)!.deleteJobOfferTooltip,
           ),
         ],
       ),
@@ -233,7 +234,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                 children: [
                   Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
                   const SizedBox(height: 16),
-                  Text('Error: ${snapshot.error}'),
+                  Text('${AppLocalizations.of(context)!.errorText}: ${snapshot.error}'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
@@ -242,7 +243,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                         _isLoaded = false;
                       });
                     },
-                    child: const Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retryText),
                   ),
                 ],
               ),
@@ -284,7 +285,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Edit Job Offer',
+                                  AppLocalizations.of(context)!.editJobOfferTitle,
                                   style: GoogleFonts.inter(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -299,7 +300,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
-                                  _isActive ? 'Active' : 'Inactive',
+                                  _isActive ? AppLocalizations.of(context)!.active : AppLocalizations.of(context)!.inactive,
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -316,20 +317,20 @@ class _EditJobOfferState extends State<EditJobOffer> {
                             // Job Title
                             _buildTextField(
                               controller: _titleController,
-                              label: 'Job Title',
+                              label: AppLocalizations.of(context)!.jobTitle,
                               icon: Icons.work,
                               required: true,
-                              hint: 'e.g. Senior Flutter Developer',
+                              hint: AppLocalizations.of(context)!.jobTitleHint,
                             ),
                             const SizedBox(height: 20),
 
                             // Location
                             _buildTextField(
                               controller: _locationController,
-                              label: 'Location',
+                              label: AppLocalizations.of(context)!.location,
                               icon: Icons.location_on,
                               required: true,
-                              hint: 'e.g. New York, NY or Remote',
+                              hint: AppLocalizations.of(context)!.locationHint,
                             ),
                             const SizedBox(height: 20),
 
@@ -338,7 +339,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                 ? Column(
                                     children: [
                                       _buildDropdownField(
-                                        label: 'Job Type',
+                                        label: AppLocalizations.of(context)!.jobType,
                                         value: _jobType,
                                         items: _jobTypes,
                                         onChanged: (value) => setState(() => _jobType = value!),
@@ -346,7 +347,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                       ),
                                       const SizedBox(height: 20),
                                       _buildDropdownField(
-                                        label: 'Experience Level',
+                                        label: AppLocalizations.of(context)!.experienceLevel,
                                         value: _experienceLevel,
                                         items: _experienceLevels,
                                         onChanged: (value) => setState(() => _experienceLevel = value!),
@@ -358,7 +359,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                     children: [
                                       Expanded(
                                         child: _buildDropdownField(
-                                          label: 'Job Type',
+                                          label: AppLocalizations.of(context)!.jobType,
                                           value: _jobType,
                                           items: _jobTypes,
                                           onChanged: (value) => setState(() => _jobType = value!),
@@ -368,7 +369,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                       const SizedBox(width: 16),
                                       Expanded(
                                         child: _buildDropdownField(
-                                          label: 'Experience Level',
+                                          label: AppLocalizations.of(context)!.experienceLevel,
                                           value: _experienceLevel,
                                           items: _experienceLevels,
                                           onChanged: (value) => setState(() => _experienceLevel = value!),
@@ -382,40 +383,40 @@ class _EditJobOfferState extends State<EditJobOffer> {
                             // Salary (Optional)
                             _buildTextField(
                               controller: _salaryController,
-                              label: 'Salary (Optional)',
+                              label: AppLocalizations.of(context)!.salaryOptional,
                               icon: Icons.attach_money,
-                              hint: 'e.g. \$80,000 - \$120,000 per year',
+                              hint: AppLocalizations.of(context)!.salaryHint,
                             ),
                             const SizedBox(height: 20),
 
                             // Description
                             _buildTextField(
                               controller: _descriptionController,
-                              label: 'Job Description',
+                              label: AppLocalizations.of(context)!.jobDescription,
                               icon: Icons.description,
                               required: true,
                               maxLines: 6,
-                              hint: 'Describe the role, responsibilities, and what you\'re looking for...',
+                              hint: AppLocalizations.of(context)!.jobDescriptionHint,
                             ),
                             const SizedBox(height: 20),
 
                             // Requirements
                             _buildTextField(
                               controller: _requirementsController,
-                              label: 'Requirements (Optional)',
+                              label: AppLocalizations.of(context)!.requirementsOptional,
                               icon: Icons.checklist,
                               maxLines: 4,
-                              hint: 'List the skills, qualifications, and experience required...',
+                              hint: AppLocalizations.of(context)!.requirementsHint,
                             ),
                             const SizedBox(height: 20),
 
                             // Benefits
                             _buildTextField(
                               controller: _benefitsController,
-                              label: 'Benefits (Optional)',
+                              label: AppLocalizations.of(context)!.benefitsOptional,
                               icon: Icons.star,
                               maxLines: 3,
-                              hint: 'Health insurance, flexible hours, remote work options...',
+                              hint: AppLocalizations.of(context)!.benefitsHint,
                             ),
                             const SizedBox(height: 24),
 
@@ -436,14 +437,14 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Job Status',
+                                          AppLocalizations.of(context)!.jobStatus,
                                           style: GoogleFonts.inter(
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black87,
                                           ),
                                         ),
                                         Text(
-                                          'Active jobs will be visible to job seekers',
+                                          AppLocalizations.of(context)!.activeJobsVisible,
                                           style: GoogleFonts.inter(
                                             fontSize: 12,
                                             color: Colors.grey.shade600,
@@ -477,7 +478,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                       ),
                                     ),
                                     icon: const Icon(Icons.delete),
-                                    label: const Text('Delete'),
+                                    label: Text(AppLocalizations.of(context)!.delete),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -507,7 +508,7 @@ class _EditJobOfferState extends State<EditJobOffer> {
                                         : const Icon(Icons.save),
                                     label: Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                                      child: Text(_isSubmitting ? 'Updating...' : 'Update Job Offer'),
+                                      child: Text(_isSubmitting ? AppLocalizations.of(context)!.updating : AppLocalizations.of(context)!.updateJobOffer),
                                     ),
                                   ),
                                 ),
