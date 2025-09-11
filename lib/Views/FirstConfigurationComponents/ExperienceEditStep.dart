@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -63,20 +64,6 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
         _animationController.forward();
       });
     }
-  }
-
-  void _addExperience() {
-    setState(() {
-      // Create a new ManualExperience object and add to the regular list
-      _experiences.add(ManualExperience(
-        title: '',
-        company: '',
-        startDateAsTimestamp: DateTime.now().millisecondsSinceEpoch,
-        endDateAsTimestamp: DateTime.now().millisecondsSinceEpoch,
-        description: '',
-        promotions: [],
-      ));
-    });
   }
 
   void _removeExperience(int id) {
@@ -151,7 +138,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
                           const CircularProgressIndicator(),
                           const SizedBox(height: 16),
                           Text(
-                            'Loading your experiences...',
+                            AppLocalizations.of(context)!.loadingYourExperiences,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.grey.shade600,
@@ -177,7 +164,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
                           Icon(Icons.error, color: Colors.red.shade400, size: 32),
                           const SizedBox(height: 8),
                           Text(
-                            'Error loading experiences',
+                            AppLocalizations.of(context)!.errorLoadingExperiences,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.red.shade600,
@@ -185,7 +172,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'You can still add experiences manually',
+                            AppLocalizations.of(context)!.canStillAddExperiencesManually,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.grey.shade600,
@@ -221,7 +208,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Review Your Experience',
+          AppLocalizations.of(context)!.reviewYourExperience,
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -230,7 +217,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
         ),
         const SizedBox(height: 8),
         Text(
-          'You have ${_experiences.length} work experience${_experiences.length != 1 ? 's' : ''}. Please review and edit them as needed.',
+          _getExperienceCountMessage(),
           style: GoogleFonts.inter(
             fontSize: 14,
             color: Colors.grey.shade700,
@@ -253,7 +240,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
                 Icon(Icons.work_off, color: Colors.grey.shade400, size: 32),
                 const SizedBox(height: 8),
                 Text(
-                  'No experience found',
+                  AppLocalizations.of(context)!.noExperienceFound,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -287,7 +274,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
                 ),
               ),
               icon: const Icon(Icons.arrow_forward, size: 16),
-              label: const Text('Continue to Certificates'),
+              label: Text(AppLocalizations.of(context)!.continueToCertificates),
             ),
           ),
       ],
@@ -312,7 +299,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
             children: [
               Expanded(
                 child: Text(
-                  experience.title?.isNotEmpty == true ? experience.title! : 'Position Title',
+                  experience.title?.isNotEmpty == true ? experience.title! : AppLocalizations.of(context)!.positionTitle,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -339,7 +326,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
           ],
           const SizedBox(height: 4),
           Text(
-            '${_formatDate(DateTime.fromMillisecondsSinceEpoch((experience.startDateAsTimestamp ?? 0)*1000))} - ${(experience.endDateAsTimestamp == null || experience.endDateAsTimestamp == 0) ? 'Present' : _formatDate(DateTime.fromMillisecondsSinceEpoch(experience.endDateAsTimestamp! *1000))}',
+            '${_formatDate(DateTime.fromMillisecondsSinceEpoch((experience.startDateAsTimestamp ?? 0)*1000))} - ${(experience.endDateAsTimestamp == null || experience.endDateAsTimestamp == 0) ? AppLocalizations.of(context)!.present : _formatDate(DateTime.fromMillisecondsSinceEpoch(experience.endDateAsTimestamp! *1000))}',
             style: GoogleFonts.inter(
               fontSize: 11,
               color: Colors.grey.shade600,
@@ -364,7 +351,7 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
               foregroundColor: Colors.blue.shade600,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             ),
-            child: const Text('Edit Details', style: TextStyle(fontSize: 11)),
+            child: Text(AppLocalizations.of(context)!.editDetails, style: TextStyle(fontSize: 11)),
           ),
         ],
       ),
@@ -373,6 +360,14 @@ class _ExperienceEditStepState extends State<ExperienceEditStep>
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
+  }
+
+  String _getExperienceCountMessage() {
+    if (_experiences.length == 1) {
+      return AppLocalizations.of(context)!.experienceCountSingular;
+    } else {
+      return AppLocalizations.of(context)!.experienceCountPlural(_experiences.length);
+    }
   }
 
   void _editExperience(int index) {
@@ -478,7 +473,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Edit Experience',
+                        AppLocalizations.of(context)!.editExperience,
                         style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -486,7 +481,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                         ),
                       ),
                       Text(
-                        'Update your work experience details',
+                        AppLocalizations.of(context)!.updateWorkExperienceDetails,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           color: Colors.grey.shade600,
@@ -515,8 +510,8 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                     // Job Title
                     _buildTextField(
                       controller: _titleController,
-                      label: 'Job Title *',
-                      hint: 'e.g., Senior Software Engineer',
+                      label: AppLocalizations.of(context)!.jobTitleRequired,
+                      hint: AppLocalizations.of(context)!.jobTitleHint,
                       icon: Icons.badge_outlined,
                     ),
                     const SizedBox(height: 16),
@@ -524,8 +519,8 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                     // Company
                     _buildTextField(
                       controller: _companyController,
-                      label: 'Company *',
-                      hint: 'e.g., Google, Microsoft, Apple',
+                      label: AppLocalizations.of(context)!.companyRequired,
+                      hint: AppLocalizations.of(context)!.companyHint,
                       icon: Icons.business_outlined,
                     ),
                     const SizedBox(height: 16),
@@ -535,7 +530,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                       children: [
                         Expanded(
                           child: _buildDateField(
-                            label: 'Start Date *',
+                            label: AppLocalizations.of(context)!.startDateRequired,
                             date: _startDate,
                             onDateSelected: (date) {
                               print('Start date selected: $date'); // Debug line
@@ -563,7 +558,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                                         Icon(Icons.work, color: Colors.green.shade600, size: 20),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Current Position',
+                                          AppLocalizations.of(context)!.currentPosition,
                                           style: GoogleFonts.inter(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -575,7 +570,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                                   ),
                                 )
                               : _buildDateField(
-                                  label: 'End Date *',
+                                  label: AppLocalizations.of(context)!.endDateRequired,
                                   date: _endDate,
                                   onDateSelected: (date) {
                                     print('End date selected: $date'); // Debug line
@@ -618,7 +613,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'I currently work here',
+                                  AppLocalizations.of(context)!.currentlyWorkHere,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -626,7 +621,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                                   ),
                                 ),
                                 Text(
-                                  'Check this if this is your current position',
+                                  AppLocalizations.of(context)!.currentPositionHint,
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     color: Colors.blue.shade600,
@@ -643,8 +638,8 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                     // Description
                     _buildTextField(
                       controller: _descriptionController,
-                      label: 'Job Description',
-                      hint: 'Describe your responsibilities, achievements, and key projects...',
+                      label: AppLocalizations.of(context)!.jobDescription,
+                      hint: AppLocalizations.of(context)!.jobDescriptionHint,
                       icon: Icons.description_outlined,
                       maxLines: 5,
                     ),
@@ -668,7 +663,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Writing Tips',
+                                  AppLocalizations.of(context)!.writingTips,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -677,7 +672,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '• Use action verbs (developed, managed, implemented)\n• Include quantifiable achievements\n• Focus on results and impact',
+                                  AppLocalizations.of(context)!.experienceTipsContent,
                                   style: GoogleFonts.inter(
                                     fontSize: 12,
                                     color: Colors.amber.shade700,
@@ -712,7 +707,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                       ),
                     ),
                     child: Text(
-                      'Cancel',
+                      AppLocalizations.of(context)!.cancel,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -734,7 +729,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
                       elevation: 2,
                     ),
                     child: Text(
-                      'Save Changes',
+                      AppLocalizations.of(context)!.saveChanges,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -874,7 +869,7 @@ class _ExperienceEditDialogState extends State<_ExperienceEditDialog> {
     if (_titleController.text.trim().isEmpty || _companyController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please fill in all required fields'),
+          content: Text(AppLocalizations.of(context)!.fillAllRequiredFields),
           backgroundColor: Colors.red.shade600,
         ),
       );

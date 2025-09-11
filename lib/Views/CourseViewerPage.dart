@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:solid_cv/business_layer/WeeklyRecommendationBll.dart';
@@ -75,7 +76,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: Text(
-          widget.course.title ?? 'Course',
+          widget.course.title ?? AppLocalizations.of(context)!.course,
           style: GoogleFonts.nunito(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -104,17 +105,17 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF00BCD4)),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
-            'Loading course content...',
-            style: TextStyle(
+            AppLocalizations.of(context)!.loadingCourseContent,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
@@ -138,7 +139,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Failed to load course content',
+              AppLocalizations.of(context)!.failedToLoadCourse,
               style: GoogleFonts.nunito(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -147,7 +148,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Please try again later',
+              AppLocalizations.of(context)!.pleaseTryAgainLater,
               style: GoogleFonts.nunito(
                 fontSize: 16,
                 color: Colors.grey,
@@ -164,7 +165,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                 backgroundColor: const Color(0xFF00BCD4),
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -173,10 +174,10 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
   }
 
   Widget _buildEmptyState() {
-    return const Center(
+    return Center(
       child: Text(
-        'No course content available',
-        style: TextStyle(
+        AppLocalizations.of(context)!.noCourseContentAvailable,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 16,
         ),
@@ -252,7 +253,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        course.title ?? 'Course',
+                        course.title ?? AppLocalizations.of(context)!.course,
                         style: GoogleFonts.nunito(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -292,7 +293,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              course.difficulty ?? 'Beginner',
+                              course.difficulty ?? AppLocalizations.of(context)!.beginner,
                               style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -311,7 +312,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              '${course.duration ?? '1-2'} hours',
+                              '${course.duration ?? '1-2'} ${AppLocalizations.of(context)!.hours}',
                               style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -330,7 +331,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                 // Course Description (if available)
                 if (course.description?.isNotEmpty == true) ...[
                   Text(
-                    'About this course',
+                    AppLocalizations.of(context)!.aboutThisCourse,
                     style: GoogleFonts.nunito(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -360,7 +361,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
 
                 // Course Content Section
                 Text(
-                  'Course Content',
+                  AppLocalizations.of(context)!.courseContent,
                   style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -480,7 +481,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Course content is being generated...',
+            AppLocalizations.of(context)!.courseContentBeingGenerated,
             style: GoogleFonts.nunito(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -490,7 +491,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            'AI-powered course content will be available shortly. Please check back in a few moments.',
+            AppLocalizations.of(context)!.aiPoweredCourseContent,
             style: GoogleFonts.nunito(
               fontSize: 16,
               color: Colors.grey,
@@ -506,7 +507,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
               });
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Refresh Content'),
+            label: Text(AppLocalizations.of(context)!.refreshContent),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00BCD4),
               foregroundColor: Colors.white,
@@ -550,7 +551,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Test Your Knowledge',
+                      AppLocalizations.of(context)!.testYourKnowledge,
                       style: GoogleFonts.nunito(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -559,7 +560,7 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Take a quiz to test what you\'ve learned',
+                      AppLocalizations.of(context)!.takeQuizToTest,
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         color: Colors.white70,
@@ -580,14 +581,14 @@ class _CourseViewerPageState extends State<CourseViewerPage> {
                   MaterialPageRoute(
                     builder: (context) => CourseQuestionnairePage(
                       courseId: course.id!,
-                      courseTitle: course.title ?? 'Course Quiz',
+                      courseTitle: course.title ?? AppLocalizations.of(context)!.courseQuiz,
                     ),
                   ),
                 );
               },
               icon: const Icon(Icons.play_arrow),
               label: Text(
-                'Start Quiz',
+                AppLocalizations.of(context)!.startQuiz,
                 style: GoogleFonts.nunito(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

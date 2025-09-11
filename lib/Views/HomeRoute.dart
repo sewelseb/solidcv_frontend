@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/Views/widgets/LanguageSelector.dart';
+import 'package:solid_cv/providers/LanguageProvider.dart';
 
 class HomeRoute extends StatefulWidget {
   const HomeRoute({super.key});
@@ -21,11 +24,13 @@ class _HomeRouteState extends State<HomeRoute> {
   final FocusNode _passwordFocusNode = FocusNode();
   bool _isCheckingAuth = true;
   bool _userAlreadyConnected = false;
+  final LanguageProvider _languageProvider = LanguageProvider();
 
   @override
   void initState() {
     super.initState();
     _checkUserAuthentication();
+    _languageProvider.addListener(_onLanguageChanged);
   }
 
   @override
@@ -34,14 +39,25 @@ class _HomeRouteState extends State<HomeRoute> {
     _passwordController.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _languageProvider.removeListener(_onLanguageChanged);
     super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    setState(() {
+      // Rebuild when language changes
+    });
+  }
+
+  void _changeLanguage(Locale locale) {
+    _languageProvider.setLocale(locale);
   }
 
   Future<void> _checkUserAuthentication() async {
     try {
-      const storage = FlutterSecureStorage();
-      final token = await storage.read(key: 'jwt');
-      final currentRoute = ModalRoute.of(context)?.settings.name;
+      // const storage = FlutterSecureStorage();
+      // final token = await storage.read(key: 'jwt');
+      // final currentRoute = ModalRoute.of(context)?.settings.name;
       
       // if (token != null && token.isNotEmpty && currentRoute == '/') {
       //   // Try to get current user with the stored token
@@ -72,18 +88,19 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   Future<void> _handleLogin() async {
+    final localizations = AppLocalizations.of(context)!;
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
+        SnackBar(content: Text(localizations.pleaseFillAllFields)),
       );
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Signing in...')),
+      SnackBar(content: Text(localizations.signingIn)),
     );
 
     try {
@@ -106,9 +123,9 @@ class _HomeRouteState extends State<HomeRoute> {
         return;
       }
       if (errorMessage.contains('invalid credentials')) {
-        errorMessage = 'Incorrect email or password.';
+        errorMessage = localizations.incorrectEmailOrPassword;
       } else if (errorMessage.contains('missing credentials')) {
-        errorMessage = 'Account does not exist.';
+        errorMessage = localizations.accountDoesNotExist;
       }
 
       if (mounted) {
@@ -123,19 +140,20 @@ class _HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) {
     // Show loading indicator while checking authentication
     if (_isCheckingAuth) {
-      return const Scaffold(
+      final localizations = AppLocalizations.of(context)!;
+      return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 color: Color(0xFF7B3FE4),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
-                'Checking authentication...',
-                style: TextStyle(
+                localizations.checkingAuthentication,
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                 ),
@@ -148,19 +166,20 @@ class _HomeRouteState extends State<HomeRoute> {
 
     // Show loading indicator while redirecting authenticated user
     if (_userAlreadyConnected) {
-      return const Scaffold(
+      final localizations = AppLocalizations.of(context)!;
+      return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 color: Color(0xFF7B3FE4),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
-                'Redirecting to home...',
-                style: TextStyle(
+                localizations.redirectingToHome,
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                 ),
@@ -179,24 +198,50 @@ class _HomeRouteState extends State<HomeRoute> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-                height: isMobile ? null : (screenHeight < 700 ? 700 : screenHeight),
-              width: double.infinity,
-              child: isMobile
-                  ? _buildMobileLayout(screenWidth, screenHeight)
-                  : _buildDesktopOrTabletLayout(
-                      screenWidth, screenHeight, isTablet),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                    height: isMobile ? null : (screenHeight < 700 ? 700 : screenHeight),
+                  width: double.infinity,
+                  child: isMobile
+                      ? _buildMobileLayout(screenWidth, screenHeight)
+                      : _buildDesktopOrTabletLayout(
+                          screenWidth, screenHeight, isTablet),
+                ),
+                const AIFeaturesSection(), // New AI Features section
+                const AboutUsSection(),
+                const TargetAudienceSection(),
+                //const PricingSection(),
+                const ContactUsSection(),
+              ],
             ),
-            const AIFeaturesSection(), // New AI Features section
-            const AboutUsSection(),
-            const TargetAudienceSection(),
-            //const PricingSection(),
-            const ContactUsSection(),
-          ],
-        ),
+          ),
+          // Language selector positioned in top right
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: LanguageSelector(
+                onLanguageChanged: _changeLanguage,
+                currentLocale: _languageProvider.locale,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -329,11 +374,11 @@ class _LoginForm extends StatelessWidget {
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Welcome to SolidCV",
+        Text(AppLocalizations.of(context)!.welcomeToSolidCV,
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         SizedBox(height: isMobile ? 4 : 8), // Reduced spacing
-        Text("Sign in to unlock AI-powered career tools and manage your verified credentials.",
+        Text(AppLocalizations.of(context)!.signInToUnlock,
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         SizedBox(height: isMobile ? 20 : 32), // Reduced spacing
@@ -343,8 +388,8 @@ class _LoginForm extends StatelessWidget {
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
           decoration: InputDecoration(
-            labelText: "Email address",
-            hintText: "example@domain.com",
+            labelText: AppLocalizations.of(context)!.emailAddress,
+            hintText: AppLocalizations.of(context)!.emailPlaceholder,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -365,7 +410,7 @@ class _LoginForm extends StatelessWidget {
           onSubmitted: (_) => onLoginPressed(),
           obscureText: obscurePassword,
           decoration: InputDecoration(
-            labelText: "Password",
+            labelText: AppLocalizations.of(context)!.password,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -390,8 +435,8 @@ class _LoginForm extends StatelessWidget {
             onPressed: () {
               Navigator.pushNamed(context, '/forgot-password');
             },
-            child: const Text("Forgot password?",
-                style: TextStyle(color: Color(0xFF7B3FE4), fontSize: 13)), // Smaller text
+            child: Text(AppLocalizations.of(context)!.forgotPassword,
+                style: const TextStyle(color: Color(0xFF7B3FE4), fontSize: 13)), // Smaller text
           ),
         ),
         SizedBox(height: isMobile ? 12 : 24), // Reduced spacing
@@ -406,21 +451,21 @@ class _LoginForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child: const Text("Sign in", style: TextStyle(color: Colors.white)),
+          child: Text(AppLocalizations.of(context)!.signIn, style: const TextStyle(color: Colors.white)),
         ),
         SizedBox(height: isMobile ? 12 : 24), // Reduced spacing
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Don't have an account?",
-                style: TextStyle(fontSize: 13, color: Colors.black54)), // Smaller text
+            Text(AppLocalizations.of(context)!.dontHaveAccount,
+                style: const TextStyle(fontSize: 13, color: Colors.black54)), // Smaller text
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/register');
               },
-              child: const Text(
-                "Register",
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.register,
+                style: const TextStyle(
                   color: Color(0xFF7B3FE4),
                   fontWeight: FontWeight.bold,
                   fontSize: 13, // Smaller text
@@ -446,7 +491,7 @@ class _LoginForm extends StatelessWidget {
               textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             icon: const Icon(Icons.work_outline),
-            label: const Text("Browse Job Opportunities"),
+            label: Text(AppLocalizations.of(context)!.browseJobOpportunities),
           ),
         ),
         SizedBox(height: isMobile ? 6 : 10), // Reduced spacing
@@ -500,7 +545,7 @@ class AIFeaturesSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'AI-Powered Features',
+                  AppLocalizations.of(context)!.aiPoweredFeatures,
                   style: TextStyle(
                     fontSize: isMobile ? 12 : 14,
                     fontWeight: FontWeight.w600,
@@ -512,7 +557,7 @@ class AIFeaturesSection extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 16 : 24),
           Text(
-            "Supercharge Your Career with AI",
+            AppLocalizations.of(context)!.superchargeYourCareer,
             style: TextStyle(
               fontSize: isMobile ? 26 : 36,
               fontWeight: FontWeight.bold,
@@ -524,7 +569,7 @@ class AIFeaturesSection extends StatelessWidget {
           Container(
             constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
             child: Text(
-              "Leverage cutting-edge artificial intelligence to validate your skills, get personalized career advice, and find the perfect job matches.",
+              AppLocalizations.of(context)!.leverageCuttingEdgeAI,
               style: TextStyle(
                 fontSize: isMobile ? 16 : 18,
                 color: Colors.black54,
@@ -542,24 +587,24 @@ class AIFeaturesSection extends StatelessWidget {
                 children: [
                   _AIFeatureCard(
                     icon: Icons.verified_user,
-                    title: "AI Skill Validation",
-                    description: "Get your skills assessed and verified by AI algorithms that analyze your experience, projects, and achievements.",
+                    title: AppLocalizations.of(context)!.aiSkillValidation,
+                    description: AppLocalizations.of(context)!.aiSkillValidationDescription,
                     color: Colors.blue,
                     isMobile: isMobile,
                   ),
                   const SizedBox(height: 24),
                   _AIFeatureCard(
                     icon: Icons.psychology,
-                    title: "AI Career Advisor",
-                    description: "Receive personalized career guidance based on your profile, goals, and market trends powered by advanced AI.",
+                    title: AppLocalizations.of(context)!.aiCareerAdvisor,
+                    description: AppLocalizations.of(context)!.aiCareerAdvisorDescription,
                     color: Colors.orange,
                     isMobile: isMobile,
                   ),
                   const SizedBox(height: 24),
                   _AIFeatureCard(
                     icon: Icons.analytics,
-                    title: "AI Job Matching",
-                    description: "Recruiters get fast AI feedback on the match between you and the job offer.",
+                    title: AppLocalizations.of(context)!.aiJobMatching,
+                    description: AppLocalizations.of(context)!.aiJobMatchingDescription,
                     color: Colors.green,
                     isMobile: isMobile,
                   ),
@@ -572,22 +617,22 @@ class AIFeaturesSection extends StatelessWidget {
                 children: [
                   _AIFeatureCard(
                     icon: Icons.verified_user,
-                    title: "AI Skill Validation",
-                    description: "Get your skills assessed and verified by AI algorithms that analyze your experience, projects, and achievements.",
+                    title: AppLocalizations.of(context)!.aiSkillValidation,
+                    description: AppLocalizations.of(context)!.aiSkillValidationDescription,
                     color: Colors.blue,
                     isMobile: isMobile,
                   ),
                   _AIFeatureCard(
                     icon: Icons.psychology,
-                    title: "AI Career Advisor",
-                    description: "Receive personalized career guidance based on your profile, goals, and market trends powered by advanced AI.",
+                    title: AppLocalizations.of(context)!.aiCareerAdvisor,
+                    description: AppLocalizations.of(context)!.aiCareerAdvisorDescription,
                     color: Colors.orange,
                     isMobile: isMobile,
                   ),
                   _AIFeatureCard(
                     icon: Icons.analytics,
-                    title: "AI Job Matching",
-                    description: "Recruiters get fast AI feedback on the match between you and the job offer based on your tested skills and CV credentials.",
+                    title: AppLocalizations.of(context)!.aiJobMatching,
+                    description: AppLocalizations.of(context)!.aiJobMatchingDescription,
                     color: Colors.green,
                     isMobile: isMobile,
                   ),
@@ -850,7 +895,7 @@ class AboutUsSection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Discover SolidCV",
+            AppLocalizations.of(context)!.discoverSolidCV,
             style: TextStyle(
                 fontSize: isMobile ? 26 : 32,
                 fontWeight: FontWeight.bold,
@@ -860,9 +905,8 @@ class AboutUsSection extends StatelessWidget {
           SizedBox(height: isMobile ? 32 : 48),
           _AboutUsBlock(
             imagePath: 'lib/assets/section1.png',
-            title: 'Reinventing Trust in Recruitment',
-            description:
-                "In a market where one in five CVs may contain inaccuracies and keeping them updated is a hassle, SolidCV positions itself as a pioneer. We are shaping the future of recruitment with a platform where every qualification is strictly verifiable and every professional journey is highlighted with absolute integrity. Leave uncertainty behind and embrace a new era of transparency and reliability.",
+            title: AppLocalizations.of(context)!.reinventingTrustRecruitment,
+            description: AppLocalizations.of(context)!.reinventingTrustDescription,
             reverse: false,
             isMobile: isMobile,
           ),
@@ -871,9 +915,8 @@ class AboutUsSection extends StatelessWidget {
           SizedBox(height: isMobile ? 48 : 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section2.png',
-            title: 'The Blockchain Revolution Serving Your Diplomas',
-            description:
-                "SolidCV is based on the robustness of blockchain technology. Every diploma, certificate, and experience becomes a unique, tamper-proof NFT, secured in your personal digital wallet. Issuing institutions validate your achievements directly on the blockchain, providing recruiters with instant access to undeniable proof of your skills. Your career, authenticated and valued.",
+            title: AppLocalizations.of(context)!.blockchainRevolutionDiplomas,
+            description: AppLocalizations.of(context)!.blockchainRevolutionDescription,
             reverse: true,
             isMobile: isMobile,
           ),
@@ -882,9 +925,8 @@ class AboutUsSection extends StatelessWidget {
           SizedBox(height: isMobile ? 48 : 64),
           _AboutUsBlock(
             imagePath: 'lib/assets/section3.png',
-            title: 'A Virtuous Ecosystem for All Stakeholders',
-            description:
-                "SolidCV weaves a network of mutual benefits: users retain full control over their professional identity and are rewarded for their active participation. Companies and educational institutions streamline their verification processes and contribute to a high standard of trust. Our innovative validation mechanism even allows you to integrate and validate your past experiences, ensuring a smooth transition to the CV of tomorrow.",
+            title: AppLocalizations.of(context)!.virtuousEcosystemStakeholders,
+            description: AppLocalizations.of(context)!.virtuousEcosystemDescription,
             reverse: false,
             isMobile: isMobile,
           ),
@@ -1040,7 +1082,7 @@ class TargetAudienceSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Who is SolidCV for?",
+            AppLocalizations.of(context)!.whoIsSolidCVFor,
             style: TextStyle(
                 fontSize: isMobile ? 24 : 28,
                 fontWeight: FontWeight.bold,
@@ -1049,51 +1091,45 @@ class TargetAudienceSection extends StatelessWidget {
           ),
           SizedBox(height: isMobile ? 32 : 48),
           isMobile 
-            ? const Column(
+            ? Column(
                 children: [
                   _TargetCard(
-                    title: "For All Professionals",
-                    description:
-                        "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
+                    title: AppLocalizations.of(context)!.forAllProfessionals,
+                    description: AppLocalizations.of(context)!.forAllProfessionalsDescription,
                     imagePath: 'lib/assets/user.png',
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   _TargetCard(
-                    title: "For Companies",
-                    description:
-                        "Recruit more efficiently with verified CVs, reducing time and verification costs.",
+                    title: AppLocalizations.of(context)!.forCompanies,
+                    description: AppLocalizations.of(context)!.forCompaniesDescription,
                     imagePath: 'lib/assets/company.png',
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   _TargetCard(
-                    title: "For Educational Institutions",
-                    description:
-                        "Offer your students tamper-proof, shareable digital certifications.",
+                    title: AppLocalizations.of(context)!.forEducationalInstitutions,
+                    description: AppLocalizations.of(context)!.forEducationalInstitutionsDescription,
                     imagePath: 'lib/assets/institution.png',
                   ),
                 ],
               )
-            : const Wrap(
+            : Wrap(
                 alignment: WrapAlignment.center,
                 spacing: 24,
                 runSpacing: 32,
                 children: [
                   _TargetCard(
-                    title: "For All Professionals",
-                    description:
-                        "Whether you are a student, recent graduate, or experienced professional, SolidCV gives you the tools to showcase your skills in a verifiable way.",
+                    title: AppLocalizations.of(context)!.forAllProfessionals,
+                    description: AppLocalizations.of(context)!.forAllProfessionalsDescription,
                     imagePath: 'lib/assets/user.png',
                   ),
                   _TargetCard(
-                    title: "For Companies",
-                    description:
-                        "Recruit more efficiently with verified CVs, reducing time and verification costs.",
+                    title: AppLocalizations.of(context)!.forCompanies,
+                    description: AppLocalizations.of(context)!.forCompaniesDescription,
                     imagePath: 'lib/assets/company.png',
                   ),
                   _TargetCard(
-                    title: "For Educational Institutions",
-                    description:
-                        "Offer your students tamper-proof, shareable digital certifications.",
+                    title: AppLocalizations.of(context)!.forEducationalInstitutions,
+                    description: AppLocalizations.of(context)!.forEducationalInstitutionsDescription,
                     imagePath: 'lib/assets/institution.png',
                   ),
                 ],
@@ -1525,7 +1561,7 @@ class _ContactForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Contact Us",
+          AppLocalizations.of(context)!.contactUs,
           style: TextStyle(
             fontSize: isMobile ? 24 : 28,
             fontWeight: FontWeight.bold,
@@ -1587,7 +1623,7 @@ class _PrivacyPolicyLink extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                "Privacy Policy",
+                AppLocalizations.of(context)!.privacyPolicy,
                 style: TextStyle(
                   color: const Color(0xFF7B3FE4),
                   fontWeight: FontWeight.w600,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IWeeklyRecommendationBll.dart';
 import 'package:solid_cv/business_layer/WeeklyRecommendationBll.dart';
@@ -42,14 +43,14 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
       _refreshRecommendations();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Course marked as completed!'),
+          content: Text(AppLocalizations.of(context)!.courseMarkedCompleted),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error marking course as completed: $e'),
+          content: Text(AppLocalizations.of(context)!.errorMarkingCourseCompleted),
           backgroundColor: Colors.red,
         ),
       );
@@ -68,17 +69,17 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
       final success = await _weeklyRecommendationBll.registerForEvent(eventId);
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Your registration has been confirmed!'), backgroundColor: Colors.green),
+          SnackBar(content: Text(AppLocalizations.of(context)!.registrationConfirmed), backgroundColor: Colors.green),
         );
         _refreshRecommendations();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not confirm registration.'), backgroundColor: Colors.red),
+          SnackBar(content: Text(AppLocalizations.of(context)!.couldNotConfirmRegistration), backgroundColor: Colors.red),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e'), backgroundColor: Colors.red),
       );
     } finally {
       setState(() {
@@ -127,7 +128,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            'Error loading recommendations',
+                            AppLocalizations.of(context)!.errorLoadingRecommendations,
                             style: GoogleFonts.nunito(
                               fontSize: 18,
                               color: Colors.white,
@@ -146,7 +147,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                           SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: _refreshRecommendations,
-                            child: Text('Retry'),
+                            child: Text(AppLocalizations.of(context)!.retry),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF00BCD4),
                               foregroundColor: Colors.white,
@@ -169,7 +170,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            'No recommendations available',
+                            AppLocalizations.of(context)!.noRecommendationsAvailable,
                             style: GoogleFonts.nunito(
                               fontSize: 18,
                               color: Colors.white,
@@ -178,7 +179,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            'Check back later for new recommendations',
+                            AppLocalizations.of(context)!.checkBackLaterForRecommendations,
                             style: GoogleFonts.nunito(
                               fontSize: 14,
                               color: Colors.grey[400],
@@ -230,7 +231,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Weekly Recommendations',
+                      AppLocalizations.of(context)!.weeklyRecommendations,
                       style: GoogleFonts.nunito(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -238,7 +239,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                       ),
                     ),
                     Text(
-                      'Boost your career this week',
+                      AppLocalizations.of(context)!.boostYourCareerThisWeek,
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         color: Color(0xFF00BCD4),
@@ -311,7 +312,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
         children: [
           
           Text(
-            'Weekly Recommendations',
+            AppLocalizations.of(context)!.weeklyRecommendations,
             style: GoogleFonts.nunito(
               fontSize: 16,
               color: Colors.white.withOpacity(0.9),
@@ -363,7 +364,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
               Icon(Icons.analytics, color: Color(0xFF00BCD4), size: 24),
               SizedBox(width: 12),
               Text(
-                'Weekly Progress',
+                AppLocalizations.of(context)!.weeklyProgress,
                 style: GoogleFonts.nunito(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -386,7 +387,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${(progressPercentage * 100).toInt()}% Complete',
+                '${(progressPercentage * 100).toInt()}${AppLocalizations.of(context)!.completePercentage}',
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   color: Colors.white,
@@ -394,7 +395,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                 ),
               ),
               Text(
-                '$completedTasks / $totalTasks tasks',
+                '$completedTasks / $totalTasks ${AppLocalizations.of(context)!.tasks}',
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   color: Colors.grey[400],
@@ -407,7 +408,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
             children: [
               Expanded(
                 child: _buildProgressStat(
-                  'Courses',
+                  AppLocalizations.of(context)!.courses,
                   progress.completedCourses ?? 0,
                   progress.totalCourses ?? 0,
                   Icons.school,
@@ -416,7 +417,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
               SizedBox(width: 16),
               Expanded(
                 child: _buildProgressStat(
-                  'Events',
+                  AppLocalizations.of(context)!.events,
                   progress.registeredEvents ?? 0,
                   progress.totalEvents ?? 0,
                   Icons.event,
@@ -469,7 +470,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
             Icon(Icons.school, color: Color(0xFF00BCD4), size: 24),
             SizedBox(width: 12),
             Text(
-              'Recommended Courses (${courses.length})',
+              '${AppLocalizations.of(context)!.recommendedCourses} (${courses.length})',
               style: GoogleFonts.nunito(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -480,7 +481,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
         ),
         SizedBox(height: 16),
         if (courses.isEmpty)
-          _buildEmptyState('No courses available this week', Icons.school)
+          _buildEmptyState(AppLocalizations.of(context)!.noCoursesAvailableThisWeek, Icons.school)
         else
           ...courses.map((course) => _buildCourseCard(course)).toList(),
       ],
@@ -496,7 +497,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
             Icon(Icons.event, color: Color(0xFF00BCD4), size: 24),
             SizedBox(width: 12),
             Text(
-              'Recommended Events (${events.length})',
+              '${AppLocalizations.of(context)!.recommendedEvents} (${events.length})',
               style: GoogleFonts.nunito(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -507,7 +508,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
         ),
         SizedBox(height: 16),
         if (events.isEmpty)
-          _buildEmptyState('No events available this week', Icons.event)
+          _buildEmptyState(AppLocalizations.of(context)!.noEventsAvailableThisWeek, Icons.event)
         else
           ...events.map((event) => _buildEventCard(event)).toList(),
       ],
@@ -538,7 +539,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      course.title ?? 'Untitled Course',
+                      course.title ?? AppLocalizations.of(context)!.untitledCourse,
                       style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -548,7 +549,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                     if (course.provider?.isNotEmpty == true) ...[
                       SizedBox(height: 4),
                       Text(
-                        'By ${course.provider}',
+                        '${AppLocalizations.of(context)!.by} ${course.provider}',
                         style: GoogleFonts.nunito(
                           fontSize: 14,
                           color: Color(0xFF00BCD4),
@@ -571,7 +572,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                       Icon(Icons.check, color: Colors.white, size: 16),
                       SizedBox(width: 4),
                       Text(
-                        'Completed',
+                        AppLocalizations.of(context)!.completed,
                         style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: Colors.white,
@@ -625,7 +626,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () => _navigateToCourse(course),
-                    child: Text(isCompleted ? 'Review Course' : 'Start Course'),
+                    child: Text(isCompleted ? AppLocalizations.of(context)!.reviewCourse : AppLocalizations.of(context)!.startCourse),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF7B3FE4),
                       foregroundColor: Colors.white,
@@ -680,7 +681,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      event.title ?? 'Untitled Event',
+                      event.title ?? AppLocalizations.of(context)!.untitledEvent,
                       style: GoogleFonts.nunito(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -690,7 +691,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                     if (event.organizer?.isNotEmpty == true) ...[
                       SizedBox(height: 4),
                       Text(
-                        'By ${event.organizer}',
+                        '${AppLocalizations.of(context)!.by} ${event.organizer}',
                         style: GoogleFonts.nunito(
                           fontSize: 14,
                           color: Color(0xFF00BCD4),
@@ -713,7 +714,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                       Icon(Icons.check, color: Colors.white, size: 16),
                       SizedBox(width: 4),
                       Text(
-                        'Registered',
+                        AppLocalizations.of(context)!.registered,
                         style: GoogleFonts.nunito(
                           fontSize: 12,
                           color: Colors.white,
@@ -734,12 +735,12 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                     await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Could not open event URL')),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.couldNotOpenEventUrl)),
                     );
                   }
                 },
                 icon: Icon(Icons.link),
-                label: Text('Go to the event website'),
+                label: Text(AppLocalizations.of(context)!.goToEventWebsite),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF00BCD4),
                   foregroundColor: Colors.white,
@@ -763,7 +764,7 @@ class _WeeklyRecommendationsPageState extends State<WeeklyRecommendationsPage> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : Text('I have registered to the event'),
+                      : Text(AppLocalizations.of(context)!.iHaveRegisteredToEvent),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF00BCD4),
                     foregroundColor: Colors.white,

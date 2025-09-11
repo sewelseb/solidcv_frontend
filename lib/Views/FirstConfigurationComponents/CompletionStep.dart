@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CompletionStep extends StatefulWidget {
@@ -111,7 +112,7 @@ class _CompletionStepState extends State<CompletionStep>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '🎉 Welcome to SolidCV!',
+                      AppLocalizations.of(context)!.welcomeToSolidCV,
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -120,7 +121,7 @@ class _CompletionStepState extends State<CompletionStep>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your account is now set up and ready to use. Choose where you\'d like to start your journey:',
+                      AppLocalizations.of(context)!.accountSetupComplete,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade700,
@@ -148,7 +149,7 @@ class _CompletionStepState extends State<CompletionStep>
                             ),
                             icon: const Icon(Icons.home, size: 20),
                             label: Text(
-                              'Go to Home Page',
+                              AppLocalizations.of(context)!.goToHomePage,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -173,7 +174,7 @@ class _CompletionStepState extends State<CompletionStep>
                             ),
                             icon: const Icon(Icons.description, size: 20),
                             label: Text(
-                              'View My CV',
+                              AppLocalizations.of(context)!.viewMyCV,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -198,7 +199,7 @@ class _CompletionStepState extends State<CompletionStep>
                             ),
                             icon: const Icon(Icons.business, size: 20),
                             label: Text(
-                              'Create an organization',
+                              AppLocalizations.of(context)!.createAnOrganization,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -225,7 +226,7 @@ class _CompletionStepState extends State<CompletionStep>
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Tip: You can always access these pages from the navigation menu!',
+                              AppLocalizations.of(context)!.navigationMenuTip,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 color: Colors.blue.shade700,

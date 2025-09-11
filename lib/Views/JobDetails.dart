@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
 import 'package:solid_cv/business_layer/IJobOfferBll.dart';
@@ -95,6 +96,7 @@ class _JobDetailsState extends State<JobDetails> {
       return;
     }
 
+    final localizations = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -114,7 +116,7 @@ class _JobDetailsState extends State<JobDetails> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Apply to ${jobOffer.title}',
+                localizations.jobApplicationConfirmation,
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -254,7 +256,7 @@ class _JobDetailsState extends State<JobDetails> {
               const SizedBox(height: 20),
               
               Text(
-                'Are you ready to submit your application?',
+                localizations.applyJobConfirmationMessage,
                 style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -268,7 +270,7 @@ class _JobDetailsState extends State<JobDetails> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              'Cancel',
+              localizations.close,
               style: GoogleFonts.inter(
                 color: Colors.grey.shade600,
               ),
@@ -285,7 +287,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
             icon: const Icon(Icons.send, size: 16),
-            label: const Text('Apply Now'),
+            label: Text(localizations.apply),
           ),
         ],
       ),
@@ -302,7 +304,7 @@ class _JobDetailsState extends State<JobDetails> {
               children: [
                 const Icon(Icons.check_circle, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                const Expanded(child: Text('Application submitted successfully!')),
+                Expanded(child: Text(localizations.applicationSuccessfulMessage)),
               ],
             ),
             backgroundColor: Colors.green,
@@ -342,6 +344,7 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   void _showSkillTestRequiredDialog() {
+    final localizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -361,7 +364,7 @@ class _JobDetailsState extends State<JobDetails> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'More Skill Tests Required',
+                localizations.skillTestRequirement,
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -401,15 +404,7 @@ class _JobDetailsState extends State<JobDetails> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'You have completed $_userSkillTestCount out of 5 required skill tests.',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: Colors.orange.shade700,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'To ensure accurate feedback from recruiters and improve your application quality, you need to complete at least 5 skill validation tests.',
+                      localizations.skillTestRequirementMessage(_userSkillTestCount, 5),
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.orange.shade700,
@@ -486,7 +481,7 @@ class _JobDetailsState extends State<JobDetails> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Cancel',
+              localizations.close,
               style: GoogleFonts.inter(
                 color: Colors.grey.shade600,
               ),
@@ -506,7 +501,7 @@ class _JobDetailsState extends State<JobDetails> {
               ),
             ),
             icon: const Icon(Icons.quiz, size: 16),
-            label: const Text('Take Skill Tests'),
+            label: Text(localizations.goToSkillTests),
           ),
         ],
       ),
@@ -514,22 +509,23 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   void _showLoginDialog() {
+    final localizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Login Required'),
-        content: const Text('You need to be logged in to apply for jobs. Would you like to login or register?'),
+        title: Text(localizations.loginRequired),
+        content: Text(localizations.loginRequired),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(localizations.close),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.pushNamed(context, '/register');
             },
-            child: const Text('Register'),
+            child: Text(localizations.register),
           ),
           ElevatedButton(
             onPressed: () {
@@ -537,7 +533,7 @@ class _JobDetailsState extends State<JobDetails> {
               Navigator.pushNamed(context, '/login');
             },
             style: ElevatedButton.styleFrom(backgroundColor: _primaryColor),
-            child: const Text('Login', style: TextStyle(color: Colors.white)),
+            child: Text(localizations.goToLogin, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -545,6 +541,8 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   Widget _buildApplyButton(JobOffer jobOffer) {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_isLoadingUser || _isLoadingSkillTests) {
       return SizedBox(
         width: double.infinity,
@@ -578,7 +576,7 @@ class _JobDetailsState extends State<JobDetails> {
     bool isEnabled;
 
     if (_currentUser == null) {
-      buttonText = 'Login to Apply';
+      buttonText = localizations.goToLogin;
       buttonIcon = Icons.login;
       buttonColor = Colors.grey.shade600;
       isEnabled = true;
@@ -588,7 +586,7 @@ class _JobDetailsState extends State<JobDetails> {
       buttonColor = Colors.orange.shade600;
       isEnabled = true;
     } else {
-      buttonText = 'Apply Now';
+      buttonText = localizations.applyNow;
       buttonIcon = Icons.send;
       buttonColor = _primaryColor;
       isEnabled = true;
@@ -615,6 +613,8 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   Widget _buildUserStatusBanner() {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_isLoadingUser || _isLoadingSkillTests) {
       return Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -715,7 +715,7 @@ class _JobDetailsState extends State<JobDetails> {
               TextButton(
                 onPressed: () => Navigator.pushNamed(context, '/my-cv'),
                 child: Text(
-                  'Take Tests',
+                  localizations.goToSkillTests,
                   style: TextStyle(color: Colors.orange.shade700),
                 ),
               ),
@@ -762,7 +762,7 @@ class _JobDetailsState extends State<JobDetails> {
           TextButton(
             onPressed: _showLoginDialog,
             child: Text(
-              'Login',
+              localizations.login,
               style: TextStyle(color: Colors.red.shade700),
             ),
           ),
@@ -773,14 +773,14 @@ class _JobDetailsState extends State<JobDetails> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final localizations = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Job Details',
+          localizations.jobDetails,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -962,15 +962,15 @@ class _JobDetailsState extends State<JobDetails> {
                                 children: [
                                   _buildInfoRow('Job Type', jobOffer.jobType, Icons.schedule),
                                   const SizedBox(height: 12),
-                                  _buildInfoRow('Experience Level', jobOffer.experienceLevel, Icons.trending_up),
+                                  _buildInfoRow(localizations.experienceLevel, jobOffer.experienceLevel, Icons.trending_up),
                                   const SizedBox(height: 12),
-                                  _buildInfoRow('Location', jobOffer.location, Icons.location_on),
+                                  _buildInfoRow(localizations.location, jobOffer.location, Icons.location_on),
                                   if (jobOffer.salary != null) const SizedBox(height: 12),
                                   if (jobOffer.salary != null)
-                                    _buildInfoRow('Salary', jobOffer.salary!.toString(), Icons.attach_money),
+                                    _buildInfoRow(localizations.salary, jobOffer.salary!.toString(), Icons.attach_money),
                                   if (jobOffer.createdAt != null) const SizedBox(height: 12),
                                   if (jobOffer.createdAt != null)
-                                    _buildInfoRow('Posted', _formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000)), Icons.calendar_today),
+                                    _buildInfoRow(localizations.postedDate, _formatDate(DateTime.fromMillisecondsSinceEpoch(jobOffer.createdAt! * 1000)), Icons.calendar_today),
                                 ],
                               ),
                             ),
@@ -978,19 +978,19 @@ class _JobDetailsState extends State<JobDetails> {
 
                             // Job Description
                             if (jobOffer.description != null && jobOffer.description!.isNotEmpty) ...[
-                              _buildSection('Job Description', jobOffer.description!),
+                              _buildSection(localizations.description, jobOffer.description!),
                               const SizedBox(height: 24),
                             ],
 
                             // Requirements
                             if (jobOffer.requirements != null && jobOffer.requirements!.isNotEmpty) ...[
-                              _buildSection('Requirements', jobOffer.requirements!),
+                              _buildSection(localizations.requirements, jobOffer.requirements!),
                               const SizedBox(height: 24),
                             ],
 
                             // Benefits
                             if (jobOffer.benefits != null && jobOffer.benefits!.isNotEmpty) ...[
-                              _buildSection('Benefits', jobOffer.benefits!),
+                              _buildSection(localizations.benefits, jobOffer.benefits!),
                               const SizedBox(height: 24),
                             ],
 
@@ -1073,17 +1073,19 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   String _formatDate(DateTime date) {
+    final localizations = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays == 0) {
-      return 'today';
+      return localizations.today;
     } else if (difference.inDays == 1) {
-      return 'yesterday';
+      return localizations.yesterday;
     } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
+      return localizations.daysAgo(difference.inDays);
     } else if (difference.inDays < 30) {
-      return '${(difference.inDays / 7).floor()} week${(difference.inDays / 7).floor() != 1 ? 's' : ''} ago';
+      final weeks = (difference.inDays / 7).floor();
+      return localizations.weeksAgo(weeks);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/RateLimitHelper.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -31,8 +32,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FC),
       appBar: AppBar(
-        title: const Text("Forgot password",
-            style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(AppLocalizations.of(context)!.forgotPassword,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: const Color(0xFF7B3FE4),
         centerTitle: true,
         elevation: 1,
@@ -59,24 +60,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       const Icon(Icons.lock_reset_rounded,
                           size: 48, color: Color(0xFF7B3FE4)),
                       const SizedBox(height: 16),
-                      const Text(
-                        "Reset your password",
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.resetYourPassword,
+                        style: const TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        "Enter your email address and we'll send you a link to reset your password.",
+                      Text(
+                        AppLocalizations.of(context)!.enterEmailForReset,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black87, fontSize: 15),
+                        style: const TextStyle(color: Colors.black87, fontSize: 15),
                       ),
                       const SizedBox(height: 30),
                       TextField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          labelText: "Email",
+                          labelText: AppLocalizations.of(context)!.email,
                           labelStyle: const TextStyle(color: Color(0xFF7B3FE4)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
@@ -110,17 +111,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       strokeWidth: 2.2, color: Colors.white))
                               : const Icon(Icons.lock_open_rounded, size: 22),
                           label: _loading
-                              ? const Text("Sending...",
-                                  style: TextStyle(
+                              ? Text(AppLocalizations.of(context)!.sending,
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600))
                               : (_cooldown.isCooldown)
-                                  ? Text("Wait ${_cooldown.remaining}s",
+                                  ? Text(AppLocalizations.of(context)!.waitSeconds('${_cooldown.remaining}'),
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600))
-                                  : const Text("Send reset email",
-                                      style: TextStyle(
+                                  : Text(AppLocalizations.of(context)!.sendResetEmail,
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600)),
                           style: ElevatedButton.styleFrom(
@@ -156,24 +157,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         builder: (_) => AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-          title: const Text("Password Reset",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          content: const Text(
-            "If this email exists, you will receive a password reset link.",
+          title: Text(AppLocalizations.of(context)!.passwordResetTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          content: Text(
+            AppLocalizations.of(context)!.passwordResetMessage,
             textAlign: TextAlign.center,
           ),
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("OK",
-                    style: TextStyle(
+                child: Text(AppLocalizations.of(context)!.ok,
+                    style: const TextStyle(
                         color: Color(0xFF7B3FE4), fontWeight: FontWeight.w600)))
           ],
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed: $e')),
+        SnackBar(content: Text('${AppLocalizations.of(context)!.failedWithError} $e')),
       );
     } finally {
       setState(() => _loading = false);

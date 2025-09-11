@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
@@ -58,7 +59,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                     const SizedBox(width: 10),
                     Flexible(
                       child: Text(
-                        isMobile ? 'Add Certificate' : 'Add New Certificate',
+                        isMobile ? AppLocalizations.of(context)!.addCertificateDialogTitle : AppLocalizations.of(context)!.addCertificateDialogTitleFull,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: isMobile ? 17 : 23,
@@ -73,28 +74,28 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                 ),
                 const SizedBox(height: 28),
                 _buildTextFormField(
-                  label: 'Title',
+                  label: AppLocalizations.of(context)!.addCertificateTitle,
                   onSaved: (v) => _title = v,
                 ),
                 _buildTextFormField(
-                  label: 'Certificate Type',
+                  label: AppLocalizations.of(context)!.addCertificateCertificateType,
                   onSaved: (v) => _certificateType = v,
                 ),
                 _buildTextFormField(
-                  label: 'Grade',
+                  label: AppLocalizations.of(context)!.addCertificateGrade,
                   onSaved: (v) => _grade = v,
                 ),
                 _buildTextFormField(
-                  label: 'Teaching Institution',
+                  label: AppLocalizations.of(context)!.addCertificateTeachingInstitution,
                   onSaved: (v) => _teachingInstitution = v,
                 ),
                 _buildTextFormField(
-                  label: 'Description',
+                  label: AppLocalizations.of(context)!.addCertificateDescription,
                   onSaved: (v) => _description = v,
                   multiline: true,
                 ),
                 _buildTextFormField(
-                  label: 'Curriculum',
+                  label: AppLocalizations.of(context)!.addCertificateCurriculum,
                   onSaved: (v) => _curriculum = v,
                   multiline: true,
                 ),
@@ -120,7 +121,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                       controller: _publicationDateController,
                       readOnly: true,
                       decoration: InputDecoration(
-                        labelText: 'Publication Date',
+                        labelText: AppLocalizations.of(context)!.addCertificatePublicationDate,
                         prefixIcon: const Icon(Icons.event, color: Color(0xFF7B3FE4)),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
@@ -130,7 +131,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                         contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                       ),
                       validator: (value) {
-                        if (_publicationDate == null) return 'Please select a date';
+                        if (_publicationDate == null) return AppLocalizations.of(context)!.addCertificateDateRequired;
                         return null;
                       },
                     ),
@@ -149,7 +150,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                     padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 14),
                     textStyle: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  label: const Text("Select a file"),
+                  label: Text(AppLocalizations.of(context)!.addCertificateSelectFile),
                 ),
                 const SizedBox(height: 24),
                 Row(
@@ -163,7 +164,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: const Text('Cancel', style: TextStyle(fontWeight: FontWeight.w600)),
+                        child: Text(AppLocalizations.of(context)!.addCertificateCancel, style: const TextStyle(fontWeight: FontWeight.w600)),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -194,7 +195,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: const Text('Add', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(AppLocalizations.of(context)!.addCertificateAdd, style: const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
@@ -225,7 +226,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         ),
         maxLines: multiline ? 3 : 1,
-        validator: (value) => value == null || value.isEmpty ? 'Please enter $label' : null,
+        validator: (value) => value == null || value.isEmpty ? AppLocalizations.of(context)!.addCertificateFieldRequired(label) : null,
         onSaved: onSaved,
       ),
     );

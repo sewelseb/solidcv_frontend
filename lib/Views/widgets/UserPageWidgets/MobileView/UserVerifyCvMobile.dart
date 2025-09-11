@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/MobileView/UserVerifyCvEducationMobile.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/MobileView/UserVerifyCvSkillsMobile.dart';
@@ -94,7 +95,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FBFC),
       appBar: AppBar(
-        title: const Text('Verify CV'),
+        title: Text(AppLocalizations.of(context)!.verifyCv),
         elevation: 1,
         backgroundColor: const Color(0xFF7B3FE4),
       ),
@@ -142,11 +143,11 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                       ),
                       const SizedBox(height: 8),
                       _infoTile(
-                          icon: Icons.phone, text: user.phoneNumber ?? "-"),
+                          icon: Icons.phone, text: user.phoneNumber ?? AppLocalizations.of(context)!.userProfileNotAvailable),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? "-"),
+                          text: user.linkedin ?? AppLocalizations.of(context)!.userProfileNotAvailable),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
@@ -238,12 +239,12 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
-                Text('Work Experience',
+                Text(AppLocalizations.of(context)!.workExperience,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Spacer(),
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Spacer(),
               ],
             ),
             const SizedBox(height: 12),
@@ -253,7 +254,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text("Error: {$snapshot.error}");
+                  return Text("${AppLocalizations.of(context)!.error}: ${snapshot.error}");
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Column(
                     children: snapshot.data!
@@ -263,7 +264,7 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                         .toList(),
                   );
                 } else {
-                  return const Center(child: Text("No work experiences yet."));
+                  return Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet));
                 }
               },
             ),

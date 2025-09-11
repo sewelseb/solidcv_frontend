@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EducationInstitutionsLandingPage extends StatefulWidget {
@@ -111,7 +112,7 @@ class _EducationInstitutionsLandingPageState
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'Request a Demo',
+                          AppLocalizations.of(context)!.requestDemo,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 24 : 28,
                             fontWeight: FontWeight.bold,
@@ -120,7 +121,7 @@ class _EducationInstitutionsLandingPageState
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Ready to revolutionize your institution\'s credential management? Get in touch with our team!',
+                          AppLocalizations.of(context)!.readyToRevolutionize,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 14 : 16,
                             color: Colors.white.withOpacity(0.9),
@@ -149,7 +150,7 @@ class _EducationInstitutionsLandingPageState
                     child: Column(
                       children: [
                         Text(
-                          'Contact our demo specialist',
+                          AppLocalizations.of(context)!.contactDemoSpecialist,
                           style: GoogleFonts.inter(
                             fontSize: isMobile ? 16 : 18,
                             fontWeight: FontWeight.w600,
@@ -205,7 +206,7 @@ class _EducationInstitutionsLandingPageState
                                             const SizedBox(width: 8),
                                             Expanded(
                                               child: Text(
-                                                'Email copied to clipboard!',
+                                                AppLocalizations.of(context)!.emailCopiedToClipboard,
                                                 style: GoogleFonts.inter(),
                                               ),
                                             ),
@@ -221,7 +222,7 @@ class _EducationInstitutionsLandingPageState
                                     );
                                   }
                                 },
-                                tooltip: 'Copy email',
+                                tooltip: AppLocalizations.of(context)!.copyEmail,
                                 icon: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
@@ -260,7 +261,7 @@ class _EducationInstitutionsLandingPageState
                               ),
                             ),
                             child: Text(
-                              'Close',
+                              AppLocalizations.of(context)!.close,
                               style: GoogleFonts.inter(
                                 fontSize: isMobile ? 14 : 16,
                                 fontWeight: FontWeight.w600,
@@ -289,7 +290,7 @@ class _EducationInstitutionsLandingPageState
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            'Email copied! Contact us for your demo.',
+                                            AppLocalizations.of(context)!.emailCopiedContactDemo,
                                             style: GoogleFonts.inter(),
                                           ),
                                         ),
@@ -318,7 +319,7 @@ class _EducationInstitutionsLandingPageState
                             ),
                             icon: Icon(Icons.copy, size: isMobile ? 16 : 18),
                             label: Text(
-                              'Copy Email',
+                              AppLocalizations.of(context)!.copyEmailAndContact,
                               style: GoogleFonts.inter(
                                 fontSize: isMobile ? 14 : 16,
                                 fontWeight: FontWeight.w600,
@@ -394,11 +395,11 @@ class _EducationInstitutionsLandingPageState
         if (!isMobile) ...[
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/'),
-            child: const Text('Home'),
+            child: Text(AppLocalizations.of(context)!.home),
           ),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/register'),
-            child: const Text('Sign Up'),
+            child: Text(AppLocalizations.of(context)!.signUp),
           ),
           const SizedBox(width: 8),
           ElevatedButton(
@@ -410,7 +411,7 @@ class _EducationInstitutionsLandingPageState
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text('Login'),
+            child: Text(AppLocalizations.of(context)!.login),
           ),
           const SizedBox(width: 16),
         ] else ...[
@@ -429,9 +430,9 @@ class _EducationInstitutionsLandingPageState
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'home', child: Text('Home')),
-              const PopupMenuItem(value: 'signup', child: Text('Sign Up')),
-              const PopupMenuItem(value: 'login', child: Text('Login')),
+              PopupMenuItem(value: 'home', child: Text(AppLocalizations.of(context)!.home)),
+              PopupMenuItem(value: 'signup', child: Text(AppLocalizations.of(context)!.signUp)),
+              PopupMenuItem(value: 'login', child: Text(AppLocalizations.of(context)!.login)),
             ],
           ),
         ],
@@ -517,7 +518,7 @@ class _EducationInstitutionsLandingPageState
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'Revolutionize Academic Credentials',
+          AppLocalizations.of(context)!.revolutionizeAcademicCredentials,
           style: GoogleFonts.inter(
             fontSize: isMobile ? 32 : 48,
             fontWeight: FontWeight.bold,
@@ -528,7 +529,7 @@ class _EducationInstitutionsLandingPageState
         ),
         const SizedBox(height: 20),
         Text(
-          'Join the future of education with blockchain-verified certificates, AI-powered career guidance, and seamless credential management for your institution.',
+          AppLocalizations.of(context)!.joinFutureEducation,
           style: GoogleFonts.inter(
             fontSize: isMobile ? 16 : 20,
             color: Colors.white.withOpacity(0.9),
@@ -558,7 +559,7 @@ class _EducationInstitutionsLandingPageState
               ),
               icon: const Icon(Icons.rocket_launch),
               label: Text(
-                'Get Started Free',
+                AppLocalizations.of(context)!.getStartedFree,
                 style: TextStyle(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.w600,
@@ -586,7 +587,7 @@ class _EducationInstitutionsLandingPageState
               ),
               icon: const Icon(Icons.play_circle_outline),
               label: Text(
-                'Learn More',
+                AppLocalizations.of(context)!.learnMore,
                 style: TextStyle(
                   fontSize: isMobile ? 16 : 18,
                   fontWeight: FontWeight.w600,
@@ -649,8 +650,8 @@ class _EducationInstitutionsLandingPageState
         child: Column(
           children: [
             _buildSectionHeader(
-              'Powerful Features for Educational Excellence',
-              'Everything your institution needs to modernize credential management',
+              AppLocalizations.of(context)!.powerfulFeaturesEducational,
+              AppLocalizations.of(context)!.everythingInstitutionNeeds,
               isMobile,
             ),
             const SizedBox(height: 60),
@@ -665,27 +666,24 @@ class _EducationInstitutionsLandingPageState
     final features = [
       FeatureData(
         icon: Icons.verified_user,
-        title: 'Blockchain Certificates',
-        description:
-            'Issue tamper-proof, verifiable certificates using blockchain technology that employers can instantly verify.',
+        title: AppLocalizations.of(context)!.blockchainCertificates,
+        description: AppLocalizations.of(context)!.blockchainCertificatesDescription,
         gradient: const LinearGradient(
           colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
         ),
       ),
       FeatureData(
         icon: Icons.psychology,
-        title: 'AI Career Guidance',
-        description:
-            'Provide students with AI-powered career advice and skill assessments to enhance their employability.',
+        title: AppLocalizations.of(context)!.aiCareerGuidance,
+        description: AppLocalizations.of(context)!.aiCareerGuidanceDescription,
         gradient: const LinearGradient(
           colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
         ),
       ),
       FeatureData(
         icon: Icons.groups,
-        title: 'Alumni Network',
-        description:
-            'Maintain connections with graduates and track their career progression for institutional reputation.',
+        title: AppLocalizations.of(context)!.alumniNetwork,
+        description: AppLocalizations.of(context)!.alumniNetworkDescription,
         gradient: const LinearGradient(
           colors: [Color(0xFFE91E63), Color(0xFFF48FB1)],
         ),
@@ -822,7 +820,7 @@ class _EducationInstitutionsLandingPageState
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'Blockchain-Powered Credentials',
+          AppLocalizations.of(context)!.blockchainPoweredCredentials,
           style: GoogleFonts.inter(
             fontSize: isMobile ? 28 : 36,
             fontWeight: FontWeight.bold,
@@ -832,7 +830,7 @@ class _EducationInstitutionsLandingPageState
         ),
         const SizedBox(height: 20),
         Text(
-          'Transform how your institution issues and manages academic credentials with cutting-edge blockchain technology.',
+          AppLocalizations.of(context)!.transformInstitution,
           style: GoogleFonts.inter(
             fontSize: 16,
             color: Colors.grey[600],
@@ -848,11 +846,11 @@ class _EducationInstitutionsLandingPageState
 
   Widget _buildBlockchainBenefits(bool isMobile) {
     final benefits = [
-      'Instant verification by employers worldwide',
-      'Elimination of credential fraud',
-      'Permanent, immutable records',
-      'Reduced administrative costs',
-      'Enhanced institutional reputation',
+      AppLocalizations.of(context)!.instantVerification,
+      AppLocalizations.of(context)!.eliminateCredentialFraud,
+      AppLocalizations.of(context)!.permanentRecords,
+      AppLocalizations.of(context)!.reducedAdministrativeCosts,
+      AppLocalizations.of(context)!.enhancedReputation,
     ];
 
     return Column(
@@ -936,8 +934,8 @@ class _EducationInstitutionsLandingPageState
         child: Column(
           children: [
             _buildSectionHeader(
-              'Why Choose SolidCV?',
-              'Join the platform today',
+              AppLocalizations.of(context)!.whyChooseSolidCv,
+              AppLocalizations.of(context)!.joinPlatformToday,
               isMobile,
             ),
             const SizedBox(height: 60),
@@ -951,26 +949,26 @@ class _EducationInstitutionsLandingPageState
   Widget _buildBenefitsGrid(bool isMobile, bool isTablet) {
     final benefits = [
       BenefitData(
-        title: 'Reduce Costs',
-        description: 'Cut administrative overhead by up to 70%',
+        title: AppLocalizations.of(context)!.reduceCosts,
+        description: AppLocalizations.of(context)!.reduceCostsDesc,
         icon: Icons.trending_down,
         color: const Color(0xFF4CAF50),
       ),
       BenefitData(
-        title: 'Enhance Security',
-        description: 'Eliminate credential fraud completely',
+        title: AppLocalizations.of(context)!.enhanceSecurity,
+        description: AppLocalizations.of(context)!.enhanceSecurityDesc,
         icon: Icons.shield,
         color: const Color(0xFF2196F3),
       ),
       BenefitData(
-        title: 'Improve Reputation',
-        description: 'Lead in educational innovation',
+        title: AppLocalizations.of(context)!.improveReputation,
+        description: AppLocalizations.of(context)!.improveReputationDesc,
         icon: Icons.star,
         color: const Color(0xFFFF9800),
       ),
       BenefitData(
-        title: 'Global Recognition',
-        description: 'Instantly verifiable worldwide',
+        title: AppLocalizations.of(context)!.globalRecognition,
+        description: AppLocalizations.of(context)!.globalRecognitionDesc,
         icon: Icons.public,
         color: const Color(0xFF9C27B0),
       ),

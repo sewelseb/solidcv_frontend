@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -151,7 +152,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                           const CircularProgressIndicator(),
                           const SizedBox(height: 16),
                           Text(
-                            'Loading your certificates...',
+                            AppLocalizations.of(context)!.loadingYourCertificates,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.grey.shade600,
@@ -178,7 +179,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                               color: Colors.red.shade400, size: 32),
                           const SizedBox(height: 8),
                           Text(
-                            'Error loading certificates',
+                            AppLocalizations.of(context)!.errorLoadingCertificates,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.red.shade600,
@@ -186,7 +187,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'You can still add certificates manually',
+                            AppLocalizations.of(context)!.canStillAddCertificatesManually,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.grey.shade600,
@@ -222,7 +223,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Review Your Certificates',
+          AppLocalizations.of(context)!.reviewYourCertificates,
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -231,7 +232,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
         ),
         const SizedBox(height: 8),
         Text(
-          'You have ${_certificates.length} certificate${_certificates.length != 1 ? 's' : ''}. Please review and edit them as needed.',
+          _getCertificateCountMessage(),
           style: GoogleFonts.inter(
             fontSize: 14,
             color: Colors.grey.shade700,
@@ -255,7 +256,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                     color: Colors.grey.shade400, size: 32),
                 const SizedBox(height: 8),
                 Text(
-                  'No certificates found',
+                  AppLocalizations.of(context)!.noCertificatesFound,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -263,7 +264,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Add your professional certifications manually',
+                  AppLocalizations.of(context)!.addCertificationsManually,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.grey.shade500,
@@ -295,7 +296,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                 ),
               ),
               icon: const Icon(Icons.arrow_forward, size: 16),
-              label: const Text('Continue to Skills'),
+              label: Text(AppLocalizations.of(context)!.continueToSkills),
             ),
           ),
       ],
@@ -338,7 +339,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                     Text(
                       certificate.title?.isNotEmpty == true
                           ? certificate.title!
-                          : 'Certificate title',
+                          : AppLocalizations.of(context)!.certificateTitle,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -348,7 +349,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                     if (certificate.teachingInstitutionName?.isNotEmpty ==
                         true) ...[
                       Text(
-                        'Issued by ${certificate.teachingInstitutionName}',
+                        AppLocalizations.of(context)!.issuedBy(certificate.teachingInstitutionName!),
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.orange.shade600,
@@ -424,7 +425,7 @@ class _CertificateEditStepState extends State<CertificateEditStep>
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               ),
               icon: const Icon(Icons.edit, size: 12),
-              label: const Text('Edit Details', style: TextStyle(fontSize: 11)),
+              label: Text(AppLocalizations.of(context)!.editDetails, style: TextStyle(fontSize: 11)),
             ),
           ),
         ],
@@ -434,7 +435,6 @@ class _CertificateEditStepState extends State<CertificateEditStep>
 
   String _formatDateRange(Certificate certificate) {
     String issueDate = '';
-    String expiryDate = '';
 
     if (certificate.publicationDate != null) {
       final date = certificate.publicationDate!;
@@ -446,21 +446,29 @@ class _CertificateEditStepState extends State<CertificateEditStep>
         final DateTime? parsedDate =
             DateTime.fromMillisecondsSinceEpoch(int.parse(issueDate) * 1000);
         if (parsedDate != null) {
-          return 'Issued: ${parsedDate.month}/${parsedDate.year}';
+          return '${AppLocalizations.of(context)!.issued} ${parsedDate.month}/${parsedDate.year}';
         }
       } catch (e) {
         
         try {
           //date is with the format yyyy-mm-ddTHH:mm:ss
           var dateAsTimeStamp = DateTime.parse(issueDate).millisecondsSinceEpoch;
-          return 'Issued: ${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).month}/${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).year}';
+          return '${AppLocalizations.of(context)!.issued} ${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).month}/${DateTime.fromMillisecondsSinceEpoch(dateAsTimeStamp).year}';
         } catch (e) {
           // Fallback if parsing fails
-          return 'Issued: ${issueDate}';
+          return '${AppLocalizations.of(context)!.issued} ${issueDate}';
         }
       }
     }
-    return 'Issued: $issueDate';
+    return '${AppLocalizations.of(context)!.issued} $issueDate';
+  }
+
+  String _getCertificateCountMessage() {
+    if (_certificates.length == 1) {
+      return AppLocalizations.of(context)!.certificateCountSingular;
+    } else {
+      return AppLocalizations.of(context)!.certificateCountPlural(_certificates.length);
+    }
   }
 
   void _editCertificate(int index) {
@@ -561,7 +569,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Edit Certificate',
+                        AppLocalizations.of(context)!.editCertificate,
                         style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -569,7 +577,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                         ),
                       ),
                       Text(
-                        'Update your certification details',
+                        AppLocalizations.of(context)!.updateCertificationDetails,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           color: Colors.grey.shade600,
@@ -596,16 +604,16 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                   children: [
                     _buildTextField(
                       controller: _nameController,
-                      label: 'Certificate Name *',
-                      hint: 'e.g., AWS Certified Developer',
+                      label: AppLocalizations.of(context)!.certificateNameRequired,
+                      hint: AppLocalizations.of(context)!.certificateNameHint,
                       icon: Icons.workspace_premium,
                     ),
                     const SizedBox(height: 16),
 
                     _buildTextField(
                       controller: _issuerController,
-                      label: 'Issuing Organization *',
-                      hint: 'e.g., Amazon Web Services',
+                      label: AppLocalizations.of(context)!.issuingOrganizationRequired,
+                      hint: AppLocalizations.of(context)!.issuingOrganizationHint,
                       icon: Icons.business,
                     ),
                     const SizedBox(height: 16),
@@ -615,7 +623,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                       children: [
                         Expanded(
                           child: _buildDateField(
-                            label: 'Issue Date *',
+                            label: AppLocalizations.of(context)!.issueDateRequired,
                             date: _issueDate,
                             onDateSelected: (date) {
                               setState(() {
@@ -631,9 +639,8 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
 
                     _buildTextField(
                       controller: _descriptionController,
-                      label: 'Description',
-                      hint:
-                          'Brief description of skills and knowledge covered...',
+                      label: AppLocalizations.of(context)!.certificateDescription,
+                      hint: AppLocalizations.of(context)!.certificateDescriptionHint,
                       icon: Icons.description,
                       maxLines: 3,
                     ),
@@ -659,7 +666,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                       ),
                     ),
                     child: Text(
-                      'Cancel',
+                      AppLocalizations.of(context)!.cancel,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -681,7 +688,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
                       elevation: 2,
                     ),
                     child: Text(
-                      'Save Changes',
+                      AppLocalizations.of(context)!.saveChanges,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -824,7 +831,7 @@ class _CertificateEditDialogState extends State<_CertificateEditDialog> {
         _issuerController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please fill in all required fields'),
+          content: Text(AppLocalizations.of(context)!.fillAllRequiredFields),
           backgroundColor: Colors.red.shade600,
         ),
       );

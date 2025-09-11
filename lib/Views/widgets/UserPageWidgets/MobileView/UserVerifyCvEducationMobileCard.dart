@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -18,7 +19,7 @@ class UserVerifyCvEducationMobileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color badgeColor = isValidated ? Colors.green : Colors.deepPurple;
-    final String badgeLabel = isValidated ? 'Verified' : 'Manually';
+    final String badgeLabel = isValidated ? AppLocalizations.of(context)!.educationVerified : AppLocalizations.of(context)!.educationManually;
 
     return Container(
       width: double.infinity,
@@ -92,20 +93,20 @@ class UserVerifyCvEducationMobileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      certificate.title ?? 'Untitled',
+                      certificate.title ?? AppLocalizations.of(context)!.educationUntitled,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      certificate.type ?? 'Certificate',
+                      certificate.type ?? AppLocalizations.of(context)!.educationCertificate,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 4),
                     if (certificate.publicationDate != null)
                       Text(
-                        'Date: ${FormatDate().formatDateForCertificate(certificate.publicationDate!)}',
+                        AppLocalizations.of(context)!.educationDate(FormatDate().formatDateForCertificate(context, certificate.publicationDate!)),
                         style:
                             const TextStyle(fontSize: 13, color: Colors.grey),
                       ),
@@ -143,14 +144,14 @@ class UserVerifyCvEducationMobileCard extends StatelessWidget {
               certificate.curriculum!.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
-              'Curriculum: ${certificate.curriculum!}',
+              AppLocalizations.of(context)!.educationCurriculum(certificate.curriculum!),
               style: const TextStyle(fontSize: 13.5, color: Colors.black87),
             ),
           ],
           if (certificate.grade != null && certificate.grade!.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
-              'Grade: ${certificate.grade!}',
+              AppLocalizations.of(context)!.educationGrade(certificate.grade!),
               style: const TextStyle(
                 fontSize: 13,
                 fontStyle: FontStyle.italic,

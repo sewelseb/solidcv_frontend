@@ -9,6 +9,7 @@ import 'package:solid_cv/models/User.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoggedInHome extends StatefulWidget {
   const LoggedInHome({super.key});
@@ -56,6 +57,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   Future<void> _handleConnectWallet() async {
+    final localizations = AppLocalizations.of(context)!;
     final address = _walletAddressController.text.trim();
     if (address.isEmpty) {
       if (!mounted) return;
@@ -73,7 +75,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     if (mounted) {
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Wallet address saved successfully!')),
+          SnackBar(content: Text(localizations.walletAddressSavedSuccessfully)),
         );
         setState(() {
           _currentUserFuture = _userBll.getCurrentUser();
@@ -82,8 +84,8 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to save wallet address. The address might be invalid or already in use.'),
+          SnackBar(
+            content: Text(localizations.failedToSaveWalletAddress),
           ),
         );
       }
@@ -91,25 +93,26 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   Future<void> _handleCreateWallet() async {
+    final localizations = AppLocalizations.of(context)!;
     final password = _passwordController.text;
     if (password.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a password to encrypt your private key.'),
+        SnackBar(
+          content: Text(localizations.pleaseEnterPassword),
         ),
       );
       return;
     }
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Creating wallet...')),
+      SnackBar(content: Text(localizations.creatingWallet)),
     );
 
     final wallet = await _blockchainWalletBll.createANewWalletAddressForCurrentUser(password);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('New wallet created and address saved!')),
+        SnackBar(content: Text(localizations.newWalletCreatedAndSaved)),
       );
       setState(() {
         _createdWallet = wallet;
@@ -169,6 +172,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
 
@@ -212,9 +216,9 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/admin/dashboard');
                     },
-                    child: const Text(
-                      'Admin Area',
-                      style: TextStyle(color: Colors.white),
+                    child: Text(
+                      localizations.adminArea,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   );
                 }
@@ -232,10 +236,10 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
+              return Center(child: Text('${localizations.error}: ${snapshot.error}'));
             }
             if (!snapshot.hasData) {
-              return const Center(child: Text("User not found."));
+              return Center(child: Text(localizations.userNotFound));
             }
 
             final user = snapshot.data!;
@@ -243,13 +247,13 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             // Check if first configuration is done
             if (user.isFirstConfigurationDone == false) {
               // Show loading while navigating
-              return const Center(
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Redirecting to setup...'),
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(localizations.redirectingToSetup),
                   ],
                 ),
               );
@@ -258,9 +262,9 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             final bool hasWalletConnected = user.ethereumAddress != null && user.ethereumAddress!.isNotEmpty;
 
             if (hasWalletConnected && _createdWallet == null) {
-              return _buildWalletConnectedView(user, isMobile);
+              return _buildWalletConnectedView(user, isMobile, localizations);
             } else {
-              return _buildWalletSetupView(isMobile, user); // Pass user to show config button
+              return _buildWalletSetupView(isMobile, user, localizations); // Pass user to show config button
             }
           },
         ),
@@ -268,7 +272,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildWalletConnectedView(User user, bool isMobile) {
+  Widget _buildWalletConnectedView(User user, bool isMobile, AppLocalizations localizations) {
     Widget contentColumn = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -321,7 +325,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                 child: Column(
                   children: [
                     Text(
-                      'Welcome Back! 🎉',
+                      localizations.welcomeBack,
                       style: GoogleFonts.inter(
                         fontSize: isMobile ? 28 : 32,
                         fontWeight: FontWeight.bold,
@@ -331,7 +335,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your Base Blockchain Wallet is Connected',
+                      localizations.walletConnected,
                       style: GoogleFonts.inter(
                         fontSize: isMobile ? 16 : 18,
                         fontWeight: FontWeight.w500,
@@ -350,7 +354,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
         Container(
           constraints: BoxConstraints(maxWidth: isMobile ? double.infinity : 600),
           child: Text(
-            "Your wallet is connected and ready to use. Start exploring all the amazing features SolidCV has to offer!",
+            localizations.walletReadyDescription,
             textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               fontSize: 16,
@@ -421,7 +425,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'Your Wallet Address',
+                        localizations.yourWalletAddress,
                         style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -471,9 +475,9 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                   SnackBar(
                                     content: Row(
                                       children: [
-                                        Icon(Icons.check_circle, color: Colors.white, size: 20),
+                                        const Icon(Icons.check_circle, color: Colors.white, size: 20),
                                         const SizedBox(width: 8),
-                                        const Text('Address copied to clipboard!'),
+                                        Text(localizations.addressCopied),
                                       ],
                                     ),
                                     backgroundColor: _successColor,
@@ -492,7 +496,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                                     Icon(Icons.copy, size: 18, color: _accentColor),
                                     const SizedBox(width: 8),
                                     Text(
-                                      "Copy Address",
+                                      localizations.copyAddress,
                                       style: GoogleFonts.inter(
                                         color: _accentColor,
                                         fontWeight: FontWeight.w600,
@@ -527,22 +531,22 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                 children: [
                   // Job Opportunities Section
                   Expanded(
-                    child: _buildJobOpportunitiesSection(isMobile),
+                    child: _buildJobOpportunitiesSection(isMobile, localizations),
                   ),
                   const SizedBox(width: 24),
                   // AI Career Advisor Section
                   Expanded(
-                    child: _buildAICareerAdvisorSection(isMobile),
+                    child: _buildAICareerAdvisorSection(isMobile, localizations),
                   ),
                   const SizedBox(width: 24),
                   // Weekly Recommendations Section
                   Expanded(
-                    child: _buildWeeklyRecommendationsSection(isMobile),
+                    child: _buildWeeklyRecommendationsSection(isMobile, localizations),
                   ),
                   const SizedBox(width: 24),
                   // Quick Actions Section
                   Expanded(
-                    child: _buildQuickActionsSection(isMobile),
+                    child: _buildQuickActionsSection(isMobile, localizations),
                   ),
                 ],
               );
@@ -550,13 +554,13 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               // Stacked layout for smaller screens
               return Column(
                 children: [
-                  _buildJobOpportunitiesSection(isMobile),
+                  _buildJobOpportunitiesSection(isMobile, localizations),
                   const SizedBox(height: 40),
-                  _buildAICareerAdvisorSection(isMobile),
+                  _buildAICareerAdvisorSection(isMobile, localizations),
                   const SizedBox(height: 40),
-                  _buildWeeklyRecommendationsSection(isMobile),
+                  _buildWeeklyRecommendationsSection(isMobile, localizations),
                   const SizedBox(height: 40),
-                  _buildQuickActionsSection(isMobile),
+                  _buildQuickActionsSection(isMobile, localizations),
                 ],
               );
             }
@@ -644,7 +648,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildWalletSetupView(bool isMobile, User user) {
+  Widget _buildWalletSetupView(bool isMobile, User user, AppLocalizations localizations) {
     if (_createdWallet != null) {
       return Container(
         decoration: BoxDecoration(
@@ -663,7 +667,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             horizontal: isMobile ? 20.0 : 40.0,
             vertical: 32.0,
           ),
-          child: _buildWalletCreationResult(_createdWallet!, isMobile),
+          child: _buildWalletCreationResult(_createdWallet!, isMobile, localizations),
         ),
       );
     }
@@ -689,37 +693,37 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // First Configuration Section - Always show
-            _buildFirstConfigurationSection(isMobile),
+            _buildFirstConfigurationSection(isMobile, localizations),
             const SizedBox(height: 40),
             
             _buildSectionCard(
-              title: 'Connect an Existing Wallet',
-              description: "If you already have a Base Blockchain wallet, enter its public address to link it to your SolidCV account.",
+              title: localizations.connectExistingWallet,
+              description: localizations.connectExistingWalletDescription,
               icon: Icons.link,
               formFields: [
                 TextField(
                   controller: _walletAddressController,
-                  decoration: _textFieldDecoration("Base Blockchain Address", prefixIcon: Icons.account_balance_wallet_outlined),
+                  decoration: _textFieldDecoration(localizations.baseBlockchainAddress, prefixIcon: Icons.account_balance_wallet_outlined),
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _handleConnectWallet,
-                  child: const Text('Connect Wallet'),
+                  child: Text(localizations.connectWallet),
                 ),
               ],
               isMobile: isMobile,
             ),
             const SizedBox(height: 40),
             _buildSectionCard(
-              title: 'Create a New Wallet',
-              description: "SolidCV can generate a new secure Base Blockchain wallet for you. Choose a strong password to protect your private key.",
+              title: localizations.createNewWalletTitle,
+              description: localizations.createNewWalletDescription,
               icon: Icons.add_circle_outline,
               formFields: [
                 TextField(
                   controller: _passwordController,
                   decoration: _textFieldDecoration(
-                    "Password (to encrypt the private key, make sure to remember it, there is no way to recover it)",
+                    localizations.passwordToEncryptKey,
                     prefixIcon: Icons.lock_outline,
                   ),
                   obscureText: true,
@@ -745,7 +749,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          "This password will encrypt your private key. Keep it safe, it is unrecoverable.",
+                          localizations.passwordEncryptionWarning,
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             color: _warningColor.withValues(alpha: 0.8),
@@ -759,7 +763,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _handleCreateWallet,
-                  child: const Text('Create a New Wallet'),
+                  child: Text(localizations.createNewWallet),
                 ),
               ],
               isMobile: isMobile,
@@ -772,7 +776,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   // Enhanced first configuration section
-  Widget _buildFirstConfigurationSection(bool isMobile) {
+  Widget _buildFirstConfigurationSection(bool isMobile, AppLocalizations localizations) {
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
@@ -829,7 +833,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Complete Your Profile Setup',
+            localizations.completeProfileSetup,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 24,
               fontWeight: FontWeight.bold,
@@ -839,7 +843,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           ),
           const SizedBox(height: 12),
           Text(
-            'Our smart assistant will guide you through setting up your profile, uploading your CV, and optimizing your account for the best experience. You can start this process even without a wallet.',
+            localizations.profileSetupDescription,
             style: GoogleFonts.inter(
               fontSize: 15,
               color: Colors.black54,
@@ -891,7 +895,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'Start Setup Assistant',
+                        localizations.startSetupAssistant,
                         style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -1025,7 +1029,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildWalletCreationResult(Wallet wallet, bool isMobile) {
+  Widget _buildWalletCreationResult(Wallet wallet, bool isMobile, AppLocalizations localizations) {
     String privateKeyHex = bytesToHex(wallet.privateKey.privateKey);
     String publicKeyHex = wallet.privateKey.address.hex;
 
@@ -1071,7 +1075,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Wallet Created Successfully! 🎉',
+                      localizations.walletCreatedSuccessfully,
                       style: GoogleFonts.inter(
                         fontSize: isMobile ? 20 : 22,
                         fontWeight: FontWeight.bold,
@@ -1080,7 +1084,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Your new wallet is ready to use',
+                      localizations.newWalletReady,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.black54,
@@ -1093,9 +1097,9 @@ class _LoggedInHomeState extends State<LoggedInHome> {
           ),
           const SizedBox(height: 28),
           
-          _buildEnhancedKeyInfo("Public Address", publicKeyHex, isMobile, isAddress: true),
+          _buildEnhancedKeyInfo(localizations.publicAddress, publicKeyHex, isMobile, localizations, isAddress: true),
           const SizedBox(height: 20),
-          _buildEnhancedKeyInfo("Private Key", "0x$privateKeyHex", isMobile),
+          _buildEnhancedKeyInfo(localizations.privateKey, "0x$privateKeyHex", isMobile, localizations),
           
           const SizedBox(height: 24),
           
@@ -1121,7 +1125,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Make sure to save the private key in a safe place. It will not be shown again and you can\'t recover it if lost.',
+                    localizations.savePrivateKeyWarning,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: _warningColor.withValues(alpha: 0.8),
@@ -1180,7 +1184,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Continue',
+                        localizations.continueButton,
                         style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -1198,7 +1202,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
     );
   }
 
-  Widget _buildEnhancedKeyInfo(String label, String value, bool isMobile, {bool isAddress = false}) {
+  Widget _buildEnhancedKeyInfo(String label, String value, bool isMobile, AppLocalizations localizations, {bool isAddress = false}) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -1297,7 +1301,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                       Icon(Icons.copy, size: 18, color: _accentColor),
                       const SizedBox(width: 8),
                       Text(
-                        "Copy ${label}",
+                        localizations.copy(label),
                         style: GoogleFonts.inter(
                           color: _accentColor,
                           fontWeight: FontWeight.w600,
@@ -1316,7 +1320,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   // Helper method for Job Opportunities Section
-  Widget _buildJobOpportunitiesSection(bool isMobile) {
+  Widget _buildJobOpportunitiesSection(bool isMobile, AppLocalizations localizations) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -1375,7 +1379,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Find Job Opportunities',
+              localizations.findJobOpportunities,
               style: GoogleFonts.inter(
                 fontSize: isMobile ? 22 : 24,
                 fontWeight: FontWeight.bold,
@@ -1385,7 +1389,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Discover amazing job opportunities from verified companies. Apply directly and showcase your blockchain-verified credentials and AI-tested skills.',
+              localizations.jobOpportunitiesDescription,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: Colors.black54,
@@ -1437,7 +1441,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Browse Jobs',
+                          localizations.exploreJobOffers,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -1487,7 +1491,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   // Helper method for AI Career Advisor Section
-  Widget _buildAICareerAdvisorSection(bool isMobile) {
+  Widget _buildAICareerAdvisorSection(bool isMobile, AppLocalizations localizations) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -1574,7 +1578,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'AI Career Advisor',
+                  localizations.aiCareerAdvisor,
                   style: GoogleFonts.inter(
                     fontSize: isMobile ? 22 : 24,
                     fontWeight: FontWeight.bold,
@@ -1601,7 +1605,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Get personalized career advice powered by advanced AI. Discover your next career move, identify skill gaps, and receive actionable recommendations based on your CV and goals.',
+              localizations.aiCareerAdvisorDescription,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: Colors.black54,
@@ -1653,7 +1657,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Get Career Advice',
+                          localizations.getCareerGuidance,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -1704,7 +1708,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     ),
                   ),
                   child: Text(
-                    'Personalized',
+                    localizations.personalized,
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Colors.orange.shade600,
@@ -1723,7 +1727,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     ),
                   ),
                   child: Text(
-                    'Free',
+                    localizations.free,
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Colors.orange.shade600,
@@ -1740,7 +1744,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   // Helper method for Weekly Recommendations Section
-  Widget _buildWeeklyRecommendationsSection(bool isMobile) {
+  Widget _buildWeeklyRecommendationsSection(bool isMobile, AppLocalizations localizations) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -1827,34 +1831,18 @@ class _LoggedInHomeState extends State<LoggedInHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Weekly Recommendations',
+                  localizations.weeklyRecommendations,
                   style: GoogleFonts.inter(
                     fontSize: isMobile ? 20 : 22,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _accentColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    'NEW',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 12),
             Text(
-              'Get personalized weekly tasks to advance your career. Follow 5 curated courses and attend 2 networking events selected just for you.',
+              localizations.weeklyRecommendationsDescription,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: Colors.black54,
@@ -1906,7 +1894,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'View This Week',
+                          localizations.viewRecommendations,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -1993,7 +1981,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
   }
 
   // Helper method for Quick Actions Section (third column)
-  Widget _buildQuickActionsSection(bool isMobile) {
+  Widget _buildQuickActionsSection(bool isMobile, AppLocalizations localizations) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -2051,7 +2039,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Quick Actions',
+              localizations.quickActions,
               style: GoogleFonts.inter(
                 fontSize: isMobile ? 22 : 24,
                 fontWeight: FontWeight.bold,
@@ -2061,7 +2049,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Access your CV, manage your profile, view your certificates, and explore more features to enhance your professional presence.',
+              localizations.quickActionsDescription,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 color: Colors.black54,
@@ -2112,7 +2100,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'View My CV',
+                          localizations.viewMyCv,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -2144,7 +2132,7 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                   Icon(Icons.bolt, size: 16, color: Colors.green.shade600),
                   const SizedBox(width: 6),
                   Text(
-                    'Quick access to your profile',
+                    localizations.quickAccessProfile,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Colors.green.shade600,

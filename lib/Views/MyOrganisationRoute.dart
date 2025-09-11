@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/MyCompanies.dart';
 import 'package:solid_cv/Views/widgets/MyEducationIstitutions.dart';
@@ -42,7 +43,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Organisations'),
+        title: Text(AppLocalizations.of(context)!.myOrganisations),
         elevation: 1,
         backgroundColor: const Color(0xFF7B3FE4),
       ),
@@ -57,9 +58,9 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute>
               labelColor: const Color(0xFF7B3FE4),
               unselectedLabelColor: Colors.black54,
               indicatorColor: const Color(0xFF7B3FE4),
-              tabs: const [
-                Tab(text: 'My Companies'),
-                Tab(text: 'My Education Institutions'),
+              tabs: [
+                Tab(text: AppLocalizations.of(context)!.myCompanies),
+                Tab(text: AppLocalizations.of(context)!.myEducationInstitutions),
               ],
             ),
           ),
@@ -90,7 +91,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute>
                                   borderRadius: BorderRadius.circular(14)),
                             ),
                             icon: const Icon(Icons.add_business_rounded),
-                            label: const Text('Add Company'),
+                            label: Text(AppLocalizations.of(context)!.addCompany),
                           ),
                         ),
                       ),
@@ -120,7 +121,7 @@ class _MyOrganisationRoutesState extends State<MyOrganisationsRoute>
                                   borderRadius: BorderRadius.circular(14)),
                             ),
                             icon: const Icon(Icons.add_business_rounded),
-                            label: const Text('Add Education Institution'),
+                            label: Text(AppLocalizations.of(context)!.addEducationInstitution),
                           ),
                         ),
                       ),

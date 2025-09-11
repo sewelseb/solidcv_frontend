@@ -77,5 +77,6 @@ abstract class IUserService {
 
   Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData);
 
+  Future<void> updateLanguagePreference(String language);
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
 import 'package:solid_cv/Views/companyViews/AddEmployeeExperiencePage.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
@@ -48,14 +49,14 @@ class _AddAnEmployeeState extends State<AddAnEmployee> {
     _company = _companyBll.getCompany(_companyId);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add an Employee')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.addAnEmployee)),
       backgroundColor: const Color(0xFFF7F8FC),
       bottomNavigationBar: const MainBottomNavigationBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: UserSearchList(
-          cardTitle: "Search a user to add as employee",
-          cardSubtitle: "Click on a user to add to your company",
+          cardTitle: AppLocalizations.of(context)!.searchUserToAddAsEmployee,
+          cardSubtitle: AppLocalizations.of(context)!.clickUserToAddToCompany,
           onSearch: (term) => _userBLL.searchUsers(SearchTherms(term: term)),
           onUserTap: (user) {
             Navigator.push(

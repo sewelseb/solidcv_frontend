@@ -2,10 +2,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/providers/LanguageProvider.dart';
 
 class EditProfileRoute extends StatefulWidget {
   final User user;
@@ -121,8 +123,8 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Profile updated!"),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.editProfileUpdated),
           backgroundColor: Colors.green,
         ),
       );
@@ -131,7 +133,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error: $e'),
+          content: Text(AppLocalizations.of(context)!.editProfileError(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -140,6 +142,115 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
         setState(() => _isSaving = false);
       }
     }
+  }
+
+  String _getLanguageDisplayName(BuildContext context) {
+    final languageProvider = LanguageProvider();
+    final currentLocale = languageProvider.locale ?? const Locale('en', '');
+    final localizations = AppLocalizations.of(context)!;
+    
+    switch (currentLocale.languageCode) {
+      case 'en':
+        return localizations.english;
+      case 'es':
+        return localizations.spanish;
+      case 'fr':
+        return localizations.french;
+      default:
+        return localizations.english;
+    }
+  }
+
+  Future<void> _handleLanguageChange(Locale locale) async {
+    final languageProvider = LanguageProvider();
+    
+    // Update language locally first
+    languageProvider.setLocale(locale);
+    
+    // Send language preference to backend
+    try {
+      await _userBll.updateLanguagePreference(locale.languageCode);
+      if (!mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.editProfileLanguageUpdated),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      
+      // Show error but don't revert local change
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.editProfileLanguageError),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      debugPrint('Failed to update language preference on backend: $e');
+    }
+    
+    setState(() {}); // Refresh to show new language
+  }
+
+  void _showLanguageSelectionDialog(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final languageProvider = LanguageProvider();
+    final currentLocale = languageProvider.locale ?? const Locale('en', '');
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(localizations.changeLanguage),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Text('🇺🇸'),
+                title: Text(localizations.english),
+                trailing: currentLocale.languageCode == 'en'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _handleLanguageChange(const Locale('en', ''));
+                },
+              ),
+              ListTile(
+                leading: const Text('🇪🇸'),
+                title: Text(localizations.spanish),
+                trailing: currentLocale.languageCode == 'es'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _handleLanguageChange(const Locale('es', ''));
+                },
+              ),
+              ListTile(
+                leading: const Text('🇫🇷'),
+                title: Text(localizations.french),
+                trailing: currentLocale.languageCode == 'fr'
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  await _handleLanguageChange(const Locale('fr', ''));
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(localizations.cancel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   InputDecoration _inputDecoration(String label, {IconData? icon}) {
@@ -164,7 +275,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile', style: TextStyle(color: Colors.white)),
+        title: Text(AppLocalizations.of(context)!.editProfileTitle, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF7B3FE4),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 1,
@@ -186,7 +297,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                 children: [
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text("Error loading user data: ${snapshot.error}"),
+                  Text(AppLocalizations.of(context)!.editProfileErrorLoading(snapshot.error.toString())),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
@@ -195,7 +306,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                         _currentUserFuture = _userBll.getCurrentUser();
                       });
                     },
-                    child: const Text("Retry"),
+                    child: Text(AppLocalizations.of(context)!.editProfileRetry),
                   ),
                 ],
               ),
@@ -203,7 +314,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
           }
           
           if (!snapshot.hasData) {
-            return const Center(child: Text("User not found"));
+            return Center(child: Text(AppLocalizations.of(context)!.editProfileUserNotFound));
           }
 
           // Update controllers with fresh data from backend
@@ -258,26 +369,26 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text("Change profile photo", style: TextStyle(color: Colors.black54)),
+                      Text(AppLocalizations.of(context)!.editProfileChangePhoto, style: const TextStyle(color: Colors.black54)),
                       const SizedBox(height: 25),
 
                       // Form fields
-                      _buildTextField(_firstNameController, "First Name", Icons.person, required: true),
+                      _buildTextField(_firstNameController, AppLocalizations.of(context)!.editProfileFirstName, Icons.person, required: true),
                       const SizedBox(height: 14),
-                      _buildTextField(_lastNameController, "Last Name", Icons.person_outline, required: true),
+                      _buildTextField(_lastNameController, AppLocalizations.of(context)!.editProfileLastName, Icons.person_outline, required: true),
                       const SizedBox(height: 14),
-                      _buildTextField(_phoneNumberController, "Phone Number", Icons.phone),
+                      _buildTextField(_phoneNumberController, AppLocalizations.of(context)!.editProfilePhoneNumber, Icons.phone),
                       const SizedBox(height: 14),
-                      _buildTextField(_linkedinController, "LinkedIn", Icons.link),
+                      _buildTextField(_linkedinController, AppLocalizations.of(context)!.editProfileLinkedIn, Icons.link),
                       const SizedBox(height: 14),
-                      _buildTextField(_biographyController, "Biography", Icons.description, maxLines: 4),
+                      _buildTextField(_biographyController, AppLocalizations.of(context)!.editProfileBiography, Icons.description, maxLines: 4),
                       const SizedBox(height: 18),
 
                       // Configuration section following SolidCV patterns
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Configuration",
+                          AppLocalizations.of(context)!.settings,
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -286,19 +397,21 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                         ),
                       ),
                       const SizedBox(height: 10),
+                      
+                      // Weekly recommendations email switch
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade300),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: SwitchListTile(
-                          title: const Text(
-                            "Receive weekly recommendation emails",
-                            style: TextStyle(fontSize: 16),
+                          title: Text(
+                            AppLocalizations.of(context)!.receiveWeeklyEmails,
+                            style: const TextStyle(fontSize: 16),
                           ),
-                          subtitle: const Text(
-                            "Get personalized career recommendations via email",
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          subtitle: Text(
+                            AppLocalizations.of(context)!.editProfileEmailSubtitle,
+                            style: const TextStyle(fontSize: 14, color: Colors.grey),
                           ),
                           value: _receiveWeeklyRecommendationEmails,
                           onChanged: (val) {
@@ -307,6 +420,28 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                             });
                           },
                           activeColor: const Color(0xFF7B3FE4),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      
+                      // Language selector
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.language, color: Color(0xFF7B3FE4)),
+                          title: Text(
+                            AppLocalizations.of(context)!.changeLanguage,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          subtitle: Text(
+                            _getLanguageDisplayName(context),
+                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                          onTap: () => _showLanguageSelectionDialog(context),
                         ),
                       ),
                       const SizedBox(height: 18),
@@ -326,7 +461,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                               : const Icon(Icons.save),
                           label: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(_isSaving ? "Saving..." : "Save Profile"),
+                            child: Text(_isSaving ? AppLocalizations.of(context)!.editProfileSaving : AppLocalizations.of(context)!.editProfileSave),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF7B3FE4),
@@ -356,7 +491,7 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
       decoration: _inputDecoration(label, icon: icon),
       validator: (value) {
         if (required && (value == null || value.trim().isEmpty)) {
-          return 'Required';
+          return AppLocalizations.of(context)!.editProfileRequired;
         }
         return null;
       },

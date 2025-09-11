@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/Parameters/CompanyParameter.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
 import 'package:solid_cv/business_layer/ICompanyBll.dart';
@@ -33,9 +34,9 @@ class _MyCompaniesState extends State<MyCompanies> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return const Center(child: Text('Error: \${snapshot.error}'));
+          return Center(child: Text(AppLocalizations.of(context)!.myCompaniesError(snapshot.error.toString())));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No companies found.'));
+          return Center(child: Text(AppLocalizations.of(context)!.myCompaniesNoCompanies));
         } else {
           return ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(overscroll: false),
@@ -116,7 +117,7 @@ class _CompanyCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      company.name ?? "Unnamed Company",
+                      company.name ?? AppLocalizations.of(context)!.myCompaniesUnnamedCompany,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,

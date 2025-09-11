@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FeedbackDialog extends StatelessWidget {
@@ -14,7 +15,7 @@ class FeedbackDialog extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       title: Text(
-        'Feedbacks',
+        AppLocalizations.of(context)!.feedbacks,
         style: GoogleFonts.inter(
           fontWeight: FontWeight.bold,
           fontSize: 22,
@@ -53,7 +54,7 @@ class FeedbackDialog extends StatelessWidget {
                 elevation: 2,
               ),
               child: Text(
-                'Fermer',
+                AppLocalizations.of(context)!.close,
                 style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

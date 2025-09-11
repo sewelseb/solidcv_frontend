@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/models/User.dart';
 
 class UserSearchList extends StatefulWidget {
   final Future<List<User>> Function(String term) onSearch;
   final void Function(User) onUserTap;
-  final String hintText;
+  final String? hintText;
   final IconData trailingIcon;
-  final String emptyMessage;
-  final String errorMessage;
-  final String cardTitle;
+  final String? emptyMessage;
+  final String? errorMessage;
+  final String? cardTitle;
   final String? cardSubtitle;
 
   const UserSearchList({
     super.key,
     required this.onSearch,
     required this.onUserTap,
-    this.hintText = "Search User",
+    this.hintText,
     this.trailingIcon = Icons.add,
-    this.emptyMessage = "No user found.",
-    this.errorMessage = "Error while searching.",
-    this.cardTitle = "Search for a user",
+    this.emptyMessage,
+    this.errorMessage,
+    this.cardTitle,
     this.cardSubtitle,
   });
 
@@ -82,7 +83,7 @@ class _UserSearchListState extends State<UserSearchList> {
                     children: [
                       Center(
                         child: Text(
-                          widget.cardTitle,
+                          widget.cardTitle ?? AppLocalizations.of(context)!.searchForAUser,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 21,
@@ -108,7 +109,7 @@ class _UserSearchListState extends State<UserSearchList> {
                       TextField(
                         controller: _controller,
                         decoration: InputDecoration(
-                          labelText: widget.hintText,
+                          labelText: widget.hintText ?? AppLocalizations.of(context)!.searchUser,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -135,17 +136,17 @@ class _UserSearchListState extends State<UserSearchList> {
                           } else if (snapshot.hasError) {
                             return Center(
                               child: Text(
-                                widget.errorMessage,
+                                widget.errorMessage ?? AppLocalizations.of(context)!.errorWhileSearching,
                                 style: const TextStyle(color: Colors.red, fontSize: 16),
                               ),
                             );
                           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 30),
                               child: Center(
                                 child: Text(
-                                  'No user found.',
-                                  style: TextStyle(
+                                  widget.emptyMessage ?? AppLocalizations.of(context)!.noUserFound,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.black45,
                                     fontStyle: FontStyle.italic,

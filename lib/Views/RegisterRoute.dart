@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
@@ -18,19 +19,27 @@ class _RegisterRouteState extends State<RegisterRoute> {
   bool _agreeToTerms = false;
 
   final IUserBLL _userBll = UserBll();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmationController =
       TextEditingController();
+  final FocusNode _firstNameFocusNode = FocusNode();
+  final FocusNode _lastNameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _passwordConfirmationFocusNode = FocusNode();
 
   @override
   void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _passwordConfirmationController.dispose();
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _passwordConfirmationFocusNode.dispose();
@@ -39,19 +48,19 @@ class _RegisterRouteState extends State<RegisterRoute> {
 
   String? _validatePassword(String password) {
     if (password.length < 8) {
-      return 'Password must be at least 8 characters long';
+      return AppLocalizations.of(context)!.passwordMinLength;
     }
     
     if (!RegExp(r'[A-Z]').hasMatch(password)) {
-      return 'Password must contain at least one capital letter';
+      return AppLocalizations.of(context)!.passwordNeedsCapital;
     }
     
     if (!RegExp(r'[0-9]').hasMatch(password)) {
-      return 'Password must contain at least one number';
+      return AppLocalizations.of(context)!.passwordNeedsNumber;
     }
     
     if (!RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password)) {
-      return 'Password must contain at least one special character';
+      return AppLocalizations.of(context)!.passwordNeedsSpecial;
     }
     
     return null; // Password is valid
@@ -74,19 +83,19 @@ class _RegisterRouteState extends State<RegisterRoute> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Password requirements:',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.passwordRequirements,
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
           ),
           const SizedBox(height: 6),
-          _buildRequirementItem('At least 8 characters', hasLength),
-          _buildRequirementItem('One capital letter', hasUppercase),
-          _buildRequirementItem('One number', hasNumber),
-          _buildRequirementItem('One special character', hasSpecialChar),
+          _buildRequirementItem(AppLocalizations.of(context)!.atLeast8Characters, hasLength),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneCapitalLetter, hasUppercase),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneNumber, hasNumber),
+          _buildRequirementItem(AppLocalizations.of(context)!.oneSpecialCharacter, hasSpecialChar),
         ],
       ),
     );
@@ -117,20 +126,22 @@ class _RegisterRouteState extends State<RegisterRoute> {
   }
 
   Future<void> _handleRegister() async {
+    final firstName = _firstNameController.text.trim();
+    final lastName = _lastNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _passwordConfirmationController.text;
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseFillAllFields)),
       );
       return;
     }
 
     if (!_agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please agree to the Terms and Conditions to continue')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseAgreeToTerms)),
       );
       return;
     }
@@ -146,19 +157,22 @@ class _RegisterRouteState extends State<RegisterRoute> {
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.passwordsDoNotMatch)),
       );
       return;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Registering...')),
+      SnackBar(content: Text(AppLocalizations.of(context)!.registering)),
     );
 
     try {
       var user = User();
+      user.firstName = firstName;
+      user.lastName = lastName;
       user.email = email;
       user.password = password;
+      user.language = Localizations.localeOf(context).languageCode;
 
       user = await _userBll.createUser(user);
       Navigator.pushReplacementNamed(
@@ -168,7 +182,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed: $e')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.registrationFailed(e.toString()))),
       );
     }
   }
@@ -218,6 +232,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
             ),
             child: _RegisterForm(
               isMobile: true,
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              firstNameFocusNode: _firstNameFocusNode,
+              lastNameFocusNode: _lastNameFocusNode,
               emailFocusNode: _emailFocusNode,
               passwordFocusNode: _passwordFocusNode,
               passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
@@ -271,6 +289,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
                 constraints: BoxConstraints(maxWidth: isTablet ? 400 : 420),
                 child: _RegisterForm(
                   isMobile: false,
+                  firstNameController: _firstNameController,
+                  lastNameController: _lastNameController,
+                  firstNameFocusNode: _firstNameFocusNode,
+                  lastNameFocusNode: _lastNameFocusNode,
                   emailFocusNode: _emailFocusNode,
                   passwordFocusNode: _passwordFocusNode,
                   passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
@@ -330,10 +352,14 @@ class _RegisterForm extends StatelessWidget {
   final bool obscureConfirmPassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onToggleConfirmPassword;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController passwordConfirmationController;
   final VoidCallback onRegisterPressed;
+  final FocusNode firstNameFocusNode;
+  final FocusNode lastNameFocusNode;
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
   final FocusNode passwordConfirmationFocusNode;
@@ -348,10 +374,14 @@ class _RegisterForm extends StatelessWidget {
     required this.obscureConfirmPassword,
     required this.onTogglePassword,
     required this.onToggleConfirmPassword,
+    required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.passwordController,
     required this.passwordConfirmationController,
     required this.onRegisterPressed,
+    required this.firstNameFocusNode,
+    required this.lastNameFocusNode,
     required this.emailFocusNode,
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
@@ -379,14 +409,56 @@ class _RegisterForm extends StatelessWidget {
       crossAxisAlignment:
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        Text("Create a SolidCV Account",
+        Text(AppLocalizations.of(context)!.createSolidCVAccount,
             style: titleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 8),
-        Text("Sign up to manage your verified credentials.",
+        Text(AppLocalizations.of(context)!.signUpToManage,
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 32),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: firstNameController,
+                focusNode: firstNameFocusNode,
+                keyboardType: TextInputType.name,
+                onSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(lastNameFocusNode),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.firstName,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextField(
+                controller: lastNameController,
+                focusNode: lastNameFocusNode,
+                keyboardType: TextInputType.name,
+                onSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(emailFocusNode),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.lastName,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
         TextField(
           controller: emailController,
           focusNode: emailFocusNode,
@@ -394,8 +466,8 @@ class _RegisterForm extends StatelessWidget {
           onSubmitted: (_) =>
               FocusScope.of(context).requestFocus(passwordFocusNode),
           decoration: InputDecoration(
-            labelText: "Email address",
-            hintText: "example@domain.com",
+            labelText: AppLocalizations.of(context)!.emailAddress,
+            hintText: AppLocalizations.of(context)!.emailHint,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -413,7 +485,7 @@ class _RegisterForm extends StatelessWidget {
           onSubmitted: (_) => FocusScope.of(context)
               .requestFocus(passwordConfirmationFocusNode),
           decoration: InputDecoration(
-            labelText: "Password",
+            labelText: AppLocalizations.of(context)!.password,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -435,7 +507,7 @@ class _RegisterForm extends StatelessWidget {
           focusNode: passwordConfirmationFocusNode,
           onSubmitted: (_) => onRegisterPressed(),
           decoration: InputDecoration(
-            labelText: "Confirm password",
+            labelText: AppLocalizations.of(context)!.confirmPassword,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
@@ -478,9 +550,9 @@ class _RegisterForm extends StatelessWidget {
                     height: 1.4,
                   ),
                   children: [
-                    const TextSpan(text: 'I agree to the '),
+                    TextSpan(text: AppLocalizations.of(context)!.iAgreeToThe),
                     TextSpan(
-                      text: 'Terms and Conditions',
+                      text: AppLocalizations.of(context)!.termsAndConditions,
                       style: const TextStyle(
                         color: Color(0xFF7B3FE4),
                         fontWeight: FontWeight.w600,
@@ -492,9 +564,9 @@ class _RegisterForm extends StatelessWidget {
                           Navigator.pushNamed(context, '/terms-and-conditions');
                         },
                     ),
-                    const TextSpan(text: ' and '),
+                    TextSpan(text: AppLocalizations.of(context)!.and),
                     TextSpan(
-                      text: 'Privacy Policy',
+                      text: AppLocalizations.of(context)!.privacyPolicy,
                       style: const TextStyle(
                         color: Color(0xFF7B3FE4),
                         fontWeight: FontWeight.w600,
@@ -524,21 +596,21 @@ class _RegisterForm extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
-          child: const Text("Sign up", style: TextStyle(color: Colors.white)),
+          child: Text(AppLocalizations.of(context)!.signUp, style: const TextStyle(color: Colors.white)),
         ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Already have an account?",
-                style: TextStyle(fontSize: 14, color: Colors.black54)),
+            Text(AppLocalizations.of(context)!.alreadyHaveAccount,
+                style: const TextStyle(fontSize: 14, color: Colors.black54)),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                "Sign in",
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.signIn,
+                style: const TextStyle(
                   color: Color(0xFF7B3FE4),
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

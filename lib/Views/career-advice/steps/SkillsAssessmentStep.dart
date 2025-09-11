@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillsAssessmentStep extends StatefulWidget {
   final Function({Map<String, dynamic>? data}) onNext;
@@ -13,16 +14,19 @@ class SkillsAssessmentStep extends StatefulWidget {
 
 class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
   final Map<String, int> _skillRatings = {};
-  final List<String> _skillCategories = [
-    'Leadership & Management',
-    'Communication & Interpersonal',
-    'Technical & Digital',
-    'Problem Solving & Analytics',
-    'Creativity & Innovation',
-    'Project Management',
-    'Sales & Marketing',
-    'Financial Management',
-  ];
+  
+  List<String> _getSkillCategories(BuildContext context) {
+    return [
+      AppLocalizations.of(context)!.leadershipManagement,
+      AppLocalizations.of(context)!.communicationInterpersonal,
+      AppLocalizations.of(context)!.technicalDigital,
+      AppLocalizations.of(context)!.problemSolvingAnalytics,
+      AppLocalizations.of(context)!.creativityInnovation,
+      AppLocalizations.of(context)!.projectManagement,
+      AppLocalizations.of(context)!.salesMarketing,
+      AppLocalizations.of(context)!.financialManagement,
+    ];
+  }
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
 
@@ -36,7 +40,7 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Rate Your Skills',
+            AppLocalizations.of(context)!.rateYourSkills,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 26,
               fontWeight: FontWeight.bold,
@@ -45,7 +49,7 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Rate yourself from 1 (beginner) to 5 (expert) in each skill category.',
+            AppLocalizations.of(context)!.skillsRatingDescription,
             style: GoogleFonts.inter(
               fontSize: 16,
               color: Colors.black54,
@@ -54,9 +58,10 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
           const SizedBox(height: 24),
           Expanded(
             child: ListView.builder(
-              itemCount: _skillCategories.length,
+              itemCount: _getSkillCategories(context).length,
               itemBuilder: (context, index) {
-                final skill = _skillCategories[index];
+                final skillCategories = _getSkillCategories(context);
+                final skill = skillCategories[index];
                 final rating = _skillRatings[skill] ?? 0;
                 
                 return Container(
@@ -137,14 +142,14 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Beginner',
+                            AppLocalizations.of(context)!.beginner,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.grey.shade500,
                             ),
                           ),
                           Text(
-                            'Expert',
+                            AppLocalizations.of(context)!.expert,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.grey.shade500,
@@ -172,7 +177,7 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Back'),
+                  child: Text(AppLocalizations.of(context)!.back),
                 ),
               ),
               const SizedBox(width: 16),
@@ -191,8 +196,8 @@ class _SkillsAssessmentStepState extends State<SkillsAssessmentStep> {
                     ),
                   ),
                   child: Text(_skillRatings.length < 3 
-                      ? 'Rate at least 3 skills' 
-                      : 'Continue'),
+                      ? AppLocalizations.of(context)!.rateAtLeast3Skills
+                      : AppLocalizations.of(context)!.continueButton),
                 ),
               ),
             ],

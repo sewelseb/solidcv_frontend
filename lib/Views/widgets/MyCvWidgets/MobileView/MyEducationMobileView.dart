@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/AddManuallyCertificateDialog.dart';
 import 'package:solid_cv/Views/widgets/MyCvWidgets/MobileView/MyEducationMobileCard.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
@@ -88,10 +89,10 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
             } else if (snapshot.hasError) {
               return Padding(
                 padding: const EdgeInsets.all(24),
-                child: Text('Error: ${snapshot.error}'),
+                child: Text('${AppLocalizations.of(context)!.error}: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text("No education certificate yet."));
+              return Center(child: Text(AppLocalizations.of(context)!.educationNoCertificates));
             }
 
             final certs = snapshot.data ?? [];
@@ -118,9 +119,9 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
   Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        const Text(
-          'Education',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.education,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -139,7 +140,7 @@ class _MyEducationMobileViewState extends State<MyEducationMobileView> {
             );
           },
           icon: const Icon(Icons.add_circle_outline),
-          tooltip: 'Add education',
+          tooltip: AppLocalizations.of(context)!.add,
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IWeeklyRecommendationBll.dart';
 import 'package:solid_cv/business_layer/WeeklyRecommendationBll.dart';
@@ -74,7 +75,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to submit quiz: ${e.toString()}'),
+          content: Text('${AppLocalizations.of(context)!.failedToSubmitQuiz}: ${e.toString()}'),
           backgroundColor: Colors.red,
         ),
       );
@@ -101,7 +102,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  result.passed == true ? 'Quiz Passed!' : 'Quiz Failed',
+                  result.passed == true ? AppLocalizations.of(context)!.quizPassed : AppLocalizations.of(context)!.quizFailed,
                   style: GoogleFonts.nunito(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -117,7 +118,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
             children: [
               if (result.score != null && result.totalQuestions != null) ...[
                 Text(
-                  'Score: ${result.score}/${result.totalQuestions}',
+                  '${AppLocalizations.of(context)!.score}: ${result.score}/${result.totalQuestions}',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -153,7 +154,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                   );
                 },
                 child: Text(
-                  'Back to Recommendations',
+                  AppLocalizations.of(context)!.backToRecommendations,
                   style: GoogleFonts.nunito(
                     color: const Color(0xFF00BCD4),
                     fontWeight: FontWeight.w600,
@@ -168,7 +169,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                   Navigator.of(context).pop(); // Close questionnaire page
                 },
                 child: Text(
-                  'Back to Course',
+                  AppLocalizations.of(context)!.backToCourse,
                   style: GoogleFonts.nunito(
                     color: Colors.grey,
                     fontWeight: FontWeight.w600,
@@ -191,7 +192,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                   foregroundColor: Colors.white,
                 ),
                 child: Text(
-                  'Try Again',
+                  AppLocalizations.of(context)!.tryAgain,
                   style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w600,
                   ),
@@ -216,7 +217,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Knowledge Test',
+          AppLocalizations.of(context)!.knowledgeTest,
           style: GoogleFonts.nunito(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -246,17 +247,17 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             color: Color(0xFF00BCD4),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
-            'Loading questions...',
-            style: TextStyle(
+            AppLocalizations.of(context)!.loadingQuestions,
+            style: const TextStyle(
               color: Colors.white70,
               fontSize: 16,
             ),
@@ -280,7 +281,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Failed to load questions',
+              AppLocalizations.of(context)!.failedToLoadQuestions,
               style: GoogleFonts.nunito(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -289,7 +290,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Please try again later',
+              AppLocalizations.of(context)!.pleaseTryAgainLater,
               style: GoogleFonts.nunito(
                 fontSize: 16,
                 color: Colors.grey,
@@ -306,7 +307,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                 backgroundColor: const Color(0xFF00BCD4),
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -328,7 +329,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'No questions available',
+              AppLocalizations.of(context)!.noQuestionsAvailable,
               style: GoogleFonts.nunito(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -337,7 +338,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'This course doesn\'t have any questions yet',
+              AppLocalizations.of(context)!.courseNoQuestions,
               style: GoogleFonts.nunito(
                 fontSize: 16,
                 color: Colors.grey,
@@ -379,7 +380,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Progress: $answeredQuestions of $totalQuestions questions answered',
+                '${AppLocalizations.of(context)!.progress}: $answeredQuestions ${AppLocalizations.of(context)!.questionsAnswered(totalQuestions)}',
                 style: GoogleFonts.nunito(
                   fontSize: 16,
                   color: const Color(0xFF00BCD4),
@@ -443,7 +444,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Submitting...',
+                          AppLocalizations.of(context)!.submitting,
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -452,7 +453,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                       ],
                     )
                   : Text(
-                      'Submit Quiz',
+                      AppLocalizations.of(context)!.submitQuiz,
                       style: GoogleFonts.nunito(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -507,7 +508,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  question.questionText ?? 'Question not available',
+                  question.questionText ?? AppLocalizations.of(context)!.questionNotAvailable,
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -548,7 +549,7 @@ class _CourseQuestionnairePageState extends State<CourseQuestionnairePage> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          option.optionText ?? 'Option not available',
+                          option.optionText ?? AppLocalizations.of(context)!.optionNotAvailable,
                           style: GoogleFonts.nunito(
                             fontSize: 16,
                             color: isSelected ? Colors.white : Colors.white70,

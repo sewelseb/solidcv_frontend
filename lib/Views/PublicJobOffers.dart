@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/JobOfferBll.dart';
@@ -25,9 +26,9 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
   bool _isUserAuthenticated = false;
   
   String _searchQuery = '';
-  String _selectedLocation = 'All Locations';
-  String _selectedJobType = 'All Types';
-  String _selectedExperienceLevel = 'All Levels';
+  String _selectedLocation = '';
+  String _selectedJobType = '';
+  String _selectedExperienceLevel = '';
   
   final TextEditingController _searchController = TextEditingController();
   
@@ -36,29 +37,50 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
   final Color _gradientEnd = const Color(0xFFB57AED);
   final Color _glassBackground = Colors.white.withOpacity(0.85);
 
-  final List<String> _jobTypes = [
-    'All Types',
-    'Full-time',
-    'Part-time',
-    'Contract',
-    'Internship',
-    'Freelance'
-  ];
-
-  final List<String> _experienceLevels = [
-    'All Levels',
-    'Entry-level',
-    'Mid-level',
-    'Senior',
-    'Lead',
-    'Executive'
-  ];
+  // Remove static lists - will use dynamic localized lists instead
 
   @override
   void initState() {
     super.initState();
     _loadData();
     _checkUserAuthentication();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize filter values with localized strings
+    if (_selectedLocation.isEmpty) {
+      _selectedLocation = AppLocalizations.of(context)!.allLocations;
+    }
+    if (_selectedJobType.isEmpty) {
+      _selectedJobType = AppLocalizations.of(context)!.allTypes;
+    }
+    if (_selectedExperienceLevel.isEmpty) {
+      _selectedExperienceLevel = AppLocalizations.of(context)!.allLevels;
+    }
+  }
+
+  List<String> _getLocalizedJobTypes() {
+    return [
+      AppLocalizations.of(context)!.allTypes,
+      AppLocalizations.of(context)!.fullTime,
+      AppLocalizations.of(context)!.partTime,
+      AppLocalizations.of(context)!.contract,
+      AppLocalizations.of(context)!.internship,
+      AppLocalizations.of(context)!.freelance,
+    ];
+  }
+
+  List<String> _getLocalizedExperienceLevels() {
+    return [
+      AppLocalizations.of(context)!.allLevels,
+      AppLocalizations.of(context)!.entryLevel,
+      AppLocalizations.of(context)!.midLevel,
+      AppLocalizations.of(context)!.senior,
+      AppLocalizations.of(context)!.lead,
+      AppLocalizations.of(context)!.executive,
+    ];
   }
 
   void _loadData() {
@@ -100,19 +122,19 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
       }
 
       // Location filter
-      if (_selectedLocation != 'All Locations' && 
+      if (_selectedLocation != AppLocalizations.of(context)!.allLocations && 
           jobOffer.location != _selectedLocation) {
         return false;
       }
 
       // Job type filter
-      if (_selectedJobType != 'All Types' && 
+      if (_selectedJobType != AppLocalizations.of(context)!.allTypes && 
           jobOffer.jobType != _selectedJobType) {
         return false;
       }
 
       // Experience level filter
-      if (_selectedExperienceLevel != 'All Levels' && 
+      if (_selectedExperienceLevel != AppLocalizations.of(context)!.allLevels && 
           jobOffer.experienceLevel != _selectedExperienceLevel) {
         return false;
       }
@@ -127,7 +149,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
         .where((job) => job.location.isNotEmpty)
         .map((job) => job.location)
         .toSet();
-    return {'All Locations', ...locations};
+    return {AppLocalizations.of(context)!.allLocations, ...locations};
   }
 
   Future<void> _applyToJob(JobOffer jobOffer, User? currentUser) async {
@@ -155,7 +177,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Apply to ${jobOffer.title}',
+                AppLocalizations.of(context)!.applyTo(jobOffer.title ?? ''),
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -207,7 +229,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            jobOffer.company?.name ?? 'Unknown Company',
+                            jobOffer.company?.name ?? AppLocalizations.of(context)!.unknownCompany,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -224,7 +246,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            jobOffer.location ?? 'Location not specified',
+                            jobOffer.location.isNotEmpty ? jobOffer.location : AppLocalizations.of(context)!.locationNotSpecified,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.grey.shade700,
@@ -233,8 +255,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         ),
                       ],
                     ),
-                    if (jobOffer.jobType != null) ...[
-                      const SizedBox(height: 8),
+                    const SizedBox(height: 8),
                       Row(
                         children: [
                           Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
@@ -246,7 +267,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              jobOffer.jobType!,
+                              jobOffer.jobType,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -256,7 +277,6 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                           ),
                         ],
                       ),
-                    ],
                   ],
                 ),
               ),
@@ -293,7 +313,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          'Maximize Your Chances!',
+                          AppLocalizations.of(context)!.maximizeYourChances,
                           style: GoogleFonts.inter(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -304,7 +324,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Before applying, we recommend:',
+                      AppLocalizations.of(context)!.beforeApplyingRecommend,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -314,17 +334,17 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                     const SizedBox(height: 8),
                     _buildRecommendationItem(
                       icon: Icons.person,
-                      text: 'Complete your profile with personal information',
+                      text: AppLocalizations.of(context)!.completeProfilePersonalInfo,
                       color: Colors.blue.shade700,
                     ),
                     _buildRecommendationItem(
                       icon: Icons.work_history,
-                      text: 'Add your work experiences and achievements',
+                      text: AppLocalizations.of(context)!.addWorkExperiences,
                       color: Colors.blue.shade700,
                     ),
                     _buildRecommendationItem(
                       icon: Icons.psychology,
-                      text: 'Test and showcase your skills with AI validation',
+                      text: AppLocalizations.of(context)!.testShowcaseSkills,
                       color: Colors.blue.shade700,
                     ),
                     const SizedBox(height: 12),
@@ -341,7 +361,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Recruiters will use AI to analyze your profile against this job!',
+                              AppLocalizations.of(context)!.recruitersAnalyzeProfile,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -368,7 +388,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         Navigator.pushNamed(context, '/profile');
                       },
                       icon: const Icon(Icons.edit, size: 16),
-                      label: const Text('Complete Profile'),
+                      label: Text(AppLocalizations.of(context)!.completeProfile),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: _primaryColor,
                         side: BorderSide(color: _primaryColor),
@@ -387,7 +407,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         Navigator.pushNamed(context, '/ai-skills-test');
                       },
                       icon: const Icon(Icons.quiz, size: 16),
-                      label: const Text('Test Skills'),
+                      label: Text(AppLocalizations.of(context)!.testSkills),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.orange.shade700,
                         side: BorderSide(color: Colors.orange.shade700),
@@ -404,7 +424,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               const SizedBox(height: 16),
               
               Text(
-                'Are you ready to submit your application?',
+                AppLocalizations.of(context)!.readySubmitApplication,
                 style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -435,7 +455,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               ),
             ),
             icon: const Icon(Icons.send, size: 16),
-            label: const Text('Apply Now'),
+            label: Text(AppLocalizations.of(context)!.applyNow),
           ),
         ],
       ),
@@ -452,7 +472,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               children: [
                 const Icon(Icons.check_circle, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                const Expanded(child: Text('Application submitted successfully!')),
+                Expanded(child: Text(AppLocalizations.of(context)!.applicationSubmittedSuccessfully)),
               ],
             ),
             backgroundColor: Colors.green,
@@ -461,7 +481,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               borderRadius: BorderRadius.circular(8),
             ),
             action: SnackBarAction(
-              label: 'View Applications',
+              label: AppLocalizations.of(context)!.viewApplications,
               textColor: Colors.white,
               onPressed: () {
                 Navigator.pushNamed(context, '/my-applications');
@@ -477,7 +497,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               children: [
                 const Icon(Icons.error, color: Colors.white, size: 20),
                 const SizedBox(width: 8),
-                Expanded(child: Text('Error submitting application: $e')),
+                Expanded(child: Text(AppLocalizations.of(context)!.errorSubmittingApplication(e.toString()))),
               ],
             ),
             backgroundColor: Colors.red,
@@ -495,19 +515,19 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Login Required'),
-        content: const Text('You need to be logged in to apply for jobs. Would you like to login or register?'),
+        title: Text(AppLocalizations.of(context)!.loginRequired),
+        content: Text(AppLocalizations.of(context)!.loginRequiredMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.pushNamed(context, '/register');
             },
-            child: const Text('Register'),
+            child: Text(AppLocalizations.of(context)!.register),
           ),
           ElevatedButton(
             onPressed: () {
@@ -515,7 +535,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               Navigator.pushNamed(context, '/login');
             },
             style: ElevatedButton.styleFrom(backgroundColor: _primaryColor),
-            child: const Text('Login', style: TextStyle(color: Colors.white)),
+            child: Text(AppLocalizations.of(context)!.login, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -541,11 +561,11 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                 children: [
                   Icon(Icons.error_outline, size: 64, color: Colors.red.shade300),
                   const SizedBox(height: 16),
-                  Text('Error loading job offers: ${snapshot.error}'),
+                  Text(AppLocalizations.of(context)!.errorLoadingJobOffers(snapshot.error.toString())),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _refreshJobOffers,
-                    child: const Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retry),
                   ),
                 ],
               ),
@@ -558,7 +578,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                   Icon(Icons.work_off, size: 64, color: Colors.grey.shade400),
                   const SizedBox(height: 16),
                   Text(
-                    'No job offers available',
+                    AppLocalizations.of(context)!.noJobOffersAvailable,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       color: Colors.grey.shade600,
@@ -567,7 +587,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Check back later for new opportunities',
+                    AppLocalizations.of(context)!.checkBackLaterOpportunities,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: Colors.grey.shade500,
@@ -607,7 +627,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         );
                       } else {
                         return Text(
-                          'Job Opportunities',
+                          AppLocalizations.of(context)!.jobOpportunities,
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -699,7 +719,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Find Your Dream Job',
+                                          AppLocalizations.of(context)!.findYourDreamJob,
                                           style: GoogleFonts.inter(
                                             fontSize: isMobile ? 18 : 20,
                                             fontWeight: FontWeight.bold,
@@ -707,7 +727,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                           ),
                                         ),
                                         Text(
-                                          'Discover opportunities that match your skills',
+                                          AppLocalizations.of(context)!.discoverOpportunitiesSkills,
                                           style: GoogleFonts.inter(
                                             fontSize: isMobile ? 13 : 14,
                                             color: Colors.white.withOpacity(0.9),
@@ -742,7 +762,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: 'Search jobs...',
+                                    hintText: AppLocalizations.of(context)!.searchJobs,
                                     hintStyle: GoogleFonts.inter(
                                       color: Colors.grey.shade500,
                                       fontSize: 14,
@@ -804,7 +824,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                 Icon(Icons.search_off, size: 64, color: Colors.grey.shade400),
                                 const SizedBox(height: 16),
                                 Text(
-                                  'No jobs match your filters',
+                                  AppLocalizations.of(context)!.noJobsMatchFilters,
                                   style: GoogleFonts.inter(
                                     fontSize: 18,
                                     color: Colors.grey.shade600,
@@ -813,7 +833,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Try adjusting your search criteria',
+                                  AppLocalizations.of(context)!.tryAdjustingSearchCriteria,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     color: Colors.grey.shade500,
@@ -1025,7 +1045,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            jobOffer.title ?? 'Untitled Position',
+                            jobOffer.title ?? AppLocalizations.of(context)!.untitledPosition,
                             style: GoogleFonts.inter(
                               fontSize: isMobile ? 18 : 20,
                               fontWeight: FontWeight.bold,
@@ -1103,7 +1123,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        jobOffer.jobType!,
+                        jobOffer.jobType,
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -1133,12 +1153,12 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                       ),
                     ],
                     ...[
-                    if (jobOffer.location != null && jobOffer.location!.isNotEmpty)
+                    if (jobOffer.location.isNotEmpty)
                       const SizedBox(width: 16),
                     Icon(Icons.trending_up, size: 16, color: Colors.grey.shade600),
                     const SizedBox(width: 4),
                     Text(
-                      jobOffer.experienceLevel!,
+                      jobOffer.experienceLevel,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: Colors.grey.shade600,
@@ -1208,7 +1228,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                   ),
                                 ),
                                 icon: const Icon(Icons.business, size: 14),
-                                label: const Text('Company', style: TextStyle(fontSize: 12)),
+                                label: Text(AppLocalizations.of(context)!.company, style: const TextStyle(fontSize: 12)),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -1230,7 +1250,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                                 ),
                               ),
                               icon: const Icon(Icons.visibility, size: 14),
-                              label: const Text('See More', style: TextStyle(fontSize: 12)),
+                              label: Text(AppLocalizations.of(context)!.seeMore, style: const TextStyle(fontSize: 12)),
                             ),
                           ),
                         ],
@@ -1265,7 +1285,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                             ),
                           ),
                           icon: const Icon(Icons.business, size: 16),
-                          label: const Text('Company'),
+                          label: Text(AppLocalizations.of(context)!.company),
                         ),
                         const SizedBox(width: 8),
                       ],
@@ -1285,7 +1305,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                           ),
                         ),
                         icon: const Icon(Icons.visibility, size: 16),
-                        label: const Text('See More'),
+                        label: Text(AppLocalizations.of(context)!.seeMore),
                       ),
                     ],
                   ),
@@ -1369,7 +1389,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               _buildCompactFilter(
                 'Type',
                 _selectedJobType,
-                _jobTypes,
+                _getLocalizedJobTypes(),
                 (value) => setState(() => _selectedJobType = value!),
                 Icons.work,
               ),
@@ -1377,7 +1397,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
               _buildCompactFilter(
                 'Level',
                 _selectedExperienceLevel,
-                _experienceLevels,
+                _getLocalizedExperienceLevels(),
                 (value) => setState(() => _selectedExperienceLevel = value!),
                 Icons.trending_up,
               ),
@@ -1400,7 +1420,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                 child: _buildCompactFilter(
                   'Type',
                   _selectedJobType,
-                  _jobTypes,
+                  _getLocalizedJobTypes(),
                   (value) => setState(() => _selectedJobType = value!),
                   Icons.work,
                 ),
@@ -1410,7 +1430,7 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
                 child: _buildCompactFilter(
                   'Level',
                   _selectedExperienceLevel,
-                  _experienceLevels,
+                  _getLocalizedExperienceLevels(),
                   (value) => setState(() => _selectedExperienceLevel = value!),
                   Icons.trending_up,
                 ),
@@ -1458,9 +1478,9 @@ class _PublicJobOffersState extends State<PublicJobOffers> {
             child: Text(
               // Show full text on mobile since we have more width
               isMobile ? item : (
-                item == 'All Locations' ? 'All' : 
-                item == 'All Types' ? 'All' :
-                item == 'All Levels' ? 'All' : 
+                item == AppLocalizations.of(context)!.allLocations ? AppLocalizations.of(context)!.all : 
+                item == AppLocalizations.of(context)!.allTypes ? AppLocalizations.of(context)!.all :
+                item == AppLocalizations.of(context)!.allLevels ? AppLocalizations.of(context)!.all : 
                 item.length > 8 ? '${item.substring(0, 8)}...' : item
               ),
               style: GoogleFonts.inter(fontSize: isMobile ? 12 : 11),

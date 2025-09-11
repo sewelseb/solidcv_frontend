@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IndustryPreferencesStep extends StatefulWidget {
   final Function({Map<String, dynamic>? data}) onNext;
@@ -15,26 +16,45 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
   final Set<String> _selectedIndustries = {};
   final Map<String, String> _workPreferences = {};
   
-  final List<Map<String, dynamic>> _industries = [
-    {'name': 'Technology & Software', 'icon': Icons.computer},
-    {'name': 'Healthcare & Medicine', 'icon': Icons.local_hospital},
-    {'name': 'Finance & Banking', 'icon': Icons.account_balance},
-    {'name': 'Education & Training', 'icon': Icons.school},
-    {'name': 'Marketing & Advertising', 'icon': Icons.campaign},
-    {'name': 'Consulting', 'icon': Icons.business},
-    {'name': 'Manufacturing', 'icon': Icons.precision_manufacturing},
-    {'name': 'Retail & E-commerce', 'icon': Icons.shopping_cart},
-    {'name': 'Media & Entertainment', 'icon': Icons.movie},
-    {'name': 'Non-profit & NGO', 'icon': Icons.volunteer_activism},
-    {'name': 'Government & Public Sector', 'icon': Icons.account_balance},
-    {'name': 'Energy & Environment', 'icon': Icons.eco},
-  ];
+  List<Map<String, dynamic>> _getIndustries(BuildContext context) {
+    return [
+      {'name': AppLocalizations.of(context)!.technologySoftware, 'icon': Icons.computer},
+      {'name': AppLocalizations.of(context)!.healthcareMedicine, 'icon': Icons.local_hospital},
+      {'name': AppLocalizations.of(context)!.financeBanking, 'icon': Icons.account_balance},
+      {'name': AppLocalizations.of(context)!.educationTraining, 'icon': Icons.school},
+      {'name': AppLocalizations.of(context)!.marketingAdvertising, 'icon': Icons.campaign},
+      {'name': AppLocalizations.of(context)!.consulting, 'icon': Icons.business},
+      {'name': AppLocalizations.of(context)!.manufacturing, 'icon': Icons.precision_manufacturing},
+      {'name': AppLocalizations.of(context)!.retailEcommerce, 'icon': Icons.shopping_cart},
+      {'name': AppLocalizations.of(context)!.mediaEntertainment, 'icon': Icons.movie},
+      {'name': AppLocalizations.of(context)!.nonprofitNgo, 'icon': Icons.volunteer_activism},
+      {'name': AppLocalizations.of(context)!.governmentPublicSector, 'icon': Icons.account_balance},
+      {'name': AppLocalizations.of(context)!.energyEnvironment, 'icon': Icons.eco},
+    ];
+  }
 
-  final Map<String, List<String>> _workPreferenceOptions = {
-    'Work Location': ['Remote', 'Hybrid', 'On-site', 'No preference'],
-    'Company Size': ['Startup (1-50)', 'Medium (51-500)', 'Large (500+)', 'No preference'],
-    'Work Schedule': ['Full-time', 'Part-time', 'Freelance/Contract', 'Flexible'],
-  };
+  Map<String, List<String>> _getWorkPreferenceOptions(BuildContext context) {
+    return {
+      AppLocalizations.of(context)!.workLocation: [
+        AppLocalizations.of(context)!.remote, 
+        AppLocalizations.of(context)!.hybrid, 
+        AppLocalizations.of(context)!.onsite, 
+        AppLocalizations.of(context)!.noPreference
+      ],
+      AppLocalizations.of(context)!.companySize: [
+        AppLocalizations.of(context)!.startup1to50, 
+        AppLocalizations.of(context)!.medium51to500, 
+        AppLocalizations.of(context)!.large500plus, 
+        AppLocalizations.of(context)!.noPreference
+      ],
+      AppLocalizations.of(context)!.workSchedule: [
+        AppLocalizations.of(context)!.fullTime, 
+        AppLocalizations.of(context)!.partTime, 
+        AppLocalizations.of(context)!.freelanceContract, 
+        AppLocalizations.of(context)!.flexible
+      ],
+    };
+  }
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
 
@@ -48,7 +68,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Industry & Work Preferences',
+            AppLocalizations.of(context)!.industryWorkPreferences,
             style: GoogleFonts.inter(
               fontSize: isMobile ? 22 : 26,
               fontWeight: FontWeight.bold,
@@ -57,7 +77,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Select industries you\'re interested in and your work preferences.',
+            AppLocalizations.of(context)!.selectIndustriesDescription,
             style: GoogleFonts.inter(
               fontSize: 16,
               color: Colors.black54,
@@ -71,7 +91,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                 children: [
                   // Industries Section
                   Text(
-                    'Industries of Interest (Select up to 3)',
+                    AppLocalizations.of(context)!.industriesOfInterest,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -82,7 +102,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                   Wrap(
                     spacing: 12,
                     runSpacing: 12,
-                    children: _industries.map((industry) {
+                    children: _getIndustries(context).map((industry) {
                       final isSelected = _selectedIndustries.contains(industry['name']);
                       final canSelect = _selectedIndustries.length < 3 || isSelected;
                       
@@ -150,7 +170,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                   
                   // Work Preferences Section
                   Text(
-                    'Work Preferences',
+                    AppLocalizations.of(context)!.workPreferences,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -159,7 +179,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                   ),
                   const SizedBox(height: 16),
                   
-                  ..._workPreferenceOptions.entries.map((entry) {
+                  ..._getWorkPreferenceOptions(context).entries.map((entry) {
                     final category = entry.key;
                     final options = entry.value;
                     final selectedOption = _workPreferences[category];
@@ -250,7 +270,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Back'),
+                  child: Text(AppLocalizations.of(context)!.back),
                 ),
               ),
               const SizedBox(width: 16),
@@ -271,7 +291,7 @@ class _IndustryPreferencesStepState extends State<IndustryPreferencesStep> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Generate Advice'),
+                  child: Text(AppLocalizations.of(context)!.generateAdvice),
                 ),
               ),
             ],

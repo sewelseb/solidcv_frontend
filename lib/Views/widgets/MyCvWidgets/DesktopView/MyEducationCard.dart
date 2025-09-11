@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/FormatDate.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/glassCardDecoration.dart';
 import 'package:solid_cv/Views/components/VerificationBadge.dart';
@@ -30,7 +31,7 @@ class _EducationCardState extends State<EducationCard> {
   Widget build(BuildContext context) {
     final Color badgeColor = widget.isValidated ? Colors.green : Colors.deepPurple;
     final String badgeLabel =
-        widget.isValidated ? 'Verified by the blockchain' : 'Manually added';
+        widget.isValidated ? AppLocalizations.of(context)!.verifiedByBlockchain : AppLocalizations.of(context)!.manuallyAdded;
 
     return Container(
       width: double.infinity,
@@ -90,7 +91,7 @@ class _EducationCardState extends State<EducationCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.certificate.title ?? 'Untitled',
+                                    widget.certificate.title ?? AppLocalizations.of(context)!.untitled,
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
@@ -98,7 +99,7 @@ class _EducationCardState extends State<EducationCard> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    widget.certificate.type ?? 'Certificate',
+                                    widget.certificate.type ?? AppLocalizations.of(context)!.certificate,
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -107,7 +108,7 @@ class _EducationCardState extends State<EducationCard> {
                                   const SizedBox(height: 4),
                                   if (widget.certificate.publicationDate != null)
                                     Text(
-                                      'Date: ${FormatDate().formatDateForCertificate(widget.certificate.publicationDate!)}',
+                                      '${AppLocalizations.of(context)!.date}: ${FormatDate().formatDateForCertificate(context, widget.certificate.publicationDate!)}',
                                       style: const TextStyle(
                                           fontSize: 13, color: Colors.grey),
                                     ),
@@ -158,7 +159,7 @@ class _EducationCardState extends State<EducationCard> {
                   widget.certificate.curriculum!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'Curriculum: ${widget.certificate.curriculum!}',
+                  '${AppLocalizations.of(context)!.curriculum}: ${widget.certificate.curriculum!}',
                   style:
                       const TextStyle(fontSize: 13.5, color: Colors.black87),
                 ),
@@ -166,7 +167,7 @@ class _EducationCardState extends State<EducationCard> {
               if (widget.certificate.grade != null && widget.certificate.grade!.isNotEmpty) ...[
                 const SizedBox(height: 6),
                 Text(
-                  'Grade: ${widget.certificate.grade!}',
+                  '${AppLocalizations.of(context)!.grade}: ${widget.certificate.grade!}',
                   style: const TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
@@ -184,7 +185,7 @@ class _EducationCardState extends State<EducationCard> {
                       onPressed: () =>
                           _showDeleteConfirmationDialog(context, int.parse(widget.certificate.id!)),
                       style: TextButton.styleFrom(foregroundColor: Colors.red),
-                      child: const Text('Delete'),
+                      child: Text(AppLocalizations.of(context)!.delete),
                     )
                   ],
                 ),
@@ -231,12 +232,12 @@ class _EducationCardState extends State<EducationCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this certificate? This action is irreversible.'),
+          title: Text(AppLocalizations.of(context)!.confirmDeletion),
+          content: Text(AppLocalizations.of(context)!.deleteCertificateConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -248,7 +249,7 @@ class _EducationCardState extends State<EducationCard> {
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );

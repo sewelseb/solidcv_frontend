@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
@@ -139,7 +140,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                           const CircularProgressIndicator(),
                           const SizedBox(height: 16),
                           Text(
-                            'Loading your skills...',
+                            AppLocalizations.of(context)!.loadingYourSkills,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.grey.shade600,
@@ -165,7 +166,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                           Icon(Icons.error, color: Colors.red.shade400, size: 32),
                           const SizedBox(height: 8),
                           Text(
-                            'Error loading skills',
+                            AppLocalizations.of(context)!.errorLoadingSkills,
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.red.shade600,
@@ -173,7 +174,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Continue without skills for now',
+                            AppLocalizations.of(context)!.continueWithoutSkills,
                             style: GoogleFonts.inter(
                               fontSize: 12,
                               color: Colors.grey.shade600,
@@ -209,7 +210,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Review Your Skills',
+          AppLocalizations.of(context)!.reviewYourSkills,
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -218,7 +219,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
         ),
         const SizedBox(height: 8),
         Text(
-          'You have ${_skills.length} skill${_skills.length != 1 ? 's' : ''}. You can remove any that aren\'t relevant.',
+          _getSkillsCountMessage(context),
           style: GoogleFonts.inter(
             fontSize: 14,
             color: Colors.grey.shade700,
@@ -241,7 +242,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                 Icon(Icons.psychology_outlined, color: Colors.grey.shade400, size: 32),
                 const SizedBox(height: 8),
                 Text(
-                  'No skills found',
+                  AppLocalizations.of(context)!.noSkillsFound,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.grey.shade600,
@@ -249,7 +250,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Continue to complete your profile setup',
+                  AppLocalizations.of(context)!.continueCompleteProfile,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: Colors.grey.shade500,
@@ -275,7 +276,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                     Icon(Icons.info_outline, color: Colors.purple.shade600, size: 16),
                     const SizedBox(width: 8),
                     Text(
-                      'Tap × to remove skills you don\'t want to include',
+                      AppLocalizations.of(context)!.tapToRemoveSkills,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: Colors.purple.shade700,
@@ -316,7 +317,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    '${_skills.length} skills will be included in your profile',
+                    _getSkillsIncludedMessage(context),
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Colors.blue.shade700,
@@ -344,7 +345,7 @@ class _SkillsEditStepState extends State<SkillsEditStep>
                 ),
               ),
               icon: const Icon(Icons.check_circle, size: 16),
-              label: const Text('Complete Profile Setup'),
+              label: Text(AppLocalizations.of(context)!.completeProfileSetupButton),
             ),
           ),
       ],
@@ -466,6 +467,36 @@ class _SkillsEditStepState extends State<SkillsEditStep>
     }
     
     return Icons.star;
+  }
+
+  String _getSkillsCountMessage(BuildContext context) {
+    final count = _skills.length;
+    final plural = count != 1 ? 's' : '';
+    
+    // For Spanish, handle plural differently
+    final locale = Localizations.localeOf(context).languageCode;
+    if (locale == 'es') {
+      final pluralEs = count != 1 ? 'es' : '';
+      return 'Tienes $count habilidad$pluralEs. Puedes eliminar las que no sean relevantes.';
+    } else if (locale == 'fr') {
+      final pluralFr = count != 1 ? 's' : '';
+      return 'Vous avez $count compétence$pluralFr. Vous pouvez supprimer celles qui ne sont pas pertinentes.';
+    } else {
+      return 'You have $count skill$plural. You can remove any that aren\'t relevant.';
+    }
+  }
+
+  String _getSkillsIncludedMessage(BuildContext context) {
+    final count = _skills.length;
+    final locale = Localizations.localeOf(context).languageCode;
+    
+    if (locale == 'es') {
+      return '$count habilidades serán incluidas en tu perfil';
+    } else if (locale == 'fr') {
+      return '$count compétences seront incluses dans votre profil';
+    } else {
+      return '$count skills will be included in your profile';
+    }
   }
 
   @override

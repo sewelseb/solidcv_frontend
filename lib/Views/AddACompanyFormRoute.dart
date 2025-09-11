@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/utils/RegexValidator.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/CompanyBll.dart';
@@ -78,7 +79,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Company created!')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.companyCreated)),
       );
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -88,7 +89,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text('${AppLocalizations.of(context)!.error}: $e')),
       );
     } finally {
       setState(() => _isSubmitting = false);
@@ -111,7 +112,7 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a Company'),
+        title: Text(AppLocalizations.of(context)!.addACompany),
         elevation: 1,
         backgroundColor: const Color(0xFF7B3FE4),
       ),
@@ -151,9 +152,9 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        "Choose a company logo or image",
-                        style: TextStyle(color: Colors.black54, fontSize: 15),
+                      Text(
+                        AppLocalizations.of(context)!.chooseCompanyLogoOrImage,
+                        style: const TextStyle(color: Colors.black54, fontSize: 15),
                       ),
                       const SizedBox(height: 30),
                       // Responsive grid
@@ -164,16 +165,16 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                                   child: Column(
                                     children: [
                                       _buildTextField(_companyNameController,
-                                          "Company Name", Icons.business,
+                                          AppLocalizations.of(context)!.companyName, Icons.business,
                                           required: true),
                                       const SizedBox(height: 18),
                                       _buildTextField(_addressNumberController,
-                                          "Address number", Icons.location_on),
+                                          AppLocalizations.of(context)!.addressNumber, Icons.location_on),
                                       const SizedBox(height: 18),
                                       _buildTextField(_addressStreetController,
-                                          "Address street", Icons.location_on),
+                                          AppLocalizations.of(context)!.addressStreet, Icons.location_on),
                                       const SizedBox(height: 18),
-                                      _buildTextField(_cityController, "City",
+                                      _buildTextField(_cityController, AppLocalizations.of(context)!.city,
                                           Icons.location_city),
                                     ],
                                   ),
@@ -183,15 +184,15 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                                   child: Column(
                                     children: [
                                       _buildTextField(_zipCodeController,
-                                          "Zip code", Icons.local_post_office),
+                                          AppLocalizations.of(context)!.zipCode, Icons.local_post_office),
                                       const SizedBox(height: 18),
                                       _buildTextField(_countryController,
-                                          "Country", Icons.flag),
+                                          AppLocalizations.of(context)!.country, Icons.flag),
                                       const SizedBox(height: 18),
                                       _buildTextField(_phoneNumberController,
-                                          "Phone Number", Icons.phone),
+                                          AppLocalizations.of(context)!.phoneNumber, Icons.phone),
                                       const SizedBox(height: 18),
-                                      _buildTextField(_emailController, "Email",
+                                      _buildTextField(_emailController, AppLocalizations.of(context)!.email,
                                           Icons.email,
                                           required: true, isEmail: true),
                                     ],
@@ -202,29 +203,29 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                           : Column(
                               children: [
                                 _buildTextField(_companyNameController,
-                                    "Company Name", Icons.business,
+                                    AppLocalizations.of(context)!.companyName, Icons.business,
                                     required: true),
                                 const SizedBox(height: 18),
                                 _buildTextField(_addressNumberController,
-                                    "Address number", Icons.location_on),
+                                    AppLocalizations.of(context)!.addressNumber, Icons.location_on),
                                 const SizedBox(height: 18),
                                 _buildTextField(_addressStreetController,
-                                    "Address street", Icons.location_on),
+                                    AppLocalizations.of(context)!.addressStreet, Icons.location_on),
                                 const SizedBox(height: 18),
-                                _buildTextField(_cityController, "City",
+                                _buildTextField(_cityController, AppLocalizations.of(context)!.city,
                                     Icons.location_city),
                                 const SizedBox(height: 18),
-                                _buildTextField(_zipCodeController, "Zip code",
+                                _buildTextField(_zipCodeController, AppLocalizations.of(context)!.zipCode,
                                     Icons.local_post_office),
                                 const SizedBox(height: 18),
                                 _buildTextField(
-                                    _countryController, "Country", Icons.flag),
+                                    _countryController, AppLocalizations.of(context)!.country, Icons.flag),
                                 const SizedBox(height: 18),
                                 _buildTextField(_phoneNumberController,
-                                    "Phone Number", Icons.phone),
+                                    AppLocalizations.of(context)!.phoneNumber, Icons.phone),
                                 const SizedBox(height: 18),
                                 _buildTextField(
-                                    _emailController, "Email", Icons.email,
+                                    _emailController, AppLocalizations.of(context)!.email, Icons.email,
                                     required: false, isEmail: true),
                               ],
                             ),
@@ -255,8 +256,8 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 6.0),
                             child: Text(_isSubmitting
-                                ? "Submitting..."
-                                : "Create Company"),
+                                ? AppLocalizations.of(context)!.submitting
+                                : AppLocalizations.of(context)!.createCompany),
                           ),
                         ),
                       ),
@@ -286,12 +287,12 @@ class _AddACompanyFormRouteState extends State<AddACompanyFormRoute> {
         final trimmedValue = value?.trim() ?? '';
 
         if (required && trimmedValue.isEmpty) {
-          return 'Required';
+          return AppLocalizations.of(context)!.required;
         }
         if (isEmail &&
             trimmedValue.isNotEmpty &&
             !RegexValidator.isEmailValid(trimmedValue)) {
-          return 'Invalid email';
+          return AppLocalizations.of(context)!.invalidEmail;
         }
         return null;
       },

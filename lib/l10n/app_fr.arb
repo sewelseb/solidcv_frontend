@@ -1,0 +1,5046 @@
+{
+  "@@locale": "fr",
+  "appTitle": "SolidCV",
+  "@appTitle": {
+    "description": "Le titre de l'application"
+  },
+  "home": "Accueil",
+  "@home": {
+    "description": "Navigation page d'accueil"
+  },
+  "jobs": "Emplois",
+  "@jobs": {
+    "description": "Navigation page d'emplois"
+  },
+  "companies": "Entreprises",
+  "@companies": {
+    "description": "Navigation page d'entreprises"
+  },
+  "educationInstitutions": "Institutions Éducatives",
+  "@educationInstitutions": {
+    "description": "Navigation page d'institutions éducatives"
+  },
+  "myCv": "Mon CV",
+  "@myCv": {
+    "description": "Navigation page de mon CV"
+  },
+  "careerAdvice": "Conseils de Carrière",
+  "@careerAdvice": {
+    "description": "Navigation page de conseils de carrière"
+  },
+  "login": "Se Connecter",
+  "@login": {
+    "description": "Texte du bouton de connexion"
+  },
+  "register": "S'inscrire",
+  "@register": {
+    "description": "Texte du bouton d'inscription"
+  },
+  "logout": "Se Déconnecter",
+  "@logout": {
+    "description": "Texte du bouton de déconnexion"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "Étiquette du champ e-mail"
+  },
+  "password": "Mot de Passe",
+  "@password": {
+    "description": "Étiquette du champ mot de passe"
+  },
+  "firstName": "Prénom",
+  "@firstName": {
+    "description": "Étiquette du champ prénom"
+  },
+  "lastName": "Nom de Famille",
+  "@lastName": {
+    "description": "Étiquette du champ nom de famille"
+  },
+  "fullName": "Nom Complet",
+  "@fullName": {
+    "description": "Affichage du nom complet"
+  },
+  "save": "Enregistrer",
+  "@save": {
+    "description": "Texte du bouton enregistrer"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton annuler"
+  },
+  "edit": "Modifier",
+  "@edit": {
+    "description": "Texte du bouton modifier"
+  },
+  "delete": "Supprimer",
+  "@delete": {
+    "description": "Texte du bouton supprimer"
+  },
+  "add": "Ajouter",
+  "@add": {
+    "description": "Texte du bouton ajouter"
+  },
+  "search": "Rechercher",
+  "@search": {
+    "description": "Texte de recherche"
+  },
+  "loading": "Chargement...",
+  "@loading": {
+    "description": "Texte de l'indicateur de chargement"
+  },
+  "error": "Erreur",
+  "@error": {
+    "description": "Préfixe de message d'erreur"
+  },
+  "success": "Succès",
+  "@success": {
+    "description": "Préfixe de message de succès"
+  },
+  "welcome": "Bienvenue sur SolidCV",
+  "@welcome": {
+    "description": "Message de bienvenue"
+  },
+  "welcomeMessage": "La plateforme révolutionnaire de vérification de CV avec technologie blockchain",
+  "@welcomeMessage": {
+    "description": "Sous-titre de la page de bienvenue"
+  },
+  "getStarted": "Commencer",
+  "@getStarted": {
+    "description": "Texte du bouton commencer"
+  },
+  "learnMore": "En Savoir Plus",
+  "@learnMore": {
+    "description": "Texte du bouton en savoir plus"
+  },
+  "verifyCredentials": "Vérifier les Références",
+  "@verifyCredentials": {
+    "description": "Fonctionnalité de vérification des références"
+  },
+  "blockchainSecurity": "Sécurité Blockchain",
+  "@blockchainSecurity": {
+    "description": "Fonctionnalité de sécurité blockchain"
+  },
+  "nftCertificates": "Certificats NFT",
+  "@nftCertificates": {
+    "description": "Fonctionnalité de certificats NFT"
+  },
+  "professionalProfile": "Profil Professionnel",
+  "@professionalProfile": {
+    "description": "Section profil professionnel"
+  },
+  "workExperience": "Expérience Professionnelle",
+  "@workExperience": {
+    "description": "Section expérience professionnelle"
+  },
+  "education": "Éducation",
+  "@education": {
+    "description": "Section éducation"
+  },
+  "skills": "Compétences",
+  "@skills": {
+    "description": "Section compétences"
+  },
+  "certificates": "Certificats",
+  "@certificates": {
+    "description": "Section certificats"
+  },
+  "portfolio": "Portfolio",
+  "@portfolio": {
+    "description": "Section portfolio"
+  },
+  "contactInformation": "Informations de Contact",
+  "@contactInformation": {
+    "description": "Section informations de contact"
+  },
+  "phoneNumber": "Numéro de Téléphone",
+  "@phoneNumber": {
+    "description": "Champ numéro de téléphone"
+  },
+  "address": "Adresse",
+  "@address": {
+    "description": "Champ adresse"
+  },
+  "website": "Site Web",
+  "@website": {
+    "description": "Champ site web"
+  },
+  "linkedin": "LinkedIn",
+  "@linkedin": {
+    "description": "Champ profil LinkedIn"
+  },
+  "github": "GitHub",
+  "@github": {
+    "description": "Champ profil GitHub"
+  },
+  "jobTitle": "Titre du Poste",
+  "@jobTitle": {
+    "description": "Champ titre du poste"
+  },
+  "company": "Entreprise",
+  "@company": {
+    "description": "Champ entreprise"
+  },
+  "startDate": "Date de Début",
+  "@startDate": {
+    "description": "Champ date de début"
+  },
+  "endDate": "Date de Fin",
+  "@endDate": {
+    "description": "Champ date de fin"
+  },
+  "currentPosition": "Poste Actuel",
+  "@currentPosition": {
+    "description": "Case à cocher poste actuel"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Champ description"
+  },
+  "degree": "Diplôme",
+  "@degree": {
+    "description": "Champ diplôme académique"
+  },
+  "institution": "Institution",
+  "@institution": {
+    "description": "Champ institution éducative"
+  },
+  "fieldOfStudy": "Domaine d'Études",
+  "@fieldOfStudy": {
+    "description": "Champ domaine d'études"
+  },
+  "graduationYear": "Année de Diplôme",
+  "@graduationYear": {
+    "description": "Champ année de diplôme"
+  },
+  "skillName": "Nom de Compétence",
+  "@skillName": {
+    "description": "Champ nom de compétence"
+  },
+  "proficiencyLevel": "Niveau de Maîtrise",
+  "@proficiencyLevel": {
+    "description": "Niveau de maîtrise de compétence"
+  },
+  "beginner": "Débutant",
+  "@beginner": {
+    "description": "Niveau de maîtrise débutant"
+  },
+  "intermediate": "Intermédiaire",
+  "@intermediate": {
+    "description": "Niveau de maîtrise intermédiaire"
+  },
+  "advanced": "Avancé",
+  "@advanced": {
+    "description": "Niveau de maîtrise avancé"
+  },
+  "expert": "Expert",
+  "@expert": {
+    "description": "Niveau de maîtrise expert"
+  },
+  "apply": "Postuler",
+  "@apply": {
+    "description": "Bouton postuler pour emploi"
+  },
+  "viewDetails": "Voir les Détails",
+  "@viewDetails": {
+    "description": "Bouton voir les détails"
+  },
+  "uploadDocument": "Télécharger un Document",
+  "@uploadDocument": {
+    "description": "Bouton télécharger document"
+  },
+  "downloadCv": "Télécharger le CV",
+  "@downloadCv": {
+    "description": "Bouton télécharger CV"
+  },
+  "shareCv": "Partager le CV",
+  "@shareCv": {
+    "description": "Bouton partager CV"
+  },
+  "verifyCv": "Vérifier le CV",
+  "@verifyCv": {
+    "description": "Bouton vérifier CV"
+  },
+  "language": "Langue",
+  "@language": {
+    "description": "Étiquette sélecteur de langue"
+  },
+  "changeLanguage": "Changer de Langue",
+  "@changeLanguage": {
+    "description": "Bouton changer de langue"
+  },
+  "english": "Anglais",
+  "@english": {
+    "description": "Option de langue anglais"
+  },
+  "spanish": "Espagnol",
+  "@spanish": {
+    "description": "Option de langue espagnol"
+  },
+  "french": "Français",
+  "@french": {
+    "description": "Option de langue français"
+  },
+  "editProfileLanguageUpdated": "Préférence de langue du profil mise à jour avec succès",
+  "@editProfileLanguageUpdated": {
+    "description": "Message de succès lorsque la préférence de langue est mise à jour dans le profil"
+  },
+  "editProfileLanguageError": "Échec de la mise à jour de la préférence de langue",
+  "@editProfileLanguageError": {
+    "description": "Message d'erreur lorsque la mise à jour de la préférence de langue échoue dans le profil"
+  },
+  "settings": "Paramètres",
+  "@settings": {
+    "description": "Page de paramètres"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Page de profil"
+  },
+  "privacyPolicy": "Politique de Confidentialité",
+  "@privacyPolicy": {
+    "description": "Page de politique de confidentialité"
+  },
+  "termsAndConditions": "Conditions d'Utilisation",
+  "@termsAndConditions": {
+    "description": "Page de conditions d'utilisation"
+  },
+  "aboutUs": "À Propos de Nous",
+  "@aboutUs": {
+    "description": "Page à propos de nous"
+  },
+  "contactUs": "Nous Contacter",
+  "@contactUs": {
+    "description": "Page de contact"
+  },
+  "helpCenter": "Centre d'Aide",
+  "@helpCenter": {
+    "description": "Page du centre d'aide"
+  },
+  "faq": "Questions Fréquentes",
+  "@faq": {
+    "description": "Page de questions fréquentes"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Section notifications"
+  },
+  "emailNotifications": "Notifications par E-mail",
+  "@emailNotifications": {
+    "description": "Paramètre de notifications par e-mail"
+  },
+  "weeklyRecommendations": "Cette semaine",
+  "@weeklyRecommendations": {
+    "description": "Fonctionnalité de recommandations hebdomadaires"
+  },
+  "receiveWeeklyEmails": "Recevoir des E-mails de Recommandations Hebdomadaires",
+  "@receiveWeeklyEmails": {
+    "description": "Paramètre de préférence e-mails hebdomadaires"
+  },
+  "yes": "Oui",
+  "@yes": {
+    "description": "Option oui"
+  },
+  "no": "Non",
+  "@no": {
+    "description": "Option non"
+  },
+  "enabled": "Activé",
+  "@enabled": {
+    "description": "État activé"
+  },
+  "disabled": "Désactivé",
+  "@disabled": {
+    "description": "État désactivé"
+  },
+  "editProfile": "Modifier le Profil",
+  "@editProfile": {
+    "description": "Titre de page modifier le profil"
+  },
+  "profileUpdated": "Profil mis à jour !",
+  "@profileUpdated": {
+    "description": "Message de succès de mise à jour du profil"
+  },
+  "errorLoadingUserData": "Erreur lors du chargement des données utilisateur",
+  "@errorLoadingUserData": {
+    "description": "Message d'erreur de chargement des données utilisateur"
+  },
+  "userNotFound": "Utilisateur introuvable",
+  "@userNotFound": {
+    "description": "Message utilisateur introuvable"
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Texte du bouton réessayer"
+  },
+  "saving": "Enregistrement...",
+  "@saving": {
+    "description": "Texte de progression d'enregistrement"
+  },
+  "saveProfile": "Enregistrer le Profil",
+  "@saveProfile": {
+    "description": "Texte du bouton enregistrer profil"
+  },
+  "changeProfilePhoto": "Changer la photo de profil",
+  "@changeProfilePhoto": {
+    "description": "Texte changer photo de profil"
+  },
+  "required": "Requis",
+  "@required": {
+    "description": "Message de validation champ requis"
+  },
+  "biography": "Biographie",
+  "@biography": {
+    "description": "Étiquette du champ biographie"
+  },
+  "weeklyEmailsDescription": "Recevez des recommandations de carrière personnalisées par e-mail",
+  "@weeklyEmailsDescription": {
+    "description": "Description des paramètres d'e-mails hebdomadaires"
+  },
+  "verified": "Vérifié",
+  "@verified": {
+    "description": "Texte de statut vérifié"
+  },
+  "manually": "Manuel",
+  "@manually": {
+    "description": "Texte de statut ajouté manuellement"
+  },
+  "searchUser": "Rechercher un Utilisateur",
+  "@searchUser": {
+    "description": "Texte de recherche d'utilisateur"
+  },
+  "noUserFound": "Aucun utilisateur trouvé",
+  "@noUserFound": {
+    "description": "Message aucun utilisateur trouvé"
+  },
+  "errorWhileSearching": "Erreur lors de la recherche",
+  "@errorWhileSearching": {
+    "description": "Message erreur lors de la recherche"
+  },
+  "searchForUser": "Rechercher un utilisateur",
+  "@searchForUser": {
+    "description": "Titre de carte rechercher utilisateur"
+  },
+  "pleaseEnterSkillName": "Veuillez saisir le nom de la compétence",
+  "@pleaseEnterSkillName": {
+    "description": "Message de validation nom de compétence"
+  },
+  "errorMarkingCourseCompleted": "Erreur lors du marquage du cours comme terminé",
+  "@errorMarkingCourseCompleted": {
+    "description": "Message d'erreur de completion de cours"
+  },
+  "errorLoadingRecommendations": "Erreur lors du chargement des recommandations",
+  "@errorLoadingRecommendations": {
+    "description": "Message d'erreur de chargement des recommandations"
+  },
+  "takesJustThreeMinutes": "Prend seulement 3 minutes • Aucun portefeuille requis pour commencer",
+  "@takesJustThreeMinutes": {
+    "description": "Message de configuration rapide"
+  },
+  "aiCareerAdvice": "Conseils de Carrière IA",
+  "@aiCareerAdvice": {
+    "description": "Fonctionnalité de conseils de carrière IA"
+  },
+  "personalizedCareerGuidance": "Orientation de carrière personnalisée utilisant l'intelligence artificielle",
+  "@personalizedCareerGuidance": {
+    "description": "Description des conseils de carrière IA"
+  },
+  "blockchainVerifiedJobOpportunities": "Explorez les opportunités d'emploi vérifiées par blockchain",
+  "@blockchainVerifiedJobOpportunities": {
+    "description": "Description des opportunités d'emploi"
+  },
+  "directoryOfVerifiedCompanies": "Répertoire d'entreprises et d'employeurs vérifiés",
+  "@directoryOfVerifiedCompanies": {
+    "description": "Description du répertoire d'entreprises"
+  },
+  "blockchainPoweredProfessionalCv": "Plateforme professionnelle de CV avec technologie blockchain et orientation de carrière IA",
+  "@blockchainPoweredProfessionalCv": {
+    "description": "Description de la plateforme"
+  },
+  "errorGeneratingSitemap": "Erreur lors de la génération du plan du site",
+  "@errorGeneratingSitemap": {
+    "description": "Erreur de génération de plan du site"
+  },
+  "configuration": "Configuration",
+  "@configuration": {
+    "description": "Titre de section de configuration"
+  },
+  "courseMarkedCompleted": "Cours marqué comme terminé !",
+  "@courseMarkedCompleted": {
+    "description": "Message de succès quand un cours est marqué comme terminé"
+  },
+  "registrationConfirmed": "Votre inscription a été confirmée !",
+  "@registrationConfirmed": {
+    "description": "Message de succès quand l'inscription à un événement est confirmée"
+  },
+  "couldNotConfirmRegistration": "Impossible de confirmer l'inscription.",
+  "@couldNotConfirmRegistration": {
+    "description": "Message d'erreur quand l'inscription ne peut pas être confirmée"
+  },
+  "noRecommendationsAvailable": "Aucune recommandation disponible",
+  "@noRecommendationsAvailable": {
+    "description": "Message quand aucune recommandation n'est disponible"
+  },
+  "checkBackLaterForRecommendations": "Revenez plus tard pour de nouvelles recommandations",
+  "@checkBackLaterForRecommendations": {
+    "description": "Message suggérant de revenir plus tard pour les recommandations"
+  },
+  "boostYourCareerThisWeek": "Boostez votre carrière cette semaine",
+  "@boostYourCareerThisWeek": {
+    "description": "Sous-titre pour la page de recommandations hebdomadaires"
+  },
+  "weeklyProgress": "Progrès Hebdomadaire",
+  "@weeklyProgress": {
+    "description": "Titre de la section de progrès hebdomadaire"
+  },
+  "courses": "Cours",
+  "@courses": {
+    "description": "Étiquette de cours"
+  },
+  "events": "Événements",
+  "@events": {
+    "description": "Étiquette d'événements"
+  },
+  "recommendedCourses": "Cours Recommandés",
+  "@recommendedCourses": {
+    "description": "Titre de la section de cours recommandés"
+  },
+  "recommendedEvents": "Événements Recommandés",
+  "@recommendedEvents": {
+    "description": "Titre de la section d'événements recommandés"
+  },
+  "noCoursesAvailableThisWeek": "Aucun cours disponible cette semaine",
+  "@noCoursesAvailableThisWeek": {
+    "description": "Message quand aucun cours n'est disponible"
+  },
+  "noEventsAvailableThisWeek": "Aucun événement disponible cette semaine",
+  "@noEventsAvailableThisWeek": {
+    "description": "Message quand aucun événement n'est disponible"
+  },
+  "untitledCourse": "Cours Sans Titre",
+  "@untitledCourse": {
+    "description": "Titre par défaut pour cours sans nom"
+  },
+  "by": "Par",
+  "@by": {
+    "description": "Préfixe pour nom d'auteur/fournisseur"
+  },
+  "completed": "Terminé",
+  "@completed": {
+    "description": "Étiquette de statut terminé"
+  },
+  "reviewCourse": "Réviser le Cours",
+  "@reviewCourse": {
+    "description": "Texte du bouton pour réviser un cours terminé"
+  },
+  "startCourse": "Commencer le Cours",
+  "@startCourse": {
+    "description": "Texte du bouton pour commencer un cours"
+  },
+  "untitledEvent": "Événement Sans Titre",
+  "@untitledEvent": {
+    "description": "Titre par défaut pour événement sans nom"
+  },
+  "registered": "Inscrit",
+  "@registered": {
+    "description": "Étiquette de statut inscrit"
+  },
+  "couldNotOpenEventUrl": "Impossible d'ouvrir l'URL de l'événement",
+  "@couldNotOpenEventUrl": {
+    "description": "Message d'erreur quand l'URL de l'événement ne peut pas être ouverte"
+  },
+  "goToEventWebsite": "Aller au site web de l'événement",
+  "@goToEventWebsite": {
+    "description": "Texte du bouton pour ouvrir le site web de l'événement"
+  },
+  "iHaveRegisteredToEvent": "Je me suis inscrit à l'événement",
+  "@iHaveRegisteredToEvent": {
+    "description": "Texte du bouton pour confirmer l'inscription à l'événement"
+  },
+  "completePercentage": "% Terminé",
+  "@completePercentage": {
+    "description": "Étiquette de pourcentage terminé"
+  },
+  "tasks": "tâches",
+  "@tasks": {
+    "description": "Étiquette de tâches pour compteur de progrès"
+  },
+  "verifyACv": "Vérifier un CV",
+  "@verifyACv": {
+    "description": "Titre de page pour vérification de CV"
+  },
+  "searchForUserVerifyCV": "Recherchez un utilisateur et vérifiez son CV",
+  "@searchForUserVerifyCV": {
+    "description": "Instructions pour recherche de vérification de CV"
+  },
+  "noUserFound": "Aucun utilisateur trouvé.",
+  "@noUserFound": {
+    "description": "Message quand aucun utilisateur n'est trouvé dans les résultats de recherche"
+  },
+  "noWorkExperiencesYet": "Aucune expérience professionnelle pour le moment.",
+  "@noWorkExperiencesYet": {
+    "description": "Message quand l'utilisateur n'a pas d'expériences professionnelles"
+  },
+  "termsAndConditions": "Conditions Générales",
+  "@termsAndConditions": {
+    "description": "Titre de la page des Conditions Générales"
+  },
+  "lastUpdated": "Dernière mise à jour : {year}",
+  "@lastUpdated": {
+    "description": "Texte de dernière mise à jour avec année",
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "termsFooterAcknowledgment": "En utilisant SolidCV, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions Générales.",
+  "@termsFooterAcknowledgment": {
+    "description": "Texte de reconnaissance du pied de page pour la page des conditions"
+  },
+  "termsSection1Title": "1. Introduction",
+  "@termsSection1Title": {
+    "description": "Titre de la section 1 des conditions"
+  },
+  "termsSection1Content": "Bienvenue sur SolidCV. Ces Conditions Générales ('Conditions') régissent votre utilisation de notre plateforme et services. En accédant ou en utilisant SolidCV, vous acceptez d'être lié par ces Conditions. Si vous n'acceptez pas ces Conditions, veuillez ne pas utiliser nos services.",
+  "@termsSection1Content": {
+    "description": "Contenu de la section 1 des conditions"
+  },
+  "termsSection2Title": "2. Description du Service",
+  "@termsSection2Title": {
+    "description": "Titre de la section 2 des conditions"
+  },
+  "termsSection2Content": "SolidCV est une plateforme de gestion de CV alimentée par la blockchain qui permet aux utilisateurs de créer, gérer et vérifier leurs identifiants professionnels grâce à des certificats basés sur NFT et des jetons d'expérience de travail. Notre plateforme combine la gestion traditionnelle de CV avec la technologie blockchain pour la vérification des identifiants et les conseils de carrière alimentés par l'IA.",
+  "@termsSection2Content": {
+    "description": "Contenu de la section 2 des conditions"
+  },
+  "termsSection3Title": "3. Comptes Utilisateur et Inscription",
+  "@termsSection3Title": {
+    "description": "Titre de la section 3 des conditions"
+  },
+  "termsSection3Content": "Pour utiliser nos services, vous devez :\n\n• Avoir au moins 18 ans ou le consentement parental\n• Fournir des informations d'inscription précises et complètes\n• Maintenir la sécurité de vos identifiants de compte\n• Accepter la responsabilité de toutes les activités sous votre compte\n• Nous informer immédiatement de toute utilisation non autorisée de votre compte",
+  "@termsSection3Content": {
+    "description": "Contenu de la section 3 des conditions"
+  },
+  "termsSection4Title": "4. Utilisation Acceptable",
+  "@termsSection4Title": {
+    "description": "Titre de la section 4 des conditions"
+  },
+  "termsSection4Content": "Vous acceptez d'utiliser SolidCV uniquement à des fins légales et conformément à ces Conditions. Vous ne pouvez pas :\n\n• Télécharger des informations fausses, trompeuses ou frauduleuses\n• Violer toute loi ou réglementation applicable\n• Porter atteinte aux droits d'autrui\n• Tenter d'obtenir un accès non autorisé à nos systèmes\n• Utiliser nos services à des fins commerciales sans autorisation\n• Télécharger du code malveillant ou vous engager dans des activités nuisibles",
+  "@termsSection4Content": {
+    "description": "Contenu de la section 4 des conditions"
+  },
+  "termsSection5Title": "5. Services Blockchain et NFT",
+  "@termsSection5Title": {
+    "description": "Titre de la section 5 des conditions"
+  },
+  "termsSection5Content": "SolidCV utilise la technologie blockchain pour la vérification des identifiants :\n\n• Les certificats NFT sont frappés sur la blockchain Ethereum\n• Les jetons d'expérience de travail sont stockés sur IPFS\n• Les transactions blockchain peuvent entraîner des frais de gaz\n• Nous ne contrôlons pas les réseaux blockchain ou leur disponibilité\n• Les actifs numériques peuvent avoir des fluctuations de valeur\n• Vous êtes responsable de la gestion de votre portefeuille et clés privées",
+  "@termsSection5Content": {
+    "description": "Contenu de la section 5 des conditions"
+  },
+  "termsSection6Title": "6. Données et Confidentialité",
+  "@termsSection6Title": {
+    "description": "Titre de la section 6 des conditions"
+  },
+  "termsSection6Content": "Votre confidentialité est importante pour nous. Nos pratiques de données sont régies par notre Politique de Confidentialité, qui est incorporée dans ces Conditions par référence. En utilisant nos services, vous consentez à la collecte, l'utilisation et le partage de vos informations comme décrit dans notre Politique de Confidentialité.",
+  "@termsSection6Content": {
+    "description": "Contenu de la section 6 des conditions"
+  },
+  "termsSection7Title": "7. Propriété Intellectuelle",
+  "@termsSection7Title": {
+    "description": "Titre de la section 7 des conditions"
+  },
+  "termsSection7Content": "SolidCV et son contenu sont protégés par les lois sur la propriété intellectuelle :\n\n• Nous conservons tous les droits sur notre plateforme, conception et technologie propriétaire\n• Vous conservez la propriété du contenu que vous téléchargez\n• Vous nous accordez une licence d'utiliser votre contenu pour fournir nos services\n• Vous ne pouvez pas copier, modifier ou redistribuer notre plateforme sans autorisation",
+  "@termsSection7Content": {
+    "description": "Contenu de la section 7 des conditions"
+  },
+  "termsSection8Title": "8. Fonctionnalités Alimentées par l'IA",
+  "@termsSection8Title": {
+    "description": "Titre de la section 8 des conditions"
+  },
+  "termsSection8Content": "Notre plateforme inclut des conseils de carrière et des commentaires alimentés par l'IA :\n\n• Les recommandations IA sont à des fins informatives uniquement\n• Nous ne garantissons pas la précision du contenu généré par l'IA\n• Les fonctionnalités IA peuvent utiliser vos données pour améliorer nos services\n• Vous ne devriez pas vous fier uniquement aux recommandations IA pour les décisions de carrière",
+  "@termsSection8Content": {
+    "description": "Contenu de la section 8 des conditions"
+  },
+  "termsSection9Title": "9. Conditions de Paiement et d'Abonnement",
+  "@termsSection9Title": {
+    "description": "Titre de la section 9 des conditions"
+  },
+  "termsSection9Content": "Si applicable aux fonctionnalités premium :\n\n• Les frais d'abonnement sont facturés à l'avance\n• Les remboursements sont soumis à notre politique de remboursement\n• Nous pouvons changer les tarifs avec un préavis de 30 jours\n• Vous êtes responsable de tous les impôts et frais\n• Les informations de paiement doivent être précises et à jour",
+  "@termsSection9Content": {
+    "description": "Contenu de la section 9 des conditions"
+  },
+  "termsSection10Title": "10. Limitation de Responsabilité",
+  "@termsSection10Title": {
+    "description": "Titre de la section 10 des conditions"
+  },
+  "termsSection10Content": "DANS LA MESURE MAXIMALE PERMISE PAR LA LOI :\n\n• SolidCV est fourni 'tel quel' sans garanties\n• Nous ne sommes pas responsables des dommages indirects, accessoires ou consécutifs\n• Notre responsabilité totale est limitée au montant que vous nous avez payé au cours des 12 derniers mois\n• Nous ne sommes pas responsables des problèmes de réseau blockchain ou des services tiers",
+  "@termsSection10Content": {
+    "description": "Contenu de la section 10 des conditions"
+  },
+  "termsSection11Title": "11. Résiliation",
+  "@termsSection11Title": {
+    "description": "Titre de la section 11 des conditions"
+  },
+  "termsSection11Content": "Nous pouvons résilier ou suspendre votre compte à tout moment pour :\n\n• Violation de ces Conditions\n• Activité frauduleuse ou illégale\n• Abus de nos services ou d'autres utilisateurs\n• Non-paiement des frais (le cas échéant)\n\nVous pouvez résilier votre compte à tout moment en nous contactant. Lors de la résiliation, votre droit d'utiliser nos services cesse immédiatement.",
+  "@termsSection11Content": {
+    "description": "Contenu de la section 11 des conditions"
+  },
+  "termsSection12Title": "12. Modifications des Conditions",
+  "@termsSection12Title": {
+    "description": "Titre de la section 12 des conditions"
+  },
+  "termsSection12Content": "Nous nous réservons le droit de modifier ces Conditions à tout moment. Nous vous informerons des changements significatifs par e-mail ou notification de plateforme. Votre utilisation continue de nos services après les changements constitue l'acceptation des nouvelles Conditions.",
+  "@termsSection12Content": {
+    "description": "Contenu de la section 12 des conditions"
+  },
+  "termsSection13Title": "13. Droit Applicable et Litiges",
+  "@termsSection13Title": {
+    "description": "Titre de la section 13 des conditions"
+  },
+  "termsSection13Content": "Ces Conditions sont régies par les lois de l'Irlande. Tout litige sera résolu par arbitrage contraignant conformément aux règles de [Organisation d'Arbitrage]. Vous renoncez à votre droit de participer aux recours collectifs.",
+  "@termsSection13Content": {
+    "description": "Contenu de la section 13 des conditions"
+  },
+  "termsSection14Title": "14. Informations de Contact",
+  "@termsSection14Title": {
+    "description": "Titre de la section 14 des conditions"
+  },
+  "termsSection14Content": "Si vous avez des questions sur ces Conditions, veuillez nous contacter à :\n\nE-mail : sebastien@solidcv.com\n\nPour le support technique : sebastien@solidcv.com",
+  "@termsSection14Content": {
+    "description": "Contenu de la section 14 des conditions"
+  },
+  "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+  "@passwordMinLength": {
+    "description": "Erreur de validation du mot de passe pour la longueur minimale"
+  },
+  "passwordNeedsCapital": "Le mot de passe doit contenir au moins une lettre majuscule",
+  "@passwordNeedsCapital": {
+    "description": "Erreur de validation du mot de passe pour la lettre majuscule"
+  },
+  "passwordNeedsNumber": "Le mot de passe doit contenir au moins un chiffre",
+  "@passwordNeedsNumber": {
+    "description": "Erreur de validation du mot de passe pour le chiffre"
+  },
+  "passwordNeedsSpecial": "Le mot de passe doit contenir au moins un caractère spécial",
+  "@passwordNeedsSpecial": {
+    "description": "Erreur de validation du mot de passe pour le caractère spécial"
+  },
+  "passwordRequirements": "Exigences du mot de passe :",
+  "@passwordRequirements": {
+    "description": "En-tête des exigences du mot de passe"
+  },
+  "atLeast8Characters": "Au moins 8 caractères",
+  "@atLeast8Characters": {
+    "description": "Exigence du mot de passe : longueur minimale"
+  },
+  "oneCapitalLetter": "Une lettre majuscule",
+  "@oneCapitalLetter": {
+    "description": "Exigence du mot de passe : lettre majuscule"
+  },
+  "oneNumber": "Un chiffre",
+  "@oneNumber": {
+    "description": "Exigence du mot de passe : chiffre"
+  },
+  "oneSpecialCharacter": "Un caractère spécial",
+  "@oneSpecialCharacter": {
+    "description": "Exigence du mot de passe : caractère spécial"
+  },
+  "pleaseFillAllFields": "Veuillez remplir tous les champs",
+  "@pleaseFillAllFields": {
+    "description": "Message d'erreur quand les champs sont vides"
+  },
+  "pleaseAgreeToTerms": "Veuillez accepter les Conditions Générales pour continuer",
+  "@pleaseAgreeToTerms": {
+    "description": "Message d'erreur quand les conditions ne sont pas acceptées"
+  },
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "@passwordsDoNotMatch": {
+    "description": "Message d'erreur quand les mots de passe ne correspondent pas"
+  },
+  "registering": "Inscription en cours...",
+  "@registering": {
+    "description": "Message de chargement pendant l'inscription"
+  },
+  "registrationFailed": "Échec de l'inscription : {error}",
+  "@registrationFailed": {
+    "description": "Message d'erreur quand l'inscription échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "createSolidCVAccount": "Créer un Compte SolidCV",
+  "@createSolidCVAccount": {
+    "description": "Titre de la page d'inscription"
+  },
+  "signUpToManage": "Inscrivez-vous pour gérer vos identifiants vérifiés.",
+  "@signUpToManage": {
+    "description": "Sous-titre de la page d'inscription"
+  },
+  "emailAddress": "Adresse e-mail",
+  "@emailAddress": {
+    "description": "Étiquette du champ e-mail"
+  },
+  "emailHint": "exemple@domaine.com",
+  "@emailHint": {
+    "description": "Texte d'aide du champ e-mail"
+  },
+  "password": "Mot de passe",
+  "@password": {
+    "description": "Étiquette du champ mot de passe"
+  },
+  "confirmPassword": "Confirmer le mot de passe",
+  "@confirmPassword": {
+    "description": "Étiquette du champ confirmer le mot de passe"
+  },
+  "iAgreeToThe": "J'accepte les ",
+  "@iAgreeToThe": {
+    "description": "Début du texte d'acceptation des conditions"
+  },
+  "and": " et ",
+  "@and": {
+    "description": "Conjonction entre les conditions et la confidentialité"
+  },
+  "privacyPolicy": "Politique de Confidentialité",
+  "@privacyPolicy": {
+    "description": "Texte du lien Politique de Confidentialité"
+  },
+  "signUp": "S'inscrire",
+  "@signUp": {
+    "description": "Texte du bouton d'inscription"
+  },
+  "alreadyHaveAccount": "Vous avez déjà un compte ?",
+  "@alreadyHaveAccount": {
+    "description": "Texte demandant si l'utilisateur a un compte"
+  },
+  "signIn": "Se connecter",
+  "@signIn": {
+    "description": "Texte du lien de connexion"
+  },
+  "allLocations": "Tous les Emplacements",
+  "@allLocations": {
+    "description": "Option de filtre pour tous les emplacements"
+  },
+  "allTypes": "Tous les Types",
+  "@allTypes": {
+    "description": "Option de filtre pour tous les types d'emploi"
+  },
+  "allLevels": "Tous les Niveaux",
+  "@allLevels": {
+    "description": "Option de filtre pour tous les niveaux d'expérience"
+  },
+  "fullTime": "Temps plein",
+  "@fullTime": {
+    "description": "Type d'emploi à temps plein"
+  },
+  "partTime": "Temps partiel",
+  "@partTime": {
+    "description": "Type d'emploi à temps partiel"
+  },
+  "contract": "Contrat",
+  "@contract": {
+    "description": "Type d'emploi par contrat"
+  },
+  "internship": "Stage",
+  "@internship": {
+    "description": "Type d'emploi de stage"
+  },
+  "freelance": "Freelance",
+  "@freelance": {
+    "description": "Type d'emploi freelance"
+  },
+  "entryLevel": "Niveau débutant",
+  "@entryLevel": {
+    "description": "Expérience de niveau débutant"
+  },
+  "midLevel": "Niveau intermédiaire",
+  "@midLevel": {
+    "description": "Expérience de niveau intermédiaire"
+  },
+  "senior": "Senior",
+  "@senior": {
+    "description": "Niveau d'expérience senior"
+  },
+  "lead": "Chef d'équipe",
+  "@lead": {
+    "description": "Niveau d'expérience chef d'équipe"
+  },
+  "executive": "Exécutif",
+  "@executive": {
+    "description": "Niveau d'expérience exécutif"
+  },
+  "unknownCompany": "Entreprise Inconnue",
+  "@unknownCompany": {
+    "description": "Texte par défaut quand le nom de l'entreprise n'est pas disponible"
+  },
+  "locationNotSpecified": "Emplacement non spécifié",
+  "@locationNotSpecified": {
+    "description": "Texte par défaut quand l'emplacement n'est pas spécifié"
+  },
+  "applyTo": "Postuler à {jobTitle}",
+  "@applyTo": {
+    "description": "Titre du dialogue de candidature à l'emploi",
+    "placeholders": {
+      "jobTitle": {
+        "type": "String"
+      }
+    }
+  },
+  "completeProfile": "Compléter le Profil",
+  "@completeProfile": {
+    "description": "Bouton d'action compléter le profil"
+  },
+  "testSkills": "Tester les Compétences",
+  "@testSkills": {
+    "description": "Bouton d'action tester les compétences"
+  },
+  "applyNow": "Postuler Maintenant",
+  "@applyNow": {
+    "description": "Texte du bouton postuler maintenant"
+  },
+  "applicationSubmittedSuccessfully": "Candidature soumise avec succès !",
+  "@applicationSubmittedSuccessfully": {
+    "description": "Message de succès après soumission de candidature"
+  },
+  "errorSubmittingApplication": "Erreur lors de la soumission de candidature : {error}",
+  "@errorSubmittingApplication": {
+    "description": "Message d'erreur quand la soumission de candidature échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "loginRequired": "Connexion Requise",
+  "@loginRequired": {
+    "description": "Titre du dialogue de connexion requise"
+  },
+  "loginRequiredMessage": "Vous devez être connecté pour postuler à des emplois. Souhaitez-vous vous connecter ou vous inscrire ?",
+  "@loginRequiredMessage": {
+    "description": "Message du dialogue de connexion requise"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton annuler"
+  },
+  "register": "S'inscrire",
+  "@register": {
+    "description": "Texte du bouton s'inscrire"
+  },
+  "login": "Se connecter",
+  "@login": {
+    "description": "Texte du bouton se connecter"
+  },
+  "errorLoadingJobOffers": "Erreur lors du chargement des offres d'emploi : {error}",
+  "@errorLoadingJobOffers": {
+    "description": "Message d'erreur quand le chargement des offres d'emploi échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Texte du bouton réessayer"
+  },
+  "company": "Entreprise",
+  "@company": {
+    "description": "Étiquette entreprise"
+  },
+  "seeMore": "Voir Plus",
+  "@seeMore": {
+    "description": "Texte du bouton voir plus"
+  },
+  "maximizeYourChances": "Maximisez Vos Chances !",
+  "@maximizeYourChances": {
+    "description": "Titre pour les recommandations de candidature"
+  },
+  "beforeApplyingRecommend": "Avant de postuler, nous recommandons :",
+  "@beforeApplyingRecommend": {
+    "description": "Texte avant la liste des recommandations de candidature"
+  },
+  "completeProfilePersonalInfo": "Complétez votre profil avec des informations personnelles",
+  "@completeProfilePersonalInfo": {
+    "description": "Recommandation pour compléter le profil personnel"
+  },
+  "addWorkExperiences": "Ajoutez vos expériences professionnelles et réalisations",
+  "@addWorkExperiences": {
+    "description": "Recommandation pour ajouter l'expérience professionnelle"
+  },
+  "testShowcaseSkills": "Testez et mettez en valeur vos compétences avec validation IA",
+  "@testShowcaseSkills": {
+    "description": "Recommandation pour tester les compétences"
+  },
+  "recruitersAnalyzeProfile": "Les recruteurs utiliseront l'IA pour analyser votre profil par rapport à cet emploi !",
+  "@recruitersAnalyzeProfile": {
+    "description": "Information sur l'analyse de profil par IA"
+  },
+  "readySubmitApplication": "Êtes-vous prêt à soumettre votre candidature ?",
+  "@readySubmitApplication": {
+    "description": "Question de confirmation avant soumission de candidature"
+  },
+  "viewApplications": "Voir les Candidatures",
+  "@viewApplications": {
+    "description": "Bouton pour voir les candidatures"
+  },
+  "noJobOffersAvailable": "Aucune offre d'emploi disponible",
+  "@noJobOffersAvailable": {
+    "description": "Message quand aucune offre d'emploi n'est trouvée"
+  },
+  "checkBackLaterOpportunities": "Revenez plus tard pour de nouvelles opportunités",
+  "@checkBackLaterOpportunities": {
+    "description": "Message encourageant les utilisateurs à revenir plus tard"
+  },
+  "jobOpportunities": "Opportunités d'Emploi",
+  "@jobOpportunities": {
+    "description": "Titre pour la section des opportunités d'emploi"
+  },
+  "findYourDreamJob": "Trouvez Votre Emploi de Rêve",
+  "@findYourDreamJob": {
+    "description": "Titre principal pour la recherche d'emploi"
+  },
+  "discoverOpportunitiesSkills": "Découvrez des opportunités qui correspondent à vos compétences",
+  "@discoverOpportunitiesSkills": {
+    "description": "Sous-titre pour la recherche d'emploi"
+  },
+  "searchJobs": "Rechercher des emplois...",
+  "@searchJobs": {
+    "description": "Texte d'espace réservé pour la saisie de recherche d'emploi"
+  },
+  "noJobsMatchFilters": "Aucun emploi ne correspond à vos filtres",
+  "@noJobsMatchFilters": {
+    "description": "Message quand aucun emploi ne correspond aux filtres appliqués"
+  },
+  "tryAdjustingSearchCriteria": "Essayez d'ajuster vos critères de recherche",
+  "@tryAdjustingSearchCriteria": {
+    "description": "Suggestion d'ajuster les critères de recherche"
+  },
+  "untitledPosition": "Poste Sans Titre",
+  "@untitledPosition": {
+    "description": "Titre par défaut pour les postes sans titre"
+  },
+  "all": "Tout",
+  "@all": {
+    "description": "Forme courte pour 'Tout' dans les menus déroulants de filtre"
+  },
+  "companyNotFound": "Entreprise introuvable",
+  "@companyNotFound": {
+    "description": "Message d'erreur quand l'entreprise n'est pas trouvée"
+  },
+  "companyNotFoundOrError": "Entreprise introuvable ou erreur lors du chargement des données de l'entreprise",
+  "@companyNotFoundOrError": {
+    "description": "Message d'erreur quand les données de l'entreprise ne peuvent pas être chargées"
+  },
+  "companyProfile": "Profil d'Entreprise",
+  "@companyProfile": {
+    "description": "Titre pour la page de profil d'entreprise"
+  },
+  "goBack": "Retour",
+  "@goBack": {
+    "description": "Texte du bouton pour retourner"
+  },
+  "unknownCompanyFallback": "Entreprise Inconnue",
+  "@unknownCompanyFallback": {
+    "description": "Texte de secours quand le nom de l'entreprise n'est pas disponible"
+  },
+  "companyInformation": "Informations de l'Entreprise",
+  "@companyInformation": {
+    "description": "Titre de section pour les informations de l'entreprise"
+  },
+  "activeJobs": "Emplois Actifs",
+  "@activeJobs": {
+    "description": "Étiquette pour le nombre d'emplois actifs"
+  },
+  "totalJobs": "Total des Emplois",
+  "@totalJobs": {
+    "description": "Étiquette pour le nombre total d'emplois"
+  },
+  "currentJobOffers": "Offres d'Emploi Actuelles",
+  "@currentJobOffers": {
+    "description": "Titre de section pour les offres d'emploi actuelles"
+  },
+  "viewAllJobOffers": "Voir Toutes les {count} Offres d'Emploi",
+  "@viewAllJobOffers": {
+    "description": "Texte du bouton pour voir toutes les offres d'emploi avec nombre",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "noJobOffersAvailableCompany": "Aucune Offre d'Emploi Disponible",
+  "@noJobOffersAvailableCompany": {
+    "description": "Titre quand l'entreprise n'a pas d'offres d'emploi"
+  },
+  "companyNoOpenPositions": "Cette entreprise n'a actuellement aucune position ouverte.",
+  "@companyNoOpenPositions": {
+    "description": "Message quand l'entreprise n'a pas de positions ouvertes"
+  },
+  "viewDetails": "Voir les Détails",
+  "@viewDetails": {
+    "description": "Texte du bouton pour voir les détails"
+  },
+  "viewFullProfile": "Voir le Profil Complet",
+  "@viewFullProfile": {
+    "description": "Texte du bouton pour voir le profil complet de l'entreprise"
+  },
+  "companyOverview": "Aperçu de l'Entreprise",
+  "@companyOverview": {
+    "description": "Titre de section pour l'aperçu de l'entreprise"
+  },
+  "activePositions": "Positions Actives",
+  "@activePositions": {
+    "description": "Étiquette pour le nombre de positions actives"
+  },
+  "totalJobOffers": "Total des Offres d'Emploi",
+  "@totalJobOffers": {
+    "description": "Étiquette pour le nombre total d'offres d'emploi"
+  },
+  "companyStatus": "Statut de l'Entreprise",
+  "@companyStatus": {
+    "description": "Étiquette pour le statut de l'entreprise"
+  },
+  "companyDetails": "Détails de l'Entreprise",
+  "@companyDetails": {
+    "description": "Titre de section pour les détails de l'entreprise"
+  },
+  "fullAddress": "Adresse Complète",
+  "@fullAddress": {
+    "description": "Étiquette pour le champ d'adresse complète"
+  },
+  "phoneNumber": "Numéro de Téléphone",
+  "@phoneNumber": {
+    "description": "Étiquette pour le champ de numéro de téléphone"
+  },
+  "emailAddress": "Adresse E-mail",
+  "@emailAddress": {
+    "description": "Étiquette pour le champ d'adresse e-mail"
+  },
+  "blockchainAddress": "Adresse Blockchain",
+  "@blockchainAddress": {
+    "description": "Étiquette pour le champ d'adresse blockchain"
+  },
+  "verificationStatus": "Statut de Vérification",
+  "@verificationStatus": {
+    "description": "Étiquette pour le statut de vérification"
+  },
+  "verifiedCompany": "Entreprise Vérifiée",
+  "@verifiedCompany": {
+    "description": "Texte de statut pour les entreprises vérifiées"
+  },
+  "standardCompany": "Entreprise Standard",
+  "@standardCompany": {
+    "description": "Texte de statut pour les entreprises standard"
+  },
+  "privacyPolicy": "Politique de Confidentialité",
+  "@privacyPolicy": {
+    "description": "Titre pour la page de politique de confidentialité"
+  },
+  "solidcvPrivacyPolicy": "Politique de Confidentialité de SolidCV",
+  "@solidcvPrivacyPolicy": {
+    "description": "Titre principal pour la politique de confidentialité de SolidCV"
+  },
+  "dataCollection": "1. Collecte de Données",
+  "@dataCollection": {
+    "description": "Titre de la section 1 de politique de confidentialité"
+  },
+  "dataCollectionText": "Nous collectons les données que vous fournissez (telles que votre nom, e-mail, détails du CV, éducation et informations de l'entreprise) pour fournir et améliorer les services SolidCV. Nous ne collectons pas de données personnelles inutiles.",
+  "@dataCollectionText": {
+    "description": "Contenu de la section 1 de politique de confidentialité"
+  },
+  "dataUse": "2. Utilisation des Données",
+  "@dataUse": {
+    "description": "Titre de la section 2 de politique de confidentialité"
+  },
+  "dataUseText": "Vos données ne sont utilisées que pour vous permettre de créer, vérifier et gérer votre CV, ainsi que d'interagir avec les entreprises et institutions éducatives. Nous ne vendons pas vos informations. Certaines fonctionnalités peuvent utiliser vos données pour améliorer l'expérience utilisateur ou à des fins statistiques (toujours de manière anonyme).",
+  "@dataUseText": {
+    "description": "Contenu de la section 2 de politique de confidentialité"
+  },
+  "dataSharing": "3. Partage de Données",
+  "@dataSharing": {
+    "description": "Titre de la section 3 de politique de confidentialité"
+  },
+  "dataSharingText": "Nous ne partageons pas vos données personnelles avec des tiers sauf lorsque requis par la loi, ou avec votre consentement explicite (par exemple, lorsque vous demandez à vérifier votre CV avec une entreprise ou institution éducative).",
+  "@dataSharingText": {
+    "description": "Contenu de la section 3 de politique de confidentialité"
+  },
+  "dataSecurity": "4. Sécurité des Données",
+  "@dataSecurity": {
+    "description": "Titre de la section 4 de politique de confidentialité"
+  },
+  "dataSecurityText": "Vos données sont chiffrées et stockées en toute sécurité. Les données sensibles (telles que les clés privées) ne sont jamais stockées sur nos serveurs mais restent uniquement sur votre appareil. Gardez toujours vos identifiants en sécurité.",
+  "@dataSecurityText": {
+    "description": "Contenu de la section 4 de politique de confidentialité"
+  },
+  "userRights": "5. Droits de l'Utilisateur",
+  "@userRights": {
+    "description": "Titre de la section 5 de politique de confidentialité"
+  },
+  "userRightsText": "Vous pouvez accéder, modifier ou supprimer vos données personnelles à tout moment via l'application. Pour demander la suppression des données, contactez-nous à privacy@solidcv.app.",
+  "@userRightsText": {
+    "description": "Contenu de la section 5 de politique de confidentialité"
+  },
+  "cookiesAnalytics": "6. Cookies et Analytiques",
+  "@cookiesAnalytics": {
+    "description": "Titre de la section 6 de politique de confidentialité"
+  },
+  "cookiesAnalyticsText": "Nous utilisons uniquement des cookies essentiels et des analytiques pour améliorer l'application. Aucun suivi à des fins publicitaires n'est effectué.",
+  "@cookiesAnalyticsText": {
+    "description": "Contenu de la section 6 de politique de confidentialité"
+  },
+  "contact": "7. Contact",
+  "@contact": {
+    "description": "Titre de la section 7 de politique de confidentialité"
+  },
+  "contactText": "Si vous avez des questions concernant votre confidentialité, contactez-nous à sebastien.debeauffort@outlook.com.",
+  "@contactText": {
+    "description": "Contenu de la section 7 de politique de confidentialité"
+  },
+  "lastUpdated": "Dernière mise à jour : Juin 2025",
+  "@lastUpdated": {
+    "description": "Date de dernière mise à jour pour la politique de confidentialité"
+  },
+  "myOrganisations": "Mes Organisations",
+  "@myOrganisations": {
+    "description": "Titre de page pour aperçu des organisations"
+  },
+  "myCompanies": "Mes Entreprises", 
+  "@myCompanies": {
+    "description": "Titre d'onglet pour section des entreprises"
+  },
+  "myEducationInstitutions": "Mes Établissements d'Enseignement",
+  "@myEducationInstitutions": {
+    "description": "Titre d'onglet pour section des établissements d'enseignement"
+  },
+  "addCompany": "Ajouter une Entreprise",
+  "@addCompany": {
+    "description": "Texte du bouton pour ajouter une nouvelle entreprise"
+  },
+  "addEducationInstitution": "Ajouter un Établissement d'Enseignement",
+  "@addEducationInstitution": {
+    "description": "Texte du bouton pour ajouter un nouvel établissement d'enseignement"
+  },
+  "educationInstitutionAdministration": "Administration d'Établissement d'Enseignement",
+  "@educationInstitutionAdministration": {
+    "description": "Titre de page pour administration d'établissement d'enseignement"
+  },
+  "educationInstitutionUpdated": "Établissement d'Enseignement mis à jour !",
+  "@educationInstitutionUpdated": {
+    "description": "Message de succès quand l'établissement est mis à jour"
+  },
+  "error": "Erreur",
+  "@error": {
+    "description": "Étiquette d'erreur générique"
+  },
+  "noDataAvailable": "Aucune donnée disponible",
+  "@noDataAvailable": {
+    "description": "Message quand aucune donnée n'est disponible"
+  },
+  "changeInstitutionLogo": "Changer le logo/image de l'établissement",
+  "@changeInstitutionLogo": {
+    "description": "Texte pour changer le logo de l'établissement"
+  },
+  "submitting": "Envoi en cours...",
+  "@submitting": {
+    "description": "Texte de chargement lors de l'envoi du formulaire"
+  },
+  "updateInstitution": "Mettre à jour l'Établissement",
+  "@updateInstitution": {
+    "description": "Texte du bouton pour mettre à jour l'établissement"
+  },
+  "baseBlockchainWallet": "Portefeuille Base Blockchain",
+  "@baseBlockchainWallet": {
+    "description": "Titre de section pour portefeuille blockchain"
+  },
+  "baseBlockchainAddress": "Adresse Base Blockchain",
+  "@baseBlockchainAddress": {
+    "description": "Étiquette pour champ d'adresse blockchain"
+  },
+  "baseBlockchainPrivateKey": "Clé privée Base Blockchain",
+  "@baseBlockchainPrivateKey": {
+    "description": "Étiquette pour champ de clé privée blockchain"
+  },
+  "blockchainWalletDescription": "Ceci est l'adresse Base Blockchain qui sera utilisée pour créer des certificats ou diplômes.\\nNous ne stockons pas votre clé privée sur notre serveur, elle est stockée sur votre appareil, alors assurez-vous de la garder en sécurité.",
+  "@blockchainWalletDescription": {
+    "description": "Description pour fonctionnalité de portefeuille blockchain"
+  },
+  "passwordEncryptsPrivateKey": "Mot de passe (chiffre la clé privée)",
+  "@passwordEncryptsPrivateKey": {
+    "description": "Étiquette pour champ de mot de passe qui chiffre la clé privée"
+  },
+  "passwordRecoveryWarning": "Ce mot de passe sera utilisé pour chiffrer votre clé privée. Assurez-vous de vous en souvenir. (Il n'y a aucun moyen de le récupérer)",
+  "@passwordRecoveryWarning": {
+    "description": "Avertissement concernant la récupération du mot de passe"
+  },
+  "saveEthereum": "Sauvegarder Ethereum",
+  "@saveEthereum": {
+    "description": "Texte du bouton pour sauvegarder l'adresse Ethereum"
+  },
+  "baseBlockchainAddressSaved": "Adresse Base Blockchain sauvegardée !",
+  "@baseBlockchainAddressSaved": {
+    "description": "Message de succès quand l'adresse blockchain est sauvegardée"
+  },
+  "traineesAndStudents": "Stagiaires et Étudiants",
+  "@traineesAndStudents": {
+    "description": "Titre de section pour stagiaires et étudiants"
+  },
+  "addBlockchainAddressFirst": "Veuillez ajouter une adresse Base Blockchain avant d'ajouter des certificats.",
+  "@addBlockchainAddressFirst": {
+    "description": "Message d'avertissement pour ajouter l'adresse blockchain d'abord"
+  },
+  "addCertificatesToUser": "+ Ajouter des Certificats à l'Utilisateur",
+  "@addCertificatesToUser": {
+    "description": "Texte du bouton pour ajouter des certificats à l'utilisateur"
+  },
+  "institutionName": "Nom de l'Établissement",
+  "@institutionName": {
+    "description": "Étiquette pour champ de nom d'établissement"
+  },
+  "addressNumber": "Numéro d'adresse",
+  "@addressNumber": {
+    "description": "Étiquette pour champ de numéro d'adresse"
+  },
+  "addressStreet": "Rue d'adresse",
+  "@addressStreet": {
+    "description": "Étiquette pour champ de rue d'adresse"
+  },
+  "city": "Ville",
+  "@city": {
+    "description": "Étiquette pour champ de ville"
+  },
+  "zipCode": "Code postal",
+  "@zipCode": {
+    "description": "Étiquette pour champ de code postal"
+  },
+  "country": "Pays",
+  "@country": {
+    "description": "Étiquette pour champ de pays"
+  },
+  "phoneNumber": "Numéro de Téléphone",
+  "@phoneNumber": {
+    "description": "Étiquette pour champ de numéro de téléphone"
+  },
+  "email": "Courriel",
+  "@email": {
+    "description": "Étiquette pour champ de courriel"
+  },
+  "required": "Requis",
+  "@required": {
+    "description": "Message de validation pour champs requis"
+  },
+  "invalidEmail": "Courriel invalide",
+  "@invalidEmail": {
+    "description": "Message de validation pour courriel invalide"
+  },
+  "companyAdministration": "Administration d'Entreprise",
+  "@companyAdministration": {
+    "description": "Titre de page pour administration d'entreprise"
+  },
+  "companyUpdated": "Entreprise mise à jour !",
+  "@companyUpdated": {
+    "description": "Message de succès quand l'entreprise est mise à jour"
+  },
+  "changeCompanyLogo": "Changer le logo/image de l'entreprise",
+  "@changeCompanyLogo": {
+    "description": "Texte pour changer le logo de l'entreprise"
+  },
+  "updateCompany": "Mettre à jour l'Entreprise",
+  "@updateCompany": {
+    "description": "Texte du bouton pour mettre à jour l'entreprise"
+  },
+  "companyName": "Nom de l'Entreprise",
+  "@companyName": {
+    "description": "Étiquette pour champ de nom d'entreprise"
+  },
+  "jobOffers": "Offres d'Emploi",
+  "@jobOffers": {
+    "description": "Titre de section pour offres d'emploi"
+  },
+  "manageJobOffers": "Gérer les Offres d'Emploi",
+  "@manageJobOffers": {
+    "description": "Texte du bouton pour gérer les offres d'emploi"
+  },
+  "companyAdministrators": "Administrateurs de l'Entreprise",
+  "@companyAdministrators": {
+    "description": "Titre de section pour administrateurs d'entreprise"
+  },
+  "removeAdministrator": "Supprimer l'Administrateur",
+  "@removeAdministrator": {
+    "description": "Titre pour dialogue de suppression d'administrateur"
+  },
+  "removeAdministratorConfirmation": "Êtes-vous sûr de vouloir supprimer {name} en tant qu'administrateur ?",
+  "@removeAdministratorConfirmation": {
+    "description": "Message de confirmation pour supprimer un administrateur",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "Nom ou courriel de l'administrateur"
+      }
+    }
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton annuler"
+  },
+  "remove": "Supprimer",
+  "@remove": {
+    "description": "Texte du bouton supprimer"
+  },
+  "administratorRemoved": "{name} supprimé en tant qu'administrateur",
+  "@administratorRemoved": {
+    "description": "Message de succès quand l'administrateur est supprimé",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "Nom ou courriel de l'administrateur supprimé"
+      }
+    }
+  },
+  "errorRemovingAdministrator": "Erreur lors de la suppression de l'administrateur : {error}",
+  "@errorRemovingAdministrator": {
+    "description": "Message d'erreur quand la suppression de l'administrateur échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Détails de l'erreur"
+      }
+    }
+  },
+  "errorSearchingUsers": "Erreur lors de la recherche d'utilisateurs : {error}",
+  "@errorSearchingUsers": {
+    "description": "Message d'erreur quand la recherche d'utilisateurs échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Détails de l'erreur"
+      }
+    }
+  },
+  "errorLoadingAdministrators": "Erreur lors du chargement des administrateurs : {error}",
+  "@errorLoadingAdministrators": {
+    "description": "Message d'erreur quand le chargement des administrateurs échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Détails de l'erreur"
+      }
+    }
+  },
+  "noAdministratorsFound": "Aucun administrateur trouvé. Ajoutez le premier administrateur ci-dessous.",
+  "@noAdministratorsFound": {
+    "description": "Message quand aucun administrateur n'est trouvé"
+  },
+  "currentAdministrators": "Administrateurs Actuels ({count})",
+  "@currentAdministrators": {
+    "description": "Titre pour liste des administrateurs actuels",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Nombre d'administrateurs"
+      }
+    }
+  },
+  "addNewAdministrator": "Ajouter un Nouvel Administrateur",
+  "@addNewAdministrator": {
+    "description": "Titre pour section d'ajout d'administrateur"
+  },
+  "searchUsersPlaceholder": "Rechercher des utilisateurs par nom ou courriel...",
+  "@searchUsersPlaceholder": {
+    "description": "Texte d'espace réservé pour champ de recherche d'utilisateurs"
+  },
+  "searchResults": "Résultats de Recherche ({count})",
+  "@searchResults": {
+    "description": "Titre pour résultats de recherche",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "description": "Nombre de résultats de recherche"
+      }
+    }
+  },
+  "addAsAdministrator": "Ajouter comme Administrateur",
+  "@addAsAdministrator": {
+    "description": "Texte du bouton pour ajouter un utilisateur comme administrateur"
+  },
+  "alreadyAdministrator": "Déjà Administrateur",
+  "@alreadyAdministrator": {
+    "description": "Texte affiché quand l'utilisateur est déjà administrateur"
+  },
+  "employees": "Employés",
+  "@employees": {
+    "description": "Titre de section pour employés"
+  },
+  "addWorkExperienceToUser": "+ Ajouter une Expérience Professionnelle à l'Utilisateur",
+  "@addWorkExperienceToUser": {
+    "description": "Texte du bouton pour ajouter une expérience professionnelle à l'utilisateur"
+  },
+  "adminArea": "Zone d'Administration",
+  "@adminArea": {
+    "description": "Texte du bouton de navigation de la zone d'administration"
+  },
+  "error": "Erreur : {message}",
+  "@error": {
+    "description": "Modèle de message d'erreur",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "description": "Contenu du message d'erreur"
+      }
+    }
+  },
+  "userNotFound": "Utilisateur non trouvé.",
+  "@userNotFound": {
+    "description": "Message quand l'utilisateur n'est pas trouvé"
+  },
+  "redirectingToSetup": "Redirection vers la configuration...",
+  "@redirectingToSetup": {
+    "description": "Message de chargement pendant la redirection vers la configuration"
+  },
+  "welcomeBack": "Bon Retour ! 🎉",
+  "@welcomeBack": {
+    "description": "Message de bienvenue pour les utilisateurs qui reviennent"
+  },
+  "walletConnected": "Votre Portefeuille Base Blockchain est Connecté",
+  "@walletConnected": {
+    "description": "Sous-titre quand le portefeuille est connecté"
+  },
+  "walletReadyDescription": "Votre portefeuille est connecté et prêt à utiliser. Commencez à explorer toutes les fonctionnalités incroyables que SolidCV a à offrir !",
+  "@walletReadyDescription": {
+    "description": "Description quand le portefeuille est connecté et prêt"
+  },
+  "yourWalletAddress": "Votre Adresse de Portefeuille",
+  "@yourWalletAddress": {
+    "description": "Étiquette pour section d'adresse de portefeuille"
+  },
+  "copyAddress": "Copier l'Adresse",
+  "@copyAddress": {
+    "description": "Texte du bouton pour copier l'adresse du portefeuille"
+  },
+  "addressCopied": "Adresse copiée dans le presse-papiers !",
+  "@addressCopied": {
+    "description": "Message de succès quand l'adresse est copiée"
+  },
+  "baseBlockchainAddress": "Adresse Base Blockchain",
+  "@baseBlockchainAddress": {
+    "description": "Étiquette pour champ de saisie d'adresse blockchain"
+  },
+  "connectWallet": "Connecter le Portefeuille",
+  "@connectWallet": {
+    "description": "Texte du bouton pour connecter le portefeuille"
+  },
+  "connectExistingWallet": "Connecter un Portefeuille Existant",
+  "@connectExistingWallet": {
+    "description": "Titre pour section de connexion de portefeuille existant"
+  },
+  "connectExistingWalletDescription": "Vous avez déjà un portefeuille Base Blockchain ? Entrez votre adresse de portefeuille ci-dessous pour le connecter à votre compte SolidCV.",
+  "@connectExistingWalletDescription": {
+    "description": "Description pour connecter un portefeuille existant"
+  },
+  "createNewWallet": "Créer un Nouveau Portefeuille",
+  "@createNewWallet": {
+    "description": "Texte du bouton pour créer un nouveau portefeuille"
+  },
+  "createNewWalletTitle": "Créer un Nouveau Portefeuille",
+  "@createNewWalletTitle": {
+    "description": "Titre pour section de création de nouveau portefeuille"
+  },
+  "createNewWalletDescription": "SolidCV peut générer un nouveau portefeuille Base Blockchain sécurisé pour vous. Choisissez un mot de passe fort pour protéger votre clé privée.",
+  "@createNewWalletDescription": {
+    "description": "Description pour créer un nouveau portefeuille"
+  },
+  "passwordToEncryptKey": "Mot de passe (pour chiffrer la clé privée, assurez-vous de vous en souvenir, il n'y a aucun moyen de la récupérer)",
+  "@passwordToEncryptKey": {
+    "description": "Étiquette pour champ de mot de passe lors de la création de portefeuille"
+  },
+  "passwordEncryptionWarning": "Ce mot de passe chiffrera votre clé privée. Gardez-le en sécurité, il est irrécupérable.",
+  "@passwordEncryptionWarning": {
+    "description": "Avertissement concernant le chiffrement du mot de passe"
+  },
+  "completeProfileSetup": "Terminer la Configuration de Votre Profil",
+  "@completeProfileSetup": {
+    "description": "Titre pour section de configuration de profil"
+  },
+  "profileSetupDescription": "Notre assistant intelligent vous guidera à travers la configuration de votre profil, le téléchargement de votre CV et l'optimisation de votre compte pour la meilleure expérience. Vous pouvez commencer ce processus même sans portefeuille.",
+  "@profileSetupDescription": {
+    "description": "Description pour configuration de profil"
+  },
+  "startSetupAssistant": "Démarrer l'Assistant de Configuration",
+  "@startSetupAssistant": {
+    "description": "Texte du bouton pour démarrer l'assistant de configuration"
+  },
+  "walletCreatedSuccessfully": "Portefeuille Créé avec Succès ! 🎉",
+  "@walletCreatedSuccessfully": {
+    "description": "Message de succès quand le portefeuille est créé"
+  },
+  "newWalletReady": "Votre nouveau portefeuille est prêt à utiliser",
+  "@newWalletReady": {
+    "description": "Sous-titre pour création réussie de portefeuille"
+  },
+  "publicAddress": "Adresse Publique",
+  "@publicAddress": {
+    "description": "Étiquette pour adresse publique de portefeuille"
+  },
+  "privateKey": "Clé Privée",
+  "@privateKey": {
+    "description": "Étiquette pour clé privée"
+  },
+  "savePrivateKeyWarning": "Assurez-vous de sauvegarder la clé privée dans un endroit sûr. Elle ne sera plus affichée et vous ne pouvez pas la récupérer si elle est perdue.",
+  "@savePrivateKeyWarning": {
+    "description": "Avertissement concernant la sauvegarde de la clé privée"
+  },
+  "continueButton": "Continuer",
+  "@continueButton": {
+    "description": "Texte du bouton continuer"
+  },
+  "copy": "Copier {label}",
+  "@copy": {
+    "description": "Texte du bouton copier avec étiquette",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "description": "Étiquette pour ce qui est copié"
+      }
+    }
+  },
+  "findJobOpportunities": "Trouver des Opportunités d'Emploi",
+  "@findJobOpportunities": {
+    "description": "Titre pour section des opportunités d'emploi"
+  },
+  "jobOpportunitiesDescription": "Découvrez d'incroyables opportunités d'emploi d'entreprises vérifiées. Postulez directement et présentez vos références vérifiées par blockchain et vos compétences testées par IA.",
+  "@jobOpportunitiesDescription": {
+    "description": "Description pour opportunités d'emploi"
+  },
+  "exploreJobOffers": "Explorer les Offres d'Emploi",
+  "@exploreJobOffers": {
+    "description": "Texte du bouton pour explorer les offres d'emploi"
+  },
+  "aiCareerAdvisor": "Conseiller de Carrière IA",
+  "@aiCareerAdvisor": {
+    "description": "Titre pour section du conseiller de carrière IA"
+  },
+  "aiCareerAdvisorDescription": "Obtenez des conseils de carrière personnalisés, des évaluations de compétences et des recommandations de développement professionnel alimentées par l'intelligence artificielle.",
+  "@aiCareerAdvisorDescription": {
+    "description": "Description pour conseiller de carrière IA"
+  },
+  "getCareerGuidance": "Obtenir des Conseils de Carrière",
+  "@getCareerGuidance": {
+    "description": "Texte du bouton pour conseils de carrière"
+  },
+  "personalized": "Personnalisé",
+  "@personalized": {
+    "description": "Étiquette pour fonctionnalités personnalisées"
+  },
+  "free": "Gratuit",
+  "@free": {
+    "description": "Étiquette pour fonctionnalités gratuites"
+  },
+  "weeklyRecommendations": "Recommandations Hebdomadaires",
+  "@weeklyRecommendations": {
+    "description": "Titre pour section des recommandations hebdomadaires"
+  },
+  "weeklyRecommendationsDescription": "Recevez des recommandations hebdomadaires sélectionnées pour les emplois, le développement de compétences et les opportunités de carrière adaptées à votre profil et à vos objectifs.",
+  "@weeklyRecommendationsDescription": {
+    "description": "Description pour recommandations hebdomadaires"
+  },
+  "viewRecommendations": "Voir les Recommandations",
+  "@viewRecommendations": {
+    "description": "Texte du bouton pour voir les recommandations"
+  },
+  "smart": "Intelligent",
+  "@smart": {
+    "description": "Étiquette pour fonctionnalités intelligentes"
+  },
+  "weekly": "Hebdomadaire",
+  "@weekly": {
+    "description": "Étiquette pour fonctionnalités hebdomadaires"
+  },
+  "quickActions": "Actions Rapides",
+  "@quickActions": {
+    "description": "Titre pour section des actions rapides"
+  },
+  "quickActionsDescription": "Accédez à votre CV, gérez votre profil, consultez vos certificats et explorez plus de fonctionnalités pour améliorer votre présence professionnelle.",
+  "@quickActionsDescription": {
+    "description": "Description pour actions rapides"
+  },
+  "viewMyCv": "Voir Mon CV",
+  "@viewMyCv": {
+    "description": "Texte du bouton pour voir le CV"
+  },
+  "quickAccessProfile": "Accès rapide à votre profil",
+  "@quickAccessProfile": {
+    "description": "Étiquette pour accès rapide au profil"
+  },
+  "walletAddressSavedSuccessfully": "Adresse de portefeuille sauvegardée avec succès !",
+  "@walletAddressSavedSuccessfully": {
+    "description": "Message de succès quand l'adresse de portefeuille est sauvegardée"
+  },
+  "failedToSaveWalletAddress": "Échec de la sauvegarde de l'adresse de portefeuille. L'adresse pourrait être invalide ou déjà utilisée.",
+  "@failedToSaveWalletAddress": {
+    "description": "Message d'erreur quand la sauvegarde de l'adresse de portefeuille échoue"
+  },
+  "pleaseEnterPassword": "Veuillez entrer un mot de passe pour chiffrer votre clé privée.",
+  "@pleaseEnterPassword": {
+    "description": "Message d'erreur quand le mot de passe est vide"
+  },
+  "creatingWallet": "Création du portefeuille...",
+  "@creatingWallet": {
+    "description": "Message de chargement lors de la création de portefeuille"
+  },
+  "newWalletCreatedAndSaved": "Nouveau portefeuille créé et adresse sauvegardée !",
+  "@newWalletCreatedAndSaved": {
+    "description": "Message de succès quand un nouveau portefeuille est créé et sauvegardé"
+  },
+  "jobDetails": "Détails du Poste",
+  "@jobDetails": {
+    "description": "Titre pour page des détails du poste"
+  },
+  "skillTestRequirement": "Exigence de Test de Compétences",
+  "@skillTestRequirement": {
+    "description": "Titre pour dialogue d'exigence de test de compétences"
+  },
+  "skillTestRequirementMessage": "Pour postuler à ce poste, vous devez compléter des tests de compétences. Vous avez actuellement {currentTests} tests de compétences complétés. L'exigence minimale est de {requiredTests} tests de compétences complétés.",
+  "@skillTestRequirementMessage": {
+    "description": "Message expliquant les exigences de test de compétences",
+    "placeholders": {
+      "currentTests": {
+        "type": "int"
+      },
+      "requiredTests": {
+        "type": "int"
+      }
+    }
+  },
+  "goToSkillTests": "Aller aux Tests de Compétences",
+  "@goToSkillTests": {
+    "description": "Bouton pour naviguer vers la page des tests de compétences"
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": "Texte du bouton fermer"
+  },
+  "jobApplicationConfirmation": "Confirmation de Candidature",
+  "@jobApplicationConfirmation": {
+    "description": "Titre pour dialogue de confirmation de candidature"
+  },
+  "applyJobConfirmationMessage": "Êtes-vous sûr de vouloir postuler à ce poste ? Une fois soumise, votre candidature ne peut pas être annulée.",
+  "@applyJobConfirmationMessage": {
+    "description": "Message de confirmation pour candidature"
+  },
+  "apply": "Postuler",
+  "@apply": {
+    "description": "Texte du bouton postuler"
+  },
+  "applicationSuccessful": "Candidature Réussie !",
+  "@applicationSuccessful": {
+    "description": "Message de succès après candidature"
+  },
+  "applicationSuccessfulMessage": "Votre candidature a été soumise avec succès. L'entreprise examinera votre candidature et vous contactera si vous êtes sélectionné.",
+  "@applicationSuccessfulMessage": {
+    "description": "Message détaillé de succès après candidature"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Texte du bouton OK"
+  },
+  "alreadyApplied": "Vous avez déjà postulé à ce poste.",
+  "@alreadyApplied": {
+    "description": "Message quand l'utilisateur a déjà postulé"
+  },
+  "loginRequired": "Veuillez vous connecter pour postuler à ce poste.",
+  "@loginRequired": {
+    "description": "Message quand la connexion est requise pour postuler"
+  },
+  "goToLogin": "Aller à la Connexion",
+  "@goToLogin": {
+    "description": "Bouton pour naviguer vers la page de connexion"
+  },
+  "jobOffer": "Offre d'Emploi",
+  "@jobOffer": {
+    "description": "Étiquette pour offre d'emploi"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Titre de section description"
+  },
+  "requirements": "Exigences",
+  "@requirements": {
+    "description": "Titre de section exigences"
+  },
+  "responsibilities": "Responsabilités",
+  "@responsibilities": {
+    "description": "Titre de section responsabilités"
+  },
+  "qualifications": "Qualifications",
+  "@qualifications": {
+    "description": "Titre de section qualifications"
+  },
+  "benefits": "Avantages",
+  "@benefits": {
+    "description": "Titre de section avantages"
+  },
+  "location": "Localisation",
+  "@location": {
+    "description": "Étiquette localisation"
+  },
+  "salary": "Salaire",
+  "@salary": {
+    "description": "Étiquette salaire"
+  },
+  "experienceLevel": "Niveau d'Expérience",
+  "@experienceLevel": {
+    "description": "Étiquette niveau d'expérience"
+  },
+  "company": "Entreprise",
+  "@company": {
+    "description": "Étiquette entreprise"
+  },
+  "postedDate": "Date de Publication",
+  "@postedDate": {
+    "description": "Étiquette date de publication"
+  },
+  "expiryDate": "Date d'Expiration",
+  "@expiryDate": {
+    "description": "Étiquette date d'expiration"
+  },
+  "today": "aujourd'hui",
+  "@today": {
+    "description": "Référence de temps aujourd'hui"
+  },
+  "yesterday": "hier",
+  "@yesterday": {
+    "description": "Référence de temps hier"
+  },
+  "daysAgo": "il y a {days} jours",
+  "@daysAgo": {
+    "description": "Référence de temps jours passés",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "weeksAgo": "il y a {weeks} semaine{plural}",
+  "@weeksAgo": {
+    "description": "Référence de temps semaines passées",
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "recommendedActions": "Actions Recommandées",
+  "@recommendedActions": {
+    "description": "Titre pour section des actions recommandées"
+  },
+  "improveCvAction": "Améliorez votre CV pour mieux correspondre à ce poste",
+  "@improveCvAction": {
+    "description": "Recommandation pour améliorer le CV"
+  },
+  "completeSkillTestsAction": "Complétez les tests de compétences pour renforcer votre candidature",
+  "@completeSkillTestsAction": {
+    "description": "Recommandation pour compléter les tests de compétences"
+  },
+  "updateProfileAction": "Mettez à jour votre profil professionnel avec une expérience pertinente",
+  "@updateProfileAction": {
+    "description": "Recommandation pour mettre à jour le profil"
+  },
+  "buildNetworkAction": "Construisez votre réseau professionnel dans cette industrie",
+  "@buildNetworkAction": {
+    "description": "Recommandation pour construire un réseau professionnel"
+  },
+  "jobExpired": "Cette offre d'emploi a expiré",
+  "@jobExpired": {
+    "description": "Message quand l'offre d'emploi a expiré"
+  },
+  "applicationDeadlinePassed": "La date limite de candidature est passée",
+  "@applicationDeadlinePassed": {
+    "description": "Message quand la date limite de candidature est passée"
+  },
+  "applied": "Postulé",
+  "@applied": {
+    "description": "Texte de statut quand l'utilisateur a postulé"
+  },
+  "applyNow": "Postuler Maintenant",
+  "@applyNow": {
+    "description": "Texte du bouton postuler maintenant"
+  },
+  "expired": "Expiré",
+  "@expired": {
+    "description": "Texte de statut expiré"
+  },
+  "deadlinePassed": "Date Limite Dépassée",
+  "@deadlinePassed": {
+    "description": "Texte de statut date limite dépassée"
+  },
+  "welcomeToSolidCV": "Bienvenue sur SolidCV",
+  "@welcomeToSolidCV": {
+    "description": "Titre principal de bienvenue sur la page d'accueil"
+  },
+  "signInToUnlock": "Connectez-vous pour débloquer les outils de carrière alimentés par l'IA et gérer vos identifiants vérifiés.",
+  "@signInToUnlock": {
+    "description": "Sous-titre de la page d'accueil décrivant les avantages de la plateforme"
+  },
+  "emailAddress": "Adresse e-mail",
+  "@emailAddress": {
+    "description": "Étiquette du champ de saisie e-mail"
+  },
+  "emailPlaceholder": "exemple@domaine.com",
+  "@emailPlaceholder": {
+    "description": "Placeholder du champ de saisie e-mail"
+  },
+  "forgotPassword": "Mot de passe oublié ?",
+  "@forgotPassword": {
+    "description": "Texte du lien mot de passe oublié"
+  },
+  "signIn": "Se connecter",
+  "@signIn": {
+    "description": "Texte du bouton se connecter"
+  },
+  "dontHaveAccount": "Vous n'avez pas de compte ?",
+  "@dontHaveAccount": {
+    "description": "Texte avant le lien d'inscription"
+  },
+  "browseJobOpportunities": "Parcourir les Opportunités d'Emploi",
+  "@browseJobOpportunities": {
+    "description": "Bouton pour parcourir les emplois sans se connecter"
+  },
+  "checkingAuthentication": "Vérification de l'authentification...",
+  "@checkingAuthentication": {
+    "description": "Message de chargement lors de la vérification de l'authentification utilisateur"
+  },
+  "redirectingToHome": "Redirection vers l'accueil...",
+  "@redirectingToHome": {
+    "description": "Message de chargement lors de la redirection de l'utilisateur authentifié"
+  },
+  "pleaseFillAllFields": "Veuillez remplir tous les champs",
+  "@pleaseFillAllFields": {
+    "description": "Message d'erreur lorsque les champs du formulaire sont vides"
+  },
+  "signingIn": "Connexion en cours...",
+  "@signingIn": {
+    "description": "Message de chargement pendant le processus de connexion"
+  },
+  "incorrectEmailOrPassword": "E-mail ou mot de passe incorrect.",
+  "@incorrectEmailOrPassword": {
+    "description": "Message d'erreur pour les identifiants de connexion invalides"
+  },
+  "accountDoesNotExist": "Le compte n'existe pas.",
+  "@accountDoesNotExist": {
+    "description": "Message d'erreur lorsque le compte n'est pas trouvé"
+  },
+  "aiPoweredFeatures": "Fonctionnalités IA",
+  "@aiPoweredFeatures": {
+    "description": "Texte du badge pour la section des fonctionnalités IA"
+  },
+  "superchargeYourCareer": "Boostez Votre Carrière avec l'IA",
+  "@superchargeYourCareer": {
+    "description": "Titre principal de la section des fonctionnalités IA"
+  },
+  "leverageCuttingEdgeAI": "Tirez parti de l'intelligence artificielle de pointe pour valider vos compétences, obtenir des conseils de carrière personnalisés et trouver les correspondances d'emploi parfaites.",
+  "@leverageCuttingEdgeAI": {
+    "description": "Description de la section des fonctionnalités IA"
+  },
+  "aiSkillValidation": "Validation des Compétences IA",
+  "@aiSkillValidation": {
+    "description": "Titre de la fonctionnalité de validation des compétences IA"
+  },
+  "aiSkillValidationDescription": "Faites évaluer et vérifier vos compétences par des algorithmes d'IA qui analysent votre expérience, vos projets et vos réalisations.",
+  "@aiSkillValidationDescription": {
+    "description": "Description de la fonctionnalité de validation des compétences IA"
+  },
+  "aiCareerAdvisor": "Conseiller de Carrière IA",
+  "@aiCareerAdvisor": {
+    "description": "Titre de la fonctionnalité de conseiller de carrière IA"
+  },
+  "aiCareerAdvisorDescription": "Recevez des conseils de carrière personnalisés basés sur votre profil, vos objectifs et les tendances du marché alimentés par l'IA avancée.",
+  "@aiCareerAdvisorDescription": {
+    "description": "Description de la fonctionnalité de conseiller de carrière IA"
+  },
+  "aiJobMatching": "Correspondance d'Emploi IA",
+  "@aiJobMatching": {
+    "description": "Titre de la fonctionnalité de correspondance d'emploi IA"
+  },
+  "aiJobMatchingDescription": "Les recruteurs reçoivent un retour IA rapide sur la correspondance entre vous et l'offre d'emploi basée sur vos compétences testées et vos identifiants CV.",
+  "@aiJobMatchingDescription": {
+    "description": "Description de la fonctionnalité de correspondance d'emploi IA"
+  },
+  "readyToTransformCareer": "Prêt à Transformer Votre Carrière ?",
+  "@readyToTransformCareer": {
+    "description": "Titre de la section CTA"
+  },
+  "joinThousandsProfessionals": "Rejoignez des milliers de professionnels qui utilisent déjà l'IA pour accélérer leur croissance de carrière.",
+  "@joinThousandsProfessionals": {
+    "description": "Description de la section CTA"
+  },
+  "getStartedFree": "Commencer Gratuitement",
+  "@getStartedFree": {
+    "description": "Texte du bouton CTA principal"
+  },
+  "exploreJobOpportunities": "Explorer les Opportunités d'Emploi",
+  "@exploreJobOpportunities": {
+    "description": "Texte du bouton CTA secondaire pour mobile"
+  },
+  "exploreJobs": "Explorer les Emplois",
+  "@exploreJobs": {
+    "description": "Texte du bouton CTA secondaire pour desktop"
+  },
+  "discoverSolidCV": "Découvrez SolidCV",
+  "@discoverSolidCV": {
+    "description": "Titre principal de la section à propos"
+  },
+  "reinventingTrustRecruitment": "Réinventer la Confiance dans le Recrutement",
+  "@reinventingTrustRecruitment": {
+    "description": "Titre de la première section à propos"
+  },
+  "reinventingTrustDescription": "Dans un marché où un CV sur cinq peut contenir des inexactitudes et où les tenir à jour est une corvée, SolidCV se positionne comme un pionnier. Nous façonnons l'avenir du recrutement avec une plateforme où chaque qualification est strictement vérifiable et chaque parcours professionnel est mis en valeur avec une intégrité absolue. Laissez l'incertitude derrière vous et embrassez une nouvelle ère de transparence et de fiabilité.",
+  "@reinventingTrustDescription": {
+    "description": "Description de la première section à propos"
+  },
+  "blockchainRevolutionDiplomas": "La Révolution Blockchain au Service de Vos Diplômes",
+  "@blockchainRevolutionDiplomas": {
+    "description": "Titre de la deuxième section à propos"
+  },
+  "blockchainRevolutionDescription": "SolidCV repose sur la robustesse de la technologie blockchain. Chaque diplôme, certificat et expérience devient un NFT unique et inviolable, sécurisé dans votre portefeuille numérique personnel. Les institutions émettrices valident vos réalisations directement sur la blockchain, fournissant aux recruteurs un accès instantané à des preuves indéniables de vos compétences. Votre carrière, authentifiée et valorisée.",
+  "@blockchainRevolutionDescription": {
+    "description": "Description de la deuxième section à propos"
+  },
+  "virtuousEcosystemStakeholders": "Un Écosystème Vertueux pour Toutes les Parties Prenantes",
+  "@virtuousEcosystemStakeholders": {
+    "description": "Titre de la troisième section à propos"
+  },
+  "virtuousEcosystemDescription": "SolidCV tisse un réseau d'avantages mutuels : les utilisateurs conservent un contrôle total sur leur identité professionnelle et sont récompensés pour leur participation active. Les entreprises et institutions éducatives rationalisent leurs processus de vérification et contribuent à un haut standard de confiance. Notre mécanisme de validation innovant vous permet même d'intégrer et de valider vos expériences passées, assurant une transition en douceur vers le CV de demain.",
+  "@virtuousEcosystemDescription": {
+    "description": "Description de la troisième section à propos"
+  },
+  "whoIsSolidCVFor": "À qui s'adresse SolidCV ?",
+  "@whoIsSolidCVFor": {
+    "description": "Titre de la section audience cible"
+  },
+  "forAllProfessionals": "Pour Tous les Professionnels",
+  "@forAllProfessionals": {
+    "description": "Titre de la carte cible pour les professionnels"
+  },
+  "forAllProfessionalsDescription": "Que vous soyez étudiant, récent diplômé ou professionnel expérimenté, SolidCV vous donne les outils pour présenter vos compétences de manière vérifiable.",
+  "@forAllProfessionalsDescription": {
+    "description": "Description de la carte cible pour les professionnels"
+  },
+  "forCompanies": "Pour les Entreprises",
+  "@forCompanies": {
+    "description": "Titre de la carte cible pour les entreprises"
+  },
+  "forCompaniesDescription": "Recrutez plus efficacement avec des CV vérifiés, réduisant le temps et les coûts de vérification.",
+  "@forCompaniesDescription": {
+    "description": "Description de la carte cible pour les entreprises"
+  },
+  "forEducationalInstitutions": "Pour les Institutions Éducatives",
+  "@forEducationalInstitutions": {
+    "description": "Titre de la carte cible pour les institutions éducatives"
+  },
+  "forEducationalInstitutionsDescription": "Offrez à vos étudiants des certifications numériques inviolables et partageables.",
+  "@forEducationalInstitutionsDescription": {
+    "description": "Description de la carte cible pour les institutions éducatives"
+  },
+  "learnMore": "En Savoir Plus",
+  "@learnMore": {
+    "description": "Texte du bouton en savoir plus"
+  },
+  "exploreSolutions": "Explorer les Solutions",
+  "@exploreSolutions": {
+    "description": "Texte du bouton explorer solutions"
+  },
+  "contactUs": "Nous Contacter",
+  "@contactUs": {
+    "description": "Titre de la section contact"
+  },
+  "privacyPolicy": "Politique de Confidentialité",
+  "@privacyPolicy": {
+    "description": "Texte du lien politique de confidentialité"
+  },
+  "accountSetup": "Configuration du Compte",
+  "@accountSetup": {
+    "description": "Titre de la page de configuration du compte"
+  },
+  "walletAlreadyConnected": "Portefeuille Déjà Connecté",
+  "@walletAlreadyConnected": {
+    "description": "Message quand le portefeuille est déjà connecté"
+  },
+  "walletConnectedDescription": "Votre portefeuille blockchain est déjà configuré. Procédure vers le téléchargement de CV.",
+  "@walletConnectedDescription": {
+    "description": "Description quand le portefeuille est déjà connecté"
+  },
+  "startSetup": "Démarrer la Configuration",
+  "@startSetup": {
+    "description": "Texte du bouton pour démarrer la configuration"
+  },
+  "requestDemo": "Demander une Démo",
+  "@requestDemo": {
+    "description": "Titre du dialogue de demande de démo"
+  },
+  "readyToRevolutionize": "Prêt à révolutionner la gestion des identifiants de votre institution ? Contactez notre équipe !",
+  "@readyToRevolutionize": {
+    "description": "Description de demande de démo"
+  },
+  "contactDemoSpecialist": "Contactez notre spécialiste en démonstrations",
+  "@contactDemoSpecialist": {
+    "description": "Message de contact avec spécialiste en démonstrations"
+  },
+  "emailCopiedToClipboard": "Email copié dans le presse-papiers !",
+  "@emailCopiedToClipboard": {
+    "description": "Message de confirmation d'email copié"
+  },
+  "copyEmail": "Copier l'email",
+  "@copyEmail": {
+    "description": "Infobulle pour copier l'email"
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": "Texte du bouton fermer"
+  },
+  "emailCopiedContactDemo": "Email copié ! Contactez-nous pour votre démo.",
+  "@emailCopiedContactDemo": {
+    "description": "Message d'email copié pour contact de démo"
+  },
+  "copyEmailAndContact": "Copier l'Email et Contacter",
+  "@copyEmailAndContact": {
+    "description": "Texte du bouton copier email et contacter"
+  },
+  "signUp": "S'inscrire",
+  "@signUp": {
+    "description": "Texte du bouton s'inscrire"
+  },
+  "login": "Se Connecter",
+  "@login": {
+    "description": "Texte du bouton se connecter"
+  },
+  "revolutionizeAcademicCredentials": "Révolutionnez les Identifiants Académiques",
+  "@revolutionizeAcademicCredentials": {
+    "description": "Titre principal du héros pour les institutions éducatives"
+  },
+  "joinFutureEducation": "Rejoignez l'avenir de l'éducation avec des certificats vérifiés par blockchain, des conseils de carrière alimentés par l'IA et une gestion transparente des identifiants pour votre institution.",
+  "@joinFutureEducation": {
+    "description": "Description du héros pour les institutions éducatives"
+  },
+  "getStartedFree": "Commencer Gratuitement",
+  "@getStartedFree": {
+    "description": "Texte du bouton commencer"
+  },
+  "learnMore": "En Savoir Plus",
+  "@learnMore": {
+    "description": "Texte du bouton en savoir plus"
+  },
+  "powerfulFeaturesEducational": "Fonctionnalités Puissantes pour l'Excellence Éducative",
+  "@powerfulFeaturesEducational": {
+    "description": "Titre de la section des fonctionnalités"
+  },
+  "everythingInstitutionNeeds": "Tout ce dont votre institution a besoin pour moderniser la gestion des identifiants",
+  "@everythingInstitutionNeeds": {
+    "description": "Sous-titre de la section des fonctionnalités"
+  },
+  "blockchainCertificates": "Certificats Blockchain",
+  "@blockchainCertificates": {
+    "description": "Titre de la fonctionnalité des certificats blockchain"
+  },
+  "blockchainCertificatesDescription": "Émettez des certificats inviolables et vérifiables en utilisant la technologie blockchain que les employeurs peuvent vérifier instantanément.",
+  "@blockchainCertificatesDescription": {
+    "description": "Description de la fonctionnalité des certificats blockchain"
+  },
+  "aiCareerGuidance": "Orientation de Carrière IA",
+  "@aiCareerGuidance": {
+    "description": "Titre de la fonctionnalité d'orientation de carrière IA"
+  },
+  "aiCareerGuidanceDescription": "Fournissez aux étudiants des conseils de carrière alimentés par l'IA et des évaluations de compétences pour améliorer leur employabilité.",
+  "@aiCareerGuidanceDescription": {
+    "description": "Description de la fonctionnalité d'orientation de carrière IA"
+  },
+  "alumniNetwork": "Réseau d'Anciens Élèves",
+  "@alumniNetwork": {
+    "description": "Titre de la fonctionnalité du réseau d'anciens élèves"
+  },
+  "alumniNetworkDescription": "Maintenez des connexions avec les diplômés et suivez leur progression de carrière pour la réputation institutionnelle.",
+  "@alumniNetworkDescription": {
+    "description": "Description de la fonctionnalité du réseau d'anciens élèves"
+  },
+  "requestDemoButton": "Demander une Démo",
+  "@requestDemoButton": {
+    "description": "Texte du bouton demander une démo"
+  },
+  "whyChooseSolidCv": "Pourquoi choisir SolidCV ?",
+  "@whyChooseSolidCv": {
+    "description": "Titre de la section pourquoi choisir"
+  },
+  "joinPlatformToday": "Rejoignez la plateforme aujourd'hui",
+  "@joinPlatformToday": {
+    "description": "Sous-titre rejoindre la plateforme"
+  },
+  "reduceCosts": "Réduire les Coûts",
+  "@reduceCosts": {
+    "description": "Titre du bénéfice réduire les coûts"
+  },
+  "reduceCostsDesc": "Réduire les frais administratifs jusqu'à 70%",
+  "@reduceCostsDesc": {
+    "description": "Description du bénéfice réduire les coûts"
+  },
+  "enhanceSecurity": "Améliorer la Sécurité",
+  "@enhanceSecurity": {
+    "description": "Titre du bénéfice améliorer la sécurité"
+  },
+  "enhanceSecurityDesc": "Éliminer complètement la fraude aux diplômes",
+  "@enhanceSecurityDesc": {
+    "description": "Description du bénéfice améliorer la sécurité"
+  },
+  "improveReputation": "Améliorer la Réputation",
+  "@improveReputation": {
+    "description": "Titre du bénéfice améliorer la réputation"
+  },
+  "improveReputationDesc": "Leader en innovation éducative",
+  "@improveReputationDesc": {
+    "description": "Description du bénéfice améliorer la réputation"
+  },
+  "globalRecognition": "Reconnaissance Mondiale",
+  "@globalRecognition": {
+    "description": "Titre du bénéfice reconnaissance mondiale"
+  },
+  "globalRecognitionDesc": "Vérifiable instantanément dans le monde entier",
+  "@globalRecognitionDesc": {
+    "description": "Description du bénéfice reconnaissance mondiale"
+  },
+  "blockchainPoweredCredentials": "Diplômes Certifiés par Blockchain",
+  "@blockchainPoweredCredentials": {
+    "description": "Titre des diplômes blockchain"
+  },
+  "transformInstitution": "Transformez la façon dont votre institution délivre et gère les diplômes académiques avec la technologie blockchain de pointe.",
+  "@transformInstitution": {
+    "description": "Description de transformation d'institution"
+  },
+  "instantVerification": "Vérification instantanée par les employeurs du monde entier",
+  "@instantVerification": {
+    "description": "Bénéfice de vérification instantanée"
+  },
+  "eliminateCredentialFraud": "Élimination de la fraude aux diplômes",
+  "@eliminateCredentialFraud": {
+    "description": "Bénéfice d'élimination de fraude aux diplômes"
+  },
+  "permanentRecords": "Dossiers permanents et immuables",
+  "@permanentRecords": {
+    "description": "Bénéfice de dossiers permanents"
+  },
+  "reducedAdministrativeCosts": "Coûts administratifs réduits",
+  "@reducedAdministrativeCosts": {
+    "description": "Bénéfice de coûts administratifs réduits"
+  },
+  "enhancedReputation": "Réputation institutionnelle améliorée",
+  "@enhancedReputation": {
+    "description": "Bénéfice de réputation améliorée"
+  },
+  "course": "Cours",
+  "@course": {
+    "description": "Titre par défaut du cours"
+  },
+  "loadingCourseContent": "Chargement du contenu du cours...",
+  "@loadingCourseContent": {
+    "description": "Message de chargement du contenu du cours"
+  },
+  "failedToLoadCourse": "Échec du chargement du contenu du cours",
+  "@failedToLoadCourse": {
+    "description": "Titre d'erreur de chargement du cours"
+  },
+  "pleaseTryAgainLater": "Veuillez réessayer plus tard",
+  "@pleaseTryAgainLater": {
+    "description": "Message veuillez réessayer plus tard"
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Texte du bouton réessayer"
+  },
+  "noCourseContentAvailable": "Aucun contenu de cours disponible",
+  "@noCourseContentAvailable": {
+    "description": "Message aucun contenu de cours disponible"
+  },
+  "beginner": "Débutant",
+  "@beginner": {
+    "description": "Niveau de difficulté débutant"
+  },
+  "hours": "heures",
+  "@hours": {
+    "description": "Unité de durée heures"
+  },
+  "aboutThisCourse": "À propos de ce cours",
+  "@aboutThisCourse": {
+    "description": "Titre de la section à propos de ce cours"
+  },
+  "courseContent": "Contenu du Cours",
+  "@courseContent": {
+    "description": "Titre de la section contenu du cours"
+  },
+  "courseContentBeingGenerated": "Le contenu du cours est en cours de génération...",
+  "@courseContentBeingGenerated": {
+    "description": "Message de contenu du cours en cours de génération"
+  },
+  "aiPoweredCourseContent": "Le contenu du cours alimenté par l'IA sera disponible sous peu. Veuillez revérifier dans quelques instants.",
+  "@aiPoweredCourseContent": {
+    "description": "Message de contenu du cours alimenté par l'IA"
+  },
+  "refreshContent": "Actualiser le Contenu",
+  "@refreshContent": {
+    "description": "Texte du bouton actualiser le contenu"
+  },
+  "testYourKnowledge": "Testez Vos Connaissances",
+  "@testYourKnowledge": {
+    "description": "Titre de la section testez vos connaissances"
+  },
+  "takeQuizToTest": "Passez un quiz pour tester ce que vous avez appris",
+  "@takeQuizToTest": {
+    "description": "Description passer un quiz pour tester"
+  },
+  "startQuiz": "Commencer le Quiz",
+  "@startQuiz": {
+    "description": "Texte du bouton commencer le quiz"
+  },
+  "courseQuiz": "Quiz du Cours",
+  "@courseQuiz": {
+    "description": "Titre par défaut du quiz du cours"
+  },
+  "quizPassed": "Quiz Réussi !",
+  "@quizPassed": {
+    "description": "Message de quiz réussi"
+  },
+  "quizFailed": "Quiz Échoué",
+  "@quizFailed": {
+    "description": "Message de quiz échoué"
+  },
+  "score": "Score",
+  "@score": {
+    "description": "Étiquette de score"
+  },
+  "backToRecommendations": "Retour aux Recommandations",
+  "@backToRecommendations": {
+    "description": "Texte du bouton retour aux recommandations"
+  },
+  "backToCourse": "Retour au Cours",
+  "@backToCourse": {
+    "description": "Texte du bouton retour au cours"
+  },
+  "tryAgain": "Réessayer",
+  "@tryAgain": {
+    "description": "Texte du bouton réessayer"
+  },
+  "knowledgeTest": "Test de Connaissances",
+  "@knowledgeTest": {
+    "description": "Titre de la page test de connaissances"
+  },
+  "loadingQuestions": "Chargement des questions...",
+  "@loadingQuestions": {
+    "description": "Message de chargement des questions"
+  },
+  "failedToLoadQuestions": "Échec du chargement des questions",
+  "@failedToLoadQuestions": {
+    "description": "Message d'erreur de chargement des questions"
+  },
+  "noQuestionsAvailable": "Aucune question disponible",
+  "@noQuestionsAvailable": {
+    "description": "Message aucune question disponible"
+  },
+  "courseNoQuestions": "Ce cours n'a pas encore de questions",
+  "@courseNoQuestions": {
+    "description": "Message de cours sans questions"
+  },
+  "progress": "Progrès",
+  "@progress": {
+    "description": "Étiquette de progrès"
+  },
+  "questionsAnswered": "sur {total} questions répondues",
+  "@questionsAnswered": {
+    "description": "Texte de progrès des questions répondues",
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "submitting": "Soumission...",
+  "@submitting": {
+    "description": "Message de soumission du quiz"
+  },
+  "submitQuiz": "Soumettre le Quiz",
+  "@submitQuiz": {
+    "description": "Texte du bouton soumettre le quiz"
+  },
+  "questionNotAvailable": "Question non disponible",
+  "@questionNotAvailable": {
+    "description": "Texte de secours question non disponible"
+  },
+  "optionNotAvailable": "Option non disponible",
+  "@optionNotAvailable": {
+    "description": "Texte de secours option non disponible"
+  },
+  "failedToSubmitQuiz": "Échec de la soumission du quiz",
+  "@failedToSubmitQuiz": {
+    "description": "Message d'erreur de soumission du quiz"
+  },
+  "requestDemo": "Demander une Démo",
+  "@requestDemo": {
+    "description": "Titre du dialogue demander une démo"
+  },
+  "readyToRevolutionizeHiring": "Prêt à révolutionner votre processus d'embauche ? Contactez notre équipe !",
+  "@readyToRevolutionizeHiring": {
+    "description": "Description du dialogue démo pour l'embauche"
+  },
+  "contactSalesSpecialist": "Contactez notre spécialiste des ventes",
+  "@contactSalesSpecialist": {
+    "description": "Texte contacter spécialiste des ventes"
+  },
+  "emailCopiedToClipboard": "Email copié dans le presse-papiers !",
+  "@emailCopiedToClipboard": {
+    "description": "Message de succès email copié"
+  },
+  "copyEmail": "Copier l'email",
+  "@copyEmail": {
+    "description": "Info-bulle copier email"
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": "Texte du bouton fermer"
+  },
+  "copyEmailButton": "Copier l'Email",
+  "@copyEmailButton": {
+    "description": "Texte du bouton copier email"
+  },
+  "emailCopiedContactDemo": "Email copié ! Contactez-nous pour votre démo.",
+  "@emailCopiedContactDemo": {
+    "description": "Message email copié contacter démo"
+  },
+  "speedupHiringProcess": "Accélérez votre Processus d'Embauche",
+  "@speedupHiringProcess": {
+    "description": "Titre de la section hero pour les entreprises"
+  },
+  "accessVerifiedProfessionals": "Accédez à des professionnels vérifiés avec des compétences et une expérience authentifiées par blockchain. Prenez des décisions d'embauche en toute confiance avec la correspondance de candidats alimentée par l'IA.",
+  "@accessVerifiedProfessionals": {
+    "description": "Description de la section hero pour les entreprises"
+  },
+  "startHiring": "Commencer l'Embauche",
+  "@startHiring": {
+    "description": "Texte du bouton commencer l'embauche"
+  },
+  "powerfulToolsRecruitment": "Outils Puissants pour le Recrutement Moderne",
+  "@powerfulToolsRecruitment": {
+    "description": "Titre de la section des fonctionnalités"
+  },
+  "everythingNeedFindHire": "Tout ce dont vous avez besoin pour trouver et embaucher les meilleurs talents efficacement",
+  "@everythingNeedFindHire": {
+    "description": "Sous-titre de la section des fonctionnalités"
+  },
+  "verifiedCredentials": "Diplômes Vérifiés",
+  "@verifiedCredentials": {
+    "description": "Titre de la fonctionnalité diplômes vérifiés"
+  },
+  "verifiedCredentialsDesc": "Accédez à des candidats avec des certificats vérifiés par blockchain et une expérience de travail qui ne peut pas être falsifiée.",
+  "@verifiedCredentialsDesc": {
+    "description": "Description de la fonctionnalité diplômes vérifiés"
+  },
+  "aiPoweredMatching": "Correspondance Alimentée par l'IA",
+  "@aiPoweredMatching": {
+    "description": "Titre de la fonctionnalité correspondance alimentée par l'IA"
+  },
+  "aiPoweredMatchingDesc": "Trouvez les candidats parfaits en utilisant l'IA qui analyse les compétences, l'expérience et les trajectoires de carrière.",
+  "@aiPoweredMatchingDesc": {
+    "description": "Description de la fonctionnalité correspondance alimentée par l'IA"
+  },
+  "instantVerification": "Vérification Instantanée",
+  "@instantVerification": {
+    "description": "Titre de la fonctionnalité vérification instantanée"
+  },
+  "instantVerificationDesc": "Vérifiez les diplômes des candidats instantanément sans attendre les processus de vérification manuelle.",
+  "@instantVerificationDesc": {
+    "description": "Description de la fonctionnalité vérification instantanée"
+  },
+  "everythingNeedFindHire": "Tout ce dont vous avez besoin pour trouver et embaucher les meilleurs talents efficacement",
+  "@everythingNeedFindHire": {
+    "description": "Sous-titre pour la section des fonctionnalités de recrutement"
+  },
+  "checkMySkillsWithAI": "Évaluer Mes Compétences avec l'IA",
+  "@checkMySkillsWithAI": {
+    "description": "Titre de la page pour l'évaluation des compétences avec l'IA"
+  },
+  "answerQuestionsToCheckSkills": "Répondez aux questions pour évaluer vos compétences en {skillName}",
+  "@answerQuestionsToCheckSkills": {
+    "description": "Instructions pour l'évaluation des compétences",
+    "placeholders": {
+      "skillName": {
+        "type": "String",
+        "description": "Le nom de la compétence qui est évaluée"
+      }
+    }
+  },
+  "getFeedbacksOnMySkills": "Obtenir des Commentaires sur Mes Compétences",
+  "@getFeedbacksOnMySkills": {
+    "description": "Texte du bouton pour obtenir des commentaires sur les compétences"
+  },
+  "aiWillAskQuestionsToTest": "IA : Je vais vous poser quelques questions pour tester votre compétence",
+  "@aiWillAskQuestionsToTest": {
+    "description": "Message d'introduction de l'IA pour le test de compétences"
+  },
+  "startTest": "Commencer le Test",
+  "@startTest": {
+    "description": "Texte du bouton pour commencer le test de compétences"
+  },
+  "typeYourMessage": "Tapez votre message...",
+  "@typeYourMessage": {
+    "description": "Texte d'espace réservé pour le champ de saisie de message"
+  },
+  "send": "Envoyer",
+  "@send": {
+    "description": "Texte du bouton envoyer"
+  },
+  "error": "Erreur",
+  "@error": {
+    "description": "Étiquette d'erreur"
+  },
+  "noDataFound": "Aucune donnée trouvée",
+  "@noDataFound": {
+    "description": "Message lorsqu'aucune donnée n'est disponible"
+  },
+  "addAnEducationInstitution": "Ajouter une Institution Éducative",
+  "@addAnEducationInstitution": {
+    "description": "Titre de page pour ajouter une institution éducative"
+  },
+  "chooseLogoOrImage": "Choisissez un logo ou une image",
+  "@chooseLogoOrImage": {
+    "description": "Texte pour le sélecteur de logo/image"
+  },
+  "institutionName": "Nom de l'Institution",
+  "@institutionName": {
+    "description": "Étiquette pour le champ nom d'institution"
+  },
+  "addressNumber": "Numéro d'adresse",
+  "@addressNumber": {
+    "description": "Étiquette pour le champ numéro d'adresse"
+  },
+  "addressStreet": "Rue d'adresse",
+  "@addressStreet": {
+    "description": "Étiquette pour le champ rue d'adresse"
+  },
+  "city": "Ville",
+  "@city": {
+    "description": "Étiquette pour le champ ville"
+  },
+  "zipCode": "Code postal",
+  "@zipCode": {
+    "description": "Étiquette pour le champ code postal"
+  },
+  "country": "Pays",
+  "@country": {
+    "description": "Étiquette pour le champ pays"
+  },
+  "phoneNumber": "Numéro de Téléphone",
+  "@phoneNumber": {
+    "description": "Étiquette pour le champ numéro de téléphone"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Étiquette pour le champ email"
+  },
+  "required": "Requis",
+  "@required": {
+    "description": "Message de validation pour les champs requis"
+  },
+  "invalidEmail": "Email invalide",
+  "@invalidEmail": {
+    "description": "Message de validation pour email invalide"
+  },
+  "submitting": "Envoi en cours...",
+  "@submitting": {
+    "description": "Texte du bouton lors de l'envoi du formulaire"
+  },
+  "addEducationInstitution": "Ajouter une Institution Éducative",
+  "@addEducationInstitution": {
+    "description": "Texte du bouton pour ajouter une institution éducative"
+  },
+  "educationInstitutionAdded": "Institution Éducative ajoutée !",
+  "@educationInstitutionAdded": {
+    "description": "Message de succès lorsque l'institution éducative est ajoutée"
+  },
+  "addACompany": "Ajouter une Entreprise",
+  "@addACompany": {
+    "description": "Titre de page pour ajouter une entreprise"
+  },
+  "chooseCompanyLogoOrImage": "Choisissez un logo ou une image d'entreprise",
+  "@chooseCompanyLogoOrImage": {
+    "description": "Texte pour le sélecteur de logo/image d'entreprise"
+  },
+  "companyName": "Nom de l'Entreprise",
+  "@companyName": {
+    "description": "Étiquette pour le champ nom d'entreprise"
+  },
+  "createCompany": "Créer l'Entreprise",
+  "@createCompany": {
+    "description": "Texte du bouton pour créer l'entreprise"
+  },
+  "companyCreated": "Entreprise créée !",
+  "@companyCreated": {
+    "description": "Message de succès lorsque l'entreprise est créée"
+  },
+  "searchUser": "Rechercher un Utilisateur",
+  "@searchUser": {
+    "description": "Texte d'indication par défaut pour le champ de recherche d'utilisateur"
+  },
+  "noUserFound": "Aucun utilisateur trouvé.",
+  "@noUserFound": {
+    "description": "Message lorsqu'aucun utilisateur n'est trouvé dans la recherche"
+  },
+  "errorWhileSearching": "Erreur lors de la recherche.",
+  "@errorWhileSearching": {
+    "description": "Message d'erreur pendant la recherche d'utilisateur"
+  },
+  "searchForAUser": "Rechercher un utilisateur",
+  "@searchForAUser": {
+    "description": "Titre par défaut pour la carte de recherche d'utilisateur"
+  },
+  "mySkillsTitle": "Compétences",
+  "@mySkillsTitle": {
+    "description": "Titre pour la section des compétences"
+  },
+  "mySkillsAddTooltip": "Ajouter une compétence",
+  "@mySkillsAddTooltip": {
+    "description": "Info-bulle pour le bouton ajouter une compétence"
+  },
+  "mySkillsNoSkillsFound": "Aucune compétence trouvée. Ajoutez votre première compétence !",
+  "@mySkillsNoSkillsFound": {
+    "description": "Message quand l'utilisateur n'a pas de compétences"
+  },
+  "mySkillsDialogTitle": "Ajouter une Compétence",
+  "@mySkillsDialogTitle": {
+    "description": "Titre pour la boîte de dialogue ajouter une compétence"
+  },
+  "mySkillsSkillNameLabel": "Nom de la compétence",
+  "@mySkillsSkillNameLabel": {
+    "description": "Étiquette pour le champ de saisie du nom de la compétence"
+  },
+  "mySkillsSkillNameHint": "Ex. Flutter, Gestion de Projet...",
+  "@mySkillsSkillNameHint": {
+    "description": "Texte d'indication pour le champ de saisie du nom de la compétence"
+  },
+  "mySkillsSkillNameError": "Veuillez entrer un nom de compétence",
+  "@mySkillsSkillNameError": {
+    "description": "Message d'erreur pour nom de compétence vide"
+  },
+  "mySkillsCancel": "Annuler",
+  "@mySkillsCancel": {
+    "description": "Texte du bouton annuler dans la boîte de dialogue ajouter une compétence"
+  },
+  "mySkillsAdd": "+ Ajouter",
+  "@mySkillsAdd": {
+    "description": "Texte du bouton ajouter dans la boîte de dialogue ajouter une compétence"
+  },
+  "mySkillsSkillAdded": "Compétence ajoutée !",
+  "@mySkillsSkillAdded": {
+    "description": "Message de succès quand une compétence est ajoutée"
+  },
+  "mySkillsError": "Erreur : {error}",
+  "@mySkillsError": {
+    "description": "Modèle de message d'erreur",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Le message d'erreur"
+      }
+    }
+  },
+  "myEducationInstitutionsError": "Erreur : {error}",
+  "@myEducationInstitutionsError": {
+    "description": "Message d'erreur lorsque le chargement des institutions éducatives échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Le message d'erreur"
+      }
+    }
+  },
+  "myEducationInstitutionsNoInstitutions": "Aucune institution éducative trouvée.",
+  "@myEducationInstitutionsNoInstitutions": {
+    "description": "Message quand l'utilisateur n'a pas d'institutions éducatives"
+  },
+  "myEducationInstitutionsUnnamedInstitution": "Institution Sans Nom",
+  "@myEducationInstitutionsUnnamedInstitution": {
+    "description": "Nom par défaut pour les institutions sans nom"
+  },
+  "myCompaniesError": "Erreur : {error}",
+  "@myCompaniesError": {
+    "description": "Message d'erreur lorsque le chargement des entreprises échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Le message d'erreur"
+      }
+    }
+  },
+  "myCompaniesNoCompanies": "Aucune entreprise trouvée.",
+  "@myCompaniesNoCompanies": {
+    "description": "Message quand l'utilisateur n'a pas d'entreprises"
+  },
+  "myCompaniesUnnamedCompany": "Entreprise Sans Nom",
+  "@myCompaniesUnnamedCompany": {
+    "description": "Nom par défaut pour les entreprises sans nom"
+  },
+  "logoutDialogTitle": "Se déconnecter",
+  "@logoutDialogTitle": {
+    "description": "Titre pour la boîte de dialogue de confirmation de déconnexion"
+  },
+  "logoutDialogMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
+  "@logoutDialogMessage": {
+    "description": "Message de confirmation dans la boîte de dialogue de déconnexion"
+  },
+  "logoutDialogCancel": "Annuler",
+  "@logoutDialogCancel": {
+    "description": "Texte du bouton annuler dans la boîte de dialogue de déconnexion"
+  },
+  "logoutDialogConfirm": "Se déconnecter",
+  "@logoutDialogConfirm": {
+    "description": "Texte du bouton confirmer dans la boîte de dialogue de déconnexion"
+  },
+  "addCertificateDialogTitle": "Ajouter Certificat",
+  "@addCertificateDialogTitle": {
+    "description": "Titre court pour la boîte de dialogue ajouter certificat sur mobile"
+  },
+  "addCertificateDialogTitleFull": "Ajouter Nouveau Certificat",
+  "@addCertificateDialogTitleFull": {
+    "description": "Titre complet pour la boîte de dialogue ajouter certificat sur bureau"
+  },
+  "addCertificateTitle": "Titre",
+  "@addCertificateTitle": {
+    "description": "Étiquette pour le champ titre du certificat"
+  },
+  "addCertificateCertificateType": "Type de Certificat",
+  "@addCertificateCertificateType": {
+    "description": "Étiquette pour le champ type de certificat"
+  },
+  "addCertificateGrade": "Note",
+  "@addCertificateGrade": {
+    "description": "Étiquette pour le champ note du certificat"
+  },
+  "addCertificateTeachingInstitution": "Institution d'Enseignement",
+  "@addCertificateTeachingInstitution": {
+    "description": "Étiquette pour le champ institution d'enseignement"
+  },
+  "addCertificateDescription": "Description",
+  "@addCertificateDescription": {
+    "description": "Étiquette pour le champ description du certificat"
+  },
+  "addCertificateCurriculum": "Programme",
+  "@addCertificateCurriculum": {
+    "description": "Étiquette pour le champ programme du certificat"
+  },
+  "addCertificatePublicationDate": "Date de Publication",
+  "@addCertificatePublicationDate": {
+    "description": "Étiquette pour le champ date de publication du certificat"
+  },
+  "addCertificateSelectFile": "Sélectionner un fichier",
+  "@addCertificateSelectFile": {
+    "description": "Texte du bouton pour sélection de fichier"
+  },
+  "addCertificateCancel": "Annuler",
+  "@addCertificateCancel": {
+    "description": "Texte du bouton annuler dans la boîte de dialogue ajouter certificat"
+  },
+  "addCertificateAdd": "Ajouter",
+  "@addCertificateAdd": {
+    "description": "Texte du bouton ajouter dans la boîte de dialogue ajouter certificat"
+  },
+  "addCertificateDateRequired": "Veuillez sélectionner une date",
+  "@addCertificateDateRequired": {
+    "description": "Message de validation pour champ de date requis"
+  },
+  "addCertificateFieldRequired": "Veuillez entrer {field}",
+  "@addCertificateFieldRequired": {
+    "description": "Message de validation pour champs requis",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "Le nom du champ"
+      }
+    }
+  },
+  "addWorkExperienceTitle": "Ajouter Expérience Professionnelle",
+  "@addWorkExperienceTitle": {
+    "description": "Titre pour la boîte de dialogue ajouter expérience professionnelle"
+  },
+  "addWorkExperienceJobTitle": "Titre",
+  "@addWorkExperienceJobTitle": {
+    "description": "Étiquette pour le champ titre du poste"
+  },
+  "addWorkExperienceCompany": "Entreprise",
+  "@addWorkExperienceCompany": {
+    "description": "Étiquette pour le champ entreprise"
+  },
+  "addWorkExperienceLocation": "Lieu",
+  "@addWorkExperienceLocation": {
+    "description": "Étiquette pour le champ lieu"
+  },
+  "addWorkExperienceDescription": "Description",
+  "@addWorkExperienceDescription": {
+    "description": "Étiquette pour le champ description"
+  },
+  "addWorkExperienceStartDate": "Début",
+  "@addWorkExperienceStartDate": {
+    "description": "Étiquette pour le champ date de début"
+  },
+  "addWorkExperienceEndDate": "Fin",
+  "@addWorkExperienceEndDate": {
+    "description": "Étiquette pour le champ date de fin"
+  },
+  "addWorkExperienceCancel": "Annuler",
+  "@addWorkExperienceCancel": {
+    "description": "Texte du bouton annuler dans la boîte de dialogue ajouter expérience professionnelle"
+  },
+  "addWorkExperienceSave": "Enregistrer",
+  "@addWorkExperienceSave": {
+    "description": "Texte du bouton enregistrer dans la boîte de dialogue ajouter expérience professionnelle"
+  },
+  "addWorkExperienceFieldRequired": "Entrez {field}",
+  "@addWorkExperienceFieldRequired": {
+    "description": "Message de validation pour champs requis d'expérience professionnelle",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "Le nom du champ"
+      }
+    }
+  },
+  "addWorkExperienceDateRequired": "Entrez date de {field}",
+  "@addWorkExperienceDateRequired": {
+    "description": "Message de validation pour champs de date requis",
+    "placeholders": {
+      "field": {
+        "type": "String",
+        "description": "Le nom du champ"
+      }
+    }
+  },
+  "editProfileTitle": "Modifier le Profil",
+  "@editProfileTitle": {
+    "description": "Titre pour la page modifier le profil"
+  },
+  "editProfileUpdated": "Profil mis à jour !",
+  "@editProfileUpdated": {
+    "description": "Message de succès quand le profil est mis à jour"
+  },
+  "editProfileError": "Erreur : {error}",
+  "@editProfileError": {
+    "description": "Modèle de message d'erreur pour les opérations de profil",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Le message d'erreur"
+      }
+    }
+  },
+  "editProfileErrorLoading": "Erreur lors du chargement des données utilisateur : {error}",
+  "@editProfileErrorLoading": {
+    "description": "Message d'erreur quand le chargement des données utilisateur échoue",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "description": "Le message d'erreur"
+      }
+    }
+  },
+  "editProfileRetry": "Réessayer",
+  "@editProfileRetry": {
+    "description": "Texte du bouton réessayer"
+  },
+  "editProfileUserNotFound": "Utilisateur introuvable",
+  "@editProfileUserNotFound": {
+    "description": "Message quand les données utilisateur ne sont pas trouvées"
+  },
+  "editProfileChangePhoto": "Changer la photo de profil",
+  "@editProfileChangePhoto": {
+    "description": "Texte d'instruction pour changer la photo de profil"
+  },
+  "editProfileFirstName": "Prénom",
+  "@editProfileFirstName": {
+    "description": "Étiquette pour le champ prénom"
+  },
+  "editProfileLastName": "Nom",
+  "@editProfileLastName": {
+    "description": "Étiquette pour le champ nom"
+  },
+  "editProfilePhoneNumber": "Numéro de Téléphone",
+  "@editProfilePhoneNumber": {
+    "description": "Étiquette pour le champ numéro de téléphone"
+  },
+  "editProfileLinkedIn": "LinkedIn",
+  "@editProfileLinkedIn": {
+    "description": "Étiquette pour le champ LinkedIn"
+  },
+  "editProfileBiography": "Biographie",
+  "@editProfileBiography": {
+    "description": "Étiquette pour le champ biographie"
+  },
+  "editProfileEmailSubtitle": "Recevez des recommandations de carrière personnalisées par email",
+  "@editProfileEmailSubtitle": {
+    "description": "Sous-titre pour le paramètre d'emails de recommandations hebdomadaires"
+  },
+  "editProfileSaving": "Enregistrement...",
+  "@editProfileSaving": {
+    "description": "Texte affiché pendant l'enregistrement du profil"
+  },
+  "editProfileSave": "Enregistrer le Profil",
+  "@editProfileSave": {
+    "description": "Texte du bouton enregistrer"
+  },
+  "editProfileRequired": "Requis",
+  "@editProfileRequired": {
+    "description": "Message de validation pour champs requis"
+  },
+  "workExperienceVerified": "Vérifié",
+  "@workExperienceVerified": {
+    "description": "Étiquette pour expérience professionnelle vérifiée"
+  },
+  "workExperienceManually": "Manuel",
+  "@workExperienceManually": {
+    "description": "Étiquette pour expérience professionnelle ajoutée manuellement"
+  },
+  "workExperienceDateRange": "{startDate} - {endDate}",
+  "@workExperienceDateRange": {
+    "description": "Format de plage de dates pour expérience professionnelle",
+    "placeholders": {
+      "startDate": {
+        "type": "String"
+      },
+      "endDate": {
+        "type": "String"
+      }
+    }
+  },
+  "workExperiencePromotion": "• {title} – {date}",
+  "@workExperiencePromotion": {
+    "description": "Format pour les entrées de promotion",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsTitle": "Compétences",
+  "@skillsTitle": {
+    "description": "Titre pour la section des compétences"
+  },
+  "skillsError": "Erreur : {error}",
+  "@skillsError": {
+    "description": "Message d'erreur lors du chargement des compétences",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "skillsNoSkillsFound": "Aucune compétence trouvée",
+  "@skillsNoSkillsFound": {
+    "description": "Message quand aucune compétence n'est disponible"
+  },
+  "skillsGetAIFeedback": "Obtenir Commentaires IA",
+  "@skillsGetAIFeedback": {
+    "description": "Tooltip pour le bouton de commentaires IA"
+  },
+  "skillsJobDescription": "Description du Poste",
+  "@skillsJobDescription": {
+    "description": "Titre pour le formulaire de description du poste"
+  },
+  "skillsJobDescriptionHint": "Entrez la description du poste ici...",
+  "@skillsJobDescriptionHint": {
+    "description": "Texte d'indication pour l'entrée de description du poste"
+  },
+  "skillsSubmit": "Soumettre",
+  "@skillsSubmit": {
+    "description": "Texte du bouton soumettre"
+  },
+  "skillsHideForm": "Masquer le formulaire",
+  "@skillsHideForm": {
+    "description": "Texte pour masquer le formulaire de description du poste"
+  },
+  "skillsDescribeJob": "Décrivez votre travail pour voir s'il vous convient",
+  "@skillsDescribeJob": {
+    "description": "Texte pour afficher le formulaire de description du poste"
+  },
+  "userProfileNotAvailable": "Non disponible",
+  "@userProfileNotAvailable": {
+    "description": "Texte affiché lorsque les informations du profil utilisateur ne sont pas disponibles"
+  },
+  "educationVerified": "Vérifié",
+  "@educationVerified": {
+    "description": "Étiquette pour certificats d'éducation vérifiés"
+  },
+  "educationManually": "Manuel",
+  "@educationManually": {
+    "description": "Étiquette pour certificats d'éducation ajoutés manuellement"
+  },
+  "educationUntitled": "Sans titre",
+  "@educationUntitled": {
+    "description": "Texte de remplacement pour certificat sans titre"
+  },
+  "educationCertificate": "Certificat",
+  "@educationCertificate": {
+    "description": "Texte de remplacement pour type de certificat"
+  },
+  "educationDate": "Date : {date}",
+  "@educationDate": {
+    "description": "Étiquette de date pour certificat d'éducation",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "educationCurriculum": "Programme : {curriculum}",
+  "@educationCurriculum": {
+    "description": "Étiquette de programme pour certificat d'éducation",
+    "placeholders": {
+      "curriculum": {
+        "type": "String"
+      }
+    }
+  },
+  "educationGrade": "Note : {grade}",
+  "@educationGrade": {
+    "description": "Étiquette de note pour certificat d'éducation",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "educationTitle": "Éducation",
+  "@educationTitle": {
+    "description": "Titre pour la section éducation"
+  },
+  "educationError": "Erreur : {error}",
+  "@educationError": {
+    "description": "Message d'erreur lors du chargement de l'éducation",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "educationNoCertificates": "Aucun certificat d'éducation pour le moment.",
+  "@educationNoCertificates": {
+    "description": "Message quand aucun certificat d'éducation n'est disponible"
+  },
+  "workExperienceVerifiedBlockchain": "Vérifié par la blockchain",
+  "@workExperienceVerifiedBlockchain": {
+    "description": "Étiquette pour expérience professionnelle vérifiée par blockchain (version bureau)"
+  },
+  "workExperienceManuallyAdded": "Ajouté manuellement",
+  "@workExperienceManuallyAdded": {
+    "description": "Étiquette pour expérience professionnelle ajoutée manuellement (version bureau)"
+  },
+  "verifiedByBlockchain": "Vérifié par la blockchain",
+  "@verifiedByBlockchain": {
+    "description": "Étiquette de badge pour certificats vérifiés par blockchain"
+  },
+  "manuallyAdded": "Ajouté manuellement",
+  "@manuallyAdded": {
+    "description": "Étiquette de badge pour certificats ajoutés manuellement"
+  },
+  "untitled": "Sans titre",
+  "@untitled": {
+    "description": "Titre par défaut quand le titre du certificat est vide"
+  },
+  "certificateType": "Certificat",
+  "@certificateType": {
+    "description": "Type de certificat par défaut"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Préfixe d'étiquette de date"
+  },
+  "curriculum": "Programme",
+  "@curriculum": {
+    "description": "Étiquette de programme"
+  },
+  "grade": "Note",
+  "@grade": {
+    "description": "Étiquette de note"
+  },
+  "feedbacks": "Commentaires",
+  "@feedbacks": {
+    "description": "Titre du dialogue pour les commentaires"
+  },
+  "addPromotion": "Ajouter une promotion",
+  "@addPromotion": {
+    "description": "Texte du bouton pour ajouter une promotion"
+  },
+  "addPromotionDialogTitle": "Ajouter une promotion",
+  "@addPromotionDialogTitle": {
+    "description": "Titre du dialogue pour ajouter une promotion"
+  },
+  "promotionTitle": "Titre de promotion",
+  "@promotionTitle": {
+    "description": "Étiquette du champ pour titre de promotion"
+  },
+  "confirmDeletion": "Confirmer la Suppression",
+  "@confirmDeletion": {
+    "description": "Titre du dialogue de confirmation de suppression"
+  },
+  "deleteExperienceConfirmation": "Êtes-vous sûr de vouloir supprimer cette expérience ? Cette action est irréversible.",
+  "@deleteExperienceConfirmation": {
+    "description": "Message de confirmation pour supprimer l'expérience"
+  },
+  "untitled": "Sans titre",
+  "@untitled": {
+    "description": "Titre par défaut pour les éléments sans titre"
+  },
+  "certificate": "Certificat",
+  "@certificate": {
+    "description": "Type de certificat par défaut"
+  },
+  "date": "Date",
+  "@date": {
+    "description": "Libellé de date"
+  },
+  "curriculum": "Programme",
+  "@curriculum": {
+    "description": "Libellé du programme d'études"
+  },
+  "grade": "Note",
+  "@grade": {
+    "description": "Libellé de note"
+  },
+  "deleteCertificateConfirmation": "Êtes-vous sûr de vouloir supprimer ce certificat ? Cette action est irréversible.",
+  "@deleteCertificateConfirmation": {
+    "description": "Message de confirmation pour supprimer le certificat"
+  },
+  "errorDeletingCertificate": "Erreur lors de la suppression du certificat",
+  "@errorDeletingCertificate": {
+    "description": "Message d'erreur lorsque la suppression du certificat échoue"
+  },
+  "setup": "Configuration",
+  "@setup": {
+    "description": "Texte du bouton de configuration"
+  },
+  "addYourLinkedin": "Ajoutez votre LinkedIn",
+  "@addYourLinkedin": {
+    "description": "Texte d'espace réservé du profil LinkedIn"
+  },
+  "exportMyCvPdf": "Exporter mon CV en PDF",
+  "@exportMyCvPdf": {
+    "description": "Texte du bouton d'exportation CV"
+  },
+  "generating": "Génération...",
+  "@generating": {
+    "description": "Texte de chargement pour le processus de génération"
+  },
+  "errorDownloadingCv": "Erreur lors du téléchargement du CV",
+  "@errorDownloadingCv": {
+    "description": "Message d'erreur lorsque le téléchargement du CV échoue"
+  },
+  "addExperience": "Ajouter une expérience",
+  "@addExperience": {
+    "description": "Texte de l'infobulle pour ajouter une expérience"
+  },
+  "checkWithAI": "Vérifier avec l'IA",
+  "@checkWithAI": {
+    "description": "Texte du bouton pour vérifier la compétence avec l'IA"
+  },
+  "setupProfile": "Configurer le Profil",
+  "@setupProfile": {
+    "description": "Texte du bouton pour configurer le profil"
+  },
+  "generating": "Génération...",
+  "@generating": {
+    "description": "Texte de chargement pour le processus de génération"
+  },
+  "exportCvPdf": "Exporter le CV en PDF",
+  "@exportCvPdf": {
+    "description": "Texte du bouton pour exporter le CV en PDF"
+  },
+  "addPhoneNumber": "Ajouter un numéro de téléphone",
+  "@addPhoneNumber": {
+    "description": "Texte d'espace réservé pour ajouter un numéro de téléphone"
+  },
+  "addLinkedIn": "Ajouter LinkedIn",
+  "@addLinkedIn": {
+    "description": "Texte d'espace réservé pour ajouter LinkedIn"
+  },
+  "verifyEmail": "Vérifier l'e-mail",
+  "@verifyEmail": {
+    "description": "Titre pour la page de vérification d'e-mail"
+  },
+  "emailSentTo": "Un e-mail a été envoyé à :",
+  "@emailSentTo": {
+    "description": "Texte indiquant qu'un e-mail a été envoyé"
+  },
+  "clickLinkToVerify": "Cliquez sur le lien dans l'e-mail pour vérifier votre compte.",
+  "@clickLinkToVerify": {
+    "description": "Instructions pour la vérification d'e-mail"
+  },
+  "sending": "Envoi en cours...",
+  "@sending": {
+    "description": "Texte de chargement lors de l'envoi d'e-mail"
+  },
+  "waitSeconds": "Attendre {seconds}s",
+  "@waitSeconds": {
+    "description": "Message de refroidissement avec secondes",
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "resendVerificationEmail": "Renvoyer l'e-mail de vérification",
+  "@resendVerificationEmail": {
+    "description": "Texte du bouton pour renvoyer l'e-mail de vérification"
+  },
+  "backToLogin": "Retour à la connexion",
+  "@backToLogin": {
+    "description": "Texte du bouton pour retourner à la page de connexion"
+  },
+  "impossibleToSendEmail": "Impossible d'envoyer l'e-mail : {error}",
+  "@impossibleToSendEmail": {
+    "description": "Message d'erreur lorsque l'envoi d'e-mail échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "resetPassword": "Réinitialiser le mot de passe",
+  "@resetPassword": {
+    "description": "Titre pour la page de réinitialisation du mot de passe"
+  },
+  "setNewPassword": "Définir un nouveau mot de passe",
+  "@setNewPassword": {
+    "description": "En-tête pour définir un nouveau mot de passe"
+  },
+  "chooseStrongPassword": "Choisissez un mot de passe fort que vous n'avez jamais utilisé auparavant.",
+  "@chooseStrongPassword": {
+    "description": "Instructions pour choisir un nouveau mot de passe"
+  },
+  "newPassword": "Nouveau mot de passe",
+  "@newPassword": {
+    "description": "Étiquette pour le champ nouveau mot de passe"
+  },
+  "confirmPassword": "Confirmer le mot de passe",
+  "@confirmPassword": {
+    "description": "Étiquette pour le champ confirmer mot de passe"
+  },
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+  "@passwordsDoNotMatch": {
+    "description": "Message d'erreur lorsque les mots de passe ne correspondent pas"
+  },
+  "passwordChanged": "Mot de Passe Modifié",
+  "@passwordChanged": {
+    "description": "Titre pour le dialogue de succès de changement de mot de passe"
+  },
+  "passwordUpdatedMessage": "Votre mot de passe a été mis à jour. Vous pouvez maintenant vous connecter.",
+  "@passwordUpdatedMessage": {
+    "description": "Message de succès de changement de mot de passe"
+  },
+  "failedWithError": "Échec : {error}",
+  "@failedWithError": {
+    "description": "Message générique d'échec avec erreur",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "forgotPassword": "Mot de passe oublié",
+  "@forgotPassword": {
+    "description": "Titre pour la page de mot de passe oublié"
+  },
+  "resetYourPassword": "Réinitialisez votre mot de passe",
+  "@resetYourPassword": {
+    "description": "En-tête pour la page de mot de passe oublié"
+  },
+  "enterEmailForReset": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+  "@enterEmailForReset": {
+    "description": "Instructions pour la réinitialisation du mot de passe"
+  },
+  "sendResetEmail": "Envoyer l'e-mail de réinitialisation",
+  "@sendResetEmail": {
+    "description": "Texte du bouton pour envoyer l'e-mail de réinitialisation"
+  },
+  "passwordResetTitle": "Réinitialisation du Mot de Passe",
+  "@passwordResetTitle": {
+    "description": "Titre pour le dialogue de confirmation de réinitialisation du mot de passe"
+  },
+  "passwordResetMessage": "Si cet e-mail existe, vous recevrez un lien de réinitialisation du mot de passe.",
+  "@passwordResetMessage": {
+    "description": "Message de confirmation de réinitialisation du mot de passe"
+  },
+  "emailVerification": "Vérification d'E-mail",
+  "@emailVerification": {
+    "description": "Titre pour la page de vérification d'e-mail"
+  },
+  "emailVerified": "E-mail vérifié !",
+  "@emailVerified": {
+    "description": "Message de succès quand l'e-mail est vérifié"
+  },
+  "verificationFailed": "Vérification échouée",
+  "@verificationFailed": {
+    "description": "Message d'erreur quand la vérification d'e-mail échoue"
+  },
+  "missingVerificationToken": "Token de vérification manquant dans l'URL.",
+  "@missingVerificationToken": {
+    "description": "Message d'erreur quand le token de vérification est manquant"
+  },
+  "dateUnknown": "Date inconnue",
+  "@dateUnknown": {
+    "description": "Texte affiché quand la date est inconnue ou invalide"
+  },
+  "ongoing": "En cours",
+  "@ongoing": {
+    "description": "Texte affiché pour les expériences ou activités actuelles/en cours"
+  },
+  "solidCVAssistant": "Assistant SolidCV",
+  "@solidCVAssistant": {
+    "description": "Nom de l'assistant de chat SolidCV"
+  },
+  "online": "En ligne",
+  "@online": {
+    "description": "Indicateur de statut montrant que l'assistant est en ligne"
+  },
+  "welcomeMessage": "👋 Bienvenue sur SolidCV !",
+  "@welcomeMessage": {
+    "description": "Message de bienvenue avec emoji"
+  },
+  "setupIntroduction": "Je suis là pour vous aider à configurer votre compte et tirer le meilleur parti de notre plateforme. Cela ne prendra que quelques minutes.",
+  "@setupIntroduction": {
+    "description": "Message d'introduction expliquant le processus de configuration"
+  },
+  "walletSetupInfo": "Nous configurerons votre portefeuille blockchain et vous aiderons à télécharger votre CV pour commencer.",
+  "@walletSetupInfo": {
+    "description": "Information sur la configuration du portefeuille et le téléchargement du CV"
+  },
+  "blockchainWalletSetup": "Configuration du Portefeuille Blockchain",
+  "@blockchainWalletSetup": {
+    "description": "Titre pour la page de configuration du portefeuille blockchain"
+  },
+  "whatIsThisFor": "À quoi cela sert-il ?",
+  "@whatIsThisFor": {
+    "description": "Question sur le but du portefeuille"
+  },
+  "walletPurposeExplanation": "Votre portefeuille sert uniquement d'identifiant numérique sécurisé pour assurer la traçabilité et l'authenticité de vos expériences, certificats et diplômes. Aucune cryptomonnaie n'est impliquée, et ce n'est pas un outil financier. Pensez-y comme une signature numérique sécurisée qui prouve que vos réalisations sont authentiques.",
+  "@walletPurposeExplanation": {
+    "description": "Explication du but du portefeuille"
+  },
+  "doYouHaveWallet": "Avez-vous déjà une adresse de portefeuille blockchain ?",
+  "@doYouHaveWallet": {
+    "description": "Question demandant si l'utilisateur a un portefeuille existant"
+  },
+  "setSecurePassword": "Veuillez définir un mot de passe sécurisé pour chiffrer votre portefeuille :",
+  "@setSecurePassword": {
+    "description": "Instructions pour définir le mot de passe du portefeuille"
+  },
+  "yesIHaveOne": "Oui, j'en ai un",
+  "@yesIHaveOne": {
+    "description": "Texte du bouton pour les utilisateurs qui ont un portefeuille"
+  },
+  "noIDont": "Non, je n'en ai pas",
+  "@noIDont": {
+    "description": "Texte du bouton pour les utilisateurs qui n'ont pas de portefeuille"
+  },
+  "continueText": "Continuer",
+  "@continueText": {
+    "description": "Texte du bouton continuer"
+  },
+  "back": "Retour",
+  "@back": {
+    "description": "Texte du bouton retour"
+  },
+  "createWallet": "Créer un Portefeuille",
+  "@createWallet": {
+    "description": "Texte du bouton créer un portefeuille"
+  },
+  "loadingYourSkills": "Chargement de vos compétences...",
+  "@loadingYourSkills": {
+    "description": "Message de chargement pour les compétences"
+  },
+  "errorLoadingSkills": "Erreur lors du chargement des compétences",
+  "@errorLoadingSkills": {
+    "description": "Message d'erreur quand les compétences ne se chargent pas"
+  },
+  "continueWithoutSkills": "Continuer sans compétences pour l'instant",
+  "@continueWithoutSkills": {
+    "description": "Message pour continuer sans compétences"
+  },
+  "reviewYourSkills": "Examinez Vos Compétences",
+  "@reviewYourSkills": {
+    "description": "Titre pour la section d'examen des compétences"
+  },
+  "skillsCountMessage": "Vous avez {count} compétence{plural}. Vous pouvez supprimer celles qui ne sont pas pertinentes.",
+  "@skillsCountMessage": {
+    "description": "Message montrant le nombre de compétences",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "plural": {
+        "type": "String"
+      }
+    }
+  },
+  "noSkillsFound": "Aucune compétence trouvée",
+  "@noSkillsFound": {
+    "description": "Message quand aucune compétence n'est trouvée"
+  },
+  "continueCompleteProfile": "Continuez pour terminer la configuration de votre profil",
+  "@continueCompleteProfile": {
+    "description": "Message pour continuer la configuration du profil"
+  },
+  "tapToRemoveSkills": "Appuyez sur × pour supprimer les compétences que vous ne voulez pas inclure",
+  "@tapToRemoveSkills": {
+    "description": "Instructions pour supprimer les compétences"
+  },
+  "skillsIncluded": "{count} compétences seront incluses dans votre profil",
+  "@skillsIncluded": {
+    "description": "Résumé des compétences à inclure",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "completeProfileSetupButton": "Terminer la Configuration du Profil",
+  "@completeProfileSetupButton": {
+    "description": "Texte du bouton pour terminer la configuration du profil"
+  },
+  "loadingYourExperiences": "Chargement de vos expériences...",
+  "@loadingYourExperiences": {
+    "description": "Message de chargement lors de la récupération des expériences utilisateur"
+  },
+  "errorLoadingExperiences": "Erreur lors du chargement des expériences",
+  "@errorLoadingExperiences": {
+    "description": "Message d'erreur lorsque les expériences ne peuvent pas être chargées"
+  },
+  "canStillAddExperiencesManually": "Vous pouvez toujours ajouter des expériences manuellement",
+  "@canStillAddExperiencesManually": {
+    "description": "Message encourageant l'ajout manuel d'expériences après erreur"
+  },
+  "reviewYourExperience": "Examinez Votre Expérience",
+  "@reviewYourExperience": {
+    "description": "Titre de la section de révision des expériences"
+  },
+  "noExperienceFound": "Aucune expérience trouvée",
+  "@noExperienceFound": {
+    "description": "Message lorsqu'aucune expérience professionnelle n'est trouvée"
+  },
+  "continueToCertificates": "Continuer vers les Certificats",
+  "@continueToCertificates": {
+    "description": "Bouton pour procéder à la section des certificats"
+  },
+  "editExperience": "Modifier l'Expérience",
+  "@editExperience": {
+    "description": "Titre de la boîte de dialogue pour modifier l'expérience professionnelle"
+  },
+  "updateWorkExperienceDetails": "Mettez à jour les détails de votre expérience professionnelle",
+  "@updateWorkExperienceDetails": {
+    "description": "Sous-titre de la boîte de dialogue de modification d'expérience"
+  },
+  "jobTitleRequired": "Titre du Poste *",
+  "@jobTitleRequired": {
+    "description": "Étiquette pour le champ obligatoire du titre du poste"
+  },
+  "jobTitleHint": "ex., Ingénieur Logiciel Senior",
+  "@jobTitleHint": {
+    "description": "Texte d'espace réservé pour la saisie du titre du poste"
+  },
+  "companyRequired": "Entreprise *",
+  "@companyRequired": {
+    "description": "Étiquette pour le champ obligatoire de l'entreprise"
+  },
+  "companyHint": "ex., Google, Microsoft, Apple",
+  "@companyHint": {
+    "description": "Texte d'espace réservé pour la saisie de l'entreprise"
+  },
+  "startDateRequired": "Date de Début *",
+  "@startDateRequired": {
+    "description": "Étiquette pour le champ obligatoire de la date de début"
+  },
+  "endDateRequired": "Date de Fin *",
+  "@endDateRequired": {
+    "description": "Étiquette pour le champ obligatoire de la date de fin"
+  },
+  "currentPosition": "Poste Actuel",
+  "@currentPosition": {
+    "description": "Texte affiché pour le poste de travail actuel"
+  },
+  "currentlyWorkHere": "Je travaille actuellement ici",
+  "@currentlyWorkHere": {
+    "description": "Texte de case à cocher pour le travail actuel"
+  },
+  "currentPositionHint": "Cochez ceci si c'est votre poste actuel",
+  "@currentPositionHint": {
+    "description": "Texte d'aide pour la case à cocher du poste actuel"
+  },
+  "jobDescription": "Description du Poste",
+  "@jobDescription": {
+    "description": "Étiquette pour le champ de description du poste"
+  },
+  "jobDescriptionHint": "Décrivez vos responsabilités, réalisations et projets clés...",
+  "@jobDescriptionHint": {
+    "description": "Texte d'espace réservé pour la description du poste"
+  },
+  "writingTips": "Conseils de Rédaction",
+  "@writingTips": {
+    "description": "Titre de la section des conseils de rédaction"
+  },
+  "experienceTipsContent": "• Utilisez des verbes d'action (développé, géré, implémenté)\n• Incluez des réalisations quantifiables\n• Concentrez-vous sur les résultats et l'impact",
+  "@experienceTipsContent": {
+    "description": "Contenu pour les conseils de rédaction d'expériences"
+  },
+  "editDetails": "Modifier les Détails",
+  "@editDetails": {
+    "description": "Texte du bouton pour modifier les détails de l'expérience"
+  },
+  "present": "Présent",
+  "@present": {
+    "description": "Texte affiché pour la date de fin du travail actuel"
+  },
+  "positionTitle": "Titre du Poste",
+  "@positionTitle": {
+    "description": "Texte par défaut lorsque le titre du poste est vide"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton annuler"
+  },
+  "saveChanges": "Enregistrer les Modifications",
+  "@saveChanges": {
+    "description": "Texte du bouton sauvegarder pour l'édition d'expérience"
+  },
+  "fillAllRequiredFields": "Veuillez remplir tous les champs obligatoires",
+  "@fillAllRequiredFields": {
+    "description": "Message de validation pour les champs obligatoires"
+  },
+  "experienceCountSingular": "Vous avez 1 expérience professionnelle. Veuillez la réviser et la modifier selon vos besoins.",
+  "@experienceCountSingular": {
+    "description": "Message lorsque l'utilisateur a exactement une expérience professionnelle"
+  },
+  "experienceCountPlural": "Vous avez {count} expériences professionnelles. Veuillez les réviser et les modifier selon vos besoins.",
+  "@experienceCountPlural": {
+    "description": "Message lorsque l'utilisateur a plusieurs expériences professionnelles",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cvUploadOptional": "Téléchargement de CV (Optionnel)",
+  "@cvUploadOptional": {
+    "description": "Titre pour la section de téléchargement de CV"
+  },
+  "cvUploadDescription": "Téléchargez votre CV et j'extrairai automatiquement votre expérience, certificats et compétences !",
+  "@cvUploadDescription": {
+    "description": "Description expliquant les avantages du téléchargement de CV"
+  },
+  "clickToUploadCV": "Cliquez pour télécharger votre CV",
+  "@clickToUploadCV": {
+    "description": "Texte encourageant l'utilisateur à cliquer sur la zone de téléchargement"
+  },
+  "pdfOnlyAutoExtract": "Fichiers PDF uniquement • Nous extrairons vos données automatiquement",
+  "@pdfOnlyAutoExtract": {
+    "description": "Information sur le format de fichier et l'extraction automatique"
+  },
+  "uploadingYourCV": "Téléchargement de votre CV...",
+  "@uploadingYourCV": {
+    "description": "Message de chargement pendant le téléchargement du CV"
+  },
+  "extractingCVData": "Extraction de votre expérience, certificats et compétences...",
+  "@extractingCVData": {
+    "description": "Message de chargement pendant l'extraction des données"
+  },
+  "extractionMayTakeMoments": "Cela peut prendre quelques instants",
+  "@extractionMayTakeMoments": {
+    "description": "Information supplémentaire sur le temps d'extraction"
+  },
+  "cvProcessedSuccessfully": "CV Traité avec Succès !",
+  "@cvProcessedSuccessfully": {
+    "description": "Message de succès après le traitement du CV"
+  },
+  "skipForNow": "Ignorer pour l'instant",
+  "@skipForNow": {
+    "description": "Bouton pour ignorer le téléchargement de CV"
+  },
+  "reviewEditData": "Réviser et Modifier les Données",
+  "@reviewEditData": {
+    "description": "Bouton pour procéder à la révision des données"
+  },
+  "errorUploadingCV": "Erreur lors du téléchargement du CV :",
+  "@errorUploadingCV": {
+    "description": "Préfixe du message d'erreur pour l'échec du téléchargement de CV"
+  },
+  "cvDataExtractedSuccessfully": "Données du CV extraites avec succès !",
+  "@cvDataExtractedSuccessfully": {
+    "description": "Message de succès pour l'extraction des données"
+  },
+  "errorExtractingCVData": "Erreur lors de l'extraction des données du CV :",
+  "@errorExtractingCVData": {
+    "description": "Préfixe du message d'erreur pour l'échec de l'extraction des données"
+  },
+  "welcomeToSolidCV": "Bienvenue sur SolidCV !",
+  "@welcomeToSolidCV": {
+    "description": "Titre de bienvenue après la completion de la configuration du compte"
+  },
+  "accountSetupComplete": "Votre compte est maintenant configuré et prêt à être utilisé. Choisissez où vous aimeriez commencer votre voyage :",
+  "@accountSetupComplete": {
+    "description": "Description après la configuration réussie du compte"
+  },
+  "goToHomePage": "Aller à la Page d'Accueil",
+  "@goToHomePage": {
+    "description": "Texte du bouton pour naviguer vers la page d'accueil"
+  },
+  "viewMyCV": "Voir Mon CV",
+  "@viewMyCV": {
+    "description": "Texte du bouton pour voir le CV de l'utilisateur"
+  },
+  "createAnOrganization": "Créer une organisation",
+  "@createAnOrganization": {
+    "description": "Texte du bouton pour créer une organisation"
+  },
+  "navigationMenuTip": "Astuce : Vous pouvez toujours accéder à ces pages depuis le menu de navigation !",
+  "@navigationMenuTip": {
+    "description": "Conseil utile sur l'accès au menu de navigation"
+  },
+  "loadingYourCertificates": "Chargement de vos certificats...",
+  "@loadingYourCertificates": {
+    "description": "Message de chargement lors de la récupération des certificats utilisateur"
+  },
+  "errorLoadingCertificates": "Erreur lors du chargement des certificats",
+  "@errorLoadingCertificates": {
+    "description": "Message d'erreur lorsque les certificats ne peuvent pas être chargés"
+  },
+  "canStillAddCertificatesManually": "Vous pouvez toujours ajouter des certificats manuellement",
+  "@canStillAddCertificatesManually": {
+    "description": "Message encourageant l'ajout manuel de certificats après erreur"
+  },
+  "reviewYourCertificates": "Examinez Vos Certificats",
+  "@reviewYourCertificates": {
+    "description": "Titre de la section de révision des certificats"
+  },
+  "noCertificatesFound": "Aucun certificat trouvé",
+  "@noCertificatesFound": {
+    "description": "Message lorsqu'aucun certificat n'est trouvé"
+  },
+  "addCertificationsManually": "Ajoutez vos certifications professionnelles manuellement",
+  "@addCertificationsManually": {
+    "description": "Instruction pour ajouter des certificats manuellement"
+  },
+  "continueToSkills": "Continuer vers les Compétences",
+  "@continueToSkills": {
+    "description": "Bouton pour procéder à la section des compétences"
+  },
+  "certificateTitle": "Titre du certificat",
+  "@certificateTitle": {
+    "description": "Texte par défaut lorsque le titre du certificat est vide"
+  },
+  "issuedBy": "Émis par {issuer}",
+  "@issuedBy": {
+    "description": "Texte montrant l'émetteur du certificat",
+    "placeholders": {
+      "issuer": {
+        "type": "String"
+      }
+    }
+  },
+  "issued": "Émis :",
+  "@issued": {
+    "description": "Étiquette pour la date d'émission du certificat"
+  },
+  "editCertificate": "Modifier le Certificat",
+  "@editCertificate": {
+    "description": "Titre de la boîte de dialogue pour modifier le certificat"
+  },
+  "updateCertificationDetails": "Mettez à jour les détails de votre certification",
+  "@updateCertificationDetails": {
+    "description": "Sous-titre de la boîte de dialogue de modification de certificat"
+  },
+  "certificateNameRequired": "Nom du Certificat *",
+  "@certificateNameRequired": {
+    "description": "Étiquette pour le champ obligatoire du nom du certificat"
+  },
+  "certificateNameHint": "ex., AWS Certified Developer",
+  "@certificateNameHint": {
+    "description": "Texte d'espace réservé pour la saisie du nom du certificat"
+  },
+  "issuingOrganizationRequired": "Organisation Émettrice *",
+  "@issuingOrganizationRequired": {
+    "description": "Étiquette pour le champ obligatoire de l'organisation émettrice"
+  },
+  "issuingOrganizationHint": "ex., Amazon Web Services",
+  "@issuingOrganizationHint": {
+    "description": "Texte d'espace réservé pour la saisie de l'organisation émettrice"
+  },
+  "issueDateRequired": "Date d'Émission *",
+  "@issueDateRequired": {
+    "description": "Étiquette pour le champ obligatoire de la date d'émission"
+  },
+  "certificateDescription": "Description",
+  "@certificateDescription": {
+    "description": "Étiquette pour le champ de description du certificat"
+  },
+  "certificateDescriptionHint": "Brève description des compétences et connaissances couvertes...",
+  "@certificateDescriptionHint": {
+    "description": "Texte d'espace réservé pour la description du certificat"
+  },
+  "certificateCountSingular": "Vous avez 1 certificat. Veuillez le réviser et le modifier selon vos besoins.",
+  "@certificateCountSingular": {
+    "description": "Message lorsque l'utilisateur a exactement un certificat"
+  },
+  "certificateCountPlural": "Vous avez {count} certificats. Veuillez les réviser et les modifier selon vos besoins.",
+  "@certificateCountPlural": {
+    "description": "Message lorsque l'utilisateur a plusieurs certificats",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "aiSkillTest": "Test de Compétences IA",
+  "@aiSkillTest": {
+    "description": "Titre pour la section de test de compétences IA"
+  },
+  "skillTestProgress": "{current}/{total}",
+  "@skillTestProgress": {
+    "description": "Indicateur de progression pour les tests de compétences",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "whyTestSkillsTitle": "Pourquoi testons-nous vos compétences ?",
+  "@whyTestSkillsTitle": {
+    "description": "Titre pour l'explication du test de compétences"
+  },
+  "whyTestSkillsExplanation": "Nous utilisons ces données pour vous fournir des commentaires personnalisés sur vos compétences, aider les recruteurs à comprendre dans quelle mesure les candidats correspondent à leurs offres d'emploi, et éventuellement vous fournir des conseils de carrière sur mesure pour faire progresser votre croissance professionnelle. Vous pouvez toujours le faire ou continuer à répondre aux questions sur votre page CV",
+  "@whyTestSkillsExplanation": {
+    "description": "Explication de pourquoi le test de compétences est effectué"
+  },
+  "testingSkill": "Test en cours : {skillName}",
+  "@testingSkill": {
+    "description": "Étiquette montrant quelle compétence est testée",
+    "placeholders": {
+      "skillName": {
+        "type": "String"
+      }
+    }
+  },
+  "answerQuestionsPrompt": "Répondez aux questions pour valider votre niveau de compétence",
+  "@answerQuestionsPrompt": {
+    "description": "Invite à répondre aux questions pour la validation des compétences"
+  },
+  "conversationHistory": "Historique des Conversations",
+  "@conversationHistory": {
+    "description": "En-tête pour la section historique des conversations"
+  },
+  "messagesCount": "{count} messages",
+  "@messagesCount": {
+    "description": "Nombre de messages dans la conversation",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "aiPreparingQuestion": "L'IA prépare une question...",
+  "@aiPreparingQuestion": {
+    "description": "Message de chargement pendant que l'IA prépare une question"
+  },
+  "speechListening": "Écoute... ({confidence}% de confiance)",
+  "@speechListening": {
+    "description": "État de la reconnaissance vocale avec niveau de confiance",
+    "placeholders": {
+      "confidence": {
+        "type": "String"
+      }
+    }
+  },
+  "limitedSpeechSupport": "Support vocal limité sur les navigateurs mobiles",
+  "@limitedSpeechSupport": {
+    "description": "Avertissement sur le support vocal limité sur mobile"
+  },
+  "speechNotAvailable": "Reconnaissance vocale non disponible",
+  "@speechNotAvailable": {
+    "description": "Message lorsque la reconnaissance vocale n'est pas disponible"
+  },
+  "speechMobileBrowserTip": "Pour une meilleure expérience vocale, utilisez un navigateur de bureau ou tapez vos réponses ci-dessous.",
+  "@speechMobileBrowserTip": {
+    "description": "Conseil pour une meilleure expérience vocale sur mobile"
+  },
+  "tapToSpeakWeb": "Appuyez pour parler (Navigateur web - fonctionnalité limitée)",
+  "@tapToSpeakWeb": {
+    "description": "Info-bulle pour le bouton vocal sur le web"
+  },
+  "tapToSpeak": "Appuyez pour parler",
+  "@tapToSpeak": {
+    "description": "Info-bulle pour le bouton vocal"
+  },
+  "inputHintMobile": "Tapez votre réponse ou essayez le bouton micro (limité sur mobile)...\nAppuyez sur Ctrl+Entrée pour envoyer",
+  "@inputHintMobile": {
+    "description": "Texte d'indication de saisie pour les navigateurs mobiles avec vocal"
+  },
+  "inputHintSpeech": "Tapez ou appuyez sur le micro pour parler...\nAppuyez sur Ctrl+Entrée pour envoyer",
+  "@inputHintSpeech": {
+    "description": "Texte d'indication de saisie lorsque le vocal est disponible"
+  },
+  "inputHintDefault": "Tapez votre réponse...\nAppuyez sur Ctrl+Entrée pour envoyer",
+  "@inputHintDefault": {
+    "description": "Texte d'indication de saisie par défaut"
+  },
+  "submitAnswerTooltip": "Envoyer la réponse (Ctrl+Entrée)",
+  "@submitAnswerTooltip": {
+    "description": "Info-bulle pour le bouton d'envoi de réponse"
+  },
+  "ctrlEnterShortcut": "Ctrl+\nEntrée",
+  "@ctrlEnterShortcut": {
+    "description": "Affichage du raccourci clavier"
+  },
+  "clear": "Effacer",
+  "@clear": {
+    "description": "Texte du bouton effacer"
+  },
+  "submit": "Envoyer",
+  "@submit": {
+    "description": "Texte du bouton envoyer"
+  },
+  "startAiTest": "Démarrer le Test IA",
+  "@startAiTest": {
+    "description": "Bouton pour démarrer le test de compétences IA"
+  },
+  "completeTest": "Terminer le Test",
+  "@completeTest": {
+    "description": "Bouton pour terminer le test de compétences"
+  },
+  "skip": "Passer",
+  "@skip": {
+    "description": "Texte du bouton passer"
+  },
+  "skillValidationComplete": "Validation des Compétences Terminée ! 🎉",
+  "@skillValidationComplete": {
+    "description": "Titre pour le résumé de fin"
+  },
+  "validationSummary": "Résumé de Validation",
+  "@validationSummary": {
+    "description": "En-tête pour la section résumé de validation"
+  },
+  "validated": "Validées",
+  "@validated": {
+    "description": "Étiquette pour le nombre de compétences validées"
+  },
+  "skipped": "Passées",
+  "@skipped": {
+    "description": "Étiquette pour le nombre de compétences passées"
+  },
+  "completeSetup": "Terminer la Configuration",
+  "@completeSetup": {
+    "description": "Bouton pour terminer le processus de configuration"
+  },
+  "noQuestionAvailable": "Aucune question disponible",
+  "@noQuestionAvailable": {
+    "description": "Message lorsqu'aucune question n'est disponible"
+  },
+  "questionGenerationError": "Désolé, je n'ai pas pu générer une question pour cette compétence. Passons à la suivante.",
+  "@questionGenerationError": {
+    "description": "Message d'erreur lorsque la génération de question échoue"
+  },
+  "skillTestComplete": "Excellent ! Vous avez terminé le test pour cette compétence. Vous pouvez continuer vers la compétence suivante ou réviser vos réponses.",
+  "@skillTestComplete": {
+    "description": "Message lorsque le test de compétence est terminé"
+  },
+  "answerProcessingError": "Il y a eu un problème lors du traitement de votre réponse. Continuons.",
+  "@answerProcessingError": {
+    "description": "Message d'erreur lorsque le traitement de réponse échoue"
+  },
+  "movingToNextSkill": "--- Passage à la compétence suivante : {skillName} ---",
+  "@movingToNextSkill": {
+    "description": "Message système lors du passage à la compétence suivante",
+    "placeholders": {
+      "skillName": {
+        "type": "String"
+      }
+    }
+  },
+  "skillTestCompleted": "Terminé",
+  "@skillTestCompleted": {
+    "description": "État lorsque toutes les compétences sont terminées"
+  },
+  "createCertificateTitle": "Créer un Certificat",
+  "@createCertificateTitle": {
+    "description": "Titre pour la page de création de certificat"
+  },
+  "searchUser": "Rechercher un Utilisateur",
+  "@searchUser": {
+    "description": "Texte d'indication pour la saisie de recherche d'utilisateur"
+  },
+  "searchUserCardTitle": "Rechercher un utilisateur pour attribuer un certificat",
+  "@searchUserCardTitle": {
+    "description": "Texte du titre pour la carte de recherche d'utilisateur"
+  },
+  "searchUserCardSubtitle": "Commencez à taper un nom ou un email.",
+  "@searchUserCardSubtitle": {
+    "description": "Texte du sous-titre pour la carte de recherche d'utilisateur"
+  },
+  "noUserFound": "Aucun utilisateur trouvé.",
+  "@noUserFound": {
+    "description": "Message lorsqu'aucun utilisateur n'est trouvé dans la recherche"
+  },
+  "errorWhileSearching": "Erreur lors de la recherche.",
+  "@errorWhileSearching": {
+    "description": "Message d'erreur lorsque la recherche d'utilisateur échoue"
+  },
+  "addCertificateTitle": "Ajouter un Certificat",
+  "@addCertificateTitle": {
+    "description": "Titre pour la page d'ajout de certificat dans la barre d'application"
+  },
+  "createCertificate": "Créer un Certificat",
+  "@createCertificate": {
+    "description": "Titre principal dans le formulaire de création de certificat"
+  },
+  "certificateTitle": "Titre",
+  "@certificateTitle": {
+    "description": "Étiquette pour le champ de titre du certificat"
+  },
+  "certificateTitleRequired": "Veuillez saisir un titre de certificat",
+  "@certificateTitleRequired": {
+    "description": "Message de validation pour le champ de titre du certificat"
+  },
+  "certificateType": "Type (ex. Diplôme, Certificat, etc.)",
+  "@certificateType": {
+    "description": "Étiquette pour le champ de type de certificat"
+  },
+  "certificateTypeRequired": "Veuillez saisir un type de certificat",
+  "@certificateTypeRequired": {
+    "description": "Message de validation pour le champ de type de certificat"
+  },
+  "certificateGrade": "Note",
+  "@certificateGrade": {
+    "description": "Étiquette pour le champ de note du certificat"
+  },
+  "certificateGradeRequired": "Veuillez saisir une note",
+  "@certificateGradeRequired": {
+    "description": "Message de validation pour le champ de note du certificat"
+  },
+  "certificateCurriculum": "Programme d'Études",
+  "@certificateCurriculum": {
+    "description": "Étiquette pour le champ de programme d'études du certificat"
+  },
+  "certificateCurriculumRequired": "Veuillez saisir un programme d'études",
+  "@certificateCurriculumRequired": {
+    "description": "Message de validation pour le champ de programme d'études du certificat"
+  },
+  "certificateDescription": "Description",
+  "@certificateDescription": {
+    "description": "Étiquette pour le champ de description du certificat"
+  },
+  "certificateDescriptionRequired": "Veuillez saisir une description",
+  "@certificateDescriptionRequired": {
+    "description": "Message de validation pour le champ de description du certificat"
+  },
+  "publicationDate": "Date de Publication",
+  "@publicationDate": {
+    "description": "Étiquette pour le champ de date de publication"
+  },
+  "publicationDateRequired": "Veuillez sélectionner une date de publication",
+  "@publicationDateRequired": {
+    "description": "Message de validation pour le champ de date de publication"
+  },
+  "walletPassword": "Mot de passe pour ouvrir votre Portefeuille Blockchain",
+  "@walletPassword": {
+    "description": "Étiquette pour le champ de mot de passe du portefeuille"
+  },
+  "selectFile": "Sélectionner un fichier",
+  "@selectFile": {
+    "description": "Texte du bouton pour la sélection de fichier"
+  },
+  "addCertificateButton": "+ Ajouter un Certificat",
+  "@addCertificateButton": {
+    "description": "Texte du bouton pour soumettre le formulaire de certificat"
+  },
+  "manageJobOffersTitle": "Gérer les Offres d'Emploi",
+  "@manageJobOffersTitle": {
+    "description": "Titre pour la page de gestion des offres d'emploi"
+  },
+  "shareJobOffer": "Partager l'Offre d'Emploi",
+  "@shareJobOffer": {
+    "description": "Titre pour la boîte de dialogue de partage d'offre d'emploi"
+  },
+  "shareJobDescription": "Partagez cette offre d'emploi avec des candidats potentiels en utilisant le lien ci-dessous :",
+  "@shareJobDescription": {
+    "description": "Texte de description pour partager une offre d'emploi"
+  },
+  "copyLink": "Copier le Lien",
+  "@copyLink": {
+    "description": "Texte du bouton pour copier le lien de l'offre d'emploi"
+  },
+  "linkCopied": "Lien copié dans le presse-papiers !",
+  "@linkCopied": {
+    "description": "Message de succès lorsque le lien est copié"
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": "Texte du bouton pour fermer la boîte de dialogue"
+  },
+  "viewApplications": "Voir les Candidatures",
+  "@viewApplications": {
+    "description": "Texte du bouton pour voir les candidatures d'emploi"
+  },
+  "deleteJobOffer": "Supprimer l'Offre d'Emploi",
+  "@deleteJobOffer": {
+    "description": "Titre pour la confirmation de suppression d'offre d'emploi"
+  },
+  "deleteJobConfirmation": "Êtes-vous sûr de vouloir supprimer cette offre d'emploi ? Cette action ne peut pas être annulée.",
+  "@deleteJobConfirmation": {
+    "description": "Message de confirmation pour supprimer une offre d'emploi"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Texte du bouton pour annuler une action"
+  },
+  "delete": "Supprimer",
+  "@delete": {
+    "description": "Texte du bouton pour confirmer la suppression"
+  },
+  "jobOfferDeleted": "Offre d'emploi supprimée avec succès",
+  "@jobOfferDeleted": {
+    "description": "Message de succès lorsque l'offre d'emploi est supprimée"
+  },
+  "deletionError": "Erreur lors de la suppression de l'offre d'emploi",
+  "@deletionError": {
+    "description": "Message d'erreur lorsque la suppression de l'emploi échoue"
+  },
+  "noJobOffersTitle": "Vous n'avez pas encore créé d'offres d'emploi",
+  "@noJobOffersTitle": {
+    "description": "Titre lorsqu'aucune offre d'emploi n'existe"
+  },
+  "noJobOffersSubtitle": "Commencez à attirer les meilleurs talents en créant votre première annonce d'emploi !",
+  "@noJobOffersSubtitle": {
+    "description": "Sous-titre encourageant la création du premier emploi"
+  },
+  "createFirstJobTip": "💡 Conseil : Une description d'emploi bien rédigée attire des candidats de qualité",
+  "@createFirstJobTip": {
+    "description": "Conseil sur la création de bonnes descriptions d'emploi"
+  },
+  "detailedRequirementsTip": "📝 Incluez des exigences détaillées et les avantages de l'entreprise",
+  "@detailedRequirementsTip": {
+    "description": "Conseil sur l'inclusion d'exigences détaillées"
+  },
+  "responseTimeTip": "⚡ Une réponse rapide aux candidatures améliore l'image de votre entreprise",
+  "@responseTimeTip": {
+    "description": "Conseil sur les temps de réponse rapides"
+  },
+  "createJobOffer": "Créer une Offre d'Emploi",
+  "@createJobOffer": {
+    "description": "Texte du bouton pour créer une nouvelle offre d'emploi"
+  },
+  "jobOffersCount": "{count, plural, =0{Aucune offre d'emploi} =1{1 offre d'emploi} other{{count} offres d'emploi}}",
+  "@jobOffersCount": {
+    "description": "Nombre d'offres d'emploi avec pluralisation",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Étiquette de statut pour les offres d'emploi actives"
+  },
+  "inactive": "Inactive",
+  "@inactive": {
+    "description": "Étiquette de statut pour les offres d'emploi inactives"
+  },
+  "share": "Partager",
+  "@share": {
+    "description": "Texte du bouton pour partager une offre d'emploi"
+  },
+  "applications": "Candidatures",
+  "@applications": {
+    "description": "Texte du bouton pour voir les candidatures"
+  },
+  "edit": "Modifier",
+  "@edit": {
+    "description": "Texte du bouton pour modifier une offre d'emploi"
+  },
+  "today": "Aujourd'hui",
+  "@today": {
+    "description": "Étiquette pour la date d'aujourd'hui"
+  },
+  "yesterday": "Hier",
+  "@yesterday": {
+    "description": "Étiquette pour la date d'hier"
+  },
+  "daysAgo": "Il y a {days} jours",
+  "@daysAgo": {
+    "description": "Étiquette pour une date il y a X jours",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "jobApplicationsTitle": "Candidatures d'Emploi",
+  "@jobApplicationsTitle": {
+    "description": "Titre pour la page des candidatures d'emploi"
+  },
+  "contactUser": "Contacter {firstName} {lastName}",
+  "@contactUser": {
+    "description": "Titre pour la boîte de dialogue de contact utilisateur",
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      },
+      "lastName": {
+        "type": "String"
+      }
+    }
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "Étiquette pour le champ e-mail"
+  },
+  "phone": "Téléphone",
+  "@phone": {
+    "description": "Étiquette pour le champ téléphone"
+  },
+  "applicationsLabel": "Candidatures",
+  "@applicationsLabel": {
+    "description": "Étiquette pour la section candidatures"
+  },
+  "reviewCandidatesDescription": "Examinez et gérez les candidats qui ont postulé pour ce poste",
+  "@reviewCandidatesDescription": {
+    "description": "Texte de description pour examiner les candidats"
+  },
+  "errorLoadingApplications": "Erreur lors du chargement des candidatures : {error}",
+  "@errorLoadingApplications": {
+    "description": "Message d'erreur lorsque les candidatures échouent à charger",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Texte du bouton pour réessayer une action"
+  },
+  "noApplicationsYet": "Aucune candidature pour le moment",
+  "@noApplicationsYet": {
+    "description": "Titre lorsqu'aucune candidature n'existe"
+  },
+  "applicationsWillAppear": "Les candidatures apparaîtront ici lorsque les utilisateurs postuleront",
+  "@applicationsWillAppear": {
+    "description": "Description lorsqu'aucune candidature n'existe"
+  },
+  "applicantsCount": "{count, plural, =0{Aucun candidat} =1{1 Candidat} other{{count} Candidats}}",
+  "@applicantsCount": {
+    "description": "Nombre de candidats avec pluralisation",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "verified": "Vérifié",
+  "@verified": {
+    "description": "Étiquette pour les utilisateurs vérifiés"
+  },
+  "viewProfile": "Voir le Profil",
+  "@viewProfile": {
+    "description": "Texte du bouton pour voir le profil utilisateur"
+  },
+  "aiAnalysis": "Analyse IA",
+  "@aiAnalysis": {
+    "description": "Texte du bouton pour l'analyse IA"
+  },
+  "contact": "Contacter",
+  "@contact": {
+    "description": "Texte du bouton pour contacter l'utilisateur"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Texte court du bouton pour le profil"
+  },
+  "unknownUser": "Utilisateur Inconnu",
+  "@unknownUser": {
+    "description": "Texte de remplacement pour un nom d'utilisateur inconnu"
+  },
+  "weeksAgo": "Il y a {weeks} semaines",
+  "@weeksAgo": {
+    "description": "Étiquette pour une date il y a X semaines",
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "errorText": "Erreur",
+  "loadingText": "Chargement...",
+  "retryText": "Réessayer",
+  
+  "editJobOfferTitle": "Modifier l'Offre d'Emploi",
+  "@editJobOfferTitle": {
+    "description": "Titre pour la page de modification d'offre d'emploi"
+  },
+  "deleteJobOfferTooltip": "Supprimer l'Offre d'Emploi",
+  "@deleteJobOfferTooltip": {
+    "description": "Infobulle pour le bouton de suppression d'offre d'emploi"
+  },
+  "deleteJobOfferDialog": "Supprimer l'Offre d'Emploi",
+  "@deleteJobOfferDialog": {
+    "description": "Titre pour la boîte de dialogue de confirmation de suppression d'offre d'emploi"
+  },
+  "deleteJobOfferConfirmation": "Êtes-vous sûr de vouloir supprimer cette offre d'emploi ? Cette action ne peut pas être annulée.",
+  "@deleteJobOfferConfirmation": {
+    "description": "Message de confirmation pour supprimer une offre d'emploi"
+  },
+  "jobOfferUpdatedSuccess": "Offre d'emploi mise à jour avec succès !",
+  "@jobOfferUpdatedSuccess": {
+    "description": "Message de succès lorsque l'offre d'emploi est mise à jour"
+  },
+  "errorUpdatingJobOffer": "Erreur lors de la mise à jour de l'offre d'emploi : {error}",
+  "@errorUpdatingJobOffer": {
+    "description": "Message d'erreur lorsque la mise à jour de l'offre d'emploi échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "jobOfferDeletedSuccess": "Offre d'emploi supprimée avec succès",
+  "@jobOfferDeletedSuccess": {
+    "description": "Message de succès lorsque l'offre d'emploi est supprimée"
+  },
+  "errorDeletingJobOffer": "Erreur lors de la suppression de l'offre d'emploi : {error}",
+  "@errorDeletingJobOffer": {
+    "description": "Message d'erreur lorsque la suppression de l'offre d'emploi échoue",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "jobOfferNotFound": "Offre d'emploi introuvable",
+  "@jobOfferNotFound": {
+    "description": "Message lorsque l'offre d'emploi n'est pas trouvée"
+  },
+  "jobTitle": "Titre du Poste",
+  "@jobTitle": {
+    "description": "Étiquette pour le champ titre du poste"
+  },
+  "jobTitleHint": "ex. Développeur Flutter Senior",
+  "@jobTitleHint": {
+    "description": "Texte d'aide pour le champ titre du poste"
+  },
+  "location": "Localisation",
+  "@location": {
+    "description": "Étiquette pour le champ localisation"
+  },
+  "locationHint": "ex. Paris, France ou Télétravail",
+  "@locationHint": {
+    "description": "Texte d'aide pour le champ localisation"
+  },
+  "jobType": "Type d'Emploi",
+  "@jobType": {
+    "description": "Étiquette pour le champ type d'emploi"
+  },
+  "experienceLevel": "Niveau d'Expérience",
+  "@experienceLevel": {
+    "description": "Étiquette pour le champ niveau d'expérience"
+  },
+  "salaryOptional": "Salaire (Optionnel)",
+  "@salaryOptional": {
+    "description": "Étiquette pour le champ salaire"
+  },
+  "salaryHint": "ex. 80 000 € - 120 000 € par an",
+  "@salaryHint": {
+    "description": "Texte d'aide pour le champ salaire"
+  },
+  "jobDescription": "Description du Poste",
+  "@jobDescription": {
+    "description": "Étiquette pour le champ description du poste"
+  },
+  "jobDescriptionHint": "Décrivez le rôle, les responsabilités et ce que vous recherchez...",
+  "@jobDescriptionHint": {
+    "description": "Texte d'aide pour le champ description du poste"
+  },
+  "requirementsOptional": "Exigences (Optionnel)",
+  "@requirementsOptional": {
+    "description": "Étiquette pour le champ exigences"
+  },
+  "requirementsHint": "Listez les compétences, qualifications et expérience requises...",
+  "@requirementsHint": {
+    "description": "Texte d'aide pour le champ exigences"
+  },
+  "benefitsOptional": "Avantages (Optionnel)",
+  "@benefitsOptional": {
+    "description": "Étiquette pour le champ avantages"
+  },
+  "benefitsHint": "Assurance santé, horaires flexibles, options de télétravail...",
+  "@benefitsHint": {
+    "description": "Texte d'aide pour le champ avantages"
+  },
+  "jobStatus": "Statut du Poste",
+  "@jobStatus": {
+    "description": "Étiquette pour la section statut du poste"
+  },
+  "activeJobsVisible": "Les postes actifs seront visibles pour les demandeurs d'emploi",
+  "@activeJobsVisible": {
+    "description": "Description pour le commutateur de statut du poste"
+  },
+  "updating": "Mise à jour...",
+  "@updating": {
+    "description": "Texte affiché pendant la mise à jour de l'offre d'emploi"
+  },
+  "updateJobOffer": "Mettre à Jour l'Offre d'Emploi",
+  "@updateJobOffer": {
+    "description": "Texte du bouton pour mettre à jour l'offre d'emploi"
+  },
+  "fieldRequired": "{field} est requis",
+  "@fieldRequired": {
+    "description": "Message de validation pour les champs requis",
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "fullTime": "Temps plein",
+  "@fullTime": {
+    "description": "Type d'emploi : Temps plein"
+  },
+  "partTime": "Temps partiel",
+  "@partTime": {
+    "description": "Type d'emploi : Temps partiel"
+  },
+  "contract": "Contrat",
+  "@contract": {
+    "description": "Type d'emploi : Contrat"
+  },
+  "internship": "Stage",
+  "@internship": {
+    "description": "Type d'emploi : Stage"
+  },
+  "freelance": "Freelance",
+  "@freelance": {
+    "description": "Type d'emploi : Freelance"
+  },
+  "entryLevel": "Niveau débutant",
+  "@entryLevel": {
+    "description": "Niveau d'expérience : Niveau débutant"
+  },
+  "midLevel": "Niveau intermédiaire",
+  "@midLevel": {
+    "description": "Niveau d'expérience : Niveau intermédiaire"
+  },
+  "senior": "Senior",
+  "@senior": {
+    "description": "Niveau d'expérience : Senior"
+  },
+  "lead": "Chef d'équipe",
+  "@lead": {
+    "description": "Niveau d'expérience : Chef d'équipe"
+  },
+  "executive": "Exécutif",
+  "@executive": {
+    "description": "Niveau d'expérience : Exécutif"
+  },
+  
+  "createJobOfferTitle": "Créer une Offre d'Emploi",
+  "@createJobOfferTitle": {
+    "description": "Title for create job offer page"
+  },
+  "jobDetails": "Détails du Poste",
+  "@jobDetails": {
+    "description": "Section title for job details"
+  },
+  "jobOfferCreatedSuccess": "Offre d'emploi créée avec succès !",
+  "@jobOfferCreatedSuccess": {
+    "description": "Success message when job offer is created"
+  },
+  "errorCreatingJobOffer": "Erreur lors de la création de l'offre d'emploi : {error}",
+  "@errorCreatingJobOffer": {
+    "description": "Error message when creating job offer fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "creating": "Création...",
+  "@creating": {
+    "description": "Text shown while creating job offer"
+  },
+  "createJobOffer": "Créer une Offre d'Emploi",
+  "@createJobOffer": {
+    "description": "Button text to create job offer"
+  },
+  
+  "aiCandidateAnalysis": "Analyse IA du Candidat",
+  "@aiCandidateAnalysis": {
+    "description": "Title for AI candidate analysis page"
+  },
+  "generateNewFeedback": "Générer un Nouveau Feedback",
+  "@generateNewFeedback": {
+    "description": "Tooltip for refresh button"
+  },
+  "aiAnalysisGeneratedSuccess": "Analyse IA générée avec succès !",
+  "@aiAnalysisGeneratedSuccess": {
+    "description": "Success message for AI analysis generation"
+  },
+  "errorGeneratingAnalysis": "Erreur lors de la génération de l'analyse : {error}",
+  "@errorGeneratingAnalysis": {
+    "description": "Error message for AI analysis generation",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notRated": "Non évalué",
+  "@notRated": {
+    "description": "Text when score is null"
+  },
+  "excellentFit": "Parfait",
+  "@excellentFit": {
+    "description": "Score text for scores >= 80"
+  },
+  "goodFit": "Bon profil",
+  "@goodFit": {
+    "description": "Score text for scores >= 60"
+  },
+  "fairFit": "Profil acceptable",
+  "@fairFit": {
+    "description": "Score text for scores >= 40"
+  },
+  "poorFit": "Profil inadéquat",
+  "@poorFit": {
+    "description": "Score text for scores < 40"
+  },
+  "contactCandidate": "Contacter {name}",
+  "@contactCandidate": {
+    "description": "Contact dialog title",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "candidateContactInfo": "Informations de Contact du Candidat",
+  "@candidateContactInfo": {
+    "description": "Subtitle for contact dialog"
+  },
+  "email": "E-mail",
+  "@email": {
+    "description": "Email label"
+  },
+  "phone": "Téléphone",
+  "@phone": {
+    "description": "Phone label"
+  },
+  "emailCopiedToClipboard": "E-mail copié dans le presse-papiers",
+  "@emailCopiedToClipboard": {
+    "description": "Toast message when email is copied"
+  },
+  "phoneCopiedToClipboard": "Numéro de téléphone copié dans le presse-papiers",
+  "@phoneCopiedToClipboard": {
+    "description": "Toast message when phone is copied"
+  },
+  "noContactInfoAvailable": "Aucune information de contact disponible pour ce candidat.",
+  "@noContactInfoAvailable": {
+    "description": "Message when no contact info is available"
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": "Close button text"
+  },
+  "jobPosition": "Poste de Travail",
+  "@jobPosition": {
+    "description": "Default text when job title is null"
+  },
+  "aiAnalysisDescription": "Analyse complète alimentée par l'IA de l'adéquation du candidat basée sur les compétences, l'expérience et les exigences du poste",
+  "@aiAnalysisDescription": {
+    "description": "Description of AI analysis feature"
+  },
+  "contact": "Contacter",
+  "@contact": {
+    "description": "Short contact button text for mobile"
+  },
+  "contactCandidateFull": "Contacter le Candidat",
+  "@contactCandidateFull": {
+    "description": "Full contact button text for desktop"
+  },
+  "analyzingCandidateProfile": "Analyse du profil du candidat...",
+  "@analyzingCandidateProfile": {
+    "description": "Loading text for AI analysis"
+  },
+  "generating": "Génération...",
+  "@generating": {
+    "description": "Text shown while generating AI analysis"
+  },
+  "regenerateAIAnalysis": "Régénérer l'Analyse IA",
+  "@regenerateAIAnalysis": {
+    "description": "Button text to regenerate AI analysis"
+  },
+  "addOrUpdateExperience": "Ajouter ou Mettre à Jour l'Expérience",
+  "@addOrUpdateExperience": {
+    "description": "AppBar title for employee experience management"
+  },
+  "blockchainAddressError": "Cet utilisateur n'a pas d'adresse Base Blockchain valide.",
+  "@blockchainAddressError": {
+    "description": "Error message when user lacks blockchain address"
+  },
+  "error": "Erreur",
+  "@error": {
+    "description": "Generic error label"
+  },
+  "addOrUpdateExperienceFor": "Ajouter ou Mettre à Jour l'Expérience pour \"{name}\"",
+  "@addOrUpdateExperienceFor": {
+    "description": "Header text for experience management with user name",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The user's name"
+      }
+    }
+  },
+  "createWorkExperience": "▶️ Créer l'Expérience Professionnelle",
+  "@createWorkExperience": {
+    "description": "Button text to create new work experience"
+  },
+  "role": "Rôle",
+  "@role": {
+    "description": "Job role field label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Job description field label"
+  },
+  "startDate": "Date de Début",
+  "@startDate": {
+    "description": "Work experience start date field label"
+  },
+  "walletPassword": "Mot de Passe du Portefeuille",
+  "@walletPassword": {
+    "description": "Blockchain wallet password field label"
+  },
+  "workExperienceCreated": "Expérience professionnelle créée !",
+  "@workExperienceCreated": {
+    "description": "Success message when work experience is created"
+  },
+  "endExperience": "Terminer l'Expérience",
+  "@endExperience": {
+    "description": "Button text to end work experience"
+  },
+  "selectExperienceToEnd": "Sélectionner l'Expérience à Terminer",
+  "@selectExperienceToEnd": {
+    "description": "Dropdown label for selecting experience to end"
+  },
+  "endDate": "Date de Fin",
+  "@endDate": {
+    "description": "Work experience end date field label"
+  },
+  "end": "Terminer",
+  "@end": {
+    "description": "Button text to confirm ending experience"
+  },
+  "experienceEnded": "Expérience terminée !",
+  "@experienceEnded": {
+    "description": "Success message when experience is ended"
+  },
+  "promote": "Promouvoir",
+  "@promote": {
+    "description": "Button text to promote employee"
+  },
+  "selectExperienceToPromote": "Sélectionner l'Expérience à Promouvoir",
+  "@selectExperienceToPromote": {
+    "description": "Dropdown label for selecting experience to promote"
+  },
+  "newTitle": "Nouveau Titre",
+  "@newTitle": {
+    "description": "Field label for new job title in promotion"
+  },
+  "employeePromoted": "Employé promu !",
+  "@employeePromoted": {
+    "description": "Success message when employee is promoted"
+  },
+  "title": "Titre",
+  "@title": {
+    "description": "Default title text for experience items"
+  },
+  "addAnEmployee": "Ajouter un Employé",
+  "@addAnEmployee": {
+    "description": "AppBar title for adding an employee"
+  },
+  "searchUserToAddAsEmployee": "Rechercher un utilisateur à ajouter comme employé",
+  "@searchUserToAddAsEmployee": {
+    "description": "Card title for employee search"
+  },
+  "clickUserToAddToCompany": "Cliquez sur un utilisateur pour l'ajouter à votre entreprise",
+  "@clickUserToAddToCompany": {
+    "description": "Card subtitle instruction for adding employees"
+  },
+  "careerAdvisor": "Conseiller de Carrière",
+  "@careerAdvisor": {
+    "description": "AppBar title for career advice feature"
+  },
+  "restartProcess": "Redémarrer le Processus",
+  "@restartProcess": {
+    "description": "Tooltip for restart button"
+  },
+  "cvCheck": "Vérification CV",
+  "@cvCheck": {
+    "description": "Step title for CV check"
+  },
+  "welcome": "Bienvenue",
+  "@welcome": {
+    "description": "Step title for welcome"
+  },
+  "careerGoals": "Objectifs de Carrière",
+  "@careerGoals": {
+    "description": "Step title for career goals"
+  },
+  "skillsAssessment": "Évaluation des Compétences",
+  "@skillsAssessment": {
+    "description": "Step title for skills assessment"
+  },
+  "industryPreferences": "Préférences d'Industrie",
+  "@industryPreferences": {
+    "description": "Step title for industry preferences"
+  },
+  "yourCareerAdvice": "Vos Conseils de Carrière",
+  "@yourCareerAdvice": {
+    "description": "Step title for career advice results"
+  },
+  "restartCareerAdvisor": "Redémarrer le Conseiller de Carrière",
+  "@restartCareerAdvisor": {
+    "description": "Dialog title for restart confirmation"
+  },
+  "restartConfirmationMessage": "Êtes-vous sûr de vouloir redémarrer le processus ? Tous vos progrès seront perdus.",
+  "@restartConfirmationMessage": {
+    "description": "Dialog content for restart confirmation"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "restart": "Redémarrer",
+  "@restart": {
+    "description": "Restart button text"
+  },
+  "welcomeToAICareerAdvisor": "Bienvenue dans Votre Conseiller de Carrière IA",
+  "@welcomeToAICareerAdvisor": {
+    "description": "Welcome step main title"
+  },
+  "careerJourneyDescription": "Je suis là pour vous aider à naviguer dans votre parcours professionnel. Basé sur votre CV et vos préférences, je fournirai des conseils personnalisés pour vous aider à atteindre vos objectifs professionnels.",
+  "@careerJourneyDescription": {
+    "description": "Career advisor description text"
+  },
+  "whatYoullGet": "Ce que vous obtiendrez :",
+  "@whatYoullGet": {
+    "description": "Benefits section header"
+  },
+  "personalizedCareerRecommendations": "Recommandations de carrière personnalisées",
+  "@personalizedCareerRecommendations": {
+    "description": "First benefit item"
+  },
+  "skillsGapAnalysis": "Analyse des lacunes de compétences et conseils d'amélioration",
+  "@skillsGapAnalysis": {
+    "description": "Second benefit item"
+  },
+  "industryInsights": "Perspectives et tendances de l'industrie",
+  "@industryInsights": {
+    "description": "Third benefit item"
+  },
+  "nextStepsCareerGrowth": "Prochaines étapes pour votre croissance professionnelle",
+  "@nextStepsCareerGrowth": {
+    "description": "Fourth benefit item"
+  },
+  "letsGetStarted": "Commençons !",
+  "@letsGetStarted": {
+    "description": "Welcome step button text"
+  },
+  "checkingCvStatus": "Vérification du statut de votre CV...",
+  "@checkingCvStatus": {
+    "description": "CV check loading message"
+  },
+  "oopsSomethingWentWrong": "Oups ! Quelque chose s'est mal passé",
+  "@oopsSomethingWentWrong": {
+    "description": "CV check error title"
+  },
+  "tryAgain": "Réessayer",
+  "@tryAgain": {
+    "description": "CV check retry button"
+  },
+  "greatCvReady": "Parfait ! Votre CV est prêt",
+  "@greatCvReady": {
+    "description": "CV check success title"
+  },
+  "cvFoundContinueAdvice": "Nous avons trouvé votre CV complet. Continuons avec des conseils de carrière personnalisés.",
+  "@cvFoundContinueAdvice": {
+    "description": "CV check success description"
+  },
+  "completeCvFirst": "Complétez d'abord votre CV",
+  "@completeCvFirst": {
+    "description": "CV incomplete title"
+  },
+  "cvNeededForAdvice": "Pour vous fournir les meilleurs conseils de carrière, nous devons d'abord analyser votre CV. Veuillez compléter votre CV puis revenir au conseiller de carrière.",
+  "@cvNeededForAdvice": {
+    "description": "CV incomplete description"
+  },
+  "completeMyCv": "Compléter mon CV",
+  "@completeMyCv": {
+    "description": "Button to complete CV"
+  },
+  "completedCvCheckAgain": "J'ai complété mon CV - Vérifier à nouveau",
+  "@completedCvCheckAgain": {
+    "description": "Recheck CV button text"
+  },
+  "rateYourSkills": "Évaluez vos Compétences",
+  "@rateYourSkills": {
+    "description": "Skills assessment main title"
+  },
+  "skillsRatingDescription": "Évaluez-vous de 1 (débutant) à 5 (expert) dans chaque catégorie de compétence.",
+  "@skillsRatingDescription": {
+    "description": "Skills assessment description"
+  },
+  "leadershipManagement": "Leadership et Management",
+  "@leadershipManagement": {
+    "description": "Skill category"
+  },
+  "communicationInterpersonal": "Communication et Relationnel",
+  "@communicationInterpersonal": {
+    "description": "Skill category"
+  },
+  "technicalDigital": "Technique et Numérique",
+  "@technicalDigital": {
+    "description": "Skill category"
+  },
+  "problemSolvingAnalytics": "Résolution de Problèmes et Analyse",
+  "@problemSolvingAnalytics": {
+    "description": "Skill category"
+  },
+  "creativityInnovation": "Créativité et Innovation",
+  "@creativityInnovation": {
+    "description": "Skill category"
+  },
+  "projectManagement": "Gestion de Projet",
+  "@projectManagement": {
+    "description": "Skill category"
+  },
+  "salesMarketing": "Ventes et Marketing",
+  "@salesMarketing": {
+    "description": "Skill category"
+  },
+  "financialManagement": "Gestion Financière",
+  "@financialManagement": {
+    "description": "Skill category"
+  },
+  "beginner": "Débutant",
+  "@beginner": {
+    "description": "Skill level label"
+  },
+  "expert": "Expert",
+  "@expert": {
+    "description": "Skill level label"
+  },
+  "back": "Retour",
+  "@back": {
+    "description": "Back button text"
+  },
+  "rateAtLeast3Skills": "Évaluez au moins 3 compétences",
+  "@rateAtLeast3Skills": {
+    "description": "Skills assessment requirement message"
+  },
+  "continueButton": "Continuer",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+  "industryWorkPreferences": "Préférences d'Industrie et de Travail",
+  "@industryWorkPreferences": {
+    "description": "Industry preferences main title"
+  },
+  "selectIndustriesDescription": "Sélectionnez les industries qui vous intéressent et vos préférences de travail.",
+  "@selectIndustriesDescription": {
+    "description": "Industry preferences description"
+  },
+  "industriesOfInterest": "Industries d'Intérêt (Sélectionnez jusqu'à 3)",
+  "@industriesOfInterest": {
+    "description": "Industries section title"
+  },
+  "technologySoftware": "Technologie et Logiciels",
+  "@technologySoftware": {
+    "description": "Industry name"
+  },
+  "healthcareMedicine": "Santé et Médecine",
+  "@healthcareMedicine": {
+    "description": "Industry name"
+  },
+  "financeBanking": "Finance et Banque",
+  "@financeBanking": {
+    "description": "Industry name"
+  },
+  "educationTraining": "Éducation et Formation",
+  "@educationTraining": {
+    "description": "Industry name"
+  },
+  "marketingAdvertising": "Marketing et Publicité",
+  "@marketingAdvertising": {
+    "description": "Industry name"
+  },
+  "consulting": "Conseil",
+  "@consulting": {
+    "description": "Industry name"
+  },
+  "manufacturing": "Fabrication",
+  "@manufacturing": {
+    "description": "Industry name"
+  },
+  "retailEcommerce": "Vente au Détail et E-commerce",
+  "@retailEcommerce": {
+    "description": "Industry name"
+  },
+  "mediaEntertainment": "Médias et Divertissement",
+  "@mediaEntertainment": {
+    "description": "Industry name"
+  },
+  "nonprofitNgo": "Organisation à But Non Lucratif et ONG",
+  "@nonprofitNgo": {
+    "description": "Industry name"
+  },
+  "governmentPublicSector": "Gouvernement et Secteur Public",
+  "@governmentPublicSector": {
+    "description": "Industry name"
+  },
+  "energyEnvironment": "Énergie et Environnement",
+  "@energyEnvironment": {
+    "description": "Industry name"
+  },
+  "workPreferences": "Préférences de Travail",
+  "@workPreferences": {
+    "description": "Work preferences section title"
+  },
+  "workLocation": "Lieu de Travail",
+  "@workLocation": {
+    "description": "Work preference category"
+  },
+  "companySize": "Taille d'Entreprise",
+  "@companySize": {
+    "description": "Work preference category"
+  },
+  "workSchedule": "Horaire de Travail",
+  "@workSchedule": {
+    "description": "Work preference category"
+  },
+  "remote": "À distance",
+  "@remote": {
+    "description": "Work location option"
+  },
+  "hybrid": "Hybride",
+  "@hybrid": {
+    "description": "Work location option"
+  },
+  "onsite": "Sur site",
+  "@onsite": {
+    "description": "Work location option"
+  },
+  "noPreference": "Aucune préférence",
+  "@noPreference": {
+    "description": "Preference option"
+  },
+  "startup1to50": "Startup (1-50)",
+  "@startup1to50": {
+    "description": "Company size option"
+  },
+  "medium51to500": "Moyenne (51-500)",
+  "@medium51to500": {
+    "description": "Company size option"
+  },
+  "large500plus": "Grande (500+)",
+  "@large500plus": {
+    "description": "Company size option"
+  },
+  "fullTime": "Temps plein",
+  "@fullTime": {
+    "description": "Work schedule option"
+  },
+  "partTime": "Temps partiel",
+  "@partTime": {
+    "description": "Work schedule option"
+  },
+  "freelanceContract": "Freelance/Contrat",
+  "@freelanceContract": {
+    "description": "Work schedule option"
+  },
+  "flexible": "Flexible",
+  "@flexible": {
+    "description": "Work schedule option"
+  },
+  "generateAdvice": "Générer des Conseils",
+  "@generateAdvice": {
+    "description": "Generate advice button text"
+  },
+  "whatsYourMainCareerGoal": "Quel est votre objectif principal de carrière ?",
+  "@whatsYourMainCareerGoal": {
+    "description": "Career goals main title"
+  },
+  "selectPrimaryObjective": "Sélectionnez votre objectif principal pour que je puisse adapter les conseils à vos besoins.",
+  "@selectPrimaryObjective": {
+    "description": "Career goals description"
+  },
+  "getPromotedCurrentRole": "Obtenir une promotion dans mon poste actuel",
+  "@getPromotedCurrentRole": {
+    "description": "Career goal option"
+  },
+  "switchToNewIndustry": "Changer vers une nouvelle industrie",
+  "@switchToNewIndustry": {
+    "description": "Career goal option"
+  },
+  "findBetterWorkLifeBalance": "Trouver un meilleur équilibre travail-vie",
+  "@findBetterWorkLifeBalance": {
+    "description": "Career goal option"
+  },
+  "increaseSalarySignificantly": "Augmenter significativement le salaire",
+  "@increaseSalarySignificantly": {
+    "description": "Career goal option"
+  },
+  "developNewSkills": "Développer de nouvelles compétences",
+  "@developNewSkills": {
+    "description": "Career goal option"
+  },
+  "startMyOwnBusiness": "Créer ma propre entreprise",
+  "@startMyOwnBusiness": {
+    "description": "Career goal option"
+  },
+  "findRemoteWorkOpportunities": "Trouver des opportunités de travail à distance",
+  "@findRemoteWorkOpportunities": {
+    "description": "Career goal option"
+  },
+  "other": "Autre",
+  "@other": {
+    "description": "Other option"
+  },
+  "describeYourCareerGoal": "Décrivez votre objectif de carrière",
+  "@describeYourCareerGoal": {
+    "description": "Custom goal section title"
+  },
+  "careerGoalHintText": "ex., Transition vers la gestion de produits, devenir data scientist, créer un cabinet de conseil...",
+  "@careerGoalHintText": {
+    "description": "Career goal input hint text"
+  },
+  "beSpecificCareerGoal": "Soyez précis sur ce que vous voulez accomplir dans votre carrière.",
+  "@beSpecificCareerGoal": {
+    "description": "Career goal helper text"
+  },
+  "enterYourGoalAbove": "Entrez votre objectif ci-dessus",
+  "@enterYourGoalAbove": {
+    "description": "Disabled continue button text"
+  },
+  "analyzingYourProfile": "Analyse de Votre Profil...",
+  "@analyzingYourProfile": {
+    "description": "Titre de l'écran de chargement"
+  },
+  "aiCraftingAdvice": "Notre IA élabore des conseils de carrière personnalisés basés sur vos réponses et l'analyse de votre CV.",
+  "@aiCraftingAdvice": {
+    "description": "Description de l'écran de chargement"
+  },
+  "thisMayTakeMoments": "Cela peut prendre quelques instants...",
+  "@thisMayTakeMoments": {
+    "description": "Message d'attente de l'écran de chargement"
+  },
+  "connectionIssue": "Problème de Connexion",
+  "@connectionIssue": {
+    "description": "Titre de l'écran d'erreur"
+  },
+  "backupSystemAdvice": "Nous n'avons pas pu nous connecter à notre service IA, mais nous avons généré des conseils basés sur vos réponses en utilisant notre système de secours.",
+  "@backupSystemAdvice": {
+    "description": "Description de l'écran d'erreur"
+  },
+  "tryAgain": "Réessayer",
+  "@tryAgain": {
+    "description": "Texte du bouton réessayer"
+  },
+  "noAdviceAvailable": "Aucun Conseil Disponible",
+  "@noAdviceAvailable": {
+    "description": "Titre d'erreur sans conseils"
+  },
+  "noAdviceGenerated": "Nous n'avons pas pu générer de conseils de carrière pour le moment. Veuillez réessayer plus tard.",
+  "@noAdviceGenerated": {
+    "description": "Description d'erreur sans conseils"
+  },
+  "personalizedCareerAdvice": "Vos Conseils de Carrière Personnalisés",
+  "@personalizedCareerAdvice": {
+    "description": "Titre principal de l'en-tête des résultats"
+  },
+  "generatedWithBackup": "Généré avec le système de secours",
+  "@generatedWithBackup": {
+    "description": "Sous-titre du système de secours"
+  },
+  "aiGeneratedInsights": "Insights générés par IA basés sur votre profil",
+  "@aiGeneratedInsights": {
+    "description": "Sous-titre généré par IA"
+  },
+  "backupSystemNote": "Note : Ce conseil a été généré en utilisant notre système de secours en raison de problèmes de connectivité.",
+  "@backupSystemNote": {
+    "description": "Note d'avertissement du système de secours"
+  },
+  "careerSummary": "Résumé de Carrière",
+  "@careerSummary": {
+    "description": "Titre de la section résumé de carrière"
+  },
+  "keyRecommendations": "Recommandations Clés",
+  "@keyRecommendations": {
+    "description": "Titre de la section recommandations"
+  },
+  "skillDevelopment": "Développement des Compétences",
+  "@skillDevelopment": {
+    "description": "Titre de la section développement des compétences"
+  },
+  "nextSteps": "Prochaines Étapes",
+  "@nextSteps": {
+    "description": "Titre de la section prochaines étapes"
+  },
+  "recommendedResources": "Ressources Recommandées",
+  "@recommendedResources": {
+    "description": "Titre de la section ressources"
+  },
+  "noItemsAvailable": "Aucun élément disponible",
+  "@noItemsAvailable": {
+    "description": "Message de liste vide"
+  },
+  "noResourcesAvailable": "Aucune ressource disponible",
+  "@noResourcesAvailable": {
+    "description": "Message de ressources vides"
+  },
+  "untitledResource": "Ressource Sans Titre",
+  "@untitledResource": {
+    "description": "Titre de ressource par défaut"
+  },
+  "urlCopiedToClipboard": "URL copiée dans le presse-papiers !",
+  "@urlCopiedToClipboard": {
+    "description": "Message de succès de copie d'URL"
+  },
+  "updateMyCv": "Mettre à Jour Mon CV",
+  "@updateMyCv": {
+    "description": "Texte du bouton mettre à jour CV"
+  },
+  "getNewAdvice": "Obtenir de Nouveaux Conseils",
+  "@getNewAdvice": {
+    "description": "Texte du bouton obtenir de nouveaux conseils"
+  },
+  "browseJobOpportunities": "Parcourir les Opportunités d'Emploi",
+  "@browseJobOpportunities": {
+    "description": "Texte du lien parcourir les emplois"
+  }
+}
