@@ -17,6 +17,7 @@ class User {
   bool? isVerified;
   bool? isFirstConfigurationDone;
   bool? receiveWeeklyRecommendationEmails;
+  String? language;
 
   User({
     this.id,

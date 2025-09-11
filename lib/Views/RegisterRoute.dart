@@ -19,19 +19,27 @@ class _RegisterRouteState extends State<RegisterRoute> {
   bool _agreeToTerms = false;
 
   final IUserBLL _userBll = UserBll();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmationController =
       TextEditingController();
+  final FocusNode _firstNameFocusNode = FocusNode();
+  final FocusNode _lastNameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _passwordConfirmationFocusNode = FocusNode();
 
   @override
   void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _passwordConfirmationController.dispose();
+    _firstNameFocusNode.dispose();
+    _lastNameFocusNode.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     _passwordConfirmationFocusNode.dispose();
@@ -118,11 +126,13 @@ class _RegisterRouteState extends State<RegisterRoute> {
   }
 
   Future<void> _handleRegister() async {
+    final firstName = _firstNameController.text.trim();
+    final lastName = _lastNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _passwordConfirmationController.text;
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.pleaseFillAllFields)),
       );
@@ -158,8 +168,11 @@ class _RegisterRouteState extends State<RegisterRoute> {
 
     try {
       var user = User();
+      user.firstName = firstName;
+      user.lastName = lastName;
       user.email = email;
       user.password = password;
+      user.language = Localizations.localeOf(context).languageCode;
 
       user = await _userBll.createUser(user);
       Navigator.pushReplacementNamed(
@@ -219,6 +232,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
             ),
             child: _RegisterForm(
               isMobile: true,
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
+              firstNameFocusNode: _firstNameFocusNode,
+              lastNameFocusNode: _lastNameFocusNode,
               emailFocusNode: _emailFocusNode,
               passwordFocusNode: _passwordFocusNode,
               passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
@@ -272,6 +289,10 @@ class _RegisterRouteState extends State<RegisterRoute> {
                 constraints: BoxConstraints(maxWidth: isTablet ? 400 : 420),
                 child: _RegisterForm(
                   isMobile: false,
+                  firstNameController: _firstNameController,
+                  lastNameController: _lastNameController,
+                  firstNameFocusNode: _firstNameFocusNode,
+                  lastNameFocusNode: _lastNameFocusNode,
                   emailFocusNode: _emailFocusNode,
                   passwordFocusNode: _passwordFocusNode,
                   passwordConfirmationFocusNode: _passwordConfirmationFocusNode,
@@ -331,10 +352,14 @@ class _RegisterForm extends StatelessWidget {
   final bool obscureConfirmPassword;
   final VoidCallback onTogglePassword;
   final VoidCallback onToggleConfirmPassword;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController passwordConfirmationController;
   final VoidCallback onRegisterPressed;
+  final FocusNode firstNameFocusNode;
+  final FocusNode lastNameFocusNode;
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
   final FocusNode passwordConfirmationFocusNode;
@@ -349,10 +374,14 @@ class _RegisterForm extends StatelessWidget {
     required this.obscureConfirmPassword,
     required this.onTogglePassword,
     required this.onToggleConfirmPassword,
+    required this.firstNameController,
+    required this.lastNameController,
     required this.emailController,
     required this.passwordController,
     required this.passwordConfirmationController,
     required this.onRegisterPressed,
+    required this.firstNameFocusNode,
+    required this.lastNameFocusNode,
     required this.emailFocusNode,
     required this.passwordFocusNode,
     required this.passwordConfirmationFocusNode,
@@ -388,6 +417,48 @@ class _RegisterForm extends StatelessWidget {
             style: subtitleStyle,
             textAlign: isMobile ? TextAlign.center : TextAlign.left),
         const SizedBox(height: 32),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: firstNameController,
+                focusNode: firstNameFocusNode,
+                keyboardType: TextInputType.name,
+                onSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(lastNameFocusNode),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.firstName,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextField(
+                controller: lastNameController,
+                focusNode: lastNameFocusNode,
+                keyboardType: TextInputType.name,
+                onSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(emailFocusNode),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.lastName,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFF7B3FE4), width: 2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
         TextField(
           controller: emailController,
           focusNode: emailFocusNode,

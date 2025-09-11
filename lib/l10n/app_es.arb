@@ -3567,7 +3567,7 @@
   "@errorExtractingCVData": {
     "description": "Prefijo del mensaje de error para fallo en extracción de datos"
   },
-  "welcomeToSolidCV": "🎉 ¡Bienvenido a SolidCV!",
+  "welcomeToSolidCV": "¡Bienvenido a SolidCV!",
   "@welcomeToSolidCV": {
     "description": "Título de bienvenida después de completar la configuración de cuenta"
   },

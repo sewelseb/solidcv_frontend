@@ -31,6 +31,9 @@ class UserService extends IUserService {
       body: jsonEncode(<String, String?>{
         'email': user.email,
         'password': user.password,
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'language': user.language
       }),
     );
 
