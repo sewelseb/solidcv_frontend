@@ -320,7 +320,7 @@
   "@emailNotifications": {
     "description": "Paramètre de notifications par e-mail"
   },
-  "weeklyRecommendations": "Recommandations Hebdomadaires",
+  "weeklyRecommendations": "Cette semaine",
   "@weeklyRecommendations": {
     "description": "Fonctionnalité de recommandations hebdomadaires"
   },
@@ -3578,7 +3578,7 @@
   "@errorExtractingCVData": {
     "description": "Préfixe du message d'erreur pour l'échec de l'extraction des données"
   },
-  "welcomeToSolidCV": "🎉 Bienvenue sur SolidCV !",
+  "welcomeToSolidCV": "Bienvenue sur SolidCV !",
   "@welcomeToSolidCV": {
     "description": "Titre de bienvenue après la completion de la configuration du compte"
   },

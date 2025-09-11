@@ -3578,7 +3578,7 @@
   "@errorExtractingCVData": {
     "description": "Error message prefix for data extraction failure"
   },
-  "welcomeToSolidCV": "🎉 Welcome to SolidCV!",
+  "welcomeToSolidCV": "Welcome to SolidCV!",
   "@welcomeToSolidCV": {
     "description": "Welcome title after account setup completion"
   },

@@ -1838,22 +1838,6 @@ class _LoggedInHomeState extends State<LoggedInHome> {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _accentColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    'NEW',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 12),
