@@ -77,6 +77,8 @@ class BackenConnection {
 
   String get updateUser => '/api/protected/update-user/';
 
+  String get updateUserLanguageApi => '/api/protected/update-user-language';
+
   String get getCompanyByEthereumAddress => '/api/protected/get-company-by-ethereum-address/';
 
   String get getEducationInstitutionByEthereumAddress => '/api/protected/get-education-institution-by-ethereum-address/';

@@ -57,7 +57,7 @@ class User {
       isFirstConfigurationDone: json['firstConfigurationDone'],
       receiveWeeklyRecommendationEmails:
           json['recieveWeeklyRecommandationEmails'],
-    );
+    )..language = json['language'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +78,7 @@ class User {
       'isVerified': isVerified,
       'firstConfigurationDone': isFirstConfigurationDone,
       'receiveWeeklyRecommendationEmails': receiveWeeklyRecommendationEmails,
+      'language': language,
     };
   }
 

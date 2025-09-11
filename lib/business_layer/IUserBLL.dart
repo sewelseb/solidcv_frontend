@@ -69,4 +69,5 @@ abstract class IUserBLL {
 
   Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData);
 
+  Future<void> updateLanguagePreference(String language);
 }

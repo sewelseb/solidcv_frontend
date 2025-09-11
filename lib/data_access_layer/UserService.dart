@@ -736,4 +736,22 @@ class UserService extends IUserService {
     }
   }
 
+  @override
+  Future<void> updateLanguagePreference(String language) async {
+    final response = await http.patch(
+      Uri.parse(BackenConnection().url + BackenConnection().updateUserLanguageApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'language': language,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update language preference');
+    }
+  }
+
 }

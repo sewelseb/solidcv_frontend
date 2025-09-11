@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
 
-class LanguageSelector extends StatelessWidget {
+class LanguageSelector extends StatefulWidget {
   final Function(Locale) onLanguageChanged;
   final Locale? currentLocale;
 
@@ -12,13 +15,38 @@ class LanguageSelector extends StatelessWidget {
   });
 
   @override
+  State<LanguageSelector> createState() => _LanguageSelectorState();
+}
+
+class _LanguageSelectorState extends State<LanguageSelector> {
+  final IUserBLL _userBll = UserBll();
+
+  Future<void> _handleLanguageChange(Locale locale) async {
+    // Update language locally first
+    widget.onLanguageChanged(locale);
+    
+    // Check if user is authenticated and update preference on backend
+    try {
+      final token = await APIConnectionHelper.getJwtToken();
+      if (token.isNotEmpty) {
+        // User is authenticated, update language preference on backend
+        await _userBll.updateLanguagePreference(locale.languageCode);
+      }
+    } catch (e) {
+      // If backend call fails, we still want the local language change to work
+      // The user will see a different UI language even if their preference isn't saved
+      debugPrint('Failed to update language preference on backend: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     
     return PopupMenuButton<Locale>(
       icon: const Icon(Icons.language),
       tooltip: localizations.changeLanguage,
-      onSelected: onLanguageChanged,
+      onSelected: _handleLanguageChange,
       itemBuilder: (BuildContext context) => [
         PopupMenuItem<Locale>(
           value: const Locale('en', ''),
@@ -27,7 +55,7 @@ class LanguageSelector extends StatelessWidget {
               const Text('🇺🇸'),
               const SizedBox(width: 8),
               Text(localizations.english),
-              if (currentLocale?.languageCode == 'en')
+              if (widget.currentLocale?.languageCode == 'en')
                 const Icon(Icons.check, color: Colors.green),
             ],
           ),
@@ -39,7 +67,7 @@ class LanguageSelector extends StatelessWidget {
               const Text('🇪🇸'),
               const SizedBox(width: 8),
               Text(localizations.spanish),
-              if (currentLocale?.languageCode == 'es')
+              if (widget.currentLocale?.languageCode == 'es')
                 const Icon(Icons.check, color: Colors.green),
             ],
           ),
@@ -51,7 +79,7 @@ class LanguageSelector extends StatelessWidget {
               const Text('🇫🇷'),
               const SizedBox(width: 8),
               Text(localizations.french),
-              if (currentLocale?.languageCode == 'fr')
+              if (widget.currentLocale?.languageCode == 'fr')
                 const Icon(Icons.check, color: Colors.green),
             ],
           ),
@@ -61,7 +89,7 @@ class LanguageSelector extends StatelessWidget {
   }
 }
 
-class LanguageSelectorButton extends StatelessWidget {
+class LanguageSelectorButton extends StatefulWidget {
   final Function(Locale) onLanguageChanged;
   final Locale? currentLocale;
 
@@ -70,6 +98,30 @@ class LanguageSelectorButton extends StatelessWidget {
     required this.onLanguageChanged,
     this.currentLocale,
   });
+
+  @override
+  State<LanguageSelectorButton> createState() => _LanguageSelectorButtonState();
+}
+
+class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
+  final IUserBLL _userBll = UserBll();
+
+  Future<void> _handleLanguageChange(Locale locale) async {
+    // Update language locally first
+    widget.onLanguageChanged(locale);
+    
+    // Check if user is authenticated and update preference on backend
+    try {
+      final token = await APIConnectionHelper.getJwtToken();
+      if (token.isNotEmpty) {
+        // User is authenticated, update language preference on backend
+        await _userBll.updateLanguagePreference(locale.languageCode);
+      }
+    } catch (e) {
+      // If backend call fails, we still want the local language change to work
+      debugPrint('Failed to update language preference on backend: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,33 +148,33 @@ class LanguageSelectorButton extends StatelessWidget {
               ListTile(
                 leading: const Text('🇺🇸'),
                 title: Text(localizations.english),
-                trailing: currentLocale?.languageCode == 'en'
+                trailing: widget.currentLocale?.languageCode == 'en'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
                 onTap: () {
-                  onLanguageChanged(const Locale('en', ''));
+                  _handleLanguageChange(const Locale('en', ''));
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 leading: const Text('🇪🇸'),
                 title: Text(localizations.spanish),
-                trailing: currentLocale?.languageCode == 'es'
+                trailing: widget.currentLocale?.languageCode == 'es'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
                 onTap: () {
-                  onLanguageChanged(const Locale('es', ''));
+                  _handleLanguageChange(const Locale('es', ''));
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 leading: const Text('🇫🇷'),
                 title: Text(localizations.french),
-                trailing: currentLocale?.languageCode == 'fr'
+                trailing: widget.currentLocale?.languageCode == 'fr'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
                 onTap: () {
-                  onLanguageChanged(const Locale('fr', ''));
+                  _handleLanguageChange(const Locale('fr', ''));
                   Navigator.of(context).pop();
                 },
               ),

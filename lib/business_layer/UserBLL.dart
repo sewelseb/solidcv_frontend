@@ -189,5 +189,9 @@ class UserBll extends IUserBLL {
     return _userService.getCareerAdvice(requestData);
   }
   
+  @override
+  Future<void> updateLanguagePreference(String language) {
+    return _userService.updateLanguagePreference(language);
+  }
   
 }
