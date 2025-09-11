@@ -161,6 +161,39 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
     }
   }
 
+  Future<void> _handleLanguageChange(Locale locale) async {
+    final languageProvider = LanguageProvider();
+    
+    // Update language locally first
+    languageProvider.setLocale(locale);
+    
+    // Send language preference to backend
+    try {
+      await _userBll.updateLanguagePreference(locale.languageCode);
+      if (!mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.editProfileLanguageUpdated),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      
+      // Show error but don't revert local change
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.editProfileLanguageError),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      debugPrint('Failed to update language preference on backend: $e');
+    }
+    
+    setState(() {}); // Refresh to show new language
+  }
+
   void _showLanguageSelectionDialog(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final languageProvider = LanguageProvider();
@@ -180,10 +213,9 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                 trailing: currentLocale.languageCode == 'en'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
-                onTap: () {
-                  languageProvider.setLocale(const Locale('en', ''));
+                onTap: () async {
                   Navigator.of(context).pop();
-                  setState(() {}); // Refresh to show new language
+                  await _handleLanguageChange(const Locale('en', ''));
                 },
               ),
               ListTile(
@@ -192,10 +224,9 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                 trailing: currentLocale.languageCode == 'es'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
-                onTap: () {
-                  languageProvider.setLocale(const Locale('es', ''));
+                onTap: () async {
                   Navigator.of(context).pop();
-                  setState(() {}); // Refresh to show new language
+                  await _handleLanguageChange(const Locale('es', ''));
                 },
               ),
               ListTile(
@@ -204,10 +235,9 @@ class _EditProfileRouteState extends State<EditProfileRoute> {
                 trailing: currentLocale.languageCode == 'fr'
                     ? const Icon(Icons.check, color: Colors.green)
                     : null,
-                onTap: () {
-                  languageProvider.setLocale(const Locale('fr', ''));
+                onTap: () async {
                   Navigator.of(context).pop();
-                  setState(() {}); // Refresh to show new language
+                  await _handleLanguageChange(const Locale('fr', ''));
                 },
               ),
             ],

@@ -280,6 +280,14 @@
   "@french": {
     "description": "Option de langue français"
   },
+  "editProfileLanguageUpdated": "Préférence de langue du profil mise à jour avec succès",
+  "@editProfileLanguageUpdated": {
+    "description": "Message de succès lorsque la préférence de langue est mise à jour dans le profil"
+  },
+  "editProfileLanguageError": "Échec de la mise à jour de la préférence de langue",
+  "@editProfileLanguageError": {
+    "description": "Message d'erreur lorsque la mise à jour de la préférence de langue échoue dans le profil"
+  },
   "settings": "Paramètres",
   "@settings": {
     "description": "Page de paramètres"

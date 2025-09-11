@@ -280,6 +280,14 @@
   "@french": {
     "description": "Opción de idioma francés"
   },
+  "editProfileLanguageUpdated": "Preferencia de idioma del perfil actualizada exitosamente",
+  "@editProfileLanguageUpdated": {
+    "description": "Mensaje de éxito cuando se actualiza la preferencia de idioma en el perfil"
+  },
+  "editProfileLanguageError": "Error al actualizar la preferencia de idioma",
+  "@editProfileLanguageError": {
+    "description": "Mensaje de error cuando falla la actualización de preferencia de idioma en el perfil"
+  },
   "settings": "Configuración",
   "@settings": {
     "description": "Página de configuración"
