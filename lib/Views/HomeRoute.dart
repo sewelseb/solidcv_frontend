@@ -1570,7 +1570,7 @@ class _ContactForm extends StatelessWidget {
         ),
         SizedBox(height: isMobile ? 12 : 16),
         Text(
-          "sebastien.debeauffort@outlook.com",
+          "sebastien@solidcv.com",
           style: TextStyle(
             fontSize: isMobile ? 16 : 18,
             color: Colors.black54,

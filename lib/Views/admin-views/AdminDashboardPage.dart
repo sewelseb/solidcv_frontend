@@ -48,6 +48,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                   _buildStatCard("🏢 Companies", stats.companies),
                   _buildStatCard("🎓 Institutions", stats.institutions),
                   _buildStatCard("💼 Job Offers", stats.jobOffers),
+                  _buildStatCard("📚 Courses Followed", stats.courseFollowed),
+                  _buildStatCard("❓ Answered Questions", stats.answeredQuestions),
                 ];
                 return isWide
                     ? GridView.count(
