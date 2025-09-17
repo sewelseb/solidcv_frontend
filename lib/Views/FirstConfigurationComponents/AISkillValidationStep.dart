@@ -14,6 +14,22 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Custom TextInputFormatter to prevent paste operations
+class _NoPasteFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // If the new text length is significantly larger than old + 1,
+    // it's likely a paste operation
+    if (newValue.text.length > oldValue.text.length + 1) {
+      return oldValue; // Reject the paste
+    }
+    return newValue;
+  }
+}
+
 class AISkillValidationStep extends StatefulWidget {
   final List<Map<String, dynamic>> skills;
   final Function(List<Map<String, dynamic>>) onComplete;
@@ -665,6 +681,35 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
               ),
             ),
           
+          // Information message about no pasting
+          if (_currentQuestion != null) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.blue.shade600, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      localizations.noPasteAllowed,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.blue.shade700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+          
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -696,6 +741,9 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                 child: CallbackShortcuts(
                   bindings: <ShortcutActivator, VoidCallback>{
                     const SingleActivator(LogicalKeyboardKey.enter, control: true): _submitAnswer,
+                    // Disable paste shortcuts
+                    const SingleActivator(LogicalKeyboardKey.keyV, control: true): () {}, // Disable Ctrl+V
+                    const SingleActivator(LogicalKeyboardKey.keyV, meta: true): () {}, // Disable Cmd+V on Mac
                   },
                   child: Container(
                     constraints: const BoxConstraints(maxHeight: 120),
@@ -705,6 +753,9 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                       minLines: 1,
                       keyboardType: TextInputType.multiline,
                       textInputAction: TextInputAction.newline,
+                      inputFormatters: [
+                        _NoPasteFormatter(), // Prevent paste operations
+                      ],
                       decoration: InputDecoration(
                         hintText: _getInputHintText(),
                         border: OutlineInputBorder(
@@ -717,6 +768,10 @@ class _AISkillValidationStepState extends State<AISkillValidationStep>
                         ),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                       ),
+                      // Disable context menu (copy/paste menu)
+                      contextMenuBuilder: (context, editableTextState) {
+                        return const SizedBox.shrink(); // Return empty widget to hide context menu
+                      },
                       onSubmitted: (_) {
                         // Only submit on Ctrl+Enter, not just Enter
                       },

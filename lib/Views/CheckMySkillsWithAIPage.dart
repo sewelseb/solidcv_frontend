@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/Views/widgets/UserPageWidgets/DesktopView/DesignWidget/FeedbackDialog.dart';
@@ -8,6 +9,22 @@ import 'package:solid_cv/business_layer/SkillBll.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/Question.dart';
 import 'package:solid_cv/models/Skill.dart';
+
+// Custom TextInputFormatter to prevent paste operations
+class _NoPasteFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // If the new text length is significantly larger than old + 1,
+    // it's likely a paste operation
+    if (newValue.text.length > oldValue.text.length + 1) {
+      return oldValue; // Reject the paste
+    }
+    return newValue;
+  }
+}
 
 class CheckMySkillsWithAIPage extends StatefulWidget {
   final String id;
@@ -166,20 +183,64 @@ class _CheckMySkillsWithAIPageState extends State<CheckMySkillsWithAIPage> {
           ),
           if (hasTestStarted) ...[
             const Divider(height: 1),
+            
+            // Information message about no pasting
+            if (_currentQuestion != null) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.blue.shade200),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.blue.shade600, size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.noPasteAllowed,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.blue.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 12),
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: userMessageController,
-                      focusNode: _userMessageFocusNode,
-                      onSubmitted: (_) => _handleSend(skill),
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.typeYourMessage,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    child: Shortcuts(
+                      shortcuts: <LogicalKeySet, Intent>{
+                        LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyV): const DoNothingIntent(),
+                        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyV): const DoNothingIntent(),
+                      },
+                      child: TextField(
+                        controller: userMessageController,
+                        focusNode: _userMessageFocusNode,
+                        onSubmitted: (_) => _handleSend(skill),
+                        inputFormatters: [
+                          _NoPasteFormatter(), // Prevent paste operations
+                        ],
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.typeYourMessage,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
+                        // Disable context menu (copy/paste menu)
+                        contextMenuBuilder: (context, editableTextState) {
+                          return const SizedBox.shrink(); // Return empty widget to hide context menu
+                        },
                       ),
                     ),
                   ),

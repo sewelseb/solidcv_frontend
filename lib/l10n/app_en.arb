@@ -5042,5 +5042,9 @@
   "browseJobOpportunities": "Browse Job Opportunities",
   "@browseJobOpportunities": {
     "description": "Browse jobs link text"
+  },
+  "noPasteAllowed": "Please type your answer manually. Copy/paste is disabled to ensure authentic responses.",
+  "@noPasteAllowed": {
+    "description": "Message informing users that pasting is disabled in skill validation"
   }
 }

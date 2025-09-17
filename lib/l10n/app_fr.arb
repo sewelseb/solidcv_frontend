@@ -5042,5 +5042,9 @@
   "browseJobOpportunities": "Parcourir les Opportunités d'Emploi",
   "@browseJobOpportunities": {
     "description": "Texte du lien parcourir les emplois"
+  },
+  "noPasteAllowed": "Veuillez taper votre réponse manuellement. Le copier/coller est désactivé pour garantir des réponses authentiques.",
+  "@noPasteAllowed": {
+    "description": "Message informant les utilisateurs que le collage est désactivé dans la validation des compétences"
   }
 }

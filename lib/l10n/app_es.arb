@@ -5031,5 +5031,9 @@
   "browseJobOpportunities": "Explorar Oportunidades Laborales",
   "@browseJobOpportunities": {
     "description": "Texto del enlace explorar trabajos"
+  },
+  "noPasteAllowed": "Por favor escribe tu respuesta manualmente. Copiar/pegar está deshabilitado para asegurar respuestas auténticas.",
+  "@noPasteAllowed": {
+    "description": "Mensaje informando a los usuarios que pegar está deshabilitado en la validación de habilidades"
   }
 }
