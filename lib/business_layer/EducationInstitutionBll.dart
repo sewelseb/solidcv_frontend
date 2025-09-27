@@ -10,6 +10,7 @@ import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/models/BulkCertificateData.dart';
 
 class EducationInstitutionBll extends IEducationInstitutionBll {
   final IEducationInstitutionService _educationInstitutionService =
@@ -91,5 +92,10 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
   @override
   Future<bool> unverifyEducationInstitution(int institutionId) {
     return _educationInstitutionService.unverifyEducationInstitution(institutionId);
+  }
+  
+  @override
+  Future<BulkCertificateResponse> createBulkCertificates(int institutionId, List<BulkCertificateData> certificates) {
+    return _educationInstitutionService.createBulkCertificates(institutionId, certificates);
   }
 }

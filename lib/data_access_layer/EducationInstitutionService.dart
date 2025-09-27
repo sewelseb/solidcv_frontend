@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
+import 'package:solid_cv/models/BulkCertificateData.dart';
 
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
@@ -218,6 +219,28 @@ void addEducationInstitution(EducationInstitution educationInstitution, Uint8Lis
       return true;
     } else {
       throw Exception('Failed to unverify education institution');
+    }
+  }
+  
+  @override
+  Future<BulkCertificateResponse> createBulkCertificates(int institutionId, List<BulkCertificateData> certificates) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + '/api/institutions/$institutionId/bulk-certificates'),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'institutionId': institutionId,
+        'certificates': certificates.map((cert) => cert.toJson()).toList(),
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      return BulkCertificateResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to create bulk certificates: ${response.body}');
     }
   }
 }

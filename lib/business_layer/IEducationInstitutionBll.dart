@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/models/BulkCertificateData.dart';
 
 abstract class IEducationInstitutionBll {
   Future<List<EducationInstitution>> getMyEducationInstitutions();
@@ -26,4 +27,6 @@ abstract class IEducationInstitutionBll {
   Future<bool> verifyEducationInstitution(int institutionId);
   
   Future<bool> unverifyEducationInstitution(int institutionId);
+  
+  Future<BulkCertificateResponse> createBulkCertificates(int institutionId, List<BulkCertificateData> certificates);
 }
