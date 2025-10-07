@@ -396,7 +396,7 @@ class _MyEducationInstitutionAdministrationState
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
-                                title: AppLocalizations.of(context)!.companyAdministrators,
+                                title: AppLocalizations.of(context)!.educationInstitutionAdministrators,
                                 icon: Icons.admin_panel_settings,
                                 content: Column(
                                   children: [

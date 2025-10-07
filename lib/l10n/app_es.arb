@@ -1362,6 +1362,10 @@
   "@manageJobOffers": {
     "description": "Texto del botón para gestionar ofertas de trabajo"
   },
+  "educationInstitutionAdministrators": "Administradores de Institución Educativa ",
+  "@educationInstitutionAdministrators": {
+    "description": "Section title for company administrators"
+  },
   "companyAdministrators": "Administradores de la Empresa",
   "@companyAdministrators": {
     "description": "Título de sección para administradores de empresa"

@@ -1362,6 +1362,10 @@
   "@manageJobOffers": {
     "description": "Button text to manage job offers"
   },
+  "educationInstitutionAdministrators": "Education Institution Administrators",
+  "@educationInstitutionAdministrators": {
+    "description": "Section title for company administrators"
+  },
   "companyAdministrators": "Company Administrators",
   "@companyAdministrators": {
     "description": "Section title for company administrators"
