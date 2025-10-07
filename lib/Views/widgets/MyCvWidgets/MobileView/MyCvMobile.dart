@@ -25,13 +25,16 @@ class MyCvMobile extends StatefulWidget {
   State<MyCvMobile> createState() => _MyCvMobileState();
 }
 
-class _MyCvMobileState extends State<MyCvMobile> {
+class _MyCvMobileState extends State<MyCvMobile>
+    with SingleTickerProviderStateMixin {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
   late Future<User> _userFuture;
   final ValueNotifier<bool> _isBioExpanded = ValueNotifier(false);
   final ValueNotifier<bool> _isDownloadingCv = ValueNotifier(false);
   late final ICompanyBll _company = CompanyBll();
+
+  late final TabController _tabController;
 
   final ValueNotifier<int> _refreshTrigger = ValueNotifier(0);
   List<UnifiedExperienceViewModel>? _cachedExperiences;
@@ -43,6 +46,10 @@ class _MyCvMobileState extends State<MyCvMobile> {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
     _userFuture = _userBLL.getCurrentUser();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) setState(() {});
+    });
   }
 
   void _refreshExperiences() {
@@ -56,6 +63,7 @@ class _MyCvMobileState extends State<MyCvMobile> {
     _refreshTrigger.dispose();
     _isBioExpanded.dispose();
     _isDownloadingCv.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -169,54 +177,52 @@ class _MyCvMobileState extends State<MyCvMobile> {
                             fontSize: 14, color: Colors.white70),
                       ),
                       const SizedBox(height: 12),
-                      // Updated button section with row layout
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // First Configuration button
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/user/first-configuration');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white.withOpacity(0.15),
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/user/first-configuration');
+                            },
+                            child: Tooltip(
+                              message: AppLocalizations.of(context)!.setup,
+                              child: Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                                 ),
+                                child: const Icon(Icons.settings_outlined, color: Colors.white, size: 22),
                               ),
-                              icon: const Icon(Icons.settings_outlined, size: 18),
-                              label: Text(AppLocalizations.of(context)!.setup, style: const TextStyle(fontSize: 13)),
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          // Edit Profile button
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: () async {
-                                final updated = await Navigator.pushNamed(
-                                  context,
-                                  '/user/edit-profile',
-                                  arguments: user,
-                                );
-                                if (updated == true) {
-                                  setState(() {
-                                    _userFuture = _userBLL.getCurrentUser();
-                                  });
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                elevation: 1,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                          const SizedBox(width: 12),
+                          GestureDetector(
+                            onTap: () async {
+                              final updated = await Navigator.pushNamed(
+                                context,
+                                '/user/edit-profile',
+                                arguments: user,
+                              );
+                              if (updated == true) {
+                                setState(() {
+                                  _userFuture = _userBLL.getCurrentUser();
+                                });
+                              }
+                            },
+                            child: Tooltip(
+                              message: AppLocalizations.of(context)!.edit,
+                              child: Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
+                                child: const Icon(Icons.edit_outlined, color: Colors.black87, size: 22),
                               ),
-                              icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: Text(AppLocalizations.of(context)!.edit, style: const TextStyle(fontSize: 13)),
                             ),
                           ),
                         ],
@@ -234,7 +240,6 @@ class _MyCvMobileState extends State<MyCvMobile> {
                           text: user.biography ?? "",
                           expandable: true),
                       const SizedBox(height: 12),
-                      // Download CV button - full width
                       SizedBox(
                         width: double.infinity,
                         child: ValueListenableBuilder<bool>(
@@ -290,16 +295,41 @@ class _MyCvMobileState extends State<MyCvMobile> {
                     ],
                   ),
                 ),
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      padding: EdgeInsets.zero,
+                      labelPadding: const EdgeInsets.only(left: 0, right: 16),
+                      indicatorPadding: EdgeInsets.zero,
+                      tabAlignment: TabAlignment.start,
+                      labelColor: const Color(0xFF111111),
+                      unselectedLabelColor: const Color(0xFF666666),
+                      indicatorColor: const Color(0xFF7B3FE4),
+                      tabs: [
+                        Tab(text: AppLocalizations.of(context)!.workExperienceMobile),
+                        Tab(text: AppLocalizations.of(context)!.education),
+                        Tab(text: AppLocalizations.of(context)!.skills),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       const SizedBox(height: 16),
-                      _buildExperienceSection(),
-                      const SizedBox(height: 24),
-                      const MyEducationMobileView(),
-                      const SizedBox(height: 24),
-                      const MySkills(),
+                      if (_tabController.index == 0) ...[
+                        _buildExperienceSection(),
+                      ] else if (_tabController.index == 1) ...[
+                        const MyEducationMobileView(),
+                      ] else ...[
+                        const MySkills(),
+                      ],
                     ],
                   ),
                 ),
@@ -375,9 +405,9 @@ class _MyCvMobileState extends State<MyCvMobile> {
           children: [
             Row(
               children: [
-                Text(AppLocalizations.of(context)!.workExperience,
+                Text(AppLocalizations.of(context)!.workExperienceMobile,
                     style:
-                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 IconButton(
                   onPressed: _showAddWorkExperienceModal,

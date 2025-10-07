@@ -26,6 +26,7 @@ class MyCvDesktop extends StatefulWidget {
 }
 
 class _MyCvDesktopState extends State<MyCvDesktop> {
+  int _currentTab = 0;
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
   late final ICompanyBll _company = CompanyBll();
@@ -155,27 +156,49 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1100),
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: _refreshTrigger,
-                      builder: (context, _, __) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildHeader(),
-                            const SizedBox(height: 32),
-                            _buildExperienceSection(),
-                            const SizedBox(height: 32),
-                            const MyEducation(),
-                            const SizedBox(height: 32),
-                            MySkills(
-                              onSkillAdded: () {
-                                _refreshTrigger
-                                    .value++;
-                              },
-                            ),
-                          ],
-                        );
-                      },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 24),
+                        // Tabs for Experience / Education / Skills
+                        DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TabBar(
+                                labelColor: Colors.black,
+                                unselectedLabelColor: Colors.grey,
+                                indicatorColor: const Color(0xFF5A69F1),
+                                onTap: (i) => setState(() => _currentTab = i),
+                                tabs: [
+                                  Tab(text: AppLocalizations.of(context)!.workExperience),
+                                  Tab(text: AppLocalizations.of(context)!.education),
+                                  Tab(text: AppLocalizations.of(context)!.skills),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              ValueListenableBuilder<int>(
+                                valueListenable: _refreshTrigger,
+                                builder: (context, _, __) {
+                                  if (_currentTab == 0) {
+                                    return _buildExperienceSection();
+                                  } else if (_currentTab == 1) {
+                                    return const MyEducation();
+                                  } else {
+                                    return MySkills(
+                                      onSkillAdded: () {
+                                        _refreshTrigger.value++;
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -305,45 +328,10 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     style: const TextStyle(
                         fontSize: 28, fontWeight: FontWeight.bold)),
                 const Spacer(),
-                // First Configuration button
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/user/first-configuration');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7B3FE4),
-                    foregroundColor: Colors.white,
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  icon: const Icon(Icons.settings_outlined, size: 18),
-                  label: Text(AppLocalizations.of(context)!.setupProfile),
-                ),
-                const SizedBox(width: 12),
-                ElevatedButton(
-                  onPressed: () async {
-                    final updated = await Navigator.pushNamed(
-                      context,
-                      '/user/edit-profile',
-                      arguments: user,
-                    );
-                    if (updated == true) {
-                      setState(() {
-                        _userFuture = _userBLL.getCurrentUser();
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Text(AppLocalizations.of(context)!.editProfile),
+                IconButton(
+                  tooltip: 'More Actions',
+                  icon: const Icon(Icons.more_vert, color: Colors.black),
+                  onPressed: () => _showActionsDialog(user),
                 ),
               ],
             ),
@@ -421,13 +409,13 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       children: [
         Row(
           children: [
-            const Text('Work Experience',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+             Text(AppLocalizations.of(context)!.workExperience,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const Spacer(),
             IconButton(
               onPressed: _showAddWorkExperienceModal,
               icon: const Icon(Icons.add_circle_outline),
-              tooltip: 'Add experience',
+              tooltip: AppLocalizations.of(context)!.addExperience,
             ),
           ],
         ),
@@ -452,9 +440,9 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     .toList(),
               );
             } else {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 32),
-                child: Center(child: Text("No work experiences yet.")),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet)),
               );
             }
           },
@@ -507,6 +495,98 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 size: 18,
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showActionsDialog(User user) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 8,
+          backgroundColor: Colors.white,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 360),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Actions',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, size: 20, color: Colors.black54),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Divider(),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                      backgroundColor: const Color(0xFFF5F6FF),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, '/user/first-configuration');
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.settings_outlined, color: Color(0xFF7B3FE4)),
+                        const SizedBox(width: 12),
+                        Text(AppLocalizations.of(context)!.setupProfile,
+                            style: const TextStyle(color: Colors.black87)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Color(0xFFE0E0E0))),
+                    ),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      final updated = await Navigator.pushNamed(
+                        context,
+                        '/user/edit-profile',
+                        arguments: user,
+                      );
+                      if (updated == true && mounted) {
+                        setState(() {
+                          _userFuture = _userBLL.getCurrentUser();
+                        });
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(Icons.edit, color: Colors.black54),
+                        const SizedBox(width: 12),
+                        Text(AppLocalizations.of(context)!.editProfile,
+                            style: const TextStyle(color: Colors.black87)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                ],
+              ),
+            ),
           ),
         );
       },
