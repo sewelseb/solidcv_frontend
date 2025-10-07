@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,6 +9,10 @@ import 'package:solid_cv/Views/widgets/MainBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/EducationInstitutionBll.dart';
 import 'package:solid_cv/business_layer/IEducationInstitutionBll.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
+import 'package:solid_cv/business_layer/IUserBLL.dart';
+import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/models/SearchTherms.dart';
 
 class MyEducationInstitutionAdministration extends StatefulWidget {
   const MyEducationInstitutionAdministration({super.key});
@@ -21,6 +26,7 @@ class _MyEducationInstitutionAdministrationState
     extends State<MyEducationInstitutionAdministration> {
   final IEducationInstitutionBll _educationInstitutionBll =
       EducationInstitutionBll();
+  final IUserBLL _userBll = UserBll();
   Future<EducationInstitution>? _educationInstitutionFuture;
   EducationInstitution? _educationInstitution;
 
@@ -38,10 +44,15 @@ class _MyEducationInstitutionAdministrationState
   final _ethereumPrivateKeyController = TextEditingController();
   final _passwordController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _adminEmailController = TextEditingController();
 
   Uint8List? _pickedImageBytes;
   String? _pickedImageExt;
   bool _isSubmitting = false;
+  bool _isAddingAdmin = false;
+  bool _isSearching = false;
+  List<User> _searchResults = [];
+  Timer? _searchTimer;
 
   final Color _primaryColor = const Color(0xFF7B3FE4);
   final Color _gradientStart = const Color(0xFF7B3FE4);
@@ -90,7 +101,9 @@ class _MyEducationInstitutionAdministrationState
     _ethereumAddressController.dispose();
     _ethereumPrivateKeyController.dispose();
     _passwordController.dispose();
+    _adminEmailController.dispose();
     _scrollController.dispose();
+    _searchTimer?.cancel();
     super.dispose();
   }
 
@@ -383,6 +396,201 @@ class _MyEducationInstitutionAdministrationState
                               const SizedBox(height: 32),
                               _buildSectionCard(
                                 isMobile: isMobile,
+                                title: AppLocalizations.of(context)!.companyAdministrators,
+                                icon: Icons.admin_panel_settings,
+                                content: Column(
+                                  children: [
+                                    FutureBuilder<List<User>>(
+                                      future: _educationInstitutionBll.getEducationInstitutionAdministrators(institution.id!),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Center(child: CircularProgressIndicator()),
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(
+                                              'Error loading administrators: ${snapshot.error}',
+                                              style: const TextStyle(color: Colors.redAccent),
+                                            ),
+                                          );
+                                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Text(
+                                              AppLocalizations.of(context)!.noAdministratorsFound,
+                                              style: const TextStyle(
+                                                color: Colors.orange,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        final administrators = snapshot.data!;
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Current Administrators (${administrators.length})',
+                                              style: GoogleFonts.inter(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 12),
+                                            ...administrators.map((admin) => _buildAdministratorTile(admin, institution)).toList(),
+                                            const SizedBox(height: 16),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: Colors.grey.shade200),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(Icons.person_add, color: _primaryColor, size: 20),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                AppLocalizations.of(context)!.addNewAdministrator,
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 12),
+                                          TextField(
+                                            controller: _adminEmailController,
+                                            decoration: InputDecoration(
+                                              hintText: AppLocalizations.of(context)!.searchUsersPlaceholder,
+                                              prefixIcon: Icon(Icons.search, color: _primaryColor),
+                                              suffixIcon: _adminEmailController.text.isNotEmpty
+                                                  ? IconButton(
+                                                      icon: const Icon(Icons.clear),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _adminEmailController.clear();
+                                                          _searchResults = [];
+                                                          _isSearching = false;
+                                                        });
+                                                      },
+                                                    )
+                                                  : null,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: _primaryColor, width: 2),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              contentPadding: const EdgeInsets.symmetric(
+                                                horizontal: 12,
+                                                vertical: 14,
+                                              ),
+                                            ),
+                                            onChanged: (value) => _searchUsers(value),
+                                          ),
+                                          if (_isSearching)
+                                            const Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Center(
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            )
+                                          else if (_searchResults.isNotEmpty) ...[
+                                            const SizedBox(height: 12),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.grey.shade300),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(12.0),
+                                                    child: Text(
+                                                      'Search Results (${_searchResults.length})',
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.grey.shade700,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Divider(height: 1),
+                                                  ListView.separated(
+                                                    shrinkWrap: true,
+                                                    physics: const NeverScrollableScrollPhysics(),
+                                                    itemCount: _searchResults.length,
+                                                    separatorBuilder: (_, __) => const Divider(height: 1),
+                                                    itemBuilder: (context, index) {
+                                                      final user = _searchResults[index];
+                                                      return _buildUserSearchResult(user, institution);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ] else if (_adminEmailController.text.isNotEmpty && !_isSearching) ...[
+                                            const SizedBox(height: 12),
+                                            Container(
+                                              padding: const EdgeInsets.all(12),
+                                              decoration: BoxDecoration(
+                                                color: Colors.orange.shade50,
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.orange.shade200),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.info_outline, color: Colors.orange.shade600, size: 20),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'No users found matching your search.',
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        color: Colors.orange.shade700,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Search for existing users to add as institution administrators.',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 12,
+                                              color: Colors.grey.shade600,
+                                              height: 1.3,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              _buildSectionCard(
+                                isMobile: isMobile,
                                 title: AppLocalizations.of(context)!.traineesAndStudents,
                                 icon: Icons.people,
                                 content: (institution.ethereumAddress == null ||
@@ -441,6 +649,254 @@ class _MyEducationInstitutionAdministrationState
         },
       ),
     );
+  }
+
+  // ===== Administrators helpers (search/add/remove) =====
+  void _searchUsers(String query) {
+    _searchTimer?.cancel();
+    if (query.trim().isEmpty) {
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      return;
+    }
+    _searchTimer = Timer(const Duration(milliseconds: 500), () {
+      _performUserSearch(query.trim());
+    });
+  }
+
+  Future<void> _performUserSearch(String query) async {
+    setState(() => _isSearching = true);
+    try {
+      final terms = SearchTherms();
+      terms.term = query;
+      final results = await _userBll.searchUsers(terms);
+      if (!mounted) return;
+      setState(() {
+        _searchResults = results;
+        _isSearching = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error searching users: $e')),
+      );
+    }
+  }
+
+  Widget _buildAdministratorTile(User admin, EducationInstitution institution) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: _primaryColor,
+            backgroundImage: admin.getProfilePicture().isNotEmpty
+                ? NetworkImage(admin.getProfilePicture())
+                : null,
+            child: admin.getProfilePicture().isEmpty
+                ? Text(
+                    (admin.getEasyName() ?? 'A').substring(0, 1).toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  admin.getEasyName() ?? 'Unknown',
+                  style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  admin.email ?? '',
+                  style: GoogleFonts.inter(
+                    color: Colors.grey.shade600,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () => _removeAdministrator(admin, institution),
+            icon: const Icon(Icons.remove_circle_outline),
+            color: Colors.redAccent,
+            tooltip: AppLocalizations.of(context)!.removeAdministrator,
+            constraints: const BoxConstraints(
+              minWidth: 32,
+              minHeight: 32,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserSearchResult(User user, EducationInstitution institution) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      leading: CircleAvatar(
+        radius: 18,
+        backgroundColor: _primaryColor,
+        backgroundImage: user.getProfilePicture().isNotEmpty
+            ? NetworkImage(user.getProfilePicture())
+            : null,
+        child: user.getProfilePicture().isEmpty
+            ? Text(
+                (user.getEasyName() ?? 'U').substring(0, 1).toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              )
+            : null,
+      ),
+      title: Text(
+        user.getEasyName() ?? 'Unknown',
+        style: GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            user.email ?? '',
+            style: GoogleFonts.inter(
+              color: Colors.grey.shade600,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+      trailing: SizedBox(
+        width: 120,
+        height: 32,
+        child: ElevatedButton(
+          onPressed: _isAddingAdmin ? null : () => _addUserAsAdministrator(user, institution),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _primaryColor,
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ),
+          child: _isAddingAdmin
+              ? const SizedBox(
+                  width: 12,
+                  height: 12,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+              : Text(
+                  AppLocalizations.of(context)!.add,
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _addUserAsAdministrator(User user, EducationInstitution institution) async {
+    setState(() => _isAddingAdmin = true);
+    try {
+      await _educationInstitutionBll.addEducationInstitutionAdministrator(institution.id!, user.id!);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${user.getEasyName() ?? user.email} added as administrator')),
+      );
+      setState(() {
+        _adminEmailController.clear();
+        _searchResults = [];
+        _educationInstitutionFuture = _educationInstitutionBll.getEducationInstitution(institution.id!);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding administrator: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isAddingAdmin = false);
+      }
+    }
+  }
+
+  Future<void> _removeAdministrator(User admin, EducationInstitution institution) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.removeAdministrator),
+        content: Text(
+          AppLocalizations.of(context)!.removeAdministratorConfirmation(admin.getEasyName() ?? (admin.email ?? '')),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
+            child: Text(AppLocalizations.of(context)!.remove),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await _educationInstitutionBll.removeEducationInstitutionAdministrator(institution.id!, admin.id!);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.administratorRemoved(admin.getEasyName() ?? (admin.email ?? '')))),
+      );
+      setState(() {
+        _educationInstitutionFuture = _educationInstitutionBll.getEducationInstitution(institution.id!);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error removing administrator: $e')),
+      );
+    }
   }
 
   Widget _buildMainFields() {
