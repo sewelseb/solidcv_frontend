@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:solid_cv/data_access_layer/IEducationInstitutionService.dart';
 import 'package:solid_cv/models/EducationInstitution.dart';
+import 'package:solid_cv/models/User.dart';
 
 import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/helpers/APIConnectionHelper.dart';
@@ -218,6 +219,66 @@ void addEducationInstitution(EducationInstitution educationInstitution, Uint8Lis
       return true;
     } else {
       throw Exception('Failed to unverify education institution');
+    }
+  }
+
+  @override
+  Future<List<User>> getEducationInstitutionAdministrators(int educationInstitutionId) async {
+    final response = await http.get(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getEducationInstitutionAdministratorsApi +
+          educationInstitutionId.toString()),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> decoded = jsonDecode(response.body);
+      return decoded.map((json) => User.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch education institution administrators');
+    }
+  }
+
+  @override
+  Future<void> addEducationInstitutionAdministrator(int educationInstitutionId, int userId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().addEducationInstitutionAdministratorApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'educationInstitutionId': educationInstitutionId,
+        'userId': userId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add education institution administrator');
+    }
+  }
+
+  @override
+  Future<void> removeEducationInstitutionAdministrator(int educationInstitutionId, int userId) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url +
+          BackenConnection().removeEducationInstitutionAdministratorApi),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'educationInstitutionId': educationInstitutionId,
+        'userId': userId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to remove education institution administrator');
     }
   }
 }

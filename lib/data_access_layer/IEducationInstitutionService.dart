@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:solid_cv/models/EducationInstitution.dart';
+import 'package:solid_cv/models/User.dart';
 
 abstract class IEducationInstitutionService {
   Future<List<EducationInstitution>> getMyEducationInstitutions();
@@ -20,4 +21,10 @@ abstract class IEducationInstitutionService {
   Future<bool> verifyEducationInstitution(int institutionId);
   
   Future<bool> unverifyEducationInstitution(int institutionId);
+
+  Future<List<User>> getEducationInstitutionAdministrators(int educationInstitutionId);
+
+  Future<void> addEducationInstitutionAdministrator(int educationInstitutionId, int userId);
+
+  Future<void> removeEducationInstitutionAdministrator(int educationInstitutionId, int userId);
 }
