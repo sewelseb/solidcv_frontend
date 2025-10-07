@@ -26,4 +26,10 @@ abstract class IEducationInstitutionBll {
   Future<bool> verifyEducationInstitution(int institutionId);
   
   Future<bool> unverifyEducationInstitution(int institutionId);
+
+  Future<List<User>> getEducationInstitutionAdministrators(int educationInstitutionId);
+
+  Future<void> addEducationInstitutionAdministrator(int educationInstitutionId, int userId);
+
+  Future<void> removeEducationInstitutionAdministrator(int educationInstitutionId, int userId);
 }

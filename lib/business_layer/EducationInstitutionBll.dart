@@ -92,4 +92,19 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
   Future<bool> unverifyEducationInstitution(int institutionId) {
     return _educationInstitutionService.unverifyEducationInstitution(institutionId);
   }
+
+  @override
+  Future<List<User>> getEducationInstitutionAdministrators(int educationInstitutionId) {
+    return _educationInstitutionService.getEducationInstitutionAdministrators(educationInstitutionId);
+  }
+
+  @override
+  Future<void> addEducationInstitutionAdministrator(int educationInstitutionId, int userId) {
+    return _educationInstitutionService.addEducationInstitutionAdministrator(educationInstitutionId, userId);
+  }
+
+  @override
+  Future<void> removeEducationInstitutionAdministrator(int educationInstitutionId, int userId) {
+    return _educationInstitutionService.removeEducationInstitutionAdministrator(educationInstitutionId, userId);
+  }
 }
