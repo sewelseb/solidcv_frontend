@@ -17,6 +17,7 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/models/User.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
+import 'package:solid_cv/Views/utils/PremiumHelper.dart';
 
 class MyCvMobile extends StatefulWidget {
   const MyCvMobile({super.key});
@@ -100,9 +101,11 @@ class _MyCvMobileState extends State<MyCvMobile>
 
     for (var experience in unifiedList) {
       if (experience.companyWallet != null) {
-        final company = await _company.fetchCompanyByWallet(experience.companyWallet!);
+        final company =
+            await _company.fetchCompanyByWallet(experience.companyWallet!);
         experience.companyLogoUrl = company?.getProfilePicture();
-        experience.location = '${company?.addressCity}, ${company?.addressCountry}';
+        experience.location =
+            '${company?.addressCity}, ${company?.addressCountry}';
         experience.isCompanyVerified = company?.isVerified ?? false;
       }
     }
@@ -163,12 +166,25 @@ class _MyCvMobileState extends State<MyCvMobile>
                         backgroundImage: NetworkImage(user.getProfilePicture()),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        user.getEasyName() ?? '',
-                        style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            user.getEasyName() ?? '',
+                            style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(width: 8),
+                          _premiumBadgeInline(user),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Center(
+                        child: _subscribeChip(onPressed: () {
+                          Navigator.pushNamed(context, '/subscription');
+                        }),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -182,7 +198,8 @@ class _MyCvMobileState extends State<MyCvMobile>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/user/first-configuration');
+                              Navigator.pushNamed(
+                                  context, '/user/first-configuration');
                             },
                             child: Tooltip(
                               message: AppLocalizations.of(context)!.setup,
@@ -192,9 +209,11 @@ class _MyCvMobileState extends State<MyCvMobile>
                                 decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+                                  border: Border.all(
+                                      color: Colors.white.withOpacity(0.3)),
                                 ),
-                                child: const Icon(Icons.settings_outlined, color: Colors.white, size: 22),
+                                child: const Icon(Icons.settings_outlined,
+                                    color: Colors.white, size: 22),
                               ),
                             ),
                           ),
@@ -221,7 +240,8 @@ class _MyCvMobileState extends State<MyCvMobile>
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(Icons.edit_outlined, color: Colors.black87, size: 22),
+                                child: const Icon(Icons.edit_outlined,
+                                    color: Colors.black87, size: 22),
                               ),
                             ),
                           ),
@@ -232,8 +252,10 @@ class _MyCvMobileState extends State<MyCvMobile>
                           icon: Icons.phone, text: user.phoneNumber ?? "-"),
                       const SizedBox(height: 8),
                       _infoTile(
-                          icon: Icons.link,
-                          text: user.linkedin ?? AppLocalizations.of(context)!.addYourLinkedin,),
+                        icon: Icons.link,
+                        text: user.linkedin ??
+                            AppLocalizations.of(context)!.addYourLinkedin,
+                      ),
                       const SizedBox(height: 8),
                       _infoTile(
                           icon: Icons.description,
@@ -246,29 +268,34 @@ class _MyCvMobileState extends State<MyCvMobile>
                           valueListenable: _isDownloadingCv,
                           builder: (context, isLoading, child) {
                             return ElevatedButton.icon(
-                              onPressed: isLoading ? null : () async {
-                                try {
-                                  _isDownloadingCv.value = true;
-                                  var documentName = await _userBLL.getMyExportedCv();
-                                  final Uri documentUrl = Uri.parse(
-                                    BackenConnection().url +
-                                        BackenConnection().getMyCvPlace +
-                                        documentName,
-                                  );
-                                  await launchUrl(documentUrl);
-                                } catch (e) {
-                                  if (mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('${AppLocalizations.of(context)!.errorDownloadingCv}: $e'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                } finally {
-                                  _isDownloadingCv.value = false;
-                                }
-                              },
+                              onPressed: isLoading
+                                  ? null
+                                  : () async {
+                                      try {
+                                        _isDownloadingCv.value = true;
+                                        var documentName =
+                                            await _userBLL.getMyExportedCv();
+                                        final Uri documentUrl = Uri.parse(
+                                          BackenConnection().url +
+                                              BackenConnection().getMyCvPlace +
+                                              documentName,
+                                        );
+                                        await launchUrl(documentUrl);
+                                      } catch (e) {
+                                        if (mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  '${AppLocalizations.of(context)!.errorDownloadingCv}: $e'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      } finally {
+                                        _isDownloadingCv.value = false;
+                                      }
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
                                 foregroundColor: Colors.black,
@@ -283,11 +310,17 @@ class _MyCvMobileState extends State<MyCvMobile>
                                       width: 18,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
-                                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF7B3FE4)),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Color(0xFF7B3FE4)),
                                       ),
                                     )
-                                  : const Icon(Icons.download_outlined, size: 18),
-                              label: Text(isLoading ? AppLocalizations.of(context)!.generating : AppLocalizations.of(context)!.exportMyCvPdf),
+                                  : const Icon(Icons.download_outlined,
+                                      size: 18),
+                              label: Text(isLoading
+                                  ? AppLocalizations.of(context)!.generating
+                                  : AppLocalizations.of(context)!
+                                      .exportMyCvPdf),
                             );
                           },
                         ),
@@ -311,7 +344,9 @@ class _MyCvMobileState extends State<MyCvMobile>
                       unselectedLabelColor: const Color(0xFF666666),
                       indicatorColor: const Color(0xFF7B3FE4),
                       tabs: [
-                        Tab(text: AppLocalizations.of(context)!.workExperienceMobile),
+                        Tab(
+                            text: AppLocalizations.of(context)!
+                                .workExperienceMobile),
                         Tab(text: AppLocalizations.of(context)!.education),
                         Tab(text: AppLocalizations.of(context)!.skills),
                       ],
@@ -338,6 +373,38 @@ class _MyCvMobileState extends State<MyCvMobile>
           },
         ),
       ),
+    );
+  }
+
+  bool _isPremiumActive(User user) {
+    return PremiumHelper.isPremiumActive(user.premiumSubscriptionDate);
+  }
+
+  Widget _premiumBadgeInline(User user) {
+    if (!_isPremiumActive(user)) return const SizedBox.shrink();
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0xFF2ECC71),
+      ),
+      alignment: Alignment.center,
+      child: const Icon(Icons.check_rounded, size: 14, color: Colors.white),
+    );
+  }
+
+  Widget _subscribeChip({required VoidCallback onPressed}) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        backgroundColor: Colors.white.withOpacity(0.15),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      icon: const Icon(Icons.workspace_premium, size: 16),
+      label: Text(AppLocalizations.of(context)!.premiumLabel),
     );
   }
 
@@ -406,8 +473,8 @@ class _MyCvMobileState extends State<MyCvMobile>
             Row(
               children: [
                 Text(AppLocalizations.of(context)!.workExperienceMobile,
-                    style:
-                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 IconButton(
                   onPressed: _showAddWorkExperienceModal,
@@ -423,7 +490,7 @@ class _MyCvMobileState extends State<MyCvMobile>
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return const Text("Error: \${snapshot.error}");
+                  return Text("Error: ${snapshot.error}");
                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   return Column(
                     children: snapshot.data!
@@ -433,7 +500,9 @@ class _MyCvMobileState extends State<MyCvMobile>
                         .toList(),
                   );
                 } else {
-                  return Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet));
+                  return Center(
+                      child: Text(
+                          AppLocalizations.of(context)!.noWorkExperiencesYet));
                 }
               },
             ),
