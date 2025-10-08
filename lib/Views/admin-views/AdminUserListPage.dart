@@ -3,6 +3,7 @@ import 'package:solid_cv/Views/admin-views/AdminBottomNavigationBar.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
 import 'package:solid_cv/models/User.dart';
+import 'package:solid_cv/Views/utils/FormatDate.dart';
 
 class AdminUsersPage extends StatelessWidget {
   AdminUsersPage({super.key});
@@ -37,7 +38,8 @@ class AdminUsersPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.red.shade400),
+                  Icon(Icons.error_outline,
+                      size: 64, color: Colors.red.shade400),
                   const SizedBox(height: 16),
                   Text(
                     "❌ Error: ${snapshot.error}",
@@ -84,7 +86,10 @@ class AdminUsersPage extends StatelessWidget {
                     Expanded(
                       child: _StatCard(
                         title: 'Verified',
-                        value: users.where((u) => u.isVerified == true).length.toString(),
+                        value: users
+                            .where((u) => u.isVerified == true)
+                            .length
+                            .toString(),
                         icon: Icons.verified_user,
                         color: Colors.green,
                       ),
@@ -93,7 +98,10 @@ class AdminUsersPage extends StatelessWidget {
                     Expanded(
                       child: _StatCard(
                         title: 'Configured',
-                        value: users.where((u) => u.isFirstConfigurationDone == true).length.toString(),
+                        value: users
+                            .where((u) => u.isFirstConfigurationDone == true)
+                            .length
+                            .toString(),
                         icon: Icons.settings_suggest,
                         color: Colors.orange,
                       ),
@@ -101,13 +109,12 @@ class AdminUsersPage extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Users list
               Expanded(
-                child: ListView.separated(
+                child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   itemCount: users.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final user = users[index];
                     return UserListTile(user: user);
@@ -177,12 +184,29 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class UserListTile extends StatelessWidget {
+class UserListTile extends StatefulWidget {
   final User user;
   const UserListTile({super.key, required this.user});
 
   @override
+  State<UserListTile> createState() => _UserListTileState();
+}
+
+class _UserListTileState extends State<UserListTile> {
+  final IUserBLL _userBll = UserBll();
+  final _dateFormatter = FormatDate();
+  bool _isUpdating = false;
+  int? _premiumUntilTs; // epoch millis or seconds as received
+
+  @override
+  void initState() {
+    super.initState();
+    _premiumUntilTs = widget.user.premiumSubscriptionDate;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = widget.user;
     final isAdmin = user.roles?.contains("ROLE_ADMIN") ?? false;
     final isEmailVerified = user.isVerified ?? false;
     final isConfigured = user.isFirstConfigurationDone ?? false;
@@ -199,7 +223,9 @@ class UserListTile extends StatelessWidget {
               Stack(
                 children: [
                   CircleAvatar(
-                    backgroundColor: isAdmin ? Colors.deepPurpleAccent : const Color(0xFF7B3FE4),
+                    backgroundColor: isAdmin
+                        ? Colors.deepPurpleAccent
+                        : const Color(0xFF7B3FE4),
                     child: Text(
                       (user.getEasyName() ?? "U").substring(0, 1).toUpperCase(),
                       style: const TextStyle(
@@ -226,7 +252,7 @@ class UserListTile extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 12),
-              
+
               // Main content
               Expanded(
                 child: Column(
@@ -244,14 +270,16 @@ class UserListTile extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    
+
                     // Email row with verification status
                     Row(
                       children: [
                         Icon(
                           isEmailVerified ? Icons.email : Icons.email_outlined,
                           size: 14,
-                          color: isEmailVerified ? Colors.green.shade600 : Colors.red.shade600,
+                          color: isEmailVerified
+                              ? Colors.green.shade600
+                              : Colors.red.shade600,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -266,15 +294,20 @@ class UserListTile extends StatelessWidget {
                         ),
                         // Verification badge
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: isEmailVerified ? Colors.green.shade100 : Colors.red.shade100,
+                            color: isEmailVerified
+                                ? Colors.green.shade100
+                                : Colors.red.shade100,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             isEmailVerified ? "✓ Verified" : "✗ Unverified",
                             style: TextStyle(
-                              color: isEmailVerified ? Colors.green.shade700 : Colors.red.shade700,
+                              color: isEmailVerified
+                                  ? Colors.green.shade700
+                                  : Colors.red.shade700,
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                             ),
@@ -282,21 +315,27 @@ class UserListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 4),
-                    
+
                     // Configuration status row
                     Row(
                       children: [
                         Icon(
-                          isConfigured ? Icons.settings_suggest : Icons.settings_outlined,
+                          isConfigured
+                              ? Icons.settings_suggest
+                              : Icons.settings_outlined,
                           size: 14,
-                          color: isConfigured ? Colors.green.shade600 : Colors.orange.shade600,
+                          color: isConfigured
+                              ? Colors.green.shade600
+                              : Colors.orange.shade600,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            isConfigured ? "Profile configured" : "Setup incomplete",
+                            isConfigured
+                                ? "Profile configured"
+                                : "Setup incomplete",
                             style: TextStyle(
                               color: Colors.grey.shade700,
                               fontSize: 13,
@@ -305,15 +344,20 @@ class UserListTile extends StatelessWidget {
                         ),
                         // Configuration badge
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: isConfigured ? Colors.green.shade100 : Colors.orange.shade100,
+                            color: isConfigured
+                                ? Colors.green.shade100
+                                : Colors.orange.shade100,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             isConfigured ? "✓ Done" : "⚠ Pending",
                             style: TextStyle(
-                              color: isConfigured ? Colors.green.shade700 : Colors.orange.shade700,
+                              color: isConfigured
+                                  ? Colors.green.shade700
+                                  : Colors.orange.shade700,
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                             ),
@@ -321,7 +365,7 @@ class UserListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
+
                     // ID row
                     if (user.id != null) ...[
                       const SizedBox(height: 2),
@@ -343,21 +387,75 @@ class UserListTile extends StatelessWidget {
                         ],
                       ),
                     ],
+
+                    // Premium subscription row
+                    const SizedBox(height: 6),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.workspace_premium_outlined,
+                          size: 16,
+                          color: Colors.amber.shade700,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            _premiumUntilTs != null
+                                ? 'Premium jusqu\'au: '
+                                    '${_dateFormatter.formatDateForPremiumDate(context, _premiumUntilTs!)}'
+                                : 'Premium: aucun',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        OutlinedButton.icon(
+                          onPressed: _isUpdating ? null : () => _pickAndSavePremiumDate(context),
+                          icon: _isUpdating
+                              ? const SizedBox(
+                                  width: 14,
+                                  height: 14,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: const Color(0xFF7B3FE4),
+                                  ),
+                                )
+                              : const Icon(Icons.calendar_today, size: 14),
+                          label: Text(
+                            _isUpdating ? '...' : 'Changer',
+                            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(width: 12),
-              
+
               // Trailing section with role and button
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Role chip
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: isAdmin ? Colors.deepPurpleAccent : Colors.grey.shade300,
+                      color: isAdmin
+                          ? Colors.deepPurpleAccent
+                          : Colors.grey.shade300,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -370,29 +468,34 @@ class UserListTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  
+
                   // Overall status indicator
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: _getOverallStatusColor(isEmailVerified, isConfigured).withOpacity(0.1),
+                      color:
+                          _getOverallStatusColor(isEmailVerified, isConfigured)
+                              .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: _getOverallStatusColor(isEmailVerified, isConfigured),
+                        color: _getOverallStatusColor(
+                            isEmailVerified, isConfigured),
                         width: 1,
                       ),
                     ),
                     child: Text(
                       _getOverallStatusText(isEmailVerified, isConfigured),
                       style: TextStyle(
-                        color: _getOverallStatusColor(isEmailVerified, isConfigured),
+                        color: _getOverallStatusColor(
+                            isEmailVerified, isConfigured),
                         fontSize: 9,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                   const SizedBox(height: 6),
-                  
+
                   // View Profile button
                   SizedBox(
                     width: 60,
@@ -410,7 +513,8 @@ class UserListTile extends StatelessWidget {
                       ),
                       child: const Text(
                         'View',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -443,8 +547,64 @@ class UserListTile extends StatelessWidget {
     }
   }
 
+  Future<void> _pickAndSavePremiumDate(BuildContext context) async {
+    final user = widget.user;
+    if (user.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User ID manquant')),
+      );
+      return;
+    }
+
+    DateTime? initialDate;
+    if (_premiumUntilTs != null) {
+      final ts = _premiumUntilTs!;
+      final isSeconds = ts < 1000000000000;
+      initialDate = DateTime.fromMillisecondsSinceEpoch(
+              isSeconds ? ts * 1000 : ts,
+              isUtc: true)
+          .toLocal();
+    } else {
+      initialDate = DateTime.now();
+    }
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime.now().subtract(const Duration(days: 1)),
+      lastDate: DateTime.now().add(const Duration(days: 3650)),
+      helpText: 'Sélectionner la date de fin Premium',
+      cancelText: 'Annuler',
+      confirmText: 'Enregistrer',
+    );
+
+    if (picked == null) return;
+    final endOfDayUtc = DateTime.utc(picked.year, picked.month, picked.day, 23, 59, 59);
+    final tsMillis = (endOfDayUtc.millisecondsSinceEpoch / 1000).floor(); // Unix epoch in seconds
+
+    setState(() => _isUpdating = true);
+    try {
+      await _userBll.updateUserPremiumSubscription(user.id!, tsMillis);
+      setState(() {
+        _premiumUntilTs = tsMillis;
+        _isUpdating = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Date Premium mise à jour')),
+        );
+      }
+    } catch (e) {
+      setState(() => _isUpdating = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la mise à jour: $e')),
+        );
+      }
+    }
+  }
+
   void _viewUserProfile(BuildContext context, User user) {
-    // Navigate to user profile page
     Navigator.pushNamed(
       context,
       '/user/${user.id}',
