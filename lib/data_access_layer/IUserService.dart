@@ -43,9 +43,11 @@ abstract class IUserService {
 
   Future<List<ManualExperience>> getMyManuallyAddedExperiences();
 
-  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
+  Future<void> updateUser(
+      User user, Uint8List? imageBytes, String? imageExt, int id);
 
-  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId);
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(
+      String userId);
 
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId);
 
@@ -79,4 +81,5 @@ abstract class IUserService {
 
   Future<void> updateLanguagePreference(String language);
 
+  Future<void> updateUserPremiumSubscription(int userId, int timestamp);
 }

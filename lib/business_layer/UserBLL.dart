@@ -26,7 +26,8 @@ class UserBll extends IUserBLL {
   }
 
   @override
-  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id) {
+  Future<void> updateUser(
+      User user, Uint8List? imageBytes, String? imageExt, int id) {
     return _userService.updateUser(user, imageBytes, imageExt, id);
   }
 
@@ -37,7 +38,8 @@ class UserBll extends IUserBLL {
 
   @override
   Future<List<User>> searchUsers(SearchTherms searchTherms) {
-    if (searchTherms.term == null  || searchTherms.term!.isEmpty) return Future.value([]);
+    if (searchTherms.term == null || searchTherms.term!.isEmpty)
+      return Future.value([]);
 
     return _userService.searchUsers(searchTherms);
   }
@@ -114,14 +116,16 @@ class UserBll extends IUserBLL {
   }
 
   @override
-  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId) {
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(
+      String userId) {
     return _userService.getUsersManuallyAddedExperiences(userId);
   }
-  
+
   @override
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) {
     return _userService.getUsersManuallyAddedCertificates(userId);
   }
+
   @override
   Future<Map<String, dynamic>> verifyEmail(String token) {
     return _userService.verifyEmail(token);
@@ -146,7 +150,7 @@ class UserBll extends IUserBLL {
   void deleteManualExperience(int manualExperienceId) {
     return _userService.deleteManualExperience(manualExperienceId);
   }
-  
+
   @override
   void deleteManualyAddedCertificate(int manualExperienceId) {
     return _userService.deleteManualyAddedCertificate(manualExperienceId);
@@ -156,7 +160,7 @@ class UserBll extends IUserBLL {
   Future<String> uploadCV(PlatformFile file) {
     return _userService.uploadCV(file);
   }
-  
+
   @override
   void updateManuallyAddedExperience(ManualExperience updatedExperience) {
     _userService.updateManuallyAddedExperience(updatedExperience);
@@ -166,7 +170,7 @@ class UserBll extends IUserBLL {
   void updateManuallyAddedCertificate(Certificate updatedCertificate) {
     _userService.updateManuallyAddedCertificate(updatedCertificate);
   }
-  
+
   @override
   Future<void> deleteSkill(int id) {
     return _userService.deleteSkill(id);
@@ -175,12 +179,12 @@ class UserBll extends IUserBLL {
   Future<int> getMySkillTestQuestionCount() {
     return _userService.getMySkillTestQuestionCount();
   }
-  
+
   @override
   void setFirstConfigurationDone() {
     _userService.setFirstConfigurationDone();
   }
-  
+
   @override
   Future<bool> hasCompletedCV() {
     return _userService.hasCompletedCV();
@@ -190,10 +194,14 @@ class UserBll extends IUserBLL {
   Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData) {
     return _userService.getCareerAdvice(requestData);
   }
-  
+
   @override
   Future<void> updateLanguagePreference(String language) {
     return _userService.updateLanguagePreference(language);
   }
-  
+
+  @override
+  Future<void> updateUserPremiumSubscription(int userId, int timestamp) {
+    return _userService.updateUserPremiumSubscription(userId, timestamp);
+  }
 }

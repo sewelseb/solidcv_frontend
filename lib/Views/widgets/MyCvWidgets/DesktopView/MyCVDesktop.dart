@@ -17,6 +17,7 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/models/User.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:solid_cv/Views/utils/PremiumHelper.dart';
 
 class MyCvDesktop extends StatefulWidget {
   const MyCvDesktop({super.key});
@@ -64,6 +65,41 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     _isBioExpanded.dispose();
     _isDownloadingCv.dispose();
     super.dispose();
+  }
+
+  bool _isPremiumActive(User user) {
+    return PremiumHelper.isPremiumActive(user.premiumSubscriptionDate);
+  }
+
+  Widget _premiumBadgeInline({required User user}) {
+    if (!_isPremiumActive(user)) return const SizedBox.shrink();
+    return Tooltip(
+      message: AppLocalizations.of(context)!.premiumSubscriberTooltip,
+      child: Container(
+        width: 22,
+        height: 22,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xFF2ECC71),
+        ),
+        alignment: Alignment.center,
+        child: const Icon(Icons.check_rounded, size: 14, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _subscribeChip({required VoidCallback onPressed}) {
+    return TextButton.icon(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        backgroundColor: const Color(0x1F7B3FE4),
+        foregroundColor: const Color(0xFF7B3FE4),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      icon: const Icon(Icons.workspace_premium, size: 16),
+      label: Text(AppLocalizations.of(context)!.premiumLabel),
+    );
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
@@ -255,7 +291,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         Center(
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundColor: Colors.white.withOpacity(0.15),
+                            backgroundColor: const Color(0x26FFFFFF),
                             backgroundImage:
                                 NetworkImage(user.getProfilePicture()),
                           ),
@@ -277,7 +313,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 4, horizontal: 10),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: const Color(0x1AFFFFFF),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -336,9 +372,19 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
           children: [
             Row(
               children: [
-                Text(user.getEasyName() ?? '',
-                    style: const TextStyle(
-                        fontSize: 28, fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Text(user.getEasyName() ?? '',
+                        style: const TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 8),
+                    _premiumBadgeInline(user: user),
+                    const SizedBox(width: 12),
+                    _subscribeChip(onPressed: () {
+                      Navigator.pushNamed(context, '/subscription');
+                    }),
+                  ],
+                ),
                 const Spacer(),
               ],
             ),
@@ -625,7 +671,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
     if (!expandable) {
       return Row(
         children: [
-          Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+          Icon(icon, color: const Color(0xCCFFFFFF), size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(text,
@@ -645,7 +691,7 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icon, color: Colors.white.withOpacity(0.8), size: 18),
+              Icon(icon, color: const Color(0xCCFFFFFF), size: 18),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(

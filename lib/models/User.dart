@@ -18,25 +18,26 @@ class User {
   bool? isFirstConfigurationDone;
   bool? receiveWeeklyRecommendationEmails;
   String? language;
+  int? premiumSubscriptionDate;
 
-  User({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.password,
-    this.phoneNumber,
-    this.biography,
-    this.linkedin,
-    this.profilePicture,
-    this.cv,
-    this.roles,
-    this.token,
-    this.ethereumAddress,
-    this.isVerified,
-    this.isFirstConfigurationDone,
-    this.receiveWeeklyRecommendationEmails,
-  });
+  User(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.password,
+      this.phoneNumber,
+      this.biography,
+      this.linkedin,
+      this.profilePicture,
+      this.cv,
+      this.roles,
+      this.token,
+      this.ethereumAddress,
+      this.isVerified,
+      this.isFirstConfigurationDone,
+      this.receiveWeeklyRecommendationEmails,
+      this.premiumSubscriptionDate});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -49,6 +50,7 @@ class User {
       biography: json['biography'],
       linkedin: json['linkedin'],
       profilePicture: json['profilePicture'],
+      premiumSubscriptionDate: json['premiumSubscriptionDate'],
       cv: json['cv'],
       roles: json['roles'] != null ? List<String>.from(json['roles']) : null,
       token: json['token'],
@@ -79,6 +81,7 @@ class User {
       'firstConfigurationDone': isFirstConfigurationDone,
       'receiveWeeklyRecommendationEmails': receiveWeeklyRecommendationEmails,
       'language': language,
+      'premiumSubscriptionDate': premiumSubscriptionDate,
     };
   }
 
@@ -90,7 +93,7 @@ class User {
     }
   }
 
-    String getProfilePicture() {
+  String getProfilePicture() {
     if (profilePicture != null && profilePicture!.isNotEmpty) {
       return BackenConnection().url +
           BackenConnection().userProfilePicFolder +
