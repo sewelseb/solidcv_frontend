@@ -8,6 +8,8 @@ import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 
 class WorkExperienceCardMobile extends StatefulWidget {
   final UnifiedExperienceViewModel experience;
@@ -90,7 +92,7 @@ class _WorkExperienceCardMobileState extends State<WorkExperienceCardMobile> {
                         ),
                       ),
                       if (isVerified && (widget.experience.isCompanyVerified ?? false))
-                        Positioned(
+                        const Positioned(
                           right: -2,
                           bottom: -2,
                           child: VerificationBadge(
@@ -169,17 +171,53 @@ class _WorkExperienceCardMobileState extends State<WorkExperienceCardMobile> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton(
-                    onPressed: () =>
-                        _showDeleteConfirmationDialog(context, widget.experience.manualId!),
-                    style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: Text(AppLocalizations.of(context)!.delete),
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.editProfile,
+                    icon: const Icon(Icons.edit, color: Colors.black87),
+                    onPressed: () async {
+                      if (widget.experience.manualId == null) return;
+                      final manual = ManualExperience(
+                        id: widget.experience.manualId,
+                        title: widget.experience.title,
+                        company: widget.experience.company,
+                        description: widget.experience.description,
+                        location: widget.experience.location,
+                        startDateAsTimestamp: widget.experience.startDate != null
+                            ? (widget.experience.startDate! / 1000).round()
+                            : null,
+                        endDateAsTimestamp: widget.experience.endDate != null
+                            ? (widget.experience.endDate! / 1000).round()
+                            : null,
+                        promotions: widget.experience.promotions,
+                      );
+
+                      await showDialog(
+                        context: context,
+                        builder: (ctx) => AddedManuallyWorkExperienceForm(
+                          initialExperience: manual,
+                          onSubmit: (updated) async {
+                            _userBLL.updateManuallyAddedExperience(updated);
+                            if (widget.onPromotionAdded != null) {
+                              widget.onPromotionAdded!();
+                            }
+                          },
+                        ),
+                      );
+                    },
                   ),
-                  TextButton(
-                    onPressed: () =>
-                        _showAddPromotionDialog(context, widget.experience.manualId!),
-                    style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                    child: Text(AppLocalizations.of(context)!.addPromotion),
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.delete,
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _showDeleteConfirmationDialog(
+                      context,
+                      widget.experience.manualId!,
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.addPromotion,
+                    onPressed: () => _showAddPromotionDialog(
+                        context, widget.experience.manualId!),
+                    icon: const Icon(Icons.add, color: Colors.deepPurple),
                   ),
                 ],
               ),

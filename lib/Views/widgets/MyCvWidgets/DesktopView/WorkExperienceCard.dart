@@ -8,6 +8,8 @@ import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/IPFSPromotions.dart';
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/UnifiedExperienceViewModel.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/Views/widgets/AddedManuallyWorkExperienceForm.dart';
+import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperience.dart/ManualExperience.dart';
 
 class WorkExperienceCard extends StatefulWidget {
   final UnifiedExperienceViewModel experience;
@@ -29,8 +31,10 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
   @override
   Widget build(BuildContext context) {
     final isVerified = widget.experience.isVerified;
-    final start = FormatDate().formatDateForExperience(context, widget.experience.startDate);
-    final end = FormatDate().formatDateForExperience(context, widget.experience.endDate);
+    final start = FormatDate()
+        .formatDateForExperience(context, widget.experience.startDate);
+    final end = FormatDate()
+        .formatDateForExperience(context, widget.experience.endDate);
     final hasPromotions = widget.experience.promotions.isNotEmpty;
     final logoUrl = (widget.experience.companyLogoUrl?.isNotEmpty ?? false)
         ? widget.experience.companyLogoUrl!
@@ -67,8 +71,9 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                           ),
                         ),
                       ),
-                      if (isVerified && (widget.experience.isCompanyVerified ?? false))
-                        Positioned(
+                      if (isVerified &&
+                          (widget.experience.isCompanyVerified ?? false))
+                        const Positioned(
                           right: 16,
                           bottom: -2,
                           child: VerificationBadge(
@@ -93,13 +98,15 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                                   Text(
                                     widget.experience.title,
                                     style: const TextStyle(
-                                        fontSize: 17, fontWeight: FontWeight.w700),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     widget.experience.company,
                                     style: const TextStyle(
-                                        fontSize: 15, fontWeight: FontWeight.w600),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 4),
                                   Text('$start - $end',
@@ -153,26 +160,65 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                 ),
               ],
               if (!isVerified)
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextButton(
-                    onPressed: () =>
-                        _showDeleteConfirmationDialog(context, widget.experience.manualId!),
-                    style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: Text(AppLocalizations.of(context)!.delete),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        tooltip: AppLocalizations.of(context)!.editProfile,
+                        icon: const Icon(Icons.edit, color: Colors.black87),
+                        onPressed: () async {
+                          if (widget.experience.manualId == null) return;
+                          final manual = ManualExperience(
+                            id: widget.experience.manualId,
+                            title: widget.experience.title,
+                            company: widget.experience.company,
+                            description: widget.experience.description,
+                            location: widget.experience.location,
+                            startDateAsTimestamp: widget.experience.startDate !=
+                                    null
+                                ? (widget.experience.startDate! / 1000).round()
+                                : null,
+                            endDateAsTimestamp: widget.experience.endDate !=
+                                    null
+                                ? (widget.experience.endDate! / 1000).round()
+                                : null,
+                            promotions: widget.experience.promotions,
+                          );
+
+                          await showDialog(
+                            context: context,
+                            builder: (ctx) => AddedManuallyWorkExperienceForm(
+                              initialExperience: manual,
+                              onSubmit: (updated) async {
+                                _userBLL.updateManuallyAddedExperience(updated);
+                                if (widget.onPromotionAdded != null) {
+                                  widget.onPromotionAdded!();
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        tooltip: AppLocalizations.of(context)!.delete,
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _showDeleteConfirmationDialog(
+                          context,
+                          widget.experience.manualId!,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _showAddPromotionDialog(
+                            context, widget.experience.manualId!),
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.deepPurple),
+                        child: Text(AppLocalizations.of(context)!.addPromotion),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () =>
-                        _showAddPromotionDialog(context, widget.experience.manualId!),
-                    style: TextButton.styleFrom(foregroundColor: Colors.deepPurple),
-                    child: Text(AppLocalizations.of(context)!.addPromotion),
-                  ),
-                ],
-              ),
-            ),
+                ),
             ],
           );
         },
@@ -198,7 +244,9 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
           ),
           const SizedBox(width: 4),
           Text(
-            isVerified ? AppLocalizations.of(context)!.verifiedByBlockchain : AppLocalizations.of(context)!.manuallyAdded,
+            isVerified
+                ? AppLocalizations.of(context)!.verifiedByBlockchain
+                : AppLocalizations.of(context)!.manuallyAdded,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
@@ -225,13 +273,14 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
             children: [
               TextField(
                 controller: titleController,
-                decoration:
-                    InputDecoration(labelText: AppLocalizations.of(context)!.promotionTitle),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.promotionTitle),
               ),
               TextField(
                 controller: dateController,
                 readOnly: true,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.date),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.date),
                 onTap: () async {
                   final picked = await showDatePicker(
                     context: context,
@@ -264,7 +313,8 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
                   var userBLL = UserBll();
                   userBLL.addManuallyPromotion(promotion, manualExperienceId);
                   Navigator.of(context).pop();
-                  if (widget.onPromotionAdded != null) widget.onPromotionAdded!();
+                  if (widget.onPromotionAdded != null)
+                    widget.onPromotionAdded!();
                 }
               },
               child: Text(AppLocalizations.of(context)!.add),
@@ -275,13 +325,15 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
     );
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context, int manualExperienceId) {
+  void _showDeleteConfirmationDialog(
+      BuildContext context, int manualExperienceId) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.confirmDeletion),
-          content: Text(AppLocalizations.of(context)!.deleteExperienceConfirmation),
+          content:
+              Text(AppLocalizations.of(context)!.deleteExperienceConfirmation),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -289,13 +341,13 @@ class _WorkExperienceCardState extends State<WorkExperienceCard> {
             ),
             ElevatedButton(
               onPressed: () async {
-
                 _userBLL.deleteManualExperience(manualExperienceId);
                 Navigator.of(context).pop();
                 if (widget.onPromotionAdded != null) widget.onPromotionAdded!();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.white)),
+              child: Text(AppLocalizations.of(context)!.delete,
+                  style: const TextStyle(color: Colors.white)),
             ),
           ],
         );
