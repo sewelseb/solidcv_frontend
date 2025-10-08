@@ -4013,6 +4013,10 @@
   "@jobOfferDeleted": {
     "description": "Mensaje de éxito cuando se elimina la oferta de trabajo"
   },
+  "deletedSkill": "¡Habilidad borrada!",
+  "@deletedSkill": {
+    "description": "¡Habilidad eliminada con éxito!"
+  },
   "deletionError": "Error al eliminar la oferta de trabajo",
   "@deletionError": {
     "description": "Mensaje de error cuando falla la eliminación del trabajo"

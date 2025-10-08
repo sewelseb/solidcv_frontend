@@ -24,7 +24,7 @@ abstract class IUserBLL {
 
   Future<List<Certificate>> getMyManuallyAddedCertificates();
 
-  addSkill(String skillName);
+  Future<void> addSkill(String skillName);
 
   Future<List<Skill>> getMySkills();
 
@@ -67,7 +67,7 @@ abstract class IUserBLL {
   
   void updateManuallyAddedCertificate(Certificate updatedCertificate);
 
-  void deleteSkill(int id);
+  Future<void> deleteSkill(int id);
 
   void setFirstConfigurationDone();
 
