@@ -9,14 +9,15 @@ typedef OnAddCertificate = void Function(Certificate cert);
 
 class AddManuallyCertificateDialog extends StatefulWidget {
   final OnAddCertificate onAdd;
+  final Certificate? initial;
 
-  const AddManuallyCertificateDialog({super.key, required this.onAdd});
+  const AddManuallyCertificateDialog({super.key, required this.onAdd, this.initial});
 
-  static Future<void> show(BuildContext context, {required OnAddCertificate onAdd}) {
+  static Future<void> show(BuildContext context, {required OnAddCertificate onAdd, Certificate? initial}) {
     return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AddManuallyCertificateDialog(onAdd: onAdd),
+      builder: (_) => AddManuallyCertificateDialog(onAdd: onAdd, initial: initial),
     );
   }
 
@@ -30,6 +31,21 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
   String? _title, _description, _certificateType, _teachingInstitution, _grade, _curriculum;
   DateTime? _publicationDate;
   File? file;
+
+  @override
+  void initState() {
+    super.initState();
+    final initial = widget.initial;
+    if (initial != null) {
+      _title = initial.title;
+      _description = initial.description;
+      _certificateType = initial.type;
+      _teachingInstitution = initial.teachingInstitutionName;
+      _grade = initial.grade;
+      _curriculum = initial.curriculum;
+      
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,28 +92,34 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateTitle,
                   onSaved: (v) => _title = v,
+                  initialValue: _title,
                 ),
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateCertificateType,
                   onSaved: (v) => _certificateType = v,
+                  initialValue: _certificateType,
                 ),
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateGrade,
                   onSaved: (v) => _grade = v,
+                  initialValue: _grade,
                 ),
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateTeachingInstitution,
                   onSaved: (v) => _teachingInstitution = v,
+                  initialValue: _teachingInstitution,
                 ),
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateDescription,
                   onSaved: (v) => _description = v,
                   multiline: true,
+                  initialValue: _description,
                 ),
                 _buildTextFormField(
                   label: AppLocalizations.of(context)!.addCertificateCurriculum,
                   onSaved: (v) => _curriculum = v,
                   multiline: true,
+                  initialValue: _curriculum,
                 ),
                 const SizedBox(height: 10),
                 // Date picker stylé
@@ -175,6 +197,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                             _formKey.currentState!.save();
                             widget.onAdd(
                               Certificate(
+                                id: widget.initial?.id,
                                 title: _title,
                                 description: _description,
                                 curriculum: _curriculum,
@@ -195,7 +218,7 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                         ),
-                        child: Text(AppLocalizations.of(context)!.addCertificateAdd, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(AppLocalizations.of(context)!.save, style: const TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
@@ -212,10 +235,12 @@ class _AddManuallyCertificateDialogState extends State<AddManuallyCertificateDia
     required String label,
     required void Function(String?) onSaved,
     bool multiline = false,
+    String? initialValue,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: TextFormField(
+        initialValue: initialValue,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

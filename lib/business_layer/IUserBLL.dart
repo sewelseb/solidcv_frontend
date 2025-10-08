@@ -12,7 +12,8 @@ import 'package:solid_cv/models/User.dart';
 abstract class IUserBLL {
   Future<User> getUser(String id);
   Future<User> createUser(User user);
-  Future<void> updateUser(User user,Uint8List? imageBytes, String? imageExt, int id);
+  Future<void> updateUser(
+      User user, Uint8List? imageBytes, String? imageExt, int id);
   Future<User> login(User user);
   Future<String> getMyExportedCv();
   Future<List<User>> searchUsers(SearchTherms searchTherms);
@@ -43,7 +44,8 @@ abstract class IUserBLL {
 
   void addManuallyPromotion(Promotion promotion, int experienceId);
 
-  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId);
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(
+      String userId);
 
   Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId);
 
@@ -60,6 +62,10 @@ abstract class IUserBLL {
   void deleteManualyAddedCertificate(int manualExperienceId);
 
   Future<String> uploadCV(PlatformFile file);
+
+  void updateManuallyAddedExperience(ManualExperience updatedExperience);
+  
+  void updateManuallyAddedCertificate(Certificate updatedCertificate);
 
   void deleteSkill(int id);
 

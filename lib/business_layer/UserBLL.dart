@@ -156,11 +156,13 @@ class UserBll extends IUserBLL {
   Future<String> uploadCV(PlatformFile file) {
     return _userService.uploadCV(file);
   }
-
+  
+  @override
   void updateManuallyAddedExperience(ManualExperience updatedExperience) {
     _userService.updateManuallyAddedExperience(updatedExperience);
   }
 
+  @override
   void updateManuallyAddedCertificate(Certificate updatedCertificate) {
     _userService.updateManuallyAddedCertificate(updatedCertificate);
   }

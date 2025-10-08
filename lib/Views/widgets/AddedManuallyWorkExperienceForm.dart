@@ -5,8 +5,13 @@ import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/NewWorkExperien
 
 class AddedManuallyWorkExperienceForm extends StatefulWidget {
   final void Function(ManualExperience) onSubmit;
+  final ManualExperience? initialExperience;
 
-  const AddedManuallyWorkExperienceForm({super.key, required this.onSubmit});
+  const AddedManuallyWorkExperienceForm({
+    super.key,
+    required this.onSubmit,
+    this.initialExperience,
+  });
 
   @override
   State<AddedManuallyWorkExperienceForm> createState() =>
@@ -23,6 +28,29 @@ class _AddedManuallyWorkExperienceFormState
   String? _title, _company, _description, _location;
 
   final _promotionList = <Map<String, dynamic>>[];
+
+  @override
+  void initState() {
+    super.initState();
+    final exp = widget.initialExperience;
+    if (exp != null) {
+      _title = exp.title;
+      _company = exp.company;
+      _description = exp.description;
+      _location = exp.location;
+
+      if (exp.startDateAsTimestamp != null) {
+        _startDate = DateTime.fromMillisecondsSinceEpoch(
+            exp.startDateAsTimestamp! * 1000);
+        _startDateController.text = _startDate!.toIso8601String().split('T')[0];
+      }
+      if (exp.endDateAsTimestamp != null && exp.endDateAsTimestamp != 0) {
+        _endDate =
+            DateTime.fromMillisecondsSinceEpoch(exp.endDateAsTimestamp! * 1000);
+        _endDateController.text = _endDate!.toIso8601String().split('T')[0];
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,46 +82,66 @@ class _AddedManuallyWorkExperienceFormState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Icon(Icons.work_outline,
-                          color: const Color(0xFF7B3FE4), size: isMobile ? 24 : 30),
+                          color: const Color(0xFF7B3FE4),
+                          size: isMobile ? 24 : 30),
                       const SizedBox(width: 10),
                       Flexible(
                         child: Text(
                           AppLocalizations.of(context)!.addWorkExperienceTitle,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize:
-                                isMobile ? 17 : 23, 
+                            fontSize: isMobile ? 17 : 23,
                             color: const Color(0xFF7B3FE4),
                             height: 1.2,
                           ),
-                          maxLines: 2, 
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 28),
-                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceJobTitle, (v) => _title = v),
+                  _buildTextField(
+                    AppLocalizations.of(context)!.addWorkExperienceJobTitle,
+                    (v) => _title = v,
+                    initialValue: _title,
+                  ),
                   const SizedBox(height: 14),
-                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceCompany, (v) => _company = v),
+                  _buildTextField(
+                    AppLocalizations.of(context)!.addWorkExperienceCompany,
+                    (v) => _company = v,
+                    initialValue: _company,
+                  ),
                   const SizedBox(height: 14),
-                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceLocation, (v) => _location = v),
+                  _buildTextField(
+                    AppLocalizations.of(context)!.addWorkExperienceLocation,
+                    (v) => _location = v,
+                    initialValue: _location,
+                  ),
                   const SizedBox(height: 14),
-                  _buildTextField(AppLocalizations.of(context)!.addWorkExperienceDescription, (v) => _description = v,
-                      multiline: true),
+                  _buildTextField(
+                    AppLocalizations.of(context)!.addWorkExperienceDescription,
+                    (v) => _description = v,
+                    multiline: true,
+                    initialValue: _description,
+                  ),
                   const SizedBox(height: 18),
                   Row(
                     children: [
                       Expanded(
-                        child: _buildDateField(AppLocalizations.of(context)!.addWorkExperienceStartDate, _startDateController,
-                            (picked) {
+                        child: _buildDateField(
+                            AppLocalizations.of(context)!
+                                .addWorkExperienceStartDate,
+                            _startDateController, (picked) {
                           setState(() => _startDate = picked);
                         }),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: _buildDateField(AppLocalizations.of(context)!.addWorkExperienceEndDate, _endDateController,
-                            (picked) {
+                        child: _buildDateField(
+                            AppLocalizations.of(context)!
+                                .addWorkExperienceEndDate,
+                            _endDateController, (picked) {
                           setState(() => _endDate = picked);
                         }),
                       ),
@@ -114,8 +162,11 @@ class _AddedManuallyWorkExperienceFormState
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: Text(AppLocalizations.of(context)!.addWorkExperienceCancel,
-                              style: const TextStyle(fontWeight: FontWeight.w600)),
+                          child: Text(
+                              AppLocalizations.of(context)!
+                                  .addWorkExperienceCancel,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -125,6 +176,7 @@ class _AddedManuallyWorkExperienceFormState
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               final manual = ManualExperience(
+                                id: widget.initialExperience?.id,
                                 title: _title,
                                 company: _company,
                                 location: _location,
@@ -135,14 +187,17 @@ class _AddedManuallyWorkExperienceFormState
                                 endDateAsTimestamp: _endDate != null
                                     ? _endDate!.millisecondsSinceEpoch ~/ 1000
                                     : null,
-                                promotions: _promotionList
-                                    .where((p) =>
-                                        p['title'] != null &&
-                                        p['timestamp'] != null)
-                                    .map((p) => Promotion(
-                                        newTitle: p['title'],
-                                        date: p['timestamp']))
-                                    .toList(),
+                                promotions: _promotionList.isNotEmpty
+                                    ? _promotionList
+                                        .where((p) =>
+                                            p['title'] != null &&
+                                            p['timestamp'] != null)
+                                        .map((p) => Promotion(
+                                            newTitle: p['title'],
+                                            date: p['timestamp']))
+                                        .toList()
+                                    : (widget.initialExperience?.promotions ??
+                                        <Promotion>[]),
                               );
                               widget.onSubmit(manual);
                               Navigator.pop(context);
@@ -174,8 +229,9 @@ class _AddedManuallyWorkExperienceFormState
   }
 
   Widget _buildTextField(String label, void Function(String?) onSaved,
-      {bool multiline = false}) {
+      {bool multiline = false, String? initialValue}) {
     return TextFormField(
+      initialValue: initialValue,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
@@ -187,8 +243,9 @@ class _AddedManuallyWorkExperienceFormState
         ),
       ),
       maxLines: multiline ? 3 : 1,
-      validator: (value) =>
-          value == null || value.isEmpty ? AppLocalizations.of(context)!.addWorkExperienceFieldRequired(label) : null,
+      validator: (value) => value == null || value.isEmpty
+          ? AppLocalizations.of(context)!.addWorkExperienceFieldRequired(label)
+          : null,
       onSaved: onSaved,
     );
   }
@@ -222,10 +279,11 @@ class _AddedManuallyWorkExperienceFormState
           onPicked(picked);
         }
       },
-      validator: (value) =>
-          (label == AppLocalizations.of(context)!.addWorkExperienceStartDate && (value == null || value.isEmpty))
-              ? AppLocalizations.of(context)!.addWorkExperienceDateRequired(label)
-              : null,
+      validator: (value) => (label ==
+                  AppLocalizations.of(context)!.addWorkExperienceStartDate &&
+              (value == null || value.isEmpty))
+          ? AppLocalizations.of(context)!.addWorkExperienceDateRequired(label)
+          : null,
     );
   }
 }
