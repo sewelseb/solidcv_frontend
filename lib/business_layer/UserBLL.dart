@@ -58,8 +58,8 @@ class UserBll extends IUserBLL {
   }
 
   @override
-  addSkill(String skillName) {
-    _userService.addSkill(skillName);
+  Future<void> addSkill(String skillName) {
+    return _userService.addSkill(skillName);
   }
 
   @override
@@ -168,8 +168,8 @@ class UserBll extends IUserBLL {
   }
   
   @override
-  void deleteSkill(int id) {
-    _userService.deleteSkill(id);
+  Future<void> deleteSkill(int id) {
+    return _userService.deleteSkill(id);
   }
 
   Future<int> getMySkillTestQuestionCount() {
