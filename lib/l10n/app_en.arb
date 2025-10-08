@@ -2648,6 +2648,10 @@
   "@mySkillsSkillAdded": {
     "description": "Success message when skill is added"
   },
+  "deletedSkill": "Skill deleted!",
+  "@deletedSkill": {
+    "description": "Success message when skill is deleted"
+  },
   "mySkillsError": "Error: {error}",
   "@mySkillsError": {
     "description": "Error message template",

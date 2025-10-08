@@ -1724,6 +1724,10 @@
   "@goToSkillTests": {
     "description": "Bouton pour naviguer vers la page des tests de compétences"
   },
+  "deletedSkill": "Compétence supprimée!",
+  "@deletedSkill": {
+    "description": "Message succes de compétence supprimée"
+  },
   "close": "Fermer",
   "@close": {
     "description": "Texte du bouton fermer"
