@@ -186,4 +186,6 @@ class BackenConnection {
 
   String get submitCourseQuizApi => "/api/protected/submit-course-quiz/";
 
+  String get updateUserSubscriptionAdminApi => "/api/admin/set-user-premium-subscription";
+
 }
