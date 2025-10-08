@@ -42,6 +42,8 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
 
   static const double desktopBreakpoint = 820;
   static const double tabletBreakpoint = 600;
+  static const double compactDesktopBreakpoint = 800;
+  static const double actionsIconBreakpoint = 900;
 
   @override
   void initState() {
@@ -66,7 +68,6 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
     final user = await _userFuture;
-    
 
     if (_cachedExperiences != null &&
         _lastFetchTime != null &&
@@ -81,14 +82,12 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
         Future.value(<CleanExperience>[]),
         _userBLL.getMyManuallyAddedExperiences(),
       ]);
-    }
-    else {
+    } else {
       results = await Future.wait([
         _blockchainWalletBll.getEventsForCurrentUser(),
         _userBLL.getMyManuallyAddedExperiences(),
       ]);
     }
-    
 
     final cleanExperienceList = results[0] as List<CleanExperience>;
     final manualExperienceList = results[1] as List<ManualExperience>;
@@ -173,9 +172,15 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                                 indicatorColor: const Color(0xFF5A69F1),
                                 onTap: (i) => setState(() => _currentTab = i),
                                 tabs: [
-                                  Tab(text: AppLocalizations.of(context)!.workExperience),
-                                  Tab(text: AppLocalizations.of(context)!.education),
-                                  Tab(text: AppLocalizations.of(context)!.skills),
+                                  Tab(
+                                      text: AppLocalizations.of(context)!
+                                          .workExperience),
+                                  Tab(
+                                      text: AppLocalizations.of(context)!
+                                          .education),
+                                  Tab(
+                                      text:
+                                          AppLocalizations.of(context)!.skills),
                                 ],
                               ),
                               const SizedBox(height: 16),
@@ -285,11 +290,13 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                         const SizedBox(height: 10),
                         _infoTile(
                             icon: Icons.phone,
-                            text: user.phoneNumber ?? AppLocalizations.of(context)!.addPhoneNumber),
+                            text: user.phoneNumber ??
+                                AppLocalizations.of(context)!.addPhoneNumber),
                         const SizedBox(height: 6),
                         _infoTile(
                           icon: Icons.link,
-                          text: user.linkedin ?? AppLocalizations.of(context)!.addLinkedIn,
+                          text: user.linkedin ??
+                              AppLocalizations.of(context)!.addLinkedIn,
                         ),
                         const SizedBox(height: 6),
                         _infoTile(
@@ -319,6 +326,11 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
               height: 60, child: Center(child: CircularProgressIndicator()));
         }
         final user = snapshot.data!;
+        final screenWidth = MediaQuery.of(context).size.width;
+        final bool isCompactDesktop = screenWidth < compactDesktopBreakpoint &&
+            screenWidth >= desktopBreakpoint;
+        final bool useIconActions = screenWidth < actionsIconBreakpoint;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -328,67 +340,219 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                     style: const TextStyle(
                         fontSize: 28, fontWeight: FontWeight.bold)),
                 const Spacer(),
-                IconButton(
-                  tooltip: 'More Actions',
-                  icon: const Icon(Icons.more_vert, color: Colors.black),
-                  onPressed: () => _showActionsDialog(user),
-                ),
               ],
             ),
             const SizedBox(height: 12),
             ValueListenableBuilder<bool>(
               valueListenable: _isDownloadingCv,
               builder: (context, isLoading, child) {
-                return ElevatedButton(
-                  onPressed: isLoading ? null : () async {
-                    try {
-                      _isDownloadingCv.value = true;
-                      var documentName = await _userBLL.getMyExportedCv();
-                      final Uri documentUrl = Uri.parse(
-                        BackenConnection().url +
-                            BackenConnection().getMyCvPlace +
-                            documentName,
-                      );
-                      await launchUrl(documentUrl);
-                    } catch (e) {
-                      if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error downloading CV: $e'),
-                            backgroundColor: Colors.red,
+                if (useIconActions) {
+                  return Row(
+                    children: [
+                      Tooltip(
+                        message: AppLocalizations.of(context)!.exportCvPdf,
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        );
-                      }
-                    } finally {
-                      _isDownloadingCv.value = false;
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                          child: IconButton(
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    try {
+                                      _isDownloadingCv.value = true;
+                                      var documentName =
+                                          await _userBLL.getMyExportedCv();
+                                      final Uri documentUrl = Uri.parse(
+                                        BackenConnection().url +
+                                            BackenConnection().getMyCvPlace +
+                                            documentName,
+                                      );
+                                      await launchUrl(documentUrl);
+                                    } catch (e) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Error downloading CV: $e'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    } finally {
+                                      _isDownloadingCv.value = false;
+                                    }
+                                  },
+                            icon: isLoading
+                                ? const SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Color(0xFF7B3FE4)),
+                                    ),
+                                  )
+                                : const Icon(Icons.picture_as_pdf_outlined,
+                                    color: Colors.black87),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Tooltip(
+                        message: AppLocalizations.of(context)!.setupProfile,
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF7B3FE4),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, '/user/first-configuration');
+                            },
+                            icon: const Icon(Icons.settings_outlined,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Tooltip(
+                        message: AppLocalizations.of(context)!.editProfile,
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              final updated = await Navigator.pushNamed(
+                                context,
+                                '/user/edit-profile',
+                                arguments: user,
+                              );
+                              if (updated == true) {
+                                setState(() {
+                                  _userFuture = _userBLL.getCurrentUser();
+                                });
+                              }
+                            },
+                            icon: const Icon(Icons.edit, color: Colors.black87),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  final Size minSize = Size(isCompactDesktop ? 120 : 160, 44);
+                  final ButtonStyle primaryPurple = ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF7B3FE4),
+                    foregroundColor: Colors.white,
                     elevation: 1,
+                    minimumSize: minSize,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                  ),
-                  child: isLoading
-                      ? Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF7B3FE4)),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(AppLocalizations.of(context)!.generating),
-                          ],
-                        )
-                      : Text(AppLocalizations.of(context)!.exportCvPdf),
-                );
+                  );
+                  final ButtonStyle neutralWhite = ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    elevation: 1,
+                    minimumSize: minSize,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  );
+
+                  return Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: isLoading
+                            ? null
+                            : () async {
+                                try {
+                                  _isDownloadingCv.value = true;
+                                  var documentName =
+                                      await _userBLL.getMyExportedCv();
+                                  final Uri documentUrl = Uri.parse(
+                                    BackenConnection().url +
+                                        BackenConnection().getMyCvPlace +
+                                        documentName,
+                                  );
+                                  await launchUrl(documentUrl);
+                                } catch (e) {
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content:
+                                            Text('Error downloading CV: $e'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                } finally {
+                                  _isDownloadingCv.value = false;
+                                }
+                              },
+                        style: neutralWhite,
+                        child: isLoading
+                            ? Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const SizedBox(
+                                    height: 16,
+                                    width: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Color(0xFF7B3FE4)),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                      AppLocalizations.of(context)!.generating),
+                                ],
+                              )
+                            : Text(AppLocalizations.of(context)!.exportCvPdf),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, '/user/first-configuration');
+                        },
+                        style: primaryPurple,
+                        icon: const Icon(Icons.settings_outlined, size: 18),
+                        label: Text(AppLocalizations.of(context)!.setupProfile),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final updated = await Navigator.pushNamed(
+                            context,
+                            '/user/edit-profile',
+                            arguments: user,
+                          );
+                          if (updated == true) {
+                            setState(() {
+                              _userFuture = _userBLL.getCurrentUser();
+                            });
+                          }
+                        },
+                        style: neutralWhite,
+                        child: Text(AppLocalizations.of(context)!.editProfile),
+                      ),
+                    ],
+                  );
+                }
               },
             ),
             const SizedBox(height: 8),
@@ -409,8 +573,9 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
       children: [
         Row(
           children: [
-             Text(AppLocalizations.of(context)!.workExperience,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(AppLocalizations.of(context)!.workExperience,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const Spacer(),
             IconButton(
               onPressed: _showAddWorkExperienceModal,
@@ -442,7 +607,9 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
             } else {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32),
-                child: Center(child: Text(AppLocalizations.of(context)!.noWorkExperiencesYet)),
+                child: Center(
+                    child: Text(
+                        AppLocalizations.of(context)!.noWorkExperiencesYet)),
               );
             }
           },
@@ -495,98 +662,6 @@ class _MyCvDesktopState extends State<MyCvDesktop> {
                 size: 18,
               ),
             ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _showActionsDialog(User user) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 8,
-          backgroundColor: Colors.white,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 360),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'Actions',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close, size: 20, color: Colors.black54),
-                        onPressed: () => Navigator.of(context).pop(),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                      backgroundColor: const Color(0xFFF5F6FF),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.pushNamed(context, '/user/first-configuration');
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.settings_outlined, color: Color(0xFF7B3FE4)),
-                        const SizedBox(width: 12),
-                        Text(AppLocalizations.of(context)!.setupProfile,
-                            style: const TextStyle(color: Colors.black87)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), side: const BorderSide(color: Color(0xFFE0E0E0))),
-                    ),
-                    onPressed: () async {
-                      Navigator.of(context).pop();
-                      final updated = await Navigator.pushNamed(
-                        context,
-                        '/user/edit-profile',
-                        arguments: user,
-                      );
-                      if (updated == true && mounted) {
-                        setState(() {
-                          _userFuture = _userBLL.getCurrentUser();
-                        });
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.edit, color: Colors.black54),
-                        const SizedBox(width: 12),
-                        Text(AppLocalizations.of(context)!.editProfile,
-                            style: const TextStyle(color: Colors.black87)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                ],
-              ),
-            ),
           ),
         );
       },
