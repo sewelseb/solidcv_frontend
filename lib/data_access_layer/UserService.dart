@@ -334,7 +334,7 @@ class UserService extends IUserService {
   }
 
   @override
-  void addSkill(String skillName) async {
+  Future<void> addSkill(String skillName) async {
     var response = await http.post(
       Uri.parse(BackenConnection().url + BackenConnection().addSkillApi),
       headers: <String, String>{
@@ -347,6 +347,7 @@ class UserService extends IUserService {
     if (response.statusCode != 200) {
       throw Exception('Adding skill failure');
     }
+    return; 
   }
 
   @override
@@ -654,7 +655,7 @@ class UserService extends IUserService {
   }
   
   @override
-  void deleteSkill(int id) async {
+  Future<void> deleteSkill(int id) async {
     final response = await http.delete(
       Uri.parse('${BackenConnection().url}${BackenConnection().deleteSkillApi}$id'),
       headers: <String, String>{
@@ -666,6 +667,7 @@ class UserService extends IUserService {
     if (response.statusCode != 200) {
       throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to delete skill');
     }
+    return;
   }
   
   @override
