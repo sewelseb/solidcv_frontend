@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:typed_data';
-import 'dart:io';
 
 import 'package:file_picker/src/platform_file.dart';
 import 'package:solid_cv/config/BackenConnection.dart';
@@ -153,7 +152,6 @@ class UserService extends IUserService {
     }
   }
 
-
   @override
   void addManualExperience(ManualExperience newExperience) async {
     var response = await http.post(
@@ -215,11 +213,13 @@ class UserService extends IUserService {
     }
   }
 
-    @override
-  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(String userId) async {
+  @override
+  Future<List<ManualExperience>> getUsersManuallyAddedExperiences(
+      String userId) async {
     var response = await http.get(
       Uri.parse(BackenConnection().url +
-          BackenConnection().getUsersManuallyAddedExperiences+ userId),
+          BackenConnection().getUsersManuallyAddedExperiences +
+          userId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -234,15 +234,17 @@ class UserService extends IUserService {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Getting manually added work experiences for a user failure');
+      throw Exception(
+          'Getting manually added work experiences for a user failure');
     }
   }
 
   @override
-  void deleteManualExperience(int manualExperienceId) async{
+  void deleteManualExperience(int manualExperienceId) async {
     final response = await http.delete(
       Uri.parse(BackenConnection().url +
-          BackenConnection().deleteManualExperience + manualExperienceId.toString()),
+          BackenConnection().deleteManualExperience +
+          manualExperienceId.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -298,7 +300,8 @@ class UserService extends IUserService {
   void deleteManualyAddedCertificate(int manualExperienceId) async {
     final response = await http.delete(
       Uri.parse(BackenConnection().url +
-          BackenConnection().deleteManualyAddedCertificate + manualExperienceId.toString()),
+          BackenConnection().deleteManualyAddedCertificate +
+          manualExperienceId.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -310,11 +313,13 @@ class UserService extends IUserService {
     }
   }
 
-    @override
-  Future<List<Certificate>> getUsersManuallyAddedCertificates(String userId) async {
+  @override
+  Future<List<Certificate>> getUsersManuallyAddedCertificates(
+      String userId) async {
     var response = await http.get(
       Uri.parse(BackenConnection().url +
-          BackenConnection().getUsersManuallyAddedCertificates + userId),
+          BackenConnection().getUsersManuallyAddedCertificates +
+          userId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -494,7 +499,8 @@ class UserService extends IUserService {
         'phoneNumber': user.phoneNumber,
         'biography': user.biography,
         'linkedin': user.linkedin,
-        'recieveWeeklyRecommandationEmails': user.receiveWeeklyRecommendationEmails,
+        'recieveWeeklyRecommandationEmails':
+            user.receiveWeeklyRecommendationEmails,
         if (imageBase64 != null) 'profilePicture': imageBase64,
         if (imageBase64 != null) 'profilePictureExtention': imageExt,
       }),
@@ -585,7 +591,7 @@ class UserService extends IUserService {
       Uri.parse(BackenConnection().url + BackenConnection().uploadCvApi),
     );
     request.headers['X-Auth-Token'] = await APIConnectionHelper.getJwtToken();
-    
+
     // Handle both bytes and path cases
     if (file.bytes != null) {
       // Web platform - use bytes
@@ -611,20 +617,24 @@ class UserService extends IUserService {
       // Parse the response to get the actual file path/URL from server
       final responseData = await response.stream.bytesToString();
       final jsonResponse = jsonDecode(responseData);
-      
+
       // Return the server's response (could be file path, URL, or success message)
-      return jsonResponse['filePath'] ?? jsonResponse['message'] ?? 'CV uploaded successfully';
+      return jsonResponse['filePath'] ??
+          jsonResponse['message'] ??
+          'CV uploaded successfully';
     } else {
       final responseData = await response.stream.bytesToString();
-      final errorMessage = jsonDecode(responseData)['error'] ?? 'Failed to upload CV';
+      final errorMessage =
+          jsonDecode(responseData)['error'] ?? 'Failed to upload CV';
       throw Exception(errorMessage);
     }
   }
-  
+
   @override
   void updateManuallyAddedExperience(ManualExperience updatedExperience) async {
     final response = await http.put(
-      Uri.parse(BackenConnection().url + BackenConnection().updateExperienceApi),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().updateExperienceApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -633,14 +643,16 @@ class UserService extends IUserService {
     );
 
     if (response.statusCode != 200) {
-      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to update experience');
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Failed to update experience');
     }
   }
-  
+
   @override
   void updateManuallyAddedCertificate(Certificate updatedCertificate) async {
     final response = await http.put(
-      Uri.parse(BackenConnection().url + BackenConnection().updateCertificateApi),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().updateCertificateApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -649,14 +661,16 @@ class UserService extends IUserService {
     );
 
     if (response.statusCode != 200) {
-      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to update certificate');
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Failed to update certificate');
     }
   }
-  
+
   @override
   void deleteSkill(int id) async {
     final response = await http.delete(
-      Uri.parse('${BackenConnection().url}${BackenConnection().deleteSkillApi}$id'),
+      Uri.parse(
+          '${BackenConnection().url}${BackenConnection().deleteSkillApi}$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -664,14 +678,16 @@ class UserService extends IUserService {
     );
 
     if (response.statusCode != 200) {
-      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to delete skill');
+      throw Exception(
+          jsonDecode(response.body)['error'] ?? 'Failed to delete skill');
     }
   }
-  
+
   @override
   Future<int> getMySkillTestQuestionCount() async {
     final response = await http.get(
-      Uri.parse(BackenConnection().url + BackenConnection().getMySkillTestQuestionCountApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().getMySkillTestQuestionCountApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -683,13 +699,13 @@ class UserService extends IUserService {
     } else {
       throw Exception('Failed to fetch skill test question count');
     }
-    
   }
-  
+
   @override
   void setFirstConfigurationDone() async {
     final response = await http.post(
-      Uri.parse(BackenConnection().url + BackenConnection().setFirstConfigurationDoneApi),
+      Uri.parse(BackenConnection().url +
+          BackenConnection().setFirstConfigurationDoneApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -697,10 +713,11 @@ class UserService extends IUserService {
     );
 
     if (response.statusCode != 200) {
-      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to set first configuration done');
+      throw Exception(jsonDecode(response.body)['error'] ??
+          'Failed to set first configuration done');
     }
   }
-  
+
   @override
   Future<bool> hasCompletedCV() async {
     final response = await http.post(
@@ -739,7 +756,8 @@ class UserService extends IUserService {
   @override
   Future<void> updateLanguagePreference(String language) async {
     final response = await http.patch(
-      Uri.parse(BackenConnection().url + BackenConnection().updateUserLanguageApi),
+      Uri.parse(
+          BackenConnection().url + BackenConnection().updateUserLanguageApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
@@ -754,4 +772,28 @@ class UserService extends IUserService {
     }
   }
 
+  @override
+  Future<void> updateUserPremiumSubscription(
+    int userId,
+    int timestamp,
+  ) async {
+    final response = await http.put(
+      Uri.parse(
+        BackenConnection().url +
+            BackenConnection().updateUserSubscriptionAdminApi,
+      ),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'userId': userId,
+        'endDateSubscription': timestamp,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update premium subscription date');
+    }
+  }
 }
