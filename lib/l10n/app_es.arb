@@ -132,6 +132,10 @@
   "@workExperience": {
     "description": "Sección de experiencia laboral"
   },
+  "workExperienceMobile": "Experiencia",
+  "@workExperienceMobile": {
+    "description": "Sección de experiencia laboral versión móvil"
+  },
   "education": "Educación",
   "@education": {
     "description": "Sección de educación"

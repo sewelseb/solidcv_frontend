@@ -23,7 +23,8 @@ class UserVerifyCvMobile extends StatefulWidget {
   State<UserVerifyCvMobile> createState() => _UserVerifyCvMobileState();
 }
 
-class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
+class _UserVerifyCvMobileState extends State<UserVerifyCvMobile>
+    with SingleTickerProviderStateMixin {
   late final IBlockchainWalletBll _blockchainWalletBll;
   late final IUserBLL _userBLL = UserBll();
   late Future<User> _userFuture;
@@ -35,11 +36,17 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
   DateTime? _lastFetchTime;
   static const Duration _cacheTimeout = Duration(minutes: 5);
 
+  late final TabController _tabController;
+
   @override
   void initState() {
     super.initState();
     _blockchainWalletBll = BlockchainWalletBll();
     _userFuture = _userBLL.getUser(widget.userId);
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) setState(() {});
+    });
   }
 
   Future<List<UnifiedExperienceViewModel>> _fetchAllExperiences() async {
@@ -156,16 +163,42 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
                     ],
                   ),
                 ),
+                // Tabs: Experience | Education | Skills (mobile)
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      padding: EdgeInsets.zero,
+                      labelPadding: const EdgeInsets.only(left: 0, right: 16),
+                      indicatorPadding: EdgeInsets.zero,
+                      tabAlignment: TabAlignment.start,
+                      labelColor: const Color(0xFF111111),
+                      unselectedLabelColor: const Color(0xFF666666),
+                      indicatorColor: const Color(0xFF7B3FE4),
+                      tabs: [
+                        Tab(text: AppLocalizations.of(context)!.workExperienceMobile),
+                        Tab(text: AppLocalizations.of(context)!.education),
+                        Tab(text: AppLocalizations.of(context)!.skills),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       const SizedBox(height: 16),
-                      _buildExperienceSection(),
-                      const SizedBox(height: 24),
-                      UserVerifyCvEducationMobile(userId: widget.userId),
-                      const SizedBox(height: 24),
-                      UserVerifyCvSkillsMobile(userId: widget.userId),
+                      if (_tabController.index == 0) ...[
+                        _buildExperienceSection(),
+                      ] else if (_tabController.index == 1) ...[
+                        UserVerifyCvEducationMobile(userId: widget.userId),
+                      ] else ...[
+                        UserVerifyCvSkillsMobile(userId: widget.userId),
+                      ],
                     ],
                   ),
                 ),
@@ -241,9 +274,9 @@ class _UserVerifyCvMobileState extends State<UserVerifyCvMobile> {
           children: [
             Row(
               children: [
-                Text(AppLocalizations.of(context)!.workExperience,
+                Text(AppLocalizations.of(context)!.workExperienceMobile,
                     style:
-                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const Spacer(),
               ],
             ),

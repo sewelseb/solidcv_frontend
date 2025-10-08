@@ -115,29 +115,51 @@ class _UserVerifyCvDesktopState extends State<UserVerifyCvDesktop> {
         children: [
           if (!isMobile) _buildSidebar(width: isTablet ? 200 : 280),
           Expanded(
-            child: SingleChildScrollView(
+            child: DefaultTabController(
+              length: 3,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 1100),
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: _refreshTrigger,
-                      builder: (context, _, __) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildHeader(),
-                            const SizedBox(height: 32),
-                            _buildExperienceSection(),
-                            const SizedBox(height: 32),
-                            UserVerifyCvEducationDesktop(userId:widget.userId),
-                            const SizedBox(height: 32),
-                            UserVerifyCvSkillsDesktop(userId: widget.userId),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 16),
+                        TabBar(
+                          labelColor: const Color(0xFF5A69F1),
+                          indicatorColor: const Color(0xFF5A69F1),
+                          unselectedLabelColor: Colors.black54,
+                          tabs: [
+                            Tab(text: AppLocalizations.of(context)!.workExperience),
+                            Tab(text: AppLocalizations.of(context)!.education),
+                            Tab(text: AppLocalizations.of(context)!.skills),
                           ],
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: ValueListenableBuilder<int>(
+                            valueListenable: _refreshTrigger,
+                            builder: (context, _, __) {
+                              return TabBarView(
+                                children: [
+                                  SingleChildScrollView(
+                                    child: _buildExperienceSection(),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: UserVerifyCvEducationDesktop(userId: widget.userId),
+                                  ),
+                                  SingleChildScrollView(
+                                    child: UserVerifyCvSkillsDesktop(userId: widget.userId),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
