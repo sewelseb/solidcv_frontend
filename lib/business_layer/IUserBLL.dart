@@ -64,7 +64,7 @@ abstract class IUserBLL {
   Future<String> uploadCV(PlatformFile file);
 
   void updateManuallyAddedExperience(ManualExperience updatedExperience);
-  
+
   void updateManuallyAddedCertificate(Certificate updatedCertificate);
 
   void deleteSkill(int id);
@@ -76,4 +76,6 @@ abstract class IUserBLL {
   Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData);
 
   Future<void> updateLanguagePreference(String language);
+
+  Future<void> updateUserPremiumSubscription(int userId, int timestamp);
 }
