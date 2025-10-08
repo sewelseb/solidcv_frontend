@@ -6,6 +6,7 @@ import 'package:solid_cv/config/BackenConnection.dart';
 import 'package:solid_cv/models/Certificate.dart';
 import 'package:solid_cv/business_layer/IUserBLL.dart';
 import 'package:solid_cv/business_layer/UserBLL.dart';
+import 'package:solid_cv/Views/widgets/AddManuallyCertificateDialog.dart';
 
 class EducationMobileCard extends StatefulWidget {
   final Certificate certificate;
@@ -177,11 +178,31 @@ class _EducationMobileCardState extends State<EducationMobileCard> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton(
-                    onPressed: () =>
-                        _showDeleteConfirmationDialog(context, int.parse(widget.certificate.id!)),
-                    style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    child: Text(AppLocalizations.of(context)!.delete),
+                  // Edit pencil icon
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.editProfile,
+                    icon: const Icon(Icons.edit, color: Colors.black87),
+                    onPressed: () async {
+                      await AddManuallyCertificateDialog.show(
+                        context,
+                        initial: widget.certificate,
+                        onAdd: (updated) async {
+                          _userBLL.updateManuallyAddedCertificate(updated);
+                          if (widget.onCertificateDeleted != null) {
+                            widget.onCertificateDeleted!();
+                          }
+                        },
+                      );
+                    },
+                  ),
+                  // Delete as red trash icon
+                  IconButton(
+                    tooltip: AppLocalizations.of(context)!.delete,
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _showDeleteConfirmationDialog(
+                      context,
+                      int.parse(widget.certificate.id!),
+                    ),
                   ),
                 ],
               ),
