@@ -196,9 +196,13 @@ class EtheriumWalletService implements IWalletService {
 
     return result.first as List<dynamic>;
   }
-  
+
   @override
-  mintCertificateToken(String privateKey, String educationInstitutionEthereumAddress, String recieverEthereumAddress, String url) async {
+  mintCertificateToken(
+      String privateKey,
+      String educationInstitutionEthereumAddress,
+      String recieverEthereumAddress,
+      String url) async {
     var httpClient = Client();
     var ethClient = Web3Client(EtheriumConnection().apiUrl, httpClient);
 
@@ -238,22 +242,27 @@ class EtheriumWalletService implements IWalletService {
 
     var ethAddressOfReciever = EthereumAddress.fromHex(recieverEthereumAddress);
 
-    var result = await ethClient.sendTransaction(
-      credentials,
-      Transaction.callContract(
-        contract: contract,
-        function: mintFunction,
-        parameters: [url, ethAddressOfReciever],
-        maxGas: 1000000,
-      ),
-      chainId: EtheriumConnection().chainId,
-    );
+    try {
+      var result = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: contract,
+          function: mintFunction,
+          parameters: [url, ethAddressOfReciever],
+          maxGas: 1000000,
+        ),
+        chainId: EtheriumConnection().chainId,
+      );
 
-    ethClient.dispose();
+      ethClient.dispose();
+      return result;
+    } catch (e) {
+      throw Exception("Education institution Ethereum address is not valid");
+    }
 
-    return result;
+    
   }
-  
+
   @override
   Future getCertificateNFTs(String address) async {
     var httpClient = Client();
@@ -313,7 +322,7 @@ class EtheriumWalletService implements IWalletService {
 
     return result.first as List<dynamic>;
   }
-  
+
   @override
   Future<Wallet> createNewWalletAddress(String password) async {
     var httpClient = Client();

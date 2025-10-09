@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:solid_cv/data_access_layer/BlockChain/IPFSModels/IPFSCertificate.dart';
 
@@ -13,6 +14,7 @@ class Certificate {
   String? publicationDate;
   String? imagelink;
   File? file;
+  Uint8List? fileBytes; // For web platform file uploads
   String?fielPath;
   String? ipfsHash;
   String? documentIPFSUrl;
@@ -22,7 +24,7 @@ class Certificate {
   String? issuerBlockCahinWalletAddress;
   bool? isInstitutionVerified;
 
-  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.ipfsHash, this.documentIPFSUrl, String? this.teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress, this.isInstitutionVerified});
+  Certificate({this.id, this.title, this.type, this.grade, this.curriculum, this.description, this.publicationDate, this.imagelink, this.file, this.fileBytes, this.ipfsHash, this.documentIPFSUrl, String? this.teachingInstitutionName, this.logoUrl,this.issuerBlockCahinWalletAddress, this.isInstitutionVerified});
 
   Certificate.fromJson(Map<String, dynamic> json) {
     id = json['id'].toString();

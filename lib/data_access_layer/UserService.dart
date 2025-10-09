@@ -153,6 +153,56 @@ class UserService extends IUserService {
     }
   }
 
+  @override
+  Future<User?> getUserByEmail(String email) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${BackenConnection().url}/api/users/by-email/$email'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        User user = User.fromJson(jsonDecode(response.body));
+        return user;
+      } else if (response.statusCode == 404) {
+        // User not found
+        return null;
+      } else {
+        throw Exception('Failed to get user by email: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error getting user by email: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<User> createUserForBulkCertificate(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${BackenConnection().url}/api/users/bulk-certificate'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        User user = User.fromJson(jsonDecode(response.body));
+        return user;
+      } else {
+        throw Exception('Failed to create user for bulk certificate: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error creating user for bulk certificate: ${e.toString()}');
+    }
+  }
+
 
   @override
   void addManualExperience(ManualExperience newExperience) async {
@@ -751,6 +801,26 @@ class UserService extends IUserService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to update language preference');
+    }
+  }
+  
+  @override
+  Future<User> getUserForBulkCertificate(String email) async {
+    final response = await http.post(
+      Uri.parse(BackenConnection().url + BackenConnection().getUserForBulkCertificate),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-Auth-Token': await APIConnectionHelper.getJwtToken(),
+      },
+      body: jsonEncode({
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to get user for bulk certificate');
     }
   }
 

@@ -180,4 +180,6 @@ class BackenConnection {
 
   String get submitCourseQuizApi => "/api/protected/submit-course-quiz/";
 
+  String get getUserForBulkCertificate => "/api/protected/certificates/bulk-upload/get-user-wallet";
+
 }

@@ -19,6 +19,9 @@ abstract class IUserBLL {
 
   Future<User> getCurrentUser();
 
+  /// Get user blockchain public key for bulk certificate creation
+  Future<User> getUserBlockchainPublicKeyForBulk(String email);
+
   addMyCertificateManually(Certificate certificate);
 
   Future<List<Certificate>> getMyManuallyAddedCertificates();

@@ -62,7 +62,7 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
         await _ipfsService.saveCertificate(certificate, educationInstitution);
 
     //mint the token
-    var reciever = await _userService.getUser(user.id.toString());
+    var reciever = user;
     if (reciever.ethereumAddress == null) {
       throw Exception("User does not have an Base Blochchain address");
     }
@@ -109,11 +109,25 @@ class BlockchainWalletBll extends IBlockchainWalletBll {
       int educationInstitutionId, String password) async {
     var educationInstitution = await _educationInstitutionService
         .getEducationInstitution(educationInstitutionId);
+    
+    if (educationInstitution.ethereumAddress == null) {
+      throw Exception("Education institution does not have an Ethereum address");
+    }
+    
     const storage = FlutterSecureStorage();
     var encryptedWallet = await storage.read(
         key: 'etheriumWallet-${educationInstitution.ethereumAddress!}');
-    var wallet = Wallet.fromJson(encryptedWallet!, password);
-    return "0x${bytesToHex(wallet.privateKey.privateKey)}";
+    
+    if (encryptedWallet == null) {
+      throw Exception("No wallet found for education institution. Please create and store a wallet first.");
+    }
+    
+    try {
+      var wallet = Wallet.fromJson(encryptedWallet, password);
+      return "0x${bytesToHex(wallet.privateKey.privateKey)}";
+    } catch (e) {
+      throw Exception("Failed to decrypt wallet. Please check your password.");
+    }
   }
 
   Future<String> getCompanyPrivateKey(int companyId, String password) async {

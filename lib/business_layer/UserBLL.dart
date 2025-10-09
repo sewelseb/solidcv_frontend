@@ -48,6 +48,19 @@ class UserBll extends IUserBLL {
   }
 
   @override
+  Future<User> getUserBlockchainPublicKeyForBulk(String email) async {
+    try {
+      
+        // User doesn't exist, create new user account for bulk certificate
+        return await _userService.getUserForBulkCertificate(email);
+      
+    } catch (e) {
+      // If user doesn't exist or there's an error, create new user
+      return await _userService.createUserForBulkCertificate(email);
+    }
+  }
+
+  @override
   addMyCertificateManually(Certificate certificate) {
     _userService.addMyCertificateManually(certificate);
   }

@@ -21,6 +21,12 @@ abstract class IUserService {
 
   Future<User> getCurrentUser();
 
+  /// Get user by email address for bulk certificate operations
+  Future<User?> getUserByEmail(String email);
+
+  /// Create user account for bulk certificate recipient
+  Future<User> createUserForBulkCertificate(String email);
+
   void addMyCertificateManually(Certificate certificate);
 
   Future<List<Certificate>> getMyManuallyAddedCertificates();
@@ -78,5 +84,7 @@ abstract class IUserService {
   Future<CareerAdvice> getCareerAdvice(CareerAdviceRequest requestData);
 
   Future<void> updateLanguagePreference(String language);
+
+  Future<User> getUserForBulkCertificate(String email);
 
 }

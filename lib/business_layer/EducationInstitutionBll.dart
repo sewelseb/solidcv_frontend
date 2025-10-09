@@ -38,7 +38,7 @@ class EducationInstitutionBll extends IEducationInstitutionBll {
   @override
   setEthereumAddress(EducationInstitution educationInstitution,
       String ethereumAddress, String privateKey, String password) async {
-    if (!await isWalletAddressValid(ethereumAddress)) return false;
+    //if (!await isWalletAddressValid(ethereumAddress)) return false;
 
     //save the keys on the local device
     _walletService.storeKeys(ethereumAddress, privateKey, password);

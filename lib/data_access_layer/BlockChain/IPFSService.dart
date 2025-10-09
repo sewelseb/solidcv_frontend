@@ -102,7 +102,7 @@ Future<WorkEvent> getWorkEvent(String ipfsHash) async {
 
   @override
   saveDocumentCertificate(Certificate certificate) async {
-    //save certificate.file to IPFS
+    //save certificate.file or certificate.fileBytes to IPFS
     var headers = {
       "pinata_api_key": _apiKey,
       "pinata_secret_api_key": _apiSecret,
@@ -111,8 +111,26 @@ Future<WorkEvent> getWorkEvent(String ipfsHash) async {
     var url = Uri.parse(IPFSConnection().pinFileUrl);
 
     var request = http.MultipartRequest('POST', url)
-      ..headers.addAll(headers)
-      ..files.add(http.MultipartFile.fromBytes('file', certificate.file!.readAsBytesSync(), filename: "certificateDocument-${certificate.title!}"));
+      ..headers.addAll(headers);
+
+    // Handle both File (desktop/mobile) and bytes (web) scenarios
+    if (certificate.file != null) {
+      // Desktop/mobile platforms - use File
+      request.files.add(http.MultipartFile.fromBytes(
+        'file', 
+        certificate.file!.readAsBytesSync(), 
+        filename: "certificateDocument-${certificate.title!}",
+      ));
+    } else if (certificate.fileBytes != null) {
+      // Web platform - use bytes directly
+      request.files.add(http.MultipartFile.fromBytes(
+        'file', 
+        certificate.fileBytes!, 
+        filename: "certificateDocument-${certificate.title!}",
+      ));
+    } else {
+      throw Exception('No file or file bytes provided for certificate document upload');
+    }
 
     final response = await request.send();
 
